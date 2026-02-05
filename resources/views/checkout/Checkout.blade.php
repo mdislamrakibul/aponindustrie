@@ -321,7 +321,7 @@
                 success: function(response) {
                     Swal.fire('Success!', 'Your order has been placed.', 'success')
                     .then(() => {
-                        window.location.href = "/product/order/success/" + response.order_id;
+                        window.location.href = "/product/order/success/" + response.order_number;
                     });
                 },
                 error: function(xhr) {

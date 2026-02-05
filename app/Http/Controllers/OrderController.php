@@ -24,7 +24,7 @@ class OrderController extends Controller
         ])->first();
 
         return view('order.Order_Success', [
-            'order' => $order
+            'order' => $id
         ]);
     }
 }

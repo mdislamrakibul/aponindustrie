@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderAddress;
 use App\Models\OrderItems;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -81,27 +83,53 @@ class CheckoutController extends Controller
         ]);
 
 
+
         $cart = Session::get('cart');
         if (!$cart) {
             return response()->json(['status' => 'error', 'message' => 'Cart is empty'], 400);
         }
 
+
+        // foreach ($cart as $id => $details) {
+        //     dd($details['quantity']);
+        // }
         // Use a Transaction to ensure everything saves or nothing saves
         DB::beginTransaction();
 
         try {
+
+            // 2. Create the user
+            $user = new User();
+            $user->name = $request->fname . ' ' . $request->lname;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->password = uniqid();
+            $user->save();
+
             // 2. Create the Order
             $order = new Order();
-            $order->user_id = auth()->id() ?? null; // Null if guest checkout
+            $order->user_id = auth()->id() ?? $user->id; // Null if guest checkout
             $order->order_number = 'ORD-' . strtoupper(uniqid());
             $order->total_amount = $this->calculateTotal($cart);
-            $order->fname = $request->fname;
-            $order->lname = $request->lname;
-            $order->email = $request->email;
-            $order->phone = $request->phone;
-            $order->address = $request->billing_address;
+            $order->payment_method = "CASH";
+            $order->payment_status = "PENDING";
+            $order->order_status = "PROCESSING";
+            $order->transaction_id = 'TRX-' . strtoupper(uniqid());
             $order->notes = $request->order_notes;
             $order->save();
+
+            // create billing address
+            $orderAddress = new OrderAddress();
+            $orderAddress->order_id = $order->id;
+            $orderAddress->type = "BILLING";
+            $orderAddress->first_name = $request->fname;
+            $orderAddress->last_name = $request->lname;
+            $orderAddress->email = $request->email;
+            $orderAddress->phone = $request->phone;
+            $orderAddress->address_line1 = $request->billing_address;
+            $orderAddress->save();
+
+
 
             // 3. Save Order Items & Reduce Stock
             foreach ($cart as $id => $details) {
@@ -110,10 +138,11 @@ class CheckoutController extends Controller
                     'product_id' => $id,
                     'quantity'   => $details['quantity'],
                     'price'      => $details['product']['sale_price'],
+                    'total'      => $this->calculateTotal($cart),
                 ]);
 
                 // Reduce Product Stock in DB
-                Product::where('id', $id)->decrement('stock', $details['quantity']);
+                Product::where('id', $id)->decrement('stock_quantity', $details['quantity']);
             }
 
             DB::commit();
@@ -124,7 +153,7 @@ class CheckoutController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'order_id' => $order->id,
+                'order_number' => $order->order_number,
                 'message' => 'Order placed successfully!'
             ]);
         } catch (\Exception $e) {

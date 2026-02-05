@@ -95,7 +95,7 @@
         @if ($order)
         <div class="confirm-green-box">
             <br>
-            <p>Your order <span style="font-weight: bold;font-size: 25px;">#siakdhfsa</span> has been successful!</p>
+            <p>Your order <span style="font-weight: bold;font-size: 25px;">#{{ $order }}</span> has been successfully Placed!</p>
             <p>Thank you for choosing us. You will contact you shortly.</p>
         </div>
         @else
