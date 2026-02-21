@@ -100,15 +100,15 @@
 
                                         @if($product->brand)
                                         <div class="pro-details-brand">
-                                            <span style="font-weight: bolder;"> Brands: <a href="shop.html">{{
-                                                    $product->brand->name }}</a></span>
+                                            <span style="font-weight: bolder;"> Brands: <span style="color: #f15412;">{{
+                                                    $product->brand->name }}</span></span>
                                         </div>
                                         @endif
 
                                         @if($product->category)
                                         <div class="pro-details-brand">
-                                            <span style="font-weight: bolder;"> Category: <a href="shop.html">{{
-                                                    $product->category->name }}</a></span>
+                                            <span style="font-weight: bolder;"> Category: <span style="color: #f15412;">{{
+                                                    $product->category->name }}</span></span>
                                         </div>
                                         @endif
 
@@ -138,10 +138,10 @@
                                             <span class="font-small ml-5 text-muted" style="font-weight: bolder;">
 
                                                 @if ($product->review)
-                                                count($product->review) {{ count($product->review) > 9 ? "Reviews":
-                                                "Review" }}
+                                                 <span style="color: #f15412;">count($product->review) {{ count($product->review) > 9 ? "Reviews":
+                                                "Review" }}</span>
                                                 @else
-                                                0 Review
+                                                <span style="color: #f15412;">0 Review</span>
                                                 @endif
 
                                             </span>
@@ -194,8 +194,7 @@
                                             <a aria-label="Add To Cart" class="button button-add-to-cart" href="{{ route('Product_Cart_Add',
                                             ['product_name' =>$product->name,'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eR67Hyabjda0wIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                         'product_id'=>$product->id ]) }}">
-                                                Add to
-                                                cart</a>
+                                                Add to cart</a>
 
                                         </div>
                                     </div>
@@ -704,3 +703,6 @@
 </main>
 
 @endsection
+
+
+

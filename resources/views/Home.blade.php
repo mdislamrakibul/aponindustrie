@@ -327,6 +327,9 @@
 
     {{-- Top Slider --}}
     <div class="bg-square-left"></div>
+
+
+
     <div class="container">
         <div class="row">
             <div class="col-lg-9 col-md-12">
@@ -341,8 +344,8 @@
                                             <h2 class="animated fw-900">Supper deals</h2>
                                             <h1 class="animated fw-900 text-brand">On all products</h1>
                                             <p class="animated">Save more with coupons & up to 70% off</p>
-                                            <a class="animated btn btn-brush btn-brush-3"
-                                                href="product-details.html">Shop Now</a>
+                                            {{-- <a class="animated btn btn-brush btn-brush-3"
+                                                href="product-details.html">Shop Now</a> --}}
                                         </div>
                                     </div>
                                     <div class="col-lg-7 col-md-6">
@@ -364,8 +367,8 @@
                                             <h2 class="animated fw-900">Supper deals</h2>
                                             <h1 class="animated fw-900 text-brand">On all products</h1>
                                             <p class="animated">Save more with coupons & up to 70% off</p>
-                                            <a class="animated btn btn-brush btn-brush-3"
-                                                href="product-details.html">Shop Now</a>
+                                            {{-- <a class="animated btn btn-brush btn-brush-3"
+                                                href="product-details.html">Shop Now</a> --}}
                                         </div>
                                     </div>
                                     <div class="col-lg-7 col-md-6">
@@ -389,8 +392,8 @@
                                             <h2 class="animated fw-900">Supper deals</h2>
                                             <h1 class="animated fw-900 text-brand">On all products</h1>
                                             <p class="animated">Save more with coupons & up to 70% off</p>
-                                            <a class="animated btn btn-brush btn-brush-3"
-                                                href="product-details.html">Shop Now</a>
+                                            {{-- <a class="animated btn btn-brush btn-brush-3"
+                                                href="product-details.html">Shop Now</a> --}}
                                         </div>
                                     </div>
                                     <div class="col-lg-7 col-md-6">
@@ -414,8 +417,8 @@
                                             <h2 class="animated fw-900">Supper deals</h2>
                                             <h1 class="animated fw-900 text-brand">On all products</h1>
                                             <p class="animated">Save more with coupons & up to 70% off</p>
-                                            <a class="animated btn btn-brush btn-brush-3"
-                                                href="product-details.html">Shop Now</a>
+                                            {{-- <a class="animated btn btn-brush btn-brush-3"
+                                                href="product-details.html">Shop Now</a> --}}
                                         </div>
                                     </div>
                                     <div class="col-lg-7 col-md-6">
@@ -438,8 +441,8 @@
                                             <h2 class="animated fw-900">Supper deals</h2>
                                             <h1 class="animated fw-900 text-brand">On all products</h1>
                                             <p class="animated">Save more with coupons & up to 70% off</p>
-                                            <a class="animated btn btn-brush btn-brush-3"
-                                                href="product-details.html">Shop Now</a>
+                                            {{-- <a class="animated btn btn-brush btn-brush-3"
+                                                href="product-details.html">Shop Now</a> --}}
                                         </div>
                                     </div>
                                     <div class="col-lg-7 col-md-6">
@@ -462,8 +465,8 @@
                                             <h2 class="animated fw-900">Supper deals</h2>
                                             <h1 class="animated fw-900 text-brand">On all products</h1>
                                             <p class="animated">Save more with coupons & up to 70% off</p>
-                                            <a class="animated btn btn-brush btn-brush-3"
-                                                href="product-details.html">Shop Now</a>
+                                            {{-- <a class="animated btn btn-brush btn-brush-3"
+                                                href="product-details.html">Shop Now</a> --}}
                                         </div>
                                     </div>
                                     <div class="col-lg-7 col-md-6">
@@ -487,8 +490,8 @@
                                             <h2 class="animated fw-900">Supper deals</h2>
                                             <h1 class="animated fw-900 text-brand">On all products</h1>
                                             <p class="animated">Save more with coupons & up to 70% off</p>
-                                            <a class="animated btn btn-brush btn-brush-3"
-                                                href="product-details.html">Shop Now</a>
+                                            {{-- <a class="animated btn btn-brush btn-brush-3"
+                                                href="product-details.html">Shop Now</a> --}}
                                         </div>
                                     </div>
                                     <div class="col-lg-7 col-md-6">
@@ -509,20 +512,20 @@
                 <div class="side-banner">
                     <img src="{{asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png')}}"
                         alt="menu_banner1">
-                    <div class="banne_info">
+                    {{-- <div class="banne_info">
                         <h6>10% Off</h6>
                         <h4>New Arrival</h4>
                         <a href="#">Shop now</a>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="side-banner">
                     <img src="{{asset('assets/uploads/Right Banner/Right banner_Apon Plastic.png')}}"
                         alt="menu_banner2">
-                    <div class="banne_info">
+                    {{-- <div class="banne_info">
                         <h6>15% Off</h6>
                         <h4>Hot Deals</h4>
                         <a href="#">Shop now</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -578,6 +581,57 @@
 
 
 
+
+
+
+    {{-- 3 small Banner Add --}}
+    <section class="banners mb-15">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="banner-img wow fadeIn animated">
+                        <img src="{{asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png')}}"
+                            alt="menu_banner1">
+
+                        {{-- <div class="banner-text">
+                            <span>Smart Offer</span>
+                            <h4>Save 20% on <br>Woman Bag</h4>
+                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                        </div> --}}
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="banner-img wow fadeIn animated">
+                        <img src="{{asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png')}}"
+                            alt="menu_banner1">
+
+                        {{-- <div class="banner-text">
+                            <span>Sale off</span>
+                            <h4>Great Summer <br>Collection</h4>
+                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                        </div> --}}
+                    </div>
+                </div>
+                <div class="col-lg-4 d-md-none d-lg-flex">
+                    <div class="banner-img wow fadeIn animated  mb-sm-0">
+                        <img src="{{asset('assets/uploads/Right Banner/Right banner_Apon Plastic.png')}}"
+                            alt="menu_banner1">
+
+                        {{-- <div class="banner-text">
+                            <span>New Arrivals</span>
+                            <h4>Shop Today’s <br>Deals & Offers</h4>
+                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
     {{-- Fetured / Popular/ New Added --}}
     <section class="product-tabs section-padding position-relative wow fadeIn animated">
         <div class="bg-square"></div>
@@ -598,8 +652,8 @@
                             added</button>
                     </li>
                 </ul>
-                <a href="#" class="view-more d-none d-md-flex">View More<i
-                        class="fi-rs-angle-double-small-right"></i></a>
+                {{-- <a href="#" class="view-more d-none d-md-flex">View More<i
+                        class="fi-rs-angle-double-small-right"></i></a> --}}
             </div>
             <!--End nav-tabs-->
             <div class="tab-content wow fadeIn animated" id="myTabContent">
@@ -947,49 +1001,6 @@
 
 
 
-    {{-- 3 small Banner Add --}}
-    <section class="banners mb-15">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="banner-img wow fadeIn animated">
-                        <img src="{{asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png')}}"
-                            alt="menu_banner1">
-
-                        <div class="banner-text">
-                            <span>Smart Offer</span>
-                            <h4>Save 20% on <br>Woman Bag</h4>
-                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="banner-img wow fadeIn animated">
-                        <img src="{{asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png')}}"
-                            alt="menu_banner1">
-
-                        <div class="banner-text">
-                            <span>Sale off</span>
-                            <h4>Great Summer <br>Collection</h4>
-                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 d-md-none d-lg-flex">
-                    <div class="banner-img wow fadeIn animated  mb-sm-0">
-                        <img src="{{asset('assets/uploads/Right Banner/Right banner_Apon Plastic.png')}}"
-                            alt="menu_banner1">
-
-                        <div class="banner-text">
-                            <span>New Arrivals</span>
-                            <h4>Shop Today’s <br>Deals & Offers</h4>
-                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
 
@@ -999,11 +1010,11 @@
         <div class="container">
             <div class="banner-img banner-big wow fadeIn animated f-none">
                 <img src="{{ asset('assets/uploads/Large Adv/Large Adv_Apon Plastic-1.png') }}" alt="">
-                <div class="banner-text d-md-block d-none">
+                {{-- <div class="banner-text d-md-block d-none">
                     <h4 class="mb-15 mt-40 text-brand">Repair Services</h4>
                     <h1 class="fw-600 mb-20">We're an Apple <br>Authorised Service Provider</h1>
                     <a href="shop.html" class="btn">Learn More <i class="fi-rs-arrow-right"></i></a>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>
@@ -1325,29 +1336,30 @@
                         </div>
                         <div class="product-content-wrap">
                             <h2><a href="{{ route('Product_Details', ['product_name' => $prod['name'],'category_name' => $prod['category']['name'],'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
-                                        'category_id' => $prod['category']['id'],'product_id'=>$prod['id'] ]) }}">{{ $prod['name'] }}</a></h2>
+                                        'category_id' => $prod['category']['id'],'product_id'=>$prod['id'] ]) }}">{{
+                                    $prod['name'] }}</a></h2>
                             @php
-                                    // Example: $rating = 4.5;
-                                    $rating = $prod['reviews_avg_rating'] ?? 0;
-                                    @endphp
+                            // Example: $rating = 4.5;
+                            $rating = $prod['reviews_avg_rating'] ?? 0;
+                            @endphp
 
-                                    <div style="display: flex; gap: 8px;">
+                            <div style="display: flex; gap: 8px;">
 
-                                        <div>
-                                            @for ($i = 1; $i <= 5; $i++) @if ($i <=$rating) {{-- Full Star --}} <i
-                                                class="fa fa-star" style="color: #f15412;"></i>
-                                                @elseif (($i - 0.5) <= $rating) {{-- Half Star --}} <i
-                                                    class="fa fa-star-half-empty" style="color: #f15412;"></i>
-                                                    @else
-                                                    {{-- Empty Star --}}
-                                                    <i class="fa fa-star-o" style="color: #f15412;"></i>
-                                                    @endif
-                                                    @endfor
-                                        </div>
-                                        <div style="color:#f15412; font-weight: bold; font-size: 15px;">
-                                            ({{number_format($prod['reviews_avg_rating'], 1)}})
-                                        </div>
-                                    </div>
+                                <div>
+                                    @for ($i = 1; $i <= 5; $i++) @if ($i <=$rating) {{-- Full Star --}} <i
+                                        class="fa fa-star" style="color: #f15412;"></i>
+                                        @elseif (($i - 0.5) <= $rating) {{-- Half Star --}} <i
+                                            class="fa fa-star-half-empty" style="color: #f15412;"></i>
+                                            @else
+                                            {{-- Empty Star --}}
+                                            <i class="fa fa-star-o" style="color: #f15412;"></i>
+                                            @endif
+                                            @endfor
+                                </div>
+                                <div style="color:#f15412; font-weight: bold; font-size: 15px;">
+                                    ({{number_format($prod['reviews_avg_rating'], 1)}})
+                                </div>
+                            </div>
                             <div class="product-price">
                                 <span>৳ {{ $prod['sale_price'] }} </span>
                                 <span class="old-price">৳ {{ $prod['regular_price'] }}</span>

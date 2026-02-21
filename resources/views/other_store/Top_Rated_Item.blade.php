@@ -295,7 +295,7 @@
                         @endforeach
                     </div>
                     <div class="banner-img wow fadeIn mb-45 animated d-lg-block d-none">
-                        <img src="{{asset('assets/imgs/banner/banner-11.jpg')}}" alt="">
+                        <img src="{{asset('assets/uploads/Left Side Adv Banner/Apon Plastic Left Side Adv Banner_Apon Plastic.png')}}" alt="">
                         <div class="banner-text">
                             <span>Women Zone</span>
                             <h4>Save 17% on <br>Office Dress</h4>

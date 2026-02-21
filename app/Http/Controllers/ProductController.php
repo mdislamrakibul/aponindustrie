@@ -31,7 +31,39 @@ class ProductController extends Controller
             // ->toArray();
 
             ->latest()
-            ->paginate(24);
+            ->paginate(48);
+
+
+        $products = Product::published([
+            'id',
+            'name',
+            'category_id',
+            'sale_price',
+            'regular_price',
+            'discount_type',
+            'discount_value',
+            'product_type',
+            'is_discounted',
+        ])
+            ->with(['category:id,name,slug', 'media:id,title,file_path,image_type,position,model_id,image_name'])
+            ->withAvg(['reviews' => function ($q) {
+                $q->where('status', 'approved');
+            }], 'rating')
+            ->inStock()
+            ->inRandomOrder()
+            // ->limit(8)
+            ->get()
+            ->toArray();
+
+
+        foreach ($products as $item => $value) {
+            if (isset($value['product_type']) && in_array('NEW', is_string($value['product_type'])
+                ? json_decode($value['product_type'], true)
+                : $value['product_type'])) {
+                $newProducts[] = $value;
+            }
+        }
+
 
         // dd([
         //     'products' => $products,
@@ -41,6 +73,7 @@ class ProductController extends Controller
         return view('product.Product_By_Category', [
             'products' => $products,
             'category_name' => $request->category_name,
+            'newProduct' => collect($newProducts)->shuffle()->take(7),
             'sub_category_name' => $request->sub_category_name,
             'total_item' => count($products),
         ]);

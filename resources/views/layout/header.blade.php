@@ -84,20 +84,24 @@
                             <div class="marquee-viewport">
                                 <div class="marquee-content">
                                     <div class="news-list">
-                                        <span class="news-item">🔥 Get great devices up to 50% off <a href="#">View
-                                                details</a></span>
+                                        <span class="news-item">🔥 Get great devices up to 50% off
+                                            {{-- <a href="#">View details</a> --}}
+                                        </span>
                                         <span class="news-item">📈 Super Value Deals - Save more with
                                             coupons.</span>
-                                        <span class="news-item">🌍 Trendy silver jewelry, save up 35% off today <a
-                                                href="#">Shop now</a></span>
+                                        <span class="news-item">🌍 Trendy silver jewelry, save up 35% off today
+                                            {{-- <a href="#">Shop now</a> --}}
+                                        </span>
                                     </div>
                                     <div class="news-list">
-                                        <span class="news-item">🔥 Get great devices up to 50% off <a href="#">View
-                                                details</a></span>
+                                        <span class="news-item">🔥 Get great devices up to 50% off
+                                            {{-- <a href="#">View details</a> --}}
+                                        </span>
                                         <span class="news-item">📈 Super Value Deals - Save more with
                                             coupons.</span>
-                                        <span class="news-item">🌍 Trendy silver jewelry, save up 35% off today <a
-                                                href="#">Shop now</a></span>
+                                        <span class="news-item">🌍 Trendy silver jewelry, save up 35% off today
+                                            {{-- <a href="#">Shop now</a> --}}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +191,7 @@
                                     <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                                     <div class="left-info">
                                         <span class="index">
-                                             @if(session('cart') && count(session('cart')) > 0)
+                                            @if(session('cart') && count(session('cart')) > 0)
                                             {{ count(session('cart')) }}
                                             @else
                                             0
@@ -203,26 +207,28 @@
                                     @if (session('cart') && count(session('cart')) > 0)
                                     <ul>
                                         @foreach ( session('cart') as $cart)
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="product-details.html">
+                                        <li>
+                                            <div class="shopping-cart-img">
+                                                <a href="product-details.html">
 
-                                                        @foreach ($cart['product']['media'] as $media)
-                                                            @if ($media['position'] == 0)
-                                                            <img src="{{ asset( $media['file_path']. $media['image_name'])}}" alt={{
-                                                                $media['image_name'] }}>
-                                                            @endif
-                                                        @endforeach
+                                                    @foreach ($cart['product']['media'] as $media)
+                                                    @if ($media['position'] == 0)
+                                                    <img src="{{ asset( $media['file_path']. $media['image_name'])}}"
+                                                        alt={{ $media['image_name'] }}>
+                                                    @endif
+                                                    @endforeach
 
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="product-details.html">{{ $cart['product']['name'] }}</a></h4>
-                                                    <h4><span>{{ $cart['quantity'] }} × </span>৳{{  number_format($cart['price'],2) }}</h4>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
+                                            </div>
+                                            <div class="shopping-cart-title">
+                                                <h4><a href="product-details.html">{{ $cart['product']['name'] }}</a>
+                                                </h4>
+                                                <h4><span>{{ $cart['quantity'] }} × </span>৳{{
+                                                    number_format($cart['price'],2) }}</h4>
+                                            </div>
+                                            <div class="shopping-cart-delete">
+                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
+                                            </div>
+                                        </li>
                                         @endforeach
 
 
@@ -230,14 +236,14 @@
                                     <div class="shopping-cart-footer">
                                         <div class="shopping-cart-total">
                                             <h4>Total <span>৳
-                                                @php
-                                                $subtotal = collect(session('cart'))->sum(function ($item) {
-                                                            return $item['price'] * $item['quantity'];
-                                                        });
+                                                    @php
+                                                    $subtotal = collect(session('cart'))->sum(function ($item) {
+                                                    return $item['price'] * $item['quantity'];
+                                                    });
 
-                                                @endphp
-                                                {{ number_format($subtotal,2) }}
-                                            </span></h4>
+                                                    @endphp
+                                                    {{ number_format($subtotal,2) }}
+                                                </span></h4>
                                         </div>
                                         <div class="shopping-cart-button">
                                             <a href="{{ route('Product_Cart') }}" class="outline">View cart</a>

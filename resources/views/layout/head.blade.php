@@ -184,5 +184,34 @@
             border-left: 5px solid #f39c12;
             border-bottom: 4px solid transparent;
         }
+
+
+        /* WhatsApp Floating Button */
+.whatsapp-main {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.whatsapp-btn {
+    background-color: #25d366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+}
+
+.whatsapp-btn:hover {
+    transform: scale(1.1);
+    color: white;
+}
     </style>
 </head>
