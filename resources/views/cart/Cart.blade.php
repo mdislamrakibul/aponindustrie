@@ -22,8 +22,8 @@
 
             <div class="row">
                 <div class="row mb-50">
+                    @if (isset($cart_info) && count($cart_info)> 0)
                     <div class="col-lg-8 col-md-12">
-                        @if (isset($cart_info) && count($cart_info)> 0)
                         <div class="table-responsive">
 
 
@@ -118,14 +118,7 @@
                             <a class="btn " href="{{ route('home.index') }}"><i
                                     class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
                         </div>
-                        @else
-                        <div class="mt-100" style="font-size: 30px;
-                                        text-align: center;
-                                        color: #f15412;
-                                        font-weight: bold;">
-                            Your cart is empty!
-                        </div>
-                        @endif
+
 
                     </div>
                     <div class="col-lg-4 col-md-12">
@@ -185,11 +178,20 @@
                                 </div>
                             </div>
                             @if (isset($cart_info) && count($cart_info)> 0)
-                            <a href="{{ route('Product_Checkout') }}" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To
+                            <a href="{{ route('Product_Checkout') }}" class="btn "> <i class="fi-rs-box-alt mr-10"></i>
+                                Proceed To
                                 CheckOut</a>
-                                @endif
+                            @endif
                         </div>
                     </div>
+                    @else
+                    <div class="mt-100" style="font-size: 30px;
+                                        text-align: center;
+                                        color: #f15412;
+                                        font-weight: bold;">
+                        Your cart is empty!
+                    </div>
+                    @endif
                 </div>
 
             </div>
@@ -251,14 +253,14 @@
         </div>
     </section>
 
-{{--
+    {{--
     /**
     * Clear Cart Modal
     *
     * @param mixed $request
     * @return void
     */
- --}}
+    --}}
 
 
     <div id="delete_modal" class="modal fade delete-modal" role="dialog">

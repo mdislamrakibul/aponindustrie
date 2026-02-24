@@ -23,9 +23,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         // This attaches data to 'layouts.header' (or your header path)
         View::composer('layout.header', function ($view) {
-            // $menuItems = Category::where('status', 'published')
-            //     ->orderBy('position', 'asc')
-            //     ->get();
+
 
             $menuItems = Category::where('parent_id', 0) // Get Top-level parents
                 ->select('id', 'name', 'slug', 'parent_id') // Select for parents
@@ -33,9 +31,21 @@ class ViewServiceProvider extends ServiceProvider
                     $query->select('id', 'name', 'slug', 'parent_id'); // Select for children
                 }])         // Layer in all children & sub-children
                 ->get();
-            //     ->toArray();
 
-            // dd($menuItems);
+            $view->with('menuItems', $menuItems);
+        });
+
+        // This attaches data to 'layouts.header' (or your header path)
+        View::composer('layout.mobile_header', function ($view) {
+
+
+            $menuItems = Category::where('parent_id', 0) // Get Top-level parents
+                ->select('id', 'name', 'slug', 'parent_id') // Select for parents
+                ->with(['childrenRecursive' => function ($query) {
+                    $query->select('id', 'name', 'slug', 'parent_id'); // Select for children
+                }])         // Layer in all children & sub-children
+                ->get();
+
             $view->with('menuItems', $menuItems);
         });
     }

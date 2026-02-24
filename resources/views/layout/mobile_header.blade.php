@@ -12,12 +12,12 @@
                 </div>
             </div>
             <div class="mobile-header-content-area">
-                <div class="mobile-search search-style-3 mobile-header-border">
+                {{-- <div class="mobile-search search-style-3 mobile-header-border">
                     <form action="#">
                         <input type="text" placeholder="Search for items…">
                         <button type="submit"><i class="fi-rs-search"></i></button>
                     </form>
-                </div>
+                </div> --}}
                 <div class="mobile-menu-wrap mobile-header-border">
                     <div class="main-categori-wrap mobile-header-border">
                         <a class="categori-button-active-2" href="#">
@@ -25,20 +25,62 @@
                         </a>
                         <div class="categori-dropdown-wrap categori-dropdown-active-small">
                             <ul>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-dress"></i>Women's Clothing</a>
+                                @foreach( $menuItems as $item)
+                                <li class="has-children">
+                                    <a href="{{ route('Product_By_Category', ['category_name' => $item->name,'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                        'category_id' => $item->id, ]) }}"><i class="surfsidemedia-font-dress"></i>{{
+                                        $item->name }}</a>
+                                    @if($item->childrenRecursive && $item->childrenRecursive->isNotEmpty())
+                                    <div class="dropdown-menu">
+                                        <ul class="mega-menu d-lg-flex">
+                                            <li class="mega-menu-col col-lg-7">
+                                                <ul class="d-lg-flex">
+                                                    <li class="mega-menu-col col-lg-6">
+                                                        <ul>
+                                                            <li><span class="submenu-title">Types</span> </li>
+                                                            @foreach($item->childrenRecursive as $child)
+                                                            <li>
+                                                                <a class="dropdown-item nav-link nav_item"
+                                                                    href="{{ route('Product_By_Category', ['category_name' => $item->name,'sub_category_name' => $child->name,'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                                            'sub_category_id' => $child->id,'category_id' => $item->id,]) }}">{{
+                                                                    $child->name }}</a>
+                                                            </li>
+                                                            @endforeach
+
+                                                        </ul>
+                                                    </li>
+
+                                                </ul>
+                                            </li>
+                                            <li class="mega-menu-col col-lg-5">
+                                                <div class="header-banner2">
+                                                    <img src="{{ asset('assets/uploads/Right Banner/Right banner_Apon Plastic-1-min.png')}}"
+                                                        alt="menu_banner1">
+                                                    <div class="banne_info">
+                                                        <h6>10% Off</h6>
+                                                        <h4>New Arrival</h4>
+                                                        <a href="#">Shop now</a>
+                                                    </div>
+                                                </div>
+                                                <div class="header-banner2">
+                                                    <img src="{{ asset('assets/uploads/Right Banner/Right banner_Apon Plastic-min.png')}}"
+                                                        alt="menu_banner2">
+                                                    <div class="banne_info">
+                                                        <h6>15% Off</h6>
+                                                        <h4>Hot Deals</h4>
+                                                        <a href="#">Shop now</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    @else
+                                    {{-- <p>No sub-categories found.</p> --}}
+                                    @endif
+
                                 </li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-tshirt"></i>Men's Clothing</a></li>
-                                <li> <a href="shop.html"><i class="surfsidemedia-font-smartphone"></i> Cellphones</a>
-                                </li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-desktop"></i>Computer & Office</a>
-                                </li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-cpu"></i>Consumer Electronics</a>
-                                </li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-home"></i>Home & Garden</a></li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-high-heels"></i>Shoes</a></li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-teddy-bear"></i>Mother & Kids</a>
-                                </li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-kite"></i>Outdoor fun</a></li>
+
+                                @endforeach
                             </ul>
                         </div>
                     </div>
@@ -47,7 +89,7 @@
                         <ul class="mobile-menu">
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a
                                     href="index.html">Home</a></li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                            {{-- <li class="menu-item-has-children"><span class="menu-expand"></span><a
                                     href="shop.html">shop</a></li>
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Our
                                     Collections</a>
@@ -80,25 +122,25 @@
                                         </ul>
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                    href="blog.html">Blog</a></li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
+                            </li> --}}
+                            {{-- <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="blog.html">Blog</a></li> --}}
+                            {{-- <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
                                 <ul class="dropdown">
                                     <li><a href="#">English</a></li>
                                     <li><a href="#">French</a></li>
                                     <li><a href="#">German</a></li>
                                     <li><a href="#">Spanish</a></li>
                                 </ul>
-                            </li>
+                            </li> --}}
                         </ul>
                     </nav>
                     <!-- mobile menu end -->
                 </div>
                 <div class="mobile-header-info-wrap mobile-header-border">
-                    <div class="single-mobile-header-info mt-30">
+                    {{-- <div class="single-mobile-header-info mt-30">
                         <a href="contact.html"> Our location </a>
-                    </div>
+                    </div> --}}
                     <div class="single-mobile-header-info">
                         <a href="login.html">Log In </a>
                     </div>
