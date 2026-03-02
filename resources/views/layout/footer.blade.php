@@ -121,9 +121,9 @@
                                         <ul>
                                             <li class="menu-item"><a href="{{ route('Our_Service.index') }}" class="link-term">Our Service</a>
                                             </li>
-                                            <li class="menu-item"><a href="#" class="link-term">Contact Us</a></li>
-                                            <li class="menu-item"><a href="#" class="link-term">Returns</a></li>
+                                            <li class="menu-item"><a href="#" class="link-term">Return Policy</a></li>
                                             <li class="menu-item"><a href="{{ route('FAQ.index') }}" class="link-term">FAQ</a></li>
+                                            <li class="menu-item"><a href="#" class="link-term">Contact Us</a></li>
 
                                         </ul>
                                     </div>
