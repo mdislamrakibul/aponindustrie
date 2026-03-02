@@ -9,7 +9,7 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/imgs/theme/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/imgs/logo/logo.png') }}">
     <link
         href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900,900italic&amp;subset=latin,latin-ext"
         rel="stylesheet">

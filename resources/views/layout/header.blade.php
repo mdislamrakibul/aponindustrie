@@ -121,6 +121,10 @@
             </div>
         </div>
     </div>
+
+
+
+
     <div class="header-middle header-middle-ptb-1 d-none d-lg-block" style="padding: 10px 0 0 0 !important">
         <div class="container">
             <div class="header-wrap">
@@ -332,6 +336,9 @@
             </div>
         </div>
     </div>
+
+
+
     <nav class="featured-menu">
         <div class="menu-container">
             <a href="{{ route('Weekly_Featured') }}"
@@ -399,9 +406,10 @@
 
                                                 </ul>
                                             </li>
-                                            <li class="mega-menu-col col-lg-5">
+                                            {{-- <li class="mega-menu-col col-lg-5">
                                                 <div class="header-banner2">
-                                                    <img src="{{ asset('assets/uploads/Right Banner/Right banner_Apon Plastic-1-min.png')}}"
+                                                    <img
+                                                    src="{{ asset('assets/uploads/Right Banner/Right banner_Apon Plastic-1-min.png')}}"
                                                         alt="menu_banner1">
                                                     <div class="banne_info">
                                                         <h6>10% Off</h6>
@@ -418,7 +426,7 @@
                                                         <a href="#">Shop now</a>
                                                     </div>
                                                 </div>
-                                            </li>
+                                            </li> --}}
                                         </ul>
                                     </div>
                                     @else
