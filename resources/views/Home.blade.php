@@ -539,7 +539,7 @@
 
 
     {{-- 3 small Banner Add --}}
-    <section class="banners mb-15">
+    {{-- <section class="banners mb-15">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6">
@@ -547,11 +547,7 @@
                         <img src="{{asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png')}}"
                             alt="menu_banner1">
 
-                        {{-- <div class="banner-text">
-                            <span>Smart Offer</span>
-                            <h4>Save 20% on <br>Woman Bag</h4>
-                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                        </div> --}}
+
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
@@ -559,11 +555,7 @@
                         <img src="{{asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png')}}"
                             alt="menu_banner1">
 
-                        {{-- <div class="banner-text">
-                            <span>Sale off</span>
-                            <h4>Great Summer <br>Collection</h4>
-                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                        </div> --}}
+
                     </div>
                 </div>
                 <div class="col-lg-4 d-md-none d-lg-flex">
@@ -571,16 +563,12 @@
                         <img src="{{asset('assets/uploads/Right Banner/Right banner_Apon Plastic.png')}}"
                             alt="menu_banner1">
 
-                        {{-- <div class="banner-text">
-                            <span>New Arrivals</span>
-                            <h4>Shop Today’s <br>Deals & Offers</h4>
-                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                        </div> --}}
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
 
 
@@ -1199,7 +1187,7 @@
 
 
     {{-- 3 small Banner Add --}}
-    <section class="banners mb-15">
+    {{-- <section class="banners mb-15">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6">
@@ -1240,7 +1228,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
 
 
