@@ -107,7 +107,8 @@
 
                                         @if($product->category)
                                         <div class="pro-details-brand">
-                                            <span style="font-weight: bolder;"> Category: <span style="color: #f15412;">{{
+                                            <span style="font-weight: bolder;"> Category: <span
+                                                    style="color: #f15412;">{{
                                                     $product->category->name }}</span></span>
                                         </div>
                                         @endif
@@ -138,8 +139,9 @@
                                             <span class="font-small ml-5 text-muted" style="font-weight: bolder;">
 
                                                 @if ($product->review)
-                                                 <span style="color: #f15412;">count($product->review) {{ count($product->review) > 9 ? "Reviews":
-                                                "Review" }}</span>
+                                                <span style="color: #f15412;">count($product->review) {{
+                                                    count($product->review) > 9 ? "Reviews":
+                                                    "Review" }}</span>
                                                 @else
                                                 <span style="color: #f15412;">0 Review</span>
                                                 @endif
@@ -149,9 +151,13 @@
                                     </div>
                                     <div class="clearfix product-price-cover">
                                         <div class="product-price primary-color float-left">
-                                            <ins><span class="text-brand">৳{{ $product->sale_price }}</span></ins>
-                                            <ins><span class="old-price font-md ml-15">৳{{ $product->regular_price
-                                                    }}</span></ins>
+                                            <ins>
+                                                <span class="text-brand">
+                                                    Price ৳{{ $product->package_price }} (Package Price)
+                                                </span>
+                                            </ins>
+                                            {{-- <ins><span class="old-price font-md ml-15">৳{{ $product->regular_price
+                                                    }}</span></ins> --}}
 
                                             @if($product->is_discounted)
                                             <span class="save-price  font-md color3 ml-15" style="font-weight: bold">
@@ -164,14 +170,13 @@
                                                 @endif
                                             </span>
                                             @endif
-                                            {{-- <span class="save-price  font-md color3 ml-15"
-                                                style="font-weight: bold">25%
-                                                Off/ $20 off</span> --}}
+
                                         </div>
                                     </div>
                                     <div class="bt-1 border-color-1 mt-15 mb-15"></div>
                                     <div class="short-desc mb-30">
-                                        <p>{{$product->short_description}}</p>
+                                        {{-- <p>{{$product->short_description}}</p> --}}
+                                        <p>{{$product->minimum_order}} piece. Per piece price {{$product->sale_price}} BDT.</p>
                                     </div>
                                     <div class="product_sort_info font-xs mb-30">
                                         <ul>
@@ -476,32 +481,31 @@
                                                 </div>
 
                                                 @php
-                                                    // 1. Get only approved reviews once to save memory
-                                                    $approvedReviews = $product->reviews->where('status', 'approved');
+                                                // 1. Get only approved reviews once to save memory
+                                                $approvedReviews = $product->reviews->where('status', 'approved');
 
-                                                    // 2. Count total approved reviews
-                                                    $totalReviewsCount = $approvedReviews->count();
+                                                // 2. Count total approved reviews
+                                                $totalReviewsCount = $approvedReviews->count();
                                                 @endphp
                                                 @for ($i = 5; $i >= 1; $i--)
-                                                    @php
-                                                        // 3. Count how many reviews have exactly $i stars
-                                                        $specificStarCount = $approvedReviews->where('rating', $i)->count();
+                                                @php
+                                                // 3. Count how many reviews have exactly $i stars
+                                                $specificStarCount = $approvedReviews->where('rating', $i)->count();
 
-                                                        // 4. Calculate percentage safely
-                                                        $percent = $totalReviewsCount > 0 ? ($specificStarCount / $totalReviewsCount) * 100 : 0;
-                                                    @endphp
+                                                // 4. Calculate percentage safely
+                                                $percent = $totalReviewsCount > 0 ? ($specificStarCount /
+                                                $totalReviewsCount) * 100 : 0;
+                                                @endphp
 
-                                                    <div class="progress mb-2" style="height: 20px;">
-                                                        <span style="width: 60px;">{{ $i }} star</span>
-                                                        <div class="progress-bar"
-                                                            role="progressbar"
-                                                            style="width: {{ $percent }}%; background-color: #ffb300;"
-                                                            aria-valuenow="{{ $percent }}"
-                                                            aria-valuemin="0"
-                                                            aria-valuemax="100">
-                                                            {{ number_format($percent, 0) }}%
-                                                        </div>
+                                                <div class="progress mb-2" style="height: 20px;">
+                                                    <span style="width: 60px;">{{ $i }} star</span>
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: {{ $percent }}%; background-color: #ffb300;"
+                                                        aria-valuenow="{{ $percent }}" aria-valuemin="0"
+                                                        aria-valuemax="100">
+                                                        {{ number_format($percent, 0) }}%
                                                     </div>
+                                                </div>
                                                 @endfor
 
                                             </div>
@@ -703,6 +707,3 @@
 </main>
 
 @endsection
-
-
-
