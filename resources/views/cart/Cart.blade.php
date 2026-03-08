@@ -33,7 +33,7 @@
                                         <th scope="col">Image</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Minimum Order Item</th>
                                         <th scope="col">Subtotal</th>
                                         <th scope="col">Remove</th>
                                     </tr>
@@ -63,7 +63,7 @@
                                             </p> --}}
                                         </td>
                                         <td class="price" data-title="Price" style="font-weight:bold"><span>৳{{
-                                                $cart['product']['sale_price'] }}
+                                                $cart['product']['package_price'] }}
                                             </span>
                                         </td>
                                         {{-- <td class="text-center" data-title="Stock">
@@ -79,18 +79,20 @@
 
                                         </td> --}}
                                         <td class="action" data-title="update">
-                                            <input type="hidden" value={{ $cart['product']['id'] }}
-                                                class="update_item_id" />
-                                            <input type="number" class="detail-qty qty-val update_item_number"
-                                                value="{{ $cart['quantity'] }}" />
-
-                                            <a href="#" class="text-muted update_single_item_btn"
+                                            {{-- <input type="hidden" value={{ $cart['product']['id'] }}
+                                                class="update_item_id" /> --}}
+                                            {{-- <input type="number" class="detail-qty qty-val update_item_number"
+                                                value="{{ $cart['quantity'] }}" /> --}}
+                                            <span style="font-weight:bold">{{ $cart['minimum_order'] }}
+                                            </span>
+                                            {{-- <a href="#" class="text-muted update_single_item_btn"
                                                 data-id="{{ $cart['product']['id'] }}">
                                                 <i class="fi-rs-shopping-cart-check" style="color: green;"></i>
-                                            </a>
+                                            </a> --}}
                                         </td>
                                         <td class="text-right" data-title="Cart" style="font-weight:bold">
-                                            <span>৳{{ number_format($cart['product']['sale_price'] * $cart['quantity'],
+                                            <span>৳{{ number_format($cart['product']['package_price'] *
+                                                $cart['quantity'],
                                                 2)}} </span>
                                         </td>
                                         <td class="action" data-title="Remove">
@@ -154,7 +156,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="mb-30 mt-50">
+                            {{-- <div class="mb-30 mt-50">
                                 <div class="heading_s1 mb-3">
                                     <h4>Apply Coupon</h4>
                                 </div>
@@ -176,7 +178,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             @if (isset($cart_info) && count($cart_info)> 0)
                             <a href="{{ route('Product_Checkout') }}" class="btn "> <i class="fi-rs-box-alt mr-10"></i>
                                 Proceed To
@@ -212,7 +214,8 @@
                     <div class="product-cart-wrap small hover-up">
                         <div class="product-img-action-wrap">
                             <div class="product-img product-img-zoom">
-                                <a href="product-details.html">
+                                <a href="{{ route('Product_Details', ['product_name' => $prod['name'],'category_name' => $prod['category']['name'],'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                        'category_id' => $prod['category']['id'],'product_id'=>$prod['id'] ]) }}">
                                     @foreach ($prod['media'] as $media)
                                     @if ($media['position'] == 0)
                                     <img class="default-img"
@@ -233,7 +236,8 @@
                             </div>
                         </div>
                         <div class="product-content-wrap">
-                            <h2><a href="product-details.html">{{ $prod['name'] }}</a></h2>
+                            <h2><a href="{{ route('Product_Details', ['product_name' => $prod['name'],'category_name' => $prod['category']['name'],'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                        'category_id' => $prod['category']['id'],'product_id'=>$prod['id'] ]) }}">{{ $prod['name'] }}</a></h2>
                             <div class="rating-result" title="90%">
                                 <span>
                                 </span>

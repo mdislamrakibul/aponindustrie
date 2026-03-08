@@ -213,7 +213,6 @@
                                         @foreach ( session('cart') as $cart)
                                         <li>
                                             <div class="shopping-cart-img">
-                                                <a href="product-details.html">
 
                                                     @foreach ($cart['product']['media'] as $media)
                                                     @if ($media['position'] == 0)
@@ -224,14 +223,16 @@
 
                                             </div>
                                             <div class="shopping-cart-title">
-                                                <h4><a href="product-details.html">{{ $cart['product']['name'] }}</a>
+                                                <h4>
+                                                    <a
+                                                        href="{{ route('Product_Details', ['product_name' => $cart['product']['name'],'category_name' => $cart['product']['category']['name'],'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                                            'category_id' => $cart['product']['category']['id'],'product_id'=>$cart['product']['id'] ]) }}">{{
+                                                        $cart['product']['name'] }}
+                                                    </a>
                                                 </h4>
-                                                <h4><span>{{ $cart['quantity'] }} × </span>৳{{
-                                                    number_format($cart['price'],2) }}</h4>
+                                                <h4>৳{{ number_format($cart['price'],2) }}</h4>
                                             </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
+
                                         </li>
                                         @endforeach
 
@@ -270,67 +271,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="header-action-2 wrap-icon right-section">
-                            <div class="header-action-icon-2 wrap-icon-section wishlist">
-                                <a href="shop-wishlist.php" class="link-direction">
 
-                                    <i class="fa fa-heart" aria-hidden="true"></i>
-                                    <div class="left-info">
-                                        <span class="index">0 item</span>
-                                        <span class="title">Wishlist</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="header-action-icon-2 wrap-icon-section minicart">
-                                <a class="mini-cart-icon link-direction" href="cart.html">
-
-                                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                                    <div class="left-info">
-                                        <span class="index">4 items</span>
-                                        <span class="title">CART</span>
-                                    </div>
-                                </a>
-                                <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                    <ul>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="product-details.html"><img alt="Surfside Media"
-                                                        src="assets/imgs/shop/thumbnail-3.jpg"></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="product-details.html">Daisy Casual Bag</a></h4>
-                                                <h4><span>1 × </span>৳800.00</h4>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="product-details.html"><img alt="Surfside Media"
-                                                        src="assets/imgs/shop/thumbnail-2.jpg"></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="product-details.html">Corduroy Shirts</a></h4>
-                                                <h4><span>1 × </span>৳3200.00</h4>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="shopping-cart-footer">
-                                        <div class="shopping-cart-total">
-                                            <h4>Total <span>৳4000.00</span></h4>
-                                        </div>
-                                        <div class="shopping-cart-button">
-                                            <a href="cart.html" class="outline">View cart</a>
-                                            <a href="checkout.html">Checkout</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -406,117 +347,18 @@
 
                                                 </ul>
                                             </li>
-                                            {{-- <li class="mega-menu-col col-lg-5">
-                                                <div class="header-banner2">
-                                                    <img
-                                                    src="{{ asset('assets/uploads/Right Banner/Right banner_Apon Plastic-1-min.png')}}"
-                                                        alt="menu_banner1">
-                                                    <div class="banne_info">
-                                                        <h6>10% Off</h6>
-                                                        <h4>New Arrival</h4>
-                                                        <a href="#">Shop now</a>
-                                                    </div>
-                                                </div>
-                                                <div class="header-banner2">
-                                                    <img src="{{ asset('assets/uploads/Right Banner/Right banner_Apon Plastic-min.png')}}"
-                                                        alt="menu_banner2">
-                                                    <div class="banne_info">
-                                                        <h6>15% Off</h6>
-                                                        <h4>Hot Deals</h4>
-                                                        <a href="#">Shop now</a>
-                                                    </div>
-                                                </div>
-                                            </li> --}}
+
                                         </ul>
                                     </div>
                                     @else
-                                    {{-- <p>No sub-categories found.</p> --}}
+
                                     @endif
 
                                 </li>
 
                                 @endforeach
                             </ul>
-                            {{-- <ul>
 
-                                <li class="has-children">
-                                    <a href="shop.html"><i class="surfsidemedia-font-tshirt"></i>Thinwall Container</a>
-                                    <div class="dropdown-menu">
-                                        <ul class="mega-menu d-lg-flex">
-                                            <li class="mega-menu-col col-lg-7">
-                                                <ul class="d-lg-flex">
-                                                    <li class="mega-menu-col col-lg-6">
-                                                        <ul>
-                                                            <li><span class="submenu-title">Types</span>
-                                                            </li>
-                                                            <li><a class="dropdown-item nav-link nav_item"
-                                                                    href="#">Natural/Transparent</a></li>
-                                                            <li><a class="dropdown-item nav-link nav_item"
-                                                                    href="#">White</a></li>
-
-                                                        </ul>
-                                                    </li>
-
-                                                </ul>
-                                            </li>
-                                            <li class="mega-menu-col col-lg-5">
-                                                <div class="header-banner2">
-                                                    <img src="{{ asset('assets/uploads/Left Side Adv Banner/Apon Plastic Left Side Adv Banner_Apon Plastic.png') }}"
-                                                        alt="menu_banner1">
-                                                    <div class="banne_info">
-                                                        <h6>10% Off</h6>
-                                                        <h4>New Arrival</h4>
-                                                        <a href="#">Shop now</a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-
-                                <li class="has-children">
-                                    <a href="shop.html"><i class="surfsidemedia-font-tshirt"></i>Sauce Cup</a>
-                                    <div class="dropdown-menu">
-                                        <ul class="mega-menu d-lg-flex">
-                                            <li class="mega-menu-col col-lg-7">
-                                                <ul class="d-lg-flex">
-                                                    <li class="mega-menu-col col-lg-6">
-                                                        <ul>
-                                                            <li><span class="submenu-title">Types</span>
-                                                            </li>
-                                                            <li><a class="dropdown-item nav-link nav_item"
-                                                                    href="#">Natural/Transparent</a></li>
-
-
-                                                        </ul>
-                                                    </li>
-
-                                                </ul>
-                                            </li>
-                                            <li class="mega-menu-col col-lg-5">
-                                                <div class="header-banner2">
-                                                    <img src="{{ asset('assets/uploads/Left Side Adv Banner/Apon Plastic Left Side Adv Banner_Apon Plastic.png') }}"
-                                                        alt="menu_banner1">
-                                                    <div class="banne_info">
-                                                        <h6>10% Off</h6>
-                                                        <h4>New Arrival</h4>
-                                                        <a href="#">Shop now</a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-cpu"></i>Bucket</a></li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-diamond"></i>Spoon</a></li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-home"></i>Crusher</a>
-                                </li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-high-heels"></i>Hanger</a></li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-teddy-bear"></i>Roll Box</a></li>
-                                <li><a href="shop.html"><i class="surfsidemedia-font-kite"></i>Box</a></li>
-
-                            </ul> --}}
-                            {{-- <div class="more_categories">Show more...</div> --}}
                         </div>
                     </div>
                     <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
@@ -525,159 +367,75 @@
                                 <li><a class="active" href="{{ route('home.index') }}"> <span class="fa fa-home"></span>
                                         Home </a>
                                 </li>
-                                {{-- <li><a href="{{ route('about_us.index') }}">About</a></li> --}}
-                                {{-- <li><a href="shop.html">Shop</a></li> --}}
-                                {{-- <li class="position-static"><a href="#">Our Collections <i
-                                            class="fi-rs-angle-down"></i></a>
-                                    <ul class="mega-menu">
-                                        <li class="sub-mega-menu sub-mega-menu-width-22">
-                                            <a class="menu-title" href="#">Women's Fashion</a>
-                                            <ul>
-                                                <li><a href="product-details.html">Dresses</a></li>
-                                                <li><a href="product-details.html">Blouses & Shirts</a></li>
-                                                <li><a href="product-details.html">Hoodies & Sweatshirts</a></li>
-                                                <li><a href="product-details.html">Wedding Dresses</a></li>
-                                                <li><a href="product-details.html">Prom Dresses</a></li>
-                                                <li><a href="product-details.html">Cosplay Costumes</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="sub-mega-menu sub-mega-menu-width-22">
-                                            <a class="menu-title" href="#">Men's Fashion</a>
-                                            <ul>
-                                                <li><a href="product-details.html">Jackets</a></li>
-                                                <li><a href="product-details.html">Casual Faux Leather</a></li>
-                                                <li><a href="product-details.html">Genuine Leather</a></li>
-                                                <li><a href="product-details.html">Casual Pants</a></li>
-                                                <li><a href="product-details.html">Sweatpants</a></li>
-                                                <li><a href="product-details.html">Harem Pants</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="sub-mega-menu sub-mega-menu-width-22">
-                                            <a class="menu-title" href="#">Technology</a>
-                                            <ul>
-                                                <li><a href="product-details.html">Gaming Laptops</a></li>
-                                                <li><a href="product-details.html">Ultraslim Laptops</a></li>
-                                                <li><a href="product-details.html">Tablets</a></li>
-                                                <li><a href="product-details.html">Laptop Accessories</a></li>
-                                                <li><a href="product-details.html">Tablet Accessories</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="sub-mega-menu sub-mega-menu-width-34">
-                                            <div class="menu-banner-wrap">
-                                                <a href="product-details.html"><img
-                                                        src="assets/imgs/banner/menu-banner.jpg"
-                                                        alt="Surfside Media"></a>
-                                                <div class="menu-banner-content">
-                                                    <h4>Hot deals</h4>
-                                                    <h3>Don't miss<br> Trending</h3>
-                                                    <div class="menu-banner-price">
-                                                        <span class="new-price text-success">Save to 50%</span>
-                                                    </div>
-                                                    <div class="menu-banner-btn">
-                                                        <a href="product-details.html">Shop now</a>
-                                                    </div>
-                                                </div>
-                                                <div class="menu-banner-discount">
-                                                    <h3>
-                                                        <span>35%</span>
-                                                        off
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li> --}}
-                                {{-- <li><a href="blog.html">Blog </a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                                <li><a href="#">My Account<i class="fi-rs-angle-down"></i></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="#">Dashboard</a></li>
-                                        <li><a href="#">Products</a></li>
-                                        <li><a href="#">Categories</a></li>
-                                        <li><a href="#">Coupons</a></li>
-                                        <li><a href="#">Orders</a></li>
-                                        <li><a href="#">Customers</a></li>
-                                        <li><a href="#">Logout</a></li>
-                                    </ul>
-                                </li> --}}
+
                             </ul>
                         </nav>
                     </div>
                 </div>
                 <div class="hotline d-none d-lg-block">
-                    {{-- <p><i class="fi-rs-smartphone"></i><span>Toll Free</span> (+1) 0000-000-000 </p> --}}
                 </div>
-                {{-- <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%
-                </p> --}}
+
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
-                            {{-- <a href="shop-wishlist.php">
-                                <img alt="Surfside Media" src="assets/imgs/theme/icons/icon-heart.svg">
-                                <span class="pro-count white">4</span>
-                            </a> --}}
+
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="{{ route('Product_Cart') }}">
                                 <img alt="Surfside Media" src="assets/imgs/theme/icons/icon-cart.svg">
                                 <span class="pro-count white">
-                                     @if(session('cart') && count(session('cart')) > 0)
-                                            {{ count(session('cart')) }}
-                                            @else
-                                            0
-                                            @endif
+                                    @if(session('cart') && count(session('cart')) > 0)
+                                    {{ count(session('cart')) }}
+                                    @else
+                                    0
+                                    @endif
                                 </span>
                             </a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                 @if (session('cart') && count(session('cart')) > 0)
-                                    <ul>
-                                        @foreach ( session('cart') as $cart)
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="product-details.html">
-
-                                                    @foreach ($cart['product']['media'] as $media)
-                                                    @if ($media['position'] == 0)
-                                                    <img src="{{ asset( $media['file_path']. $media['image_name'])}}"
-                                                        alt={{ $media['image_name'] }}>
-                                                    @endif
-                                                    @endforeach
-
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="product-details.html">{{ $cart['product']['name'] }}</a>
-                                                </h4>
-                                                <h4><span>{{ $cart['quantity'] }} × </span>৳{{
-                                                    number_format($cart['price'],2) }}</h4>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                        @endforeach
+                                <ul>
+                                    @foreach ( session('cart') as $cart)
+                                    <li>
+                                        <div class="shopping-cart-img">
 
 
-                                    </ul>
-                                    <div class="shopping-cart-footer">
-                                        <div class="shopping-cart-total">
-                                            <h4>Total <span>৳
-                                                    @php
-                                                    $subtotal = collect(session('cart'))->sum(function ($item) {
-                                                    return $item['price'] * $item['quantity'];
-                                                    });
+                                            @foreach ($cart['product']['media'] as $media)
+                                            @if ($media['position'] == 0)
+                                            <img src="{{ asset( $media['file_path']. $media['image_name'])}}" alt={{
+                                                $media['image_name'] }}>
+                                            @endif
+                                            @endforeach
 
-                                                    @endphp
-                                                    {{ number_format($subtotal,2) }}
-                                                </span></h4>
                                         </div>
-                                        <div class="shopping-cart-button">
-                                            <a href="{{ route('Product_Cart') }}" class="outline">View cart</a>
-                                            <a href="{{ route('Product_Checkout') }}">Checkout</a>
+                                        <div class="shopping-cart-title">
+                                            <h4>{{ $cart['product']['name'] }}</h4>
+                                            <h4>৳{{ number_format($cart['price'],2) }}</h4>
                                         </div>
+                                    </li>
+                                    @endforeach
+
+
+                                </ul>
+                                <div class="shopping-cart-footer">
+                                    <div class="shopping-cart-total">
+                                        <h4>Total <span>৳
+                                                @php
+                                                $subtotal = collect(session('cart'))->sum(function ($item) {
+                                                return $item['price'] * $item['quantity'];
+                                                });
+
+                                                @endphp
+                                                {{ number_format($subtotal,2) }}
+                                            </span></h4>
                                     </div>
-                                    @else
-                                    No Items
-                                    @endif
+                                    <div class="shopping-cart-button">
+                                        <a href="{{ route('Product_Cart') }}" class="outline">View cart</a>
+                                        <a href="{{ route('Product_Checkout') }}">Checkout</a>
+                                    </div>
+                                </div>
+                                @else
+                                No Items
+                                @endif
                             </div>
                         </div>
                         <div class="header-action-icon-2 d-block d-lg-none">

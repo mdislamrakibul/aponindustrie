@@ -136,13 +136,13 @@ class CheckoutController extends Controller
                 OrderItems::create([
                     'order_id'   => $order->id,
                     'product_id' => $id,
-                    'quantity'   => $details['quantity'],
-                    'price'      => $details['product']['sale_price'],
+                    'quantity'   => $details['minimum_order'] * $details['quantity'],
+                    'price'      => $details['price'],
                     'total'      => $this->calculateTotal($cart),
                 ]);
 
                 // Reduce Product Stock in DB
-                Product::where('id', $id)->decrement('stock_quantity', $details['quantity']);
+                Product::where('id', $id)->decrement('stock_quantity', $details['minimum_order'] * $details['quantity']);
             }
 
             DB::commit();

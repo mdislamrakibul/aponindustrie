@@ -207,12 +207,11 @@
 
                                             </td>
                                             <td>
-                                                <h5><a href="product-details.html">{{ $cart['product']['name'] }}</a>
+                                                <h5>{{ $cart['product']['name'] }}
                                                 </h5>
-                                                <span class="product-qty">x {{ $cart['quantity'] }}</span>
+                                                {{-- <span class="product-qty">x {{ $cart['quantity'] }}</span> --}}
                                             </td>
-                                            <td>৳{{ number_format($cart['product']['sale_price'] * $cart['quantity'],
-                                                2)}}</td>
+                                            <td>৳{{ number_format($cart['price'], 2)}}</td>
                                         </tr>
 
                                         @endforeach

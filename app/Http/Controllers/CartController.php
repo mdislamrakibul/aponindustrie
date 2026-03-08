@@ -86,7 +86,8 @@ class CartController extends Controller
                 'product' => $product,
                 "name" => $product->name,
                 "quantity" => 1,
-                "price" => $product->sale_price,
+                "minimum_order" => $product->minimum_order,
+                "price" => $product->package_price,
             ];
         }
 
