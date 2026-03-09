@@ -19,7 +19,8 @@ class ProductController extends Controller
     public function Product_by_category(Request $request)
     {
 
-        $products = Product::query()
+        // dd($request->all());
+        $products_by_category = Product::query()
             ->with(['media', 'category'])
             // Pass sub_category_id or category_id from the URL
             ->GetProductByLevelOrCategory($request->sub_category_id, $request->category_id)
@@ -71,11 +72,11 @@ class ProductController extends Controller
         //     'sub_category_name' => $request->sub_category_name,
         // ]);
         return view('product.Product_By_Category', [
-            'products' => $products,
+            'products' => $products_by_category,
             'category_name' => $request->category_name,
             'newProduct' => collect($newProducts)->shuffle()->take(7),
             'sub_category_name' => $request->sub_category_name,
-            'total_item' => count($products),
+            'total_item' => count($products_by_category),
         ]);
     }
 

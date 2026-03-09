@@ -1,7 +1,7 @@
 <footer id="footer">
     <div class="wrap-footer-content footer-style-1">
 
-        <div class="wrap-function-info">
+        <div class="wrap-function-info" style="background: #f15412 !important">
             <div class="container">
                 <ul>
                     <li class="fc-info-item">

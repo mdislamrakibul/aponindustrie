@@ -125,10 +125,12 @@ class Product extends Model
             // 1. Get all child IDs belonging to this parent
             $childIds = \App\Models\Category::where('parent_id', $categoryId)->pluck('id');
 
-            // dd($childIds);
+            // dd($childIds->push($categoryId)
+            //     ->unique());
 
             // 2. Fetch products where their sub_category_id is in that list
-            return $query->whereIn('category_id', $childIds);
+            return $query->whereIn('category_id', $childIds->push($categoryId)
+                ->unique());
         }
 
         return $query;
