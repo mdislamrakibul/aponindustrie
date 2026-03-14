@@ -265,10 +265,10 @@
 
     /* Ensure images always fit the width */
     .side-banner img {
-        width: 100%;
+        /* width: 100%; */
         height: auto;
-        display: block;
-        object-fit: cover;
+        /* display: block;
+        object-fit: cover; */
     }
 
     /* Text info positioning */
@@ -983,11 +983,10 @@
         }
 
         .full-height-banner img {
-            width: 100%;
+            /* width: 100%; */
             height: 100%;
-            object-fit: cover;
-            /* This is the key: it crops the image to fill space without stretching */
-            display: block;
+            /* object-fit: cover;
+            display: block; */
         }
 
         .full-height-banner .banne_info {
@@ -1012,14 +1011,14 @@
             <div class="row">
                 <div class="col-md-3">
                     <h3 class="section-title style-1 mb-20"><span>See</span> Promotion</h3>
-                    <div class="side-banner full-height-banner">
+                    <div class="side-banner full-height-banner ">
                         <img src="{{ asset('assets/uploads/Left Side Adv Banner/Apon Plastic Left Side Adv Banner_Apon Plastic.png') }}"
                             alt="promotion_banner">
-                        <div class="banne_info">
+                        {{-- <div class="banne_info">
                             <h6>Limited Offer</h6>
                             <h4>Special <br>Collection</h4>
                             <a href="#">Shop now</a>
-                        </div>
+                        </div> --}}
                     </div>
 
                 </div>

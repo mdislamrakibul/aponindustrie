@@ -176,7 +176,7 @@
                                     <div class="bt-1 border-color-1 mt-15 mb-15"></div>
                                     <div class="short-desc mb-30">
                                         {{-- <p>{{$product->short_description}}</p> --}}
-                                        <p>{{$product->minimum_order}} piece. Per piece price {{$product->sale_price}} BDT.</p>
+                                        <p style="font-weight: bold; color: #f15412 ">{{$product->minimum_order}} piece. Per piece price {{$product->sale_price}} BDT.</p>
                                     </div>
                                     <div class="product_sort_info font-xs mb-30">
                                         <ul>
@@ -190,13 +190,29 @@
 
                                     <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                     <div class="detail-extralink">
-                                        <div class="detail-qty border radius">
+                                        {{-- <div class="detail-qty border radius">
                                             <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
                                             <span class="qty-val">1</span>
                                             <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
-                                        </div>
-                                        <div class="product-extra-link2">
-                                            <a aria-label="Add To Cart" class="button button-add-to-cart" href="{{ route('Product_Cart_Add',
+                                        </div> --}}
+                                        <div class="product-extra-link21">
+                                            <a aria-label="Add To Cart" class="button button-add-to-cart"
+
+                                                style="display: inline-block;
+                                                    border: 1px solid transparent;
+                                                    font-size: 14px;
+                                                    height:40px;
+                                                    font-weight: 700;
+                                                    border-radius: 4px;
+                                                    color: #fff;
+                                                    border: 1px solid #f15412;
+                                                    background-color: #f15412;
+                                                    cursor: pointer;
+                                                    -webkit-transition: all 300ms linear 0s;
+                                                    transition: all 300ms linear 0s;
+                                                    letter-spacing: 0.5px;"
+
+                                            href="{{ route('Product_Cart_Add',
                                             ['product_name' =>$product->name,'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eR67Hyabjda0wIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                         'product_id'=>$product->id ]) }}">
                                                 Add to cart</a>
