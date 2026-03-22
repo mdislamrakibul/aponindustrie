@@ -2,7 +2,7 @@
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-top">
                 <div class="mobile-header-logo">
-                    <a href="index.html"><img src="assets/imgs/logo/logo.png" alt="logo"></a>
+                    <a href="{{ route('home.index') }}"><img src="assets/imgs/logo/logo.png" alt="logo"></a>
                 </div>
                 <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                     <button class="close-style search-close">
@@ -23,7 +23,7 @@
                         <a class="categori-button-active-2" href="#">
                             <span class="fi-rs-apps"></span> Browse Categories
                         </a>
-                        <div class="categori-dropdown-wrap categori-dropdown-active-small">
+                        <div class="categori-dropdown-wrap categori-dropdown-active-small" style="display: block !important">
                             <ul>
                                 @foreach( $menuItems as $item)
                                 <li class="has-children">
