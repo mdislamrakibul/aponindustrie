@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Login;
 use App\Models\Order;
 use App\Models\OrderAddress;
 use App\Models\OrderItems;
@@ -100,11 +101,21 @@ class CheckoutController extends Controller
 
             // 2. Create the user
             $user = new User();
-            $user->name = $request->fname . ' ' . $request->lname;
-            $user->email = $request->email;
-            $user->phone = $request->phone;
-            $user->password = uniqid();
+            $user->first_name = $request->fname;
+            $user->last_name = $request->lname;
+            $user->mobile_no = $request->phone;
+            // $user->password = uniqid();
             $user->save();
+
+            // Create Login Info
+            $login = new Login();
+            $login->user_id = $user->id;
+            $login->name = $request->fname + ' ' + $request->lname;
+            $login->email = $request->email;
+            $login->phone = $request->phone;
+            $login->address = $request->billing_address;
+            $login->password = 'USER - ' + uniqid();
+            $login->save();
 
             // 2. Create the Order
             $order = new Order();

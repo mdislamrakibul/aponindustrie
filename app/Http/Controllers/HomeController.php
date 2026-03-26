@@ -35,7 +35,7 @@ class HomeController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
             // ->limit(8)
             ->get()
