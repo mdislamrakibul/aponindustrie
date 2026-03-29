@@ -9,7 +9,7 @@
     <div class="page-header breadcrumb-wrap">
         <div class="container">
             <div class="breadcrumb">
-                <a href="index.html" rel="nofollow">Home</a>
+                <a href="{{ route('home.index') }}" rel="nofollow">Home</a>
                 @if ($category_name) <span></span> {{$category_name}}@endif
                 @if ($sub_category_name) <span></span> {{$sub_category_name}}@endif
 

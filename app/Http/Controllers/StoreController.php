@@ -35,7 +35,8 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()->inRandomOrder()
+            // ->inStock()
+            ->inRandomOrder()
             ->latest()
             ->paginate(24);
 
@@ -56,7 +57,7 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
             // ->limit(8)
             ->get()
@@ -112,7 +113,8 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()->inRandomOrder()
+            // ->inStock()
+            ->inRandomOrder()
             ->latest()
 
             ->paginate(24);
@@ -133,7 +135,7 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
             ->get()
             ->toArray();
@@ -179,7 +181,8 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()->inRandomOrder()
+            // ->inStock()
+            ->inRandomOrder()
             ->latest()
             ->paginate(24);;
 
@@ -199,7 +202,7 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
             ->get()
             ->toArray();
@@ -246,7 +249,7 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
 
             ->latest()
@@ -268,7 +271,7 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
             ->get()
             ->toArray();
@@ -315,7 +318,8 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()->inRandomOrder()
+            // ->inStock()
+            ->inRandomOrder()
 
             ->latest()
             ->paginate(24);
@@ -338,7 +342,7 @@ class StoreController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
             ->get()
             ->toArray();

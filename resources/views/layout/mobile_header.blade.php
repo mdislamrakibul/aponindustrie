@@ -88,7 +88,7 @@
                     <nav>
                         <ul class="mobile-menu">
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                    href="index.html">Home</a></li>
+                                    href="{{ route('home.index') }}">Home</a></li>
                             {{-- <li class="menu-item-has-children"><span class="menu-expand"></span><a
                                     href="shop.html">shop</a></li>
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Our

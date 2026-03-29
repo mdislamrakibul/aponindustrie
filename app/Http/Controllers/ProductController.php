@@ -25,16 +25,16 @@ class ProductController extends Controller
             // Pass sub_category_id or category_id from the URL
             ->GetProductByLevelOrCategory($request->sub_category_id, $request->category_id)
 
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
 
-            // ->get()
-            // ->toArray();
+            ->get()
+            ->toArray();
 
-            ->latest()
-            ->paginate(48);
+        // ->latest()
+        // ->paginate(48);
 
-
+        dd($products_by_category);
         $products = Product::published([
             'id',
             'name',
@@ -50,7 +50,7 @@ class ProductController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
             // ->limit(8)
             ->get()
@@ -99,7 +99,8 @@ class ProductController extends Controller
                 $q->where('status', 'approved');
             }], 'rating')
             // Pass sub_category_id or category_id from the URL
-            ->GetProductByProductId($request->product_id)->inStock()
+            ->GetProductByProductId($request->product_id)
+            // ->inStock()
             ->first();
 
         // dd($product->reviews[0]['user']);
@@ -120,7 +121,7 @@ class ProductController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
             // ->limit(8)
             ->get()
@@ -145,7 +146,7 @@ class ProductController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->inStock()
+            // ->inStock()
             ->inRandomOrder()
 
             ->get()
@@ -154,6 +155,8 @@ class ProductController extends Controller
         // dd($newProducts);
 
         $category = Category::with('parent')->find($request->category_id);
+
+        // dd($product);
 
         $ratingCounts = $product->reviews()
             ->where('status', 'approved')
