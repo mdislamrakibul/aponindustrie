@@ -111,6 +111,18 @@ class Product extends Model
      */
     public function scopeGetProductByLevelOrCategory($query, $subCategoryId = null, $categoryId = null)
     {
+        if ($categoryId) {
+            // Scenario B: Parent category provided
+            // 1. Get all child IDs belonging to this parent
+            $childIds = \App\Models\Category::where('parent_id', $categoryId)->pluck('id');
+
+            // dd($childIds->push($categoryId)->unique());
+
+            // 2. Fetch products where their sub_category_id is in that list
+            return $query->whereIn('category_id', $childIds->push($categoryId)->unique());
+        }
+
+
         if ($subCategoryId) {
             /**
              *
@@ -118,19 +130,6 @@ class Product extends Model
              *
              */
             return $query->where('category_id', $subCategoryId);
-        }
-
-        if ($categoryId) {
-            // Scenario B: Parent category provided
-            // 1. Get all child IDs belonging to this parent
-            $childIds = \App\Models\Category::where('parent_id', $categoryId)->pluck('id');
-
-            // dd($childIds->push($categoryId)
-            //     ->unique());
-
-            // 2. Fetch products where their sub_category_id is in that list
-            return $query->whereIn('category_id', $childIds->push($categoryId)
-                ->unique());
         }
 
         return $query;

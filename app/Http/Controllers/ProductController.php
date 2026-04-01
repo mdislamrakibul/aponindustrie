@@ -31,10 +31,11 @@ class ProductController extends Controller
             ->get()
             ->toArray();
 
+        // dd($products_by_category);
         // ->latest()
         // ->paginate(48);
 
-        dd($products_by_category);
+        // dd($products_by_category);
         $products = Product::published([
             'id',
             'name',

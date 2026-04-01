@@ -169,7 +169,7 @@
                                         @endif
 
                                         {{-- Discount Badge Logic --}}
-                                        @if($prod['is_discounted'])
+                                        @if($prod['is_discounted'] !== 0)
                                         <span class="badge sale">
                                             @if($prod['discount_type'] == 'PERCENTAGE')
                                             {{-- Show percentage (e.g., 20% Off) --}}
