@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
@@ -41,6 +42,8 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 
 //OTP//
 
+//admin//
+
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin']);
 
 Route::post('/admin/login', [AuthController::class, 'adminLogin']);
@@ -56,7 +59,13 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
+    Route::get('/admin/users', [UserController::class, 'index'])
+    ->name('admin.users');
+
+
 });
+
+//admin//
 
 
 Route::get('/', [HomeController::class, 'Index'])->name('home.index');
