@@ -1,13 +1,19 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\Admin\UserController;
+=======
+>>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\OrderController;
+<<<<<<< HEAD
 use App\Http\Controllers\AuthController;
+=======
+>>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+<<<<<<< HEAD
 Route::get('/login', function () {
     return view('auth.login');
 });
@@ -33,11 +40,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 //register//
+=======
+>>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
+<<<<<<< HEAD
 //OTP//
 
 //OTP//
@@ -67,6 +77,8 @@ Route::middleware(['auth'])->group(function () {
 
 //admin//
 
+=======
+>>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
 
 Route::get('/', [HomeController::class, 'Index'])->name('home.index');
 Route::get('/about-us', [HomeController::class, 'About_Us'])->name('about_us.index');

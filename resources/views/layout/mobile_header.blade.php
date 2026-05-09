@@ -142,10 +142,17 @@
                         <a href="contact.html"> Our location </a>
                     </div> --}}
                     <div class="single-mobile-header-info">
+<<<<<<< HEAD
                         <a href="{{ url('/login') }}">Log In </a>
                     </div>
                     <div class="single-mobile-header-info">
                         <a href="{{ route('register') }}">Sign Up</a>
+=======
+                        <a href="login.html">Log In </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="register.html">Sign Up</a>
+>>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
                     </div>
                     <div class="single-mobile-header-info">
                         {{-- <a href="#">(+1) 0000-000-000 </a> --}}

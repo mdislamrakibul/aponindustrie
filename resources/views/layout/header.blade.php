@@ -111,8 +111,13 @@
                 <div class="col-xl-2 col-lg-4">
                     <div class="header-info header-info-right">
                         <ul>
+<<<<<<< HEAD
                             <li><i class="fa fa-unlock"></i><a href="{{ url('/login') }}" style="    padding: 0px !important;">Log In </a>
                                 / <i class="fa fa-lock" style="padding-left: 5px !important;"></i><a href="{{ route('register') }}"
+=======
+                            <li><i class="fa fa-unlock"></i><a href="#" style="    padding: 0px !important;">Log In </a>
+                                / <i class="fa fa-lock" style="padding-left: 5px !important;"></i><a href="#"
+>>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
                                     style="    padding: 0px !important;">Sign
                                     Up</a></li>
                         </ul>
