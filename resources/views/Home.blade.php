@@ -1,12 +1,10 @@
-<<<<<<< HEAD
+
 @if(session('success'))
     <div class="alert alert-success text-center">
         {{ session('success') }}
     </div>
 @endif
-=======
 
->>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
 @extends('layout.master')
 
 @section('title', 'E-Commerce')

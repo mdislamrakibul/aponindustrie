@@ -1,20 +1,18 @@
 <?php
 
-<<<<<<< HEAD
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
-=======
->>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
+use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\OrderController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\AuthController;
-=======
->>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
-use Illuminate\Support\Facades\Route;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-<<<<<<< HEAD
+
 Route::get('/login', function () {
     return view('auth.login');
 });
@@ -40,23 +38,15 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 //register//
-=======
->>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-<<<<<<< HEAD
-//OTP//
 
 //OTP//
 
+//OTP//
 //admin//
 
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin']);
-
 Route::post('/admin/login', [AuthController::class, 'adminLogin']);
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/dashboard', function () {
@@ -67,18 +57,43 @@ Route::middleware(['auth'])->group(function () {
 
         return view('admin.dashboard');
 
-    });
+    })->name('admin.dashboard');
 
     Route::get('/admin/users', [UserController::class, 'index'])
-    ->name('admin.users');
+        ->name('admin.users');
 
+        // USER MANAGEMENT
+        
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users');
+    Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
+    Route::post('/users/store', [UserController::class, 'store'])->name('admin.users.store');
+
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::post('/users/{id}/update', [UserController::class, 'update'])->name('admin.users.update');
+
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.delete');   
+
+});
+//accounts
+
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+
+    Route::get('/accounts', [AccountController::class, 'index'])->name('admin.accounts.index');
+
+    Route::get('/accounts/create/{id}', [AccountController::class, 'create'])->name('admin.accounts.create');
+
+    Route::post('/accounts/store', [AccountController::class, 'store'])->name('admin.accounts.store');
+
+    Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])->name('admin.accounts.edit');
+
+    Route::post('/accounts/{id}/update', [AccountController::class, 'update'])->name('admin.accounts.update');
+
+    Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])->name('admin.accounts.delete');
 
 });
 
 //admin//
 
-=======
->>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
 
 Route::get('/', [HomeController::class, 'Index'])->name('home.index');
 Route::get('/about-us', [HomeController::class, 'About_Us'])->name('about_us.index');

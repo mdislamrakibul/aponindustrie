@@ -19,10 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-<<<<<<< HEAD
-            
-=======
->>>>>>> c98059156ce1f0cf72ed6ec53814ec139088c1de
+
         });
     }
 

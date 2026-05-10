@@ -9,15 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
-class UserController extends Controller
-{
-    public function index()
-    {
-        $users = DB::table('tbl_info_user')->get();
-
-        return view('admin.users', compact('users'));
-    }
-}
 
 class AuthController extends Controller
 {
@@ -39,8 +30,10 @@ class AuthController extends Controller
         // Login attempt
         if (Auth::attempt([
             'mobile_no' => $request->mobile_no,
-            'password' => $request->password
+            'password' => $request->password,
+            'role' => 'user'
         ])) {
+            $request->session()->regenerate();
             return redirect('/')->with('success', 'Login Successful');
         }
 
@@ -94,17 +87,19 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if(Auth::attempt([
+        if (Auth::attempt([
             'mobile_no' => $request->mobile_no,
             'password' => $request->password,
             'role' => 'admin'
-        ]))
-        {
-        return redirect('/admin/dashboard');
+        ])) {
+
+            $request->session()->regenerate();
+
+            return redirect('/admin/dashboard');
         }
 
         return back()->withErrors([
-        'mobile_no' => 'Invalid admin credentials'
+            'mobile_no' => 'Invalid admin credentials'
         ]);
     }
 }

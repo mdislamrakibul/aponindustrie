@@ -1,48 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Admin Panel</title>
+  <title>@yield('title', 'Admin Panel')</title>
 
-    <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
-
+  @stack('css')
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
 
 <div class="wrapper">
 
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    {{-- Navbar --}}
+    @include('admin.layouts.navbar')
 
-        <span class="navbar-brand">Admin Panel</span>
+    {{-- Sidebar --}}
+    @include('admin.layouts.sidebar')
 
-    </nav>
-
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-
-        <a href="#" class="brand-link">
-
-            <span class="brand-text font-weight-light">AdminLTE</span>
-
-        </a>
-
-    </aside>
-
+    {{-- Content Wrapper (ONLY ONE) --}}
     <div class="content-wrapper">
 
-        @yield('content')
+        <section class="content pt-3">
+            <div class="container-fluid">
+                @yield('content')
+            </div>
+        </section>
 
     </div>
+
+    {{-- Footer --}}
+    @include('admin.layouts.footer')
 
 </div>
 
 <script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
-
 <script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
 <script src="{{ asset('admin/dist/js/adminlte.min.js') }}"></script>
+
+@stack('js')
 
 </body>
 </html>

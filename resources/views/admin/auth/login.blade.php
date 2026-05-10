@@ -1,42 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Login</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Log in</title>
+
+  <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
+
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="{{ asset('admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
 </head>
-<body>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+  <!-- Logo  -->
+</div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Sign in to start your session</p>
 
-<h2>Admin Login</h2>
+      <form action="{{ url('/admin/login') }}" method="POST">
+            @csrf
 
-@if ($errors->any())
-    <div style="color:red;">
-        {{ $errors->first() }}
+            <!-- PHONE NUMBER -->
+            <div class="input-group mb-3">
+                <input type="text" name="mobile_no" class="form-control" placeholder="Phone Number">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-phone"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="input-group mb-3">
+                <input type="password" name="password" class="form-control" placeholder="Password" autocomplete="new-password">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-8">
+                    <div class="icheck-primary">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Remember Me</label>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Log In
+                    </button>
+                </div>
+            </div>
+        </form>
+
+      
+      <!-- /.social-auth-links -->
+
+      <p class="mb-1">
+        <a href="forgot-password.html">I forgot my password</a>
+      </p>
     </div>
-@endif
+    <!-- /.login-card-body -->
+  </div>
+</div>
+<!-- /.login-box -->
 
-<form action="/admin/login" method="POST">
-
-    @csrf
-
-    <input type="text"
-           name="mobile_no"
-           placeholder="Mobile Number"
-           maxlength="11"
-           required>
-
-    <br><br>
-
-    <input type="password"
-           name="password"
-           placeholder="Password"
-           required>
-
-    <br><br>
-
-    <button type="submit">
-        Login
-    </button>
-
-</form>
-
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
 </body>
 </html>
