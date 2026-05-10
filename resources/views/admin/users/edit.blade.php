@@ -11,7 +11,7 @@
             </div>
 
             <form method="POST"
-                action="{{ route('admin.accounts.update', $account->id) }}">
+                action="{{ route('admin.users.update', $user->id) }}">
                 @csrf
                 @method('PUT')
 

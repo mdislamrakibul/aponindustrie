@@ -72,29 +72,31 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/users/{id}/update', [UserController::class, 'update'])->name('admin.users.update');
 
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.delete');   
-
+    
 });
 //accounts
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
+
+
 
     Route::get('/accounts', [AccountController::class, 'index'])
-        ->name('admin.accounts.index');
+        ->name('accounts.index');
 
     Route::get('/accounts/create/{id}', [AccountController::class, 'create'])
-        ->name('admin.accounts.create');
+        ->name('accounts.create');
 
     Route::post('/accounts/store/{id}', [AccountController::class, 'store'])
-        ->name('admin.accounts.store');
+        ->name('accounts.store');
 
     Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])
-        ->name('admin.accounts.edit');
+        ->name('accounts.edit');
 
     Route::post('/accounts/{id}/update', [AccountController::class, 'update'])
-        ->name('admin.accounts.update');
+        ->name('accounts.update');
 
     Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])
-        ->name('admin.accounts.delete');
+        ->name('accounts.delete');
 
 });
 

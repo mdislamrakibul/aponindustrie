@@ -11,7 +11,7 @@
             </div>
 
             <form method="POST"
-                action="{{ route('admin.accounts.store', $user->id) }}">
+                action="{{ route('admin.users.store') }}">
                 @csrf
 
                 <div class="card-body">

@@ -44,9 +44,18 @@
                         Add Salary
                         </a>
 
+                        <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+                            + Add User
+                        </a>
+
                         <a href="{{ route('admin.users.edit', $user->id) }}"
                         class="btn btn-sm btn-warning">
                         Edit
+                        </a>
+
+                        <a href="{{ route('admin.accounts.create', $user->id) }}" 
+                            class="btn btn-sm btn-primary">
+                            Salary
                         </a>
 
                         <form action="{{ route('admin.users.delete', $user->id) }}"
