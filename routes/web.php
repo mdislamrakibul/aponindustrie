@@ -78,17 +78,23 @@ Route::middleware(['auth'])->group(function () {
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
 
-    Route::get('/accounts', [AccountController::class, 'index'])->name('admin.accounts.index');
+    Route::get('/accounts', [AccountController::class, 'index'])
+        ->name('admin.accounts.index');
 
-    Route::get('/accounts/create/{id}', [AccountController::class, 'create'])->name('admin.accounts.create');
+    Route::get('/accounts/create/{id}', [AccountController::class, 'create'])
+        ->name('admin.accounts.create');
 
-    Route::post('/accounts/store', [AccountController::class, 'store'])->name('admin.accounts.store');
+    Route::post('/accounts/store/{id}', [AccountController::class, 'store'])
+        ->name('admin.accounts.store');
 
-    Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])->name('admin.accounts.edit');
+    Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])
+        ->name('admin.accounts.edit');
 
-    Route::post('/accounts/{id}/update', [AccountController::class, 'update'])->name('admin.accounts.update');
+    Route::post('/accounts/{id}/update', [AccountController::class, 'update'])
+        ->name('admin.accounts.update');
 
-    Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])->name('admin.accounts.delete');
+    Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])
+        ->name('admin.accounts.delete');
 
 });
 

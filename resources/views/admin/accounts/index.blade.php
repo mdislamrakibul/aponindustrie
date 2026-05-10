@@ -4,9 +4,11 @@
 
 <h3>Account Management</h3>
 
-<a href="{{ route('admin.accounts.create') }}" class="btn btn-primary">
-    Add Salary
-</a>
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
 <table class="table table-bordered mt-3">
     <tr>
@@ -24,6 +26,7 @@
         <td>{{ $acc->type }}</td>
         <td>{{ $acc->note }}</td>
         <td>
+            
             <a href="{{ route('admin.accounts.edit', $acc->id) }}" class="btn btn-warning btn-sm">
                 Edit
             </a>

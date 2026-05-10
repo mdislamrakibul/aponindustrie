@@ -10,7 +10,8 @@
                 <h3 class="card-title">Create User</h3>
             </div>
 
-            <form action="{{ route('admin.users.store') }}" method="POST">
+            <form method="POST"
+                action="{{ route('admin.accounts.store', $user->id) }}">
                 @csrf
 
                 <div class="card-body">

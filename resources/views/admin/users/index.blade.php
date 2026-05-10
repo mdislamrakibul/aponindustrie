@@ -38,13 +38,30 @@
                         </span>
                     </td>
                     <td>
-                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                        <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" style="display:inline;">
+                        <a href="{{ route('admin.accounts.create', $user->id) }}"
+                        class="btn btn-sm btn-success">
+                        Add Salary
+                        </a>
+
+                        <a href="{{ route('admin.users.edit', $user->id) }}"
+                        class="btn btn-sm btn-warning">
+                        Edit
+                        </a>
+
+                        <form action="{{ route('admin.users.delete', $user->id) }}"
+                            method="POST"
+                            style="display:inline;">
+
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Delete</button>
+
+                            <button class="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+
                         </form>
+
                     </td>
                 </tr>
                 @endforeach
