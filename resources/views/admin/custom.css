@@ -11,3 +11,24 @@
 .btn {
     border-radius: 6px;
 }
+
+.action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.action-icon i {
+    color: #111827;
+    font-size: 17px;
+    transition: all 0.25s ease;
+}
+
+.action-icon:hover i {
+    color: #38bdf8;
+    transform: scale(1.15);
+}

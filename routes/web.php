@@ -39,6 +39,9 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 //register//
 
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
+
 //OTP//
 
 //OTP//
@@ -47,11 +50,11 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin']);
 Route::post('/admin/login', [AuthController::class, 'adminLogin']);
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['custom.auth'])->group(function () {
 
     Route::get('/admin/dashboard', function () {
 
-        if(Auth::user()->role != 'admin') {
+        if(session('user_role') != 'admin') {
             abort(403);
         }
 

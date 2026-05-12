@@ -47,8 +47,53 @@
                                 <p>Account Management</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href=" }}"
+                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
 
+                        <i class="nav-icon fas fa-box"></i>
 
+                        <p>Product Management</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href=""
+                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
+
+                        <i class="nav-icon fas fa-warehouse"></i>
+
+                        <p>Inventory Management</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href=""
+                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
+
+                        <i class="nav-icon fas fa-users"></i>
+
+                        <p>Customer Management</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href=""
+                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
+
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+
+                        <p>Order Management</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href=""
+                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
+
+                        <i class="nav-icon fas fa-wallet"></i>
+
+                        <p>Accounts Management</p>
+                    </a>
+                </li>
             </ul>
 
         </nav>

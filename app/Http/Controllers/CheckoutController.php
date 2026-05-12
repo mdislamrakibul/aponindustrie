@@ -119,7 +119,7 @@ class CheckoutController extends Controller
 
             // 2. Create the Order
             $order = new Order();
-            $order->user_id = auth()->id() ?? $user->id; // Null if guest checkout
+            $order->user_id = session('user_id') ?? $user->id; // Null if guest checkout
             $order->order_number = 'ORD-' . strtoupper(uniqid());
             $order->total_amount = $this->calculateTotal($cart);
             $order->payment_method = "CASH";

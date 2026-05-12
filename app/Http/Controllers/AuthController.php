@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
@@ -21,27 +21,36 @@ class AuthController extends Controller
 // 2. Login process
     public function login(Request $request)
     {
-        // Validation
         $request->validate([
-            'mobile_no' => 'required|digits:11',
+            'mobile_no' => [
+                'required',
+                'regex:/^(01)[3-9]\d{8}$/'
+            ],
             'password' => 'required|min:6'
         ]);
 
-        // Login attempt
-        if (Auth::attempt([
-            'mobile_no' => $request->mobile_no,
-            'password' => $request->password,
-            'role' => 'user'
-        ])) {
+        $user = User::where('mobile_no', $request->mobile_no)
+            ->first();
+        
+
+        if ($user && Hash::check($request->password, $user->password)) {
+
+            session([
+                'user_id' => $user->id,
+                'user_name' => $user->first_name . ' ' . $user->last_name,
+                'user_mobile' => $user->mobile_no,
+                'user_role' => $user->role,
+            ]);
+
             $request->session()->regenerate();
-            return redirect('/')->with('success', 'Login Successful');
+
+            return redirect('/')
+                ->with('success', 'Login Successful');
         }
 
         return back()->withErrors([
             'mobile_no' => 'Invalid mobile number or password'
         ]);
-
-        
     }
 
     
@@ -87,11 +96,18 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::attempt([
-            'mobile_no' => $request->mobile_no,
-            'password' => $request->password,
-            'role' => 'admin'
-        ])) {
+        $admin = User::where('mobile_no', $request->mobile_no)
+            ->where('role', 'admin')
+            ->first();
+
+        if ($admin && Hash::check($request->password, $admin->password)) {
+
+            session([
+                'user_id' => $admin->id,
+                'user_name' => $admin->first_name . ' ' . $admin->last_name,
+                'user_mobile' => $admin->mobile_no,
+                'user_role' => $admin->role,
+            ]);
 
             $request->session()->regenerate();
 
@@ -101,6 +117,16 @@ class AuthController extends Controller
         return back()->withErrors([
             'mobile_no' => 'Invalid admin credentials'
         ]);
+    }
+    public function logout(Request $request)
+    {
+        session()->flush();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login')
+            ->with('success', 'Logged out successfully');
     }
 }
 
