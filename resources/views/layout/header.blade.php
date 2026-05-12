@@ -112,11 +112,59 @@
                     <div class="header-info header-info-right">
                         <ul>
 
-                            <li><i class="fa fa-unlock"></i><a href="{{ url('/login') }}" style="    padding: 0px !important;">Log In </a>
-                                / <i class="fa fa-lock" style="padding-left: 5px !important;"></i><a href="{{ route('register') }}"
+                            @if(session()->has('user_id'))
 
-                                    style="    padding: 0px !important;">Sign
-                                    Up</a></li>
+                            <li>
+                                <i class="fa fa-user"></i>
+                                <span style="padding-right: 10px;">
+                                    {{ session('user_name') }}
+                                </span>
+                            </li>
+
+                            @if(
+                                in_array(session('user_role'), ['admin', 'vendor'])
+                            )
+
+                            <li>
+                                <i class="fa fa-dashboard"></i>
+
+                                <a href="{{ url('/admin/dashboard') }}"
+                                style="padding: 0px !important;">
+                                    Dashboard
+                                </a>
+                            </li>
+
+                            @endif
+
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                                    @csrf
+
+                                    <button type="submit"
+                                            style="background:none;border:none;padding:0;color:inherit;cursor:pointer;">
+                                        <i class="fa fa-sign-out"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+
+                            @else
+
+                            <li>
+                                <i class="fa fa-unlock"></i>
+                                <a href="{{ url('/login') }}" style="padding: 0px !important;">
+                                    Log In
+                                </a>
+
+                                /
+
+                                <i class="fa fa-lock" style="padding-left: 5px !important;"></i>
+
+                                <a href="{{ url('/register') }}" style="padding: 0px !important;">
+                                    Sign Up
+                                </a>
+                            </li>
+
+                            @endif
                         </ul>
                     </div>
                 </div>

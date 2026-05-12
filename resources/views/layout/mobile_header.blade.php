@@ -143,10 +143,38 @@
                     </div> --}}
                     <div class="single-mobile-header-info">
 
-                        <a href="{{ url('/login') }}">Log In </a>
+                        @if(session()->has('user_id'))
+
+                            @if(
+                                session('user_role') == 'ADMIN' ||
+                                session('user_role') == 'VENDOR'
+                            )
+
+                            <a href="{{ url('/admin/dashboard') }}">
+                                Dashboard
+                            </a>
+
+                            @endif
+
+                        <form action="{{ route('logout') }}" method="POST" style="margin-top:10px;">
+                            @csrf
+
+                            <button type="submit"
+                                    style="background:none;border:none;padding:0;color:inherit;cursor:pointer;">
+                                Logout
+                            </button>
+                        </form>
+
+                        @else
+
+                        <a href="{{ url('/login') }}">
+                            Log In
+                        </a>
+
+                        @endif
                     </div>
                     <div class="single-mobile-header-info">
-                        <a href="{{ route('register') }}">Sign Up</a>
+                        <a href="{{ url('/register') }}">Sign Up</a>
 
                     </div>
                     <div class="single-mobile-header-info">

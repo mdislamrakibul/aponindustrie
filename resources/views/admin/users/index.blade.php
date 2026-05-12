@@ -56,7 +56,7 @@
 
                                     <select name="role" class="form-control mb-2">
                                         <option value="admin" {{ $user->role=='admin'?'selected':'' }}>Admin</option>
-                                        <option value="user" {{ $user->role=='user'?'selected':'' }}>User</option>
+                                        <option value="vendor" {{ $user->role=='vendor'?'selected':'' }}>vendor</option>
                                     </select>
 
                                     <select name="status" class="form-control mb-2">

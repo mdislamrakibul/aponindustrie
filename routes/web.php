@@ -25,19 +25,11 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
 
 //login//
 Route::get('/login', [AuthController::class, 'showLogin']);
 Route::post('/login', [AuthController::class, 'login']);
 //login//
-
-//register//
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');
-//register//
 
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
@@ -50,7 +42,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin']);
 Route::post('/admin/login', [AuthController::class, 'adminLogin']);
 
-Route::middleware(['custom.auth'])->group(function () {
+Route::middleware(['role:admin,vendor'])->group(function () {
 
     Route::get('/admin/dashboard', function () {
 

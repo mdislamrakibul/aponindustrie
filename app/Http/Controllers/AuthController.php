@@ -92,40 +92,69 @@ class AuthController extends Controller
     public function adminLogin(Request $request)
     {
         $request->validate([
-            'mobile_no' => 'required|digits:11',
-            'password' => 'required'
+            'mobile_no' => 'required',
+            'password' => 'required',
         ]);
 
-        $admin = User::where('mobile_no', $request->mobile_no)
-            ->where('role', 'admin')
-            ->first();
+        $mobile = $this->normalizeBdNumber($request->mobile_no);
 
-        if ($admin && Hash::check($request->password, $admin->password)) {
+        $user = User::where('mobile_no', $mobile)->first();
 
-            session([
-                'user_id' => $admin->id,
-                'user_name' => $admin->first_name . ' ' . $admin->last_name,
-                'user_mobile' => $admin->mobile_no,
-                'user_role' => $admin->role,
-            ]);
-
-            $request->session()->regenerate();
-
-            return redirect('/admin/dashboard');
+        if (!$user) {
+            return back()->with('error', 'Invalid credentials');
         }
 
-        return back()->withErrors([
-            'mobile_no' => 'Invalid admin credentials'
+        if (!Hash::check($request->password, $user->password)) {
+            return back()->with('error', 'Invalid credentials');
+        }
+
+        // ONLY ADMIN + VENDOR ALLOWED
+        if (!in_array($user->role, ['admin', 'vendor'])) {
+            return back()->with('error', 'Unauthorized access');
+        }
+
+        session([
+            'user_id' => $user->id,
+            'user_name' => $user->first_name,
+            'user_mobile' => $user->mobile_no,
+            'user_role' => $user->role,
         ]);
+
+        return redirect('/admin/dashboard');
     }
-    public function logout(Request $request)
+    private function normalizeBdNumber($number)
     {
-        session()->flush();
+        // Remove spaces and special characters
+        $number = preg_replace('/[^0-9]/', '', $number);
+
+        // Convert 8801XXXXXXXXX -> 01XXXXXXXXX
+        if (str_starts_with($number, '880')) {
+            $number = '0' . substr($number, 3);
+        }
+
+        // Convert +8801XXXXXXXXX -> 01XXXXXXXXX
+        if (str_starts_with($number, '+880')) {
+            $number = '0' . substr($number, 4);
+        }
+
+        return $number;
+    }
+
+    //logout//
+    public function logout(Request $request)
+
+    {
+        session()->forget([
+            'user_id',
+            'user_name',
+            'user_mobile',
+            'user_role'
+        ]);
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')
+        return redirect('/')
             ->with('success', 'Logged out successfully');
     }
 }

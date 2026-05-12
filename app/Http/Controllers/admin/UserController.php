@@ -36,7 +36,7 @@ class UserController extends Controller
         $request->validate([
             'first_name' => 'required',
             'mobile_no'   => 'required|unique:tbl_info_user',
-            'role'        => 'required',
+            'role' => 'required|in:admin,vendor,customer'
         ]);
 
         DB::table('tbl_info_user')->insert([

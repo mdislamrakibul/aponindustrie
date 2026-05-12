@@ -7,20 +7,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-
-
-
-
-
-
-
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
     const ROLE_ADMIN = 'admin';
     const ROLE_CUSTOMER = 'customer';
-    const ROLE_BRANDER = 'brander';
+    const ROLE_BRANDER = 'vendor';
 
     protected $table = 'tbl_info_user';
 
@@ -44,14 +37,12 @@ class User extends Authenticatable
     {
         return $this->role === self::ROLE_ADMIN;
     }
-
+    public function isVendor()
+    {
+        return $this->role === self::ROLE_VENDOR;
+    }
     public function isCustomer()
     {
         return $this->role === self::ROLE_CUSTOMER;
-    }
-
-    public function isBrander()
-    {
-        return $this->role === self::ROLE_BRANDER;
     }
 }

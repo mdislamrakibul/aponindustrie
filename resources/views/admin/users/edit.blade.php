@@ -40,7 +40,7 @@
                         <label>Role</label>
                         <select name="role" class="form-control">
                             <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+                            <option value="vendor" {{ $user->role == 'vendor' ? 'selected' : '' }}>vendor</option>
                         </select>
                     </div>
 
