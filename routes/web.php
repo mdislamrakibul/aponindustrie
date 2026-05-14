@@ -34,6 +34,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
+
+    
 //OTP//
 
 //OTP//
@@ -42,36 +44,37 @@ Route::post('/logout', [AuthController::class, 'logout'])
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin']);
 Route::post('/admin/login', [AuthController::class, 'adminLogin']);
 
-Route::middleware(['role:admin,vendor'])->group(function () {
+Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/admin/dashboard', function () {
-
-        if(session('user_role') != 'admin') {
-            abort(403);
-        }
-
+    Route::get('/dashboard', function () {
         return view('admin.dashboard');
+    })->name('dashboard');
 
-    })->name('admin.dashboard');
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('users');
 
-    Route::get('/admin/users', [UserController::class, 'index'])
-        ->name('admin.users');
+    Route::post('/users/store', [UserController::class, 'store'])
+        ->name('users.store');
 
-        // USER MANAGEMENT
-        
-    Route::get('/users', [UserController::class, 'index'])->name('admin.users');
-    Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
-    Route::post('/users/store', [UserController::class, 'store'])->name('admin.users.store');
+    Route::post('/users/{id}/update', [UserController::class, 'update'])
+        ->name('users.update');
 
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-    Route::post('/users/{id}/update', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])
+        ->name('users.delete');
+});
 
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.delete');   
-    
+Route::middleware(['role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('users');
+
 });
 //accounts
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
 
 

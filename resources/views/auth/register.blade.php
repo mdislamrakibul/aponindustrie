@@ -28,20 +28,67 @@
                     <form method="POST" action="{{ route('register.post') }}">
                         @csrf
 
-                        <div class="mb-3">
-                            <input type="text" name="first_name" class="form-control form-control-lg rounded-3" placeholder="First Name">
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <input
+                                    type="text"
+                                    name="first_name"
+                                    class="form-control form-control-lg rounded-3"
+                                    placeholder="First Name"
+                                    value="{{ old('first_name') }}"
+                                    required
+                                >
+
+                                @error('first_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <input
+                                    type="text"
+                                    name="last_name"
+                                    class="form-control form-control-lg rounded-3"
+                                    placeholder="Last Name"
+                                    value="{{ old('last_name') }}"
+                                    required
+                                >
+
+                                @error('last_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
                         </div>
 
                         <div class="mb-3">
-                            <input type="text" name="last_name" class="form-control form-control-lg rounded-3" placeholder="Last Name">
-                        </div>
+                            <input
+                                type="tel"
+                                name="mobile_no"
+                                class="form-control form-control-lg rounded-3"
+                                placeholder="01XXXXXXXXX"
+                                value="{{ old('mobile_no') }}"
+                                required
+                            >
 
-                        <div class="mb-3">
-                            <input type="tel" name="mobile_no" class="form-control form-control-lg rounded-3" placeholder="01XXXXXXXXX">
+                            @error('mobile_no')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
-                            <input type="password" name="password" class="form-control form-control-lg rounded-3" placeholder="Password">
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control form-control-lg rounded-3"
+                                placeholder="Password"
+                                required
+                            >
+
+                            @error('password')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         <div class="d-grid">
@@ -49,7 +96,6 @@
                                 Register
                             </button>
                         </div>
-
                     </form>
 
                 </div>

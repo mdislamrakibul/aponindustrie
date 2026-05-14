@@ -9,7 +9,26 @@
   <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
   <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
 
-  @stack('css')
+  <style>
+
+    .child-menu {
+
+        margin-left: 22px !important;
+    }
+
+    .child-menu .nav-link {
+
+        padding-left: 18px !important;
+
+        font-size: 14px;
+
+        opacity: .95;
+    }
+
+    </style>
+
+    @stack('css')
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -21,6 +40,7 @@
 
     {{-- Sidebar --}}
     @include('admin.layouts.sidebar')
+    
 
     {{-- Content Wrapper (ONLY ONE) --}}
     <div class="content-wrapper">
@@ -44,5 +64,7 @@
 
 @stack('js')
 
+
 </body>
+
 </html>

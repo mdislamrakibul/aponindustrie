@@ -67,9 +67,17 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'mobile_no' => 'required|digits:11',
+
+            'first_name' => 'required|string|max:255',
+
+            'last_name' => 'required|string|max:255',
+
+            'mobile_no' => [
+                'required',
+                'regex:/^(01)[3-9]\d{8}$/',
+                'unique:tbl_info_user,mobile_no'
+            ],
+
             'password' => 'required|min:6'
         ]);
 
@@ -77,11 +85,13 @@ class AuthController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'mobile_no' => $request->mobile_no,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'role' => 'customer',
+            'status' => 'active'
         ]);
 
         return redirect('/login')->with('success', 'Account created successfully');
-        }
+    }
 
         //admin
     
@@ -124,15 +134,12 @@ class AuthController extends Controller
     }
     private function normalizeBdNumber($number)
     {
-        // Remove spaces and special characters
         $number = preg_replace('/[^0-9]/', '', $number);
 
-        // Convert 8801XXXXXXXXX -> 01XXXXXXXXX
         if (str_starts_with($number, '880')) {
             $number = '0' . substr($number, 3);
         }
 
-        // Convert +8801XXXXXXXXX -> 01XXXXXXXXX
         if (str_starts_with($number, '+880')) {
             $number = '0' . substr($number, 4);
         }

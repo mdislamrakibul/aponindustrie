@@ -25,7 +25,7 @@
 
         <ul class="navbar-nav">
 
-            <li class="nav-item">
+            <li class="nav-item has-treeview">
 
                 <a class="nav-link" data-widget="pushmenu" href="#">
 
