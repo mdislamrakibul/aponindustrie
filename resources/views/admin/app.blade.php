@@ -84,6 +84,7 @@
     </div>
 
 </div>
+@stack('scripts')
 
 <script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
 

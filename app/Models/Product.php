@@ -8,13 +8,39 @@ use App\Models\Category;
 use App\Models\Media;
 
 class Product extends Model
-{
+{   
+
     use HasFactory;
     protected $table = 'tbl_products';
+    protected $casts = [
+        'publish_date' => 'datetime',
+    ];
+    protected $fillable = [
+        'name',
+        'slug',
+        'sku',
+        'barcode',
+        'category_id',
+        'brand_id',
+        'short_description',
+        'description',
+        'sale_price',
+        'regular_price',
+        'package_price',
+        'discount_type',
+        'discount_value',
+        'is_discounted',
+        'stock_quantity',
+        'availability',
+        'status',
+        'minimum_order',
+        'product_type',
+        'product_adv_type',
+        'publish_date',
+        'tags',
+    ];
 
-    // --- RELATIONSHIPS ---
-
-
+    
     public function category()
     {
         // 1st param: The Model name
@@ -73,8 +99,9 @@ class Product extends Model
         // 1st param: The Media Model
         // 2nd param: The foreign key in tbl_media (model_id)
         // 3rd param: The local key in tbl_products (id)
-        return $this->hasMany(Media::class, 'model_id', 'id')
-            ->where('image_type', 'product');;
+        return $this->hasMany(Media::class, 'model_id')
+            ->where('image_type', 'PRODUCT')
+            ->orderBy('position');
     }
 
 

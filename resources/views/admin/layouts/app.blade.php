@@ -62,9 +62,53 @@
 <script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('admin/dist/js/adminlte.min.js') }}"></script>
 
-@stack('js')
+@stack('scripts')
 
 
 </body>
 
 </html>
+<style>
+    .action-btn{
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+
+    background: #fff;
+
+    border: 0px solid #e5e7eb;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #111827;
+
+    transition: all .25s ease;
+
+    text-decoration: none;
+    }
+
+    .action-btn i{
+
+        font-size: 14px;
+    }
+
+    .action-btn:hover{
+
+        background: #38bdf8;
+
+        color: #fff;
+
+        border-color: #38bdf8;
+
+        transform: translateY(-1px);
+    }
+
+    .action-btn:focus{
+
+        box-shadow: none;
+    }
+</style>

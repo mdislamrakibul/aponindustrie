@@ -93,18 +93,61 @@
 
                     </ul>
 
-                </li>
-                                               
+                </li>                               
                 
-                <li class="nav-item">
-                    <a href=" }}"
-                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
+                <li class="nav-item has-treeview
+                    {{ request()->is('admin/products*') ? 'menu-open' : '' }}">
 
-                        <i class="nav-icon fas fa-box"></i>
+                    <a href="#"
+                    class="nav-link
+                    {{ request()->is('admin/products*') ? 'active' : '' }}">
 
-                        <p>Product Management</p>
+                        <i class="nav-icon fas fa-box-open"></i>
+
+                        <p>
+                            Product Management
+
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+
                     </a>
+
+                    <ul class="nav nav-treeview">
+
+                        {{-- ALL PRODUCTS --}}
+                        <li class="nav-item">
+
+                            <a href="{{ route('admin.products.index') }}"
+                            class="nav-link
+                            {{ request()->is('admin/products') ? 'active' : '' }}">
+
+                                <i class="fas fa-boxes nav-icon"></i>
+
+                                <p>All Products</p>
+
+                            </a>
+
+                        </li>
+
+                        {{-- ADD PRODUCT --}}
+                        <li class="nav-item">
+
+                            <a href="{{ route('admin.products.create') }}"
+                            class="nav-link
+                            {{ request()->is('admin/products/create') ? 'active' : '' }}">
+
+                                <i class="fas fa-plus-square nav-icon"></i>
+
+                                <p>Add Product</p>
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
                 </li>
+
                 <li class="nav-item">
                     <a href=""
                     class="nav-link {{ request()->is('') ? 'active' : '' }}">
@@ -132,15 +175,7 @@
                         <p>Order Management</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href=""
-                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
 
-                        <i class="nav-icon fas fa-wallet"></i>
-
-                        <p>Accounts Management</p>
-                    </a>
-                </li>
             </ul>
 
         </nav>

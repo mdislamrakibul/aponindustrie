@@ -138,9 +138,9 @@
 
                                             <span class="font-small ml-5 text-muted" style="font-weight: bolder;">
 
-                                                @if ($product->review)
-                                                <span style="color: #f15412;">count($product->review) {{
-                                                    count($product->review) > 9 ? "Reviews":
+                                                @if ($product->reviews)
+                                                <span style="color: #f15412;">count($product->reviews) {{
+                                                    count($product->reviews) > 9 ? "Reviews":
                                                     "Review" }}</span>
                                                 @else
                                                 <span style="color: #f15412;">0 Review</span>
