@@ -1,5 +1,5 @@
 <div class="modal fade"
-     id="addProductModal"
+     id="editProductModal"
      tabindex="-1"
      aria-hidden="true">
 
@@ -7,10 +7,10 @@
 
         <div class="modal-content border-0 rounded-4 overflow-hidden">
 
-            <div class="modal-header">
+            <div class="modal-header border-bottom bg-white px-4 py-3">
 
-                <h5 class="modal-title">
-                    Add Product
+                <h5 class="modal-title fw-bold">
+                    Edit Product
                 </h5>
 
                 <button type="button"
@@ -23,7 +23,11 @@
 
             </div>
 
-            @include('admin.products.partials.form')
+            <div id="editProductContent">
+
+                {{-- AJAX CONTENT LOAD HERE --}}
+
+            </div>
 
         </div>
 

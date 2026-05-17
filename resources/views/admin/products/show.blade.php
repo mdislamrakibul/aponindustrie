@@ -1,38 +1,68 @@
-@extends('admin.layouts.app')
+@php
+    $image = $product->media->first();
+@endphp
 
-@section('content')
+<div class="row">
 
-<div class="card">
+    <div class="col-md-4">
 
-    <div class="card-header">
-
-        <h3>Product Details</h3>
+        <img
+            src="{{ $image ? asset($image->file_path . $image->image_name) : asset('admin/no-image.png') }}"
+            class="img-fluid rounded-4 border">
 
     </div>
 
-    <div class="card-body">
+    <div class="col-md-8">
 
-        <h4>{{ $product->name }}</h4>
+        <table class="table table-bordered">
 
-        <p>Price: ৳ {{ $product->regular_price }}</p>
+            <tr>
+                <th>Name</th>
+                <td>{{ $product->name }}</td>
+            </tr>
 
-        <p>Stock: {{ $product->stock_quantity }}</p>
+            <tr>
+                <th>Category</th>
+                <td>{{ $product->category->name ?? 'N/A' }}</td>
+            </tr>
 
-        <p>Status: {{ $product->status }}</p>
+            <tr>
+                <th>Price</th>
+                <td>৳ {{ $product->regular_price }}</td>
+            </tr>
 
-        <p>Category: {{ $product->category->name ?? 'N/A' }}</p>
+            <tr>
+                <th>Sale Price</th>
+                <td>৳ {{ $product->sale_price }}</td>
+            </tr>
 
-        @if($product->media->first())
+            <tr>
+                <th>Stock</th>
+                <td>{{ $product->stock_quantity }}</td>
+            </tr>
 
-            <img
-                src="{{ asset($product->media->first()->file_path . $product->media->first()->image_name) }}"
-                width="150"
-            >
+            <tr>
+                <th>Status</th>
+                <td>{{ $product->status }}</td>
+            </tr>
 
-        @endif
+            <tr>
+                <th>SKU</th>
+                <td>{{ $product->sku }}</td>
+            </tr>
+
+            <tr>
+                <th>Barcode</th>
+                <td>{{ $product->barcode }}</td>
+            </tr>
+
+            <tr>
+                <th>Tags</th>
+                <td>{{ $product->tags }}</td>
+            </tr>
+
+        </table>
 
     </div>
 
 </div>
-
-@endsection

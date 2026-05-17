@@ -16,28 +16,53 @@ class Product extends Model
         'publish_date' => 'datetime',
     ];
     protected $fillable = [
+
         'name',
         'slug',
-        'sku',
-        'barcode',
         'category_id',
         'brand_id',
-        'short_description',
+        'uploader_id',
+
         'description',
-        'sale_price',
+        'short_description',
+
+        'sku',
+        'barcode',
+
+        'purchase_price',
         'regular_price',
-        'package_price',
+        'sale_price',
+
         'discount_type',
         'discount_value',
-        'is_discounted',
+
         'stock_quantity',
+        'minimum_order',
+
+        'package_price',
+
         'availability',
         'status',
-        'minimum_order',
+
         'product_type',
         'product_adv_type',
-        'publish_date',
+
+        'is_featured',
+        'is_discounted',
+
         'tags',
+
+        'meta_title',
+        'meta_description',
+
+        'thumbnail',
+
+        'attributes',
+
+        'view_count',
+        'total_sales',
+
+        'publish_date',
     ];
 
     
