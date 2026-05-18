@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AccountController;
 
+use App\Http\Controllers\admin\AdminOrderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -39,7 +40,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 
-    
+
 //OTP//
 
 //OTP//
@@ -72,20 +73,19 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         ->name('products.index');
 
     Route::get('/products/create', [ProductManagementController::class, 'create'])
-    ->name('products.create');
+        ->name('products.create');
 
     Route::get('/products/{id}/edit', [ProductManagementController::class, 'edit'])
         ->name('products.edit');
-        
+
     Route::get('/products/{id}', [ProductManagementController::class, 'show'])
-    ->name('products.show');
+        ->name('products.show');
 });
 
 Route::middleware(['role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');
-
 });
 //accounts
 
@@ -96,42 +96,41 @@ Route::middleware(['role:admin'])
     ->name('admin.')
     ->group(function () {
 
-    // =============================
-// PRODUCT MANAGEMENT
-// =============================
+        // =============================
+        // PRODUCT MANAGEMENT
+        // =============================
 
-    Route::get('/products', [App\Http\Controllers\Admin\ProductManagementController::class, 'index'])
-        ->name('products.index');
+        Route::get('/products', [App\Http\Controllers\Admin\ProductManagementController::class, 'index'])
+            ->name('products.index');
 
-    Route::post('/products/store', [App\Http\Controllers\Admin\ProductManagementController::class, 'store'])
-        ->name('products.store');
+        Route::post('/products/store', [App\Http\Controllers\Admin\ProductManagementController::class, 'store'])
+            ->name('products.store');
 
-    Route::post('/products/{id}/update', [App\Http\Controllers\Admin\ProductManagementController::class, 'update'])
-        ->name('products.update');
+        Route::post('/products/{id}/update', [App\Http\Controllers\Admin\ProductManagementController::class, 'update'])
+            ->name('products.update');
 
-    Route::delete('/products/{id}', [App\Http\Controllers\Admin\ProductManagementController::class, 'destroy'])
-        ->name('products.delete');
+        Route::delete('/products/{id}', [App\Http\Controllers\Admin\ProductManagementController::class, 'destroy'])
+            ->name('products.delete');
 
 
-    Route::get('/accounts', [AccountController::class, 'index'])
-        ->name('accounts.index');
+        Route::get('/accounts', [AccountController::class, 'index'])
+            ->name('accounts.index');
+        Route::get('/accounts/create/{id}', [AccountController::class, 'create'])
+            ->name('accounts.create');
+        Route::post('/accounts/store/{id}', [AccountController::class, 'store'])
+            ->name('accounts.store');
+        Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])
+            ->name('accounts.edit');
+        Route::post('/accounts/{id}/update', [AccountController::class, 'update'])
+            ->name('accounts.update');
+        Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])
+            ->name('accounts.delete');
 
-    Route::get('/accounts/create/{id}', [AccountController::class, 'create'])
-        ->name('accounts.create');
 
-    Route::post('/accounts/store/{id}', [AccountController::class, 'store'])
-        ->name('accounts.store');
 
-    Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])
-        ->name('accounts.edit');
-
-    Route::post('/accounts/{id}/update', [AccountController::class, 'update'])
-        ->name('accounts.update');
-
-    Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])
-        ->name('accounts.delete');
-
-});
+        Route::get('/order/all', [AdminOrderController::class, 'order_index'])
+            ->name('order.index');
+    });
 
 
 //admin//
@@ -144,7 +143,8 @@ Route::get('/terms-and-conditions', [HomeController::class, 'Terms_And_Condition
 Route::get('/faq', [HomeController::class, 'FAQ'])->name('FAQ.index');
 Route::get('/our-service', [HomeController::class, 'Our_Service'])->name('Our_Service.index');
 
-Route::patch('/admin/products/{id}/toggle-status',
+Route::patch(
+    '/admin/products/{id}/toggle-status',
     [ProductManagementController::class, 'toggleStatus']
 )->name('admin.products.toggle-status');
 // Product urls
