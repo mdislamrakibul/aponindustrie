@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\admin\AdminOrderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
@@ -35,7 +36,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 
-    
+
 //OTP//
 
 //OTP//
@@ -67,7 +68,6 @@ Route::middleware(['role:vendor'])->prefix('vendor')->name('vendor.')->group(fun
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');
-
 });
 //accounts
 
@@ -78,25 +78,24 @@ Route::middleware(['role:admin'])
 
 
 
-    Route::get('/accounts', [AccountController::class, 'index'])
-        ->name('accounts.index');
+        Route::get('/accounts', [AccountController::class, 'index'])
+            ->name('accounts.index');
+        Route::get('/accounts/create/{id}', [AccountController::class, 'create'])
+            ->name('accounts.create');
+        Route::post('/accounts/store/{id}', [AccountController::class, 'store'])
+            ->name('accounts.store');
+        Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])
+            ->name('accounts.edit');
+        Route::post('/accounts/{id}/update', [AccountController::class, 'update'])
+            ->name('accounts.update');
+        Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])
+            ->name('accounts.delete');
 
-    Route::get('/accounts/create/{id}', [AccountController::class, 'create'])
-        ->name('accounts.create');
 
-    Route::post('/accounts/store/{id}', [AccountController::class, 'store'])
-        ->name('accounts.store');
 
-    Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])
-        ->name('accounts.edit');
-
-    Route::post('/accounts/{id}/update', [AccountController::class, 'update'])
-        ->name('accounts.update');
-
-    Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])
-        ->name('accounts.delete');
-
-});
+        Route::get('/order/all', [AdminOrderController::class, 'order_index'])
+            ->name('order.index');
+    });
 
 //admin//
 
