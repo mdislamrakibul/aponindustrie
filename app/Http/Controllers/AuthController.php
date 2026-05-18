@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Models\Login;
 
 
 class AuthController extends Controller
@@ -29,16 +29,24 @@ class AuthController extends Controller
             'password' => 'required|min:6'
         ]);
 
-        $user = User::where('mobile_no', $request->mobile_no)
-            ->first();
+        $user = Login::where('phone', $request->mobile_no)->first();
         
 
         if ($user && Hash::check($request->password, $user->password)) {
+            // CHECK ACCOUNT STATUS
+            if ($user->status !== 'ACTIVE') {
+                return back()->withErrors([
+                    'mobile_no' => 'Account is inactive or blocked'
+                ]);
+            }
 
+            // UPDATE LAST LOGIN
+            $user->last_login_at = now();
+            $user->save();
             session([
                 'user_id' => $user->id,
-                'user_name' => $user->first_name . ' ' . $user->last_name,
-                'user_mobile' => $user->mobile_no,
+                'user_name' => $user->name,
+                'user_mobile' => $user->phone,
                 'user_role' => $user->role,
             ]);
 
@@ -75,19 +83,19 @@ class AuthController extends Controller
             'mobile_no' => [
                 'required',
                 'regex:/^(01)[3-9]\d{8}$/',
-                'unique:tbl_info_user,mobile_no'
+                'unique:tbl_info_login,phone'
             ],
 
             'password' => 'required|min:6'
         ]);
 
-        User::create([
+        Login::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'mobile_no' => $request->mobile_no,
+            'phone' => $request->mobile_no,
             'password' => Hash::make($request->password),
-            'role' => 'customer',
-            'status' => 'active'
+            'role' => 'USER',
+            'status' => 'ACTIVE'
         ]);
 
         return redirect('/login')->with('success', 'Account created successfully');
@@ -119,7 +127,7 @@ class AuthController extends Controller
         }
 
         // ONLY ADMIN + VENDOR ALLOWED
-        if (!in_array($user->role, ['admin', 'vendor'])) {
+        if (!in_array($USER->role, ['ADMIN', 'VENDOR'])) {
             return back()->with('error', 'Unauthorized access');
         }
 

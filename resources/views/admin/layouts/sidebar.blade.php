@@ -148,14 +148,57 @@
 
                 </li>
 
-                <li class="nav-item">
-                    <a href=""
-                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
+                <li class="nav-item has-treeview
+                {{ request()->is('admin/inventory*') ? 'menu-open' : '' }}">
 
-                        <i class="nav-icon fas fa-warehouse"></i>
+                    <a href="#"
+                    class="nav-link
+                    {{ request()->is('admin/inventory*') ? 'active' : '' }}">
 
-                        <p>Inventory Management</p>
+                        <i class="nav-icon fas fa-boxes"></i>
+
+                        <p>
+                            Inventory Management
+
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+
                     </a>
+
+                    <ul class="nav nav-treeview">
+
+                        {{-- INVENTORY LIST --}}
+                        <li class="nav-item">
+
+                            <a href="{{ route('inventory.list') }}"
+                            class="nav-link
+                            {{ request()->is('admin/inventory/list') ? 'active' : '' }}">
+
+                                <i class="fas fa-list nav-icon"></i>
+
+                                <p>Inventory List</p>
+
+                            </a>
+
+                        </li>
+
+                        {{-- ACCOUNTS TRACKING --}}
+                        <li class="nav-item">
+
+                            <a href="{{ route('inventory.accounts') }}"
+                            class="nav-link
+                            {{ request()->is('admin/inventory/accounts') ? 'active' : '' }}">
+
+                                <i class="fas fa-wallet nav-icon"></i>
+
+                                <p>Accounts Tracking</p>
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
                 </li>
                 <li class="nav-item">
                     <a href=""

@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function Product_by_category(Request $request)
     {
-
+        $newProducts = [];
         // dd($request->all());
         $products_by_category = Product::query()
             ->with(['media', 'category'])
@@ -117,6 +117,7 @@ class ProductController extends Controller
             'discount_value',
             'product_type',
             'is_discounted',
+
         ])
             ->with(['category:id,name,slug', 'media:id,title,file_path,image_type,position,model_id,image_name'])
             ->withAvg(['reviews' => function ($q) {

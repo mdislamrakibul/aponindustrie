@@ -1,8 +1,28 @@
+@php
+
+$isEdit = $isEdit ?? false;
+
+$product = $product ?? null;
+
+$image = ($isEdit && $product)
+    ? $product->media->first()
+    : null;
+
+$featuredSections = ($isEdit && $product && $product->product_adv_type)
+    ? json_decode($product->product_adv_type, true)
+    : [];
+
+@endphp
 <form method="POST"
-    action="{{ route('admin.products.store') }}"
+    action="{{ $isEdit 
+        ? route('admin.products.update', $product->id) 
+        : route('admin.products.store') }}"
     enctype="multipart/form-data">
 
     @csrf
+    @if($isEdit)
+        @method('PUT')
+    @endif
 
     <div class="modal-body bg-light"
         style="max-height:75vh; overflow-y:auto;">
@@ -30,7 +50,8 @@
                             <input type="text"
                                 name="name"
                                 class="form-control rounded-3"
-                                placeholder="Product Name">
+                                placeholder="Product Name"
+                                value="{{ $isEdit && $product ? $product->name : '' }}">
 
                         </div>
                         <div class="row">
@@ -43,7 +64,8 @@
 
                                 <input type="text"
                                     name="sku"
-                                    class="form-control rounded-3">
+                                    class="form-control rounded-3"
+                                    value="{{ $isEdit && $product ? $product->sku : '' }}">
 
                             </div>
 
@@ -55,7 +77,8 @@
 
                                 <input type="text"
                                     name="barcode"
-                                    class="form-control rounded-3">
+                                    class="form-control rounded-3"
+                                    value="{{ $isEdit && $product ? $product->barcode : '' }}">
 
                             </div>
 
@@ -70,7 +93,7 @@
                             <textarea
                                 name="short_description"
                                 rows="4"
-                                class="form-control rounded-3"></textarea>
+                                class="form-control rounded-3">{{ $isEdit ? $product->short_description : '' }}</textarea>
 
                         </div>
 
@@ -80,9 +103,9 @@
                             </label>
 
                             <textarea
-                                name="description"
-                                rows="7"
-                                class="form-control rounded-3"></textarea>
+                            name="description"
+                            rows="7"
+                            class="form-control rounded-3">{{ $isEdit ? $product->description : '' }}</textarea>
 
                         </div>
 
@@ -109,7 +132,8 @@
 
                                 <input type="number"
                                     name="regular_price"
-                                    class="form-control rounded-3">
+                                    class="form-control rounded-3"
+                                    value="{{ $isEdit ? $product->regular_price : '' }}">
 
                             </div>
                             <div class="col-md-4 mb-4">
@@ -120,7 +144,8 @@
 
                                 <input type="number"
                                     name="sale_price"
-                                    class="form-control rounded-3">
+                                    class="form-control rounded-3"
+                                    value="{{ $isEdit ? $product->sale_price : '' }}">
 
                             </div>
 
@@ -132,7 +157,8 @@
 
                                 <input type="number"
                                     name="stock_quantity"
-                                    class="form-control rounded-3">
+                                    class="form-control rounded-3"
+                                    value="{{ $isEdit ? $product->stock_quantity : '' }}">
 
                             </div>
                             <div class="col-md-4 mb-4">
@@ -144,7 +170,7 @@
                                 <input type="number"
                                     name="minimum_order"
                                     class="form-control rounded-3"
-                                    value="1">
+                                    value="{{ $isEdit ? $product->minimum_order : 1 }}">
 
                             </div>
 
@@ -171,7 +197,9 @@
 
                             <img
                                 id="preview-image"
-                                src="{{ asset('admin/no-image.png') }}"
+                                src="{{ $image 
+                                    ? asset($image->file_path . $image->image_name) 
+                                    : asset('admin/no-image.png') }}"
                                 class="img-fluid rounded-4 border"
                                 style="height:250px;width:100%;object-fit:cover;">
 
@@ -209,7 +237,9 @@
 
                                 @foreach($categories as $category)
 
-                                    <option value="{{ $category->id }}">
+                                    <option
+                                        value="{{ $category->id }}"
+                                        {{ $isEdit && $product->category_id == $category->id ? 'selected' : '' }}>
 
                                         {{ $category->name }}
 
@@ -217,7 +247,9 @@
 
                                     @foreach($category->children as $child)
 
-                                        <option value="{{ $child->id }}">
+                                        <option
+                                            value="{{ $child->id }}"
+                                            {{ $isEdit && $product->category_id == $child->id ? 'selected' : '' }}>
 
                                             └── {{ $child->name }}
 
@@ -240,19 +272,23 @@
                             <select name="status"
                                     class="form-select rounded-3">
 
-                                <option value="PUBLISHED">
+                                <option value="PUBLISHED"
+                                    {{ $isEdit && $product->status == 'PUBLISHED' ? 'selected' : '' }}>
                                     Published
                                 </option>
 
-                                <option value="INACTIVE">
+                                <option value="INACTIVE"
+                                    {{ $isEdit && $product->status == 'INACTIVE' ? 'selected' : '' }}>
                                     Inactive
                                 </option>
 
-                                <option value="PENDING">
+                                <option value="PENDING"
+                                    {{ $isEdit && $product->status == 'PENDING' ? 'selected' : '' }}>
                                     Pending
                                 </option>
 
-                                <option value="DRAFT">
+                                <option value="DRAFT"
+                                    {{ $isEdit && $product->status == 'DRAFT' ? 'selected' : '' }}>
                                     Draft
                                 </option>
 
@@ -268,7 +304,8 @@
                             <input type="text"
                                 name="tags"
                                 class="form-control rounded-3"
-                                placeholder="kitchen, jar, plastic">
+                                placeholder="kitchen, jar, plastic"
+                                value="{{ $isEdit ? $product->tags : '' }}">
 
                         </div>
                         <div class="mb-4">
@@ -277,76 +314,39 @@
                                 Featured Sections
                             </label>
 
-                            <div class="form-check">
+                            @php
+                                $sections = [
+                                    'WEEKLY_FEATURED' => 'Weekly Featured',
+                                    'HOT_SALE' => 'Hot Sale',
+                                    'TOP_NEW' => 'Top New',
+                                    'TOP_SELLING' => 'Top Selling',
+                                    'TOP_RATED' => 'Top Rated',
+                                ];
+                            @endphp
 
-                                <input class="form-check-input"
-                                    type="checkbox"
-                                    name="featured_sections[]"
-                                    value="WEEKLY_FEATURED">
+                            @foreach($sections as $value => $label)
 
-                                <label class="form-check-label">
-                                    Weekly Featured
-                                </label>
+                                <div class="form-check">
 
-                            </div>
+                                    <input class="form-check-input"
+                                        type="checkbox"
+                                        name="featured_sections[]"
+                                        value="{{ $value }}"
+                                        {{ in_array($value, $featuredSections) ? 'checked' : '' }}>
 
-                            <div class="form-check">
+                                    <label class="form-check-label">
+                                        {{ $label }}
+                                    </label>
 
-                                <input class="form-check-input"
-                                    type="checkbox"
-                                    name="featured_sections[]"
-                                    value="HOT_SALE">
+                                </div>
 
-                                <label class="form-check-label">
-                                    Hot Sale
-                                </label>
-
-                            </div>
-
-                            <div class="form-check">
-
-                                <input class="form-check-input"
-                                    type="checkbox"
-                                    name="featured_sections[]"
-                                    value="TOP_NEW">
-
-                                <label class="form-check-label">
-                                    Top New
-                                </label>
-
-                            </div>
-
-                            <div class="form-check">
-
-                                <input class="form-check-input"
-                                    type="checkbox"
-                                    name="featured_sections[]"
-                                    value="TOP_SELLING">
-
-                                <label class="form-check-label">
-                                    Top Selling
-                                </label>
-
-                            </div>
-
-                            <div class="form-check">
-
-                                <input class="form-check-input"
-                                    type="checkbox"
-                                    name="featured_sections[]"
-                                    value="TOP_RATED">
-
-                                <label class="form-check-label">
-                                    Top Rated
-                                </label>
-
-                            </div>
+                            @endforeach
 
                         </div>
                         <button class="btn btn-dark w-100 rounded-3 py-3">
 
                             <i class="fas fa-save me-1"></i>
-                            Save Product
+                            {{ $isEdit ? 'Update Product' : 'Save Product' }}
 
                         </button>
 

@@ -25,7 +25,7 @@
                         <input type="text"
                                name="name"
                                class="form-control rounded-3"
-                               value="{{ $product->name }}">
+                               value="{{ $isEdit ? $product->name : '' }}"
 
                     </div>
 
@@ -81,7 +81,7 @@
                         <textarea
                             name="description"
                             rows="7"
-                            class="form-control rounded-3">{{ $product->description }}</textarea>
+                            class="form-control rounded-3">{{ $isEdit ? $product->description : '' }}</textarea>
 
                     </div>
 

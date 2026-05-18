@@ -146,9 +146,11 @@ if($isEdit && $product->product_adv_type){
                                 </label>
 
                                 <input type="number"
-                                       name="sale_price"
-                                       class="form-control rounded-3"
-                                       value="{{ $isEdit ? $product->sale_price : '' }}">
+                                    name="sale_price"
+                                    class="form-control rounded-3"
+                                    step="0.01"
+                                    min="0"
+                                    value="{{ $isEdit ? number_format((float)$product->sale_price, 2, '.', '') : '' }}"
 
                             </div>
 

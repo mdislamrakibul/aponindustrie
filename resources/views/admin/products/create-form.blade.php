@@ -1,15 +1,18 @@
+<!-- ADD PRODUCT MODAL -->
+
 <div class="modal fade"
      id="addProductModal"
      tabindex="-1"
      aria-hidden="true">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered"
+         style="max-width:95%;">
 
         <div class="modal-content border-0 rounded-4 overflow-hidden">
 
-            <div class="modal-header">
+            <div class="modal-header bg-white border-bottom">
 
-                <h5 class="modal-title">
+                <h5 class="modal-title fw-bold">
                     Add Product
                 </h5>
 
@@ -23,10 +26,35 @@
 
             </div>
 
-            @include('admin.products.partials.form')
+            @include('admin.products.form-content', [
+                'isEdit' => false,
+                'product' => null
+            ])
 
         </div>
 
     </div>
 
 </div>
+
+@push('scripts')
+
+<script>
+
+$('#image-input').on('change', function(e){
+
+    let reader = new FileReader();
+
+    reader.onload = function(event){
+
+        $('#preview-image').attr('src', event.target.result);
+
+    }
+
+    reader.readAsDataURL(e.target.files[0]);
+
+});
+
+</script>
+
+@endpush

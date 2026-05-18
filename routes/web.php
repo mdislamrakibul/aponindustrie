@@ -15,6 +15,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController as FrontProductController;
 
 use App\Http\Controllers\Admin\ProductManagementController;
+use App\Http\Controllers\Admin\InventoryController;
 
 
 
@@ -106,8 +107,9 @@ Route::middleware(['role:admin'])
     Route::post('/products/store', [App\Http\Controllers\Admin\ProductManagementController::class, 'store'])
         ->name('products.store');
 
-    Route::post('/products/{id}/update', [App\Http\Controllers\Admin\ProductManagementController::class, 'update'])
-        ->name('products.update');
+    Route::put('/products/{id}/update', 
+        [ProductManagementController::class, 'update']
+    )->name('products.update');
 
     Route::delete('/products/{id}', [App\Http\Controllers\Admin\ProductManagementController::class, 'destroy'])
         ->name('products.delete');
@@ -133,7 +135,18 @@ Route::middleware(['role:admin'])
 
 });
 
+//inventory-management
+Route::prefix('admin/inventory')->group(function () {
 
+    Route::get('/list',
+        [InventoryController::class, 'inventoryList']
+    )->name('inventory.list');
+
+    Route::get('/accounts',
+        [InventoryController::class, 'accountsTracking']
+    )->name('inventory.accounts');
+
+});
 //admin//
 
 

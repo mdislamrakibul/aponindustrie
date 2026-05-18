@@ -221,7 +221,7 @@
                                     </div>
                                     <ul class="product-meta font-xs color-grey mt-50" style="font-weight: bold">
                                         <li class="mb-5">SKU: <a href="#">{{ $product->sku }}</a></li>
-                                        @if (count(json_decode($product->tags))>0)
+                                        @if($product->tags && count(json_decode($product->tags)) > 0)
                                         <li class="mb-5">Tags:
 
                                             <a href="#" rel="tag">{{implode(', ', json_decode($product->tags))}}</a>

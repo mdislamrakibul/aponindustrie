@@ -63,7 +63,7 @@ class ProductManagementController extends Controller
             ->findOrFail($id);
 
         $categories = Category::with('children')
-            ->whereNull('parent_id')
+            ->where('parent_id', 0)
             ->get();
 
         return view('admin.products.edit', compact(

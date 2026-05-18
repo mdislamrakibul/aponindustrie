@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\Media;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {   
 
@@ -126,6 +126,7 @@ class Product extends Model
         // 3rd param: The local key in tbl_products (id)
         return $this->hasMany(Media::class, 'model_id')
             ->where('image_type', 'PRODUCT')
+            ->where('model_type', self::class)
             ->orderBy('position');
     }
 

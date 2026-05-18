@@ -294,6 +294,16 @@ $(document).on('click', '.edit-product-btn', function(){
 
         $('#editProductContent').html(response);
 
+    }).fail(function(xhr){
+
+        console.log(xhr.responseText);
+
+        $('#editProductContent').html(`
+            <div class="p-5 text-danger text-center">
+                Failed to load edit form
+            </div>
+        `);
+
     });
 
 });
