@@ -57,6 +57,9 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');
+        
+    Route::get('/admin/users/edit/{id}', [UserController::class, 'edit'])
+    ->name('admin.users.edit');
 
     Route::post('/users/store', [UserController::class, 'store'])
         ->name('users.store');
@@ -142,8 +145,11 @@ Route::prefix('admin/inventory')->group(function () {
         [InventoryController::class, 'inventoryList']
     )->name('inventory.list');
 
+    Route::post('/update', [InventoryController::class, 'inventoryUpdate'])
+        ->name('inventory.update');
+
     Route::get('/accounts',
-        [InventoryController::class, 'accountsTracking']
+    [InventoryController::class, 'inventoryAccounts']
     )->name('inventory.accounts');
 
 });

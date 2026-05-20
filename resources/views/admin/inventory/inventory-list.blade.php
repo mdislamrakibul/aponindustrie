@@ -23,15 +23,20 @@
     <div class="container-fluid">
 
         {{-- SUMMARY CARDS --}}
+
         <div class="row">
 
+            {{-- TOTAL PRODUCTS --}}
             <div class="col-lg-3 col-6">
 
                 <div class="small-box bg-info">
 
                     <div class="inner">
-                        <h3>1250</h3>
-                        <p>Total Inventory</p>
+
+                        <h3>{{ $totalProducts }}</h3>
+
+                        <p>Total Inventory Products</p>
+
                     </div>
 
                     <div class="icon">
@@ -42,47 +47,38 @@
 
             </div>
 
+            {{-- IN STOCK --}}
             <div class="col-lg-3 col-6">
 
                 <div class="small-box bg-success">
 
                     <div class="inner">
-                        <h3>25</h3>
-                        <p>Total Categories</p>
+
+                        <h3>{{ $inStockProducts }}</h3>
+
+                        <p>In Stock</p>
+
                     </div>
 
                     <div class="icon">
-                        <i class="fas fa-tags"></i>
+                        <i class="fas fa-check-circle"></i>
                     </div>
 
                 </div>
 
             </div>
 
+            {{-- LOW STOCK --}}
             <div class="col-lg-3 col-6">
 
                 <div class="small-box bg-warning">
 
                     <div class="inner">
-                        <h3>$52K</h3>
-                        <p>Total Stock Value</p>
-                    </div>
 
-                    <div class="icon">
-                        <i class="fas fa-dollar-sign"></i>
-                    </div>
+                        <h3>{{ $lowStockProducts }}</h3>
 
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-6">
-
-                <div class="small-box bg-danger">
-
-                    <div class="inner">
-                        <h3>12</h3>
                         <p>Low Stock</p>
+
                     </div>
 
                     <div class="icon">
@@ -93,8 +89,28 @@
 
             </div>
 
-        </div>
+            {{-- OUT OF STOCK --}}
+            <div class="col-lg-3 col-6">
 
+                <div class="small-box bg-danger">
+
+                    <div class="inner">
+
+                        <h3>{{ $outOfStockProducts }}</h3>
+
+                        <p>Out Of Stock</p>
+
+                    </div>
+
+                    <div class="icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
         {{-- INVENTORY UPDATE --}}
         <div class="card">
 
@@ -106,7 +122,10 @@
 
             <div class="card-body">
 
-                <form>
+                <form action="{{ route('inventory.update') }}"
+                    method="POST">
+
+                    @csrf
 
                     <div class="row">
 
@@ -114,15 +133,29 @@
 
                             <div class="form-group">
 
-                                <label>Product Name</label>
+                                <label>Product</label>
 
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Product Name">
+                                <select name="product_id"
+                                        class="form-control"
+                                        required>
+
+                                    <option value="">
+                                        Select Product
+                                    </option>
+
+                                    @foreach($products as $product)
+
+                                        <option value="{{ $product->id }}">
+                                            {{ $product->name }}
+                                        </option>
+
+                                    @endforeach
+
+                                </select>
 
                             </div>
-
                         </div>
+
 
                         <div class="col-md-3">
 
@@ -131,12 +164,14 @@
                                 <label>Quantity</label>
 
                                 <input type="number"
-                                       class="form-control"
-                                       placeholder="Quantity">
+                                    name="stock_quantity"
+                                    class="form-control"
+                                    >
 
                             </div>
 
                         </div>
+
 
                         <div class="col-md-3">
 
@@ -144,32 +179,44 @@
 
                                 <label>Purchase Price</label>
 
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Purchase Price">
+                                <input type="number"
+                                    step="0.01"
+                                    name="purchase_price"
+                                    class="form-control"
+                                    >
 
                             </div>
 
                         </div>
-
                         <div class="col-md-3">
 
                             <div class="form-group">
 
                                 <label>Selling Price</label>
 
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Selling Price">
+                                <input type="number"
+                                    step="0.01"
+                                    name="regular_price"
+                                    class="form-control"
+                                    >
 
                             </div>
 
                         </div>
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
 
                     </div>
 
-                    <button class="btn btn-primary">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
                         Save Inventory
+
                     </button>
 
                 </form>
@@ -241,77 +288,76 @@
 
                     @forelse($products as $product)
 
-                    <tr>
+                        <tr>
 
-                        <td>{{ $product->name }}</td>
+                            <td>
+                                {{ $product->name }}
+                            </td>
 
-                        <td>
-                            {{ $product->category_name ?? 'N/A' }}
-                        </td>
+                            <td>
+                                {{ $product->category->name ?? 'N/A' }}
+                            </td>
 
-                        <td>
-                            {{ $product->stock_quantity ?? 0 }}
-                        </td>
+                            <td>
+                                {{ $product->stock_quantity }}
+                            </td>
 
-                        <td>
-                            ${{ $product->purchase_price ?? 0 }}
-                        </td>
+                            <td>
+                                ৳ {{ number_format($product->purchase_price, 2) }}
+                            </td>
 
-                        <td>
-                            ${{ $product->sale_price ?? $product->regular_price }}
-                        </td>
+                            <td>
+                                ৳ {{ number_format($product->regular_price, 2) }}
+                            </td>
 
-                        <td>
+                            <td>
 
-                            @if($product->availability === 'INSTOCK')
+                                @if($product->stock_quantity == 0)
 
-                                <span class="badge bg-success">
-                                    In Stock
-                                </span>
+                                    <span class="badge bg-danger">
+                                        Out of Stock
+                                    </span>
 
-                            @elseif($product->availability === 'OUTOFSTOCK')
+                                @elseif($product->stock_quantity >= 1 && $product->stock_quantity <= 99)
 
-                                <span class="badge bg-danger">
-                                    Out of Stock
-                                </span>
+                                    <span class="badge bg-warning text-dark">
+                                        Low Stock
+                                    </span>
 
-                            @else
+                                @else
 
-                                <span class="badge bg-warning">
-                                    Pre Order
-                                </span>
+                                    <span class="badge bg-success">
+                                        In Stock
+                                    </span>
 
-                            @endif
+                                @endif
 
-                        </td>
+                            </td>
 
-                    </tr>
+                        </tr>
 
                     @empty
 
-                    <tr>
+                        <tr>
 
-                        <td colspan="6" class="text-center">
+                            <td colspan="6" class="text-center">
+                                No inventory products found.
+                            </td>
 
-                            No inventory data found
-
-                        </td>
-
-                    </tr>
+                        </tr>
 
                     @endforelse
 
                     </tbody>
 
                 </table>
+                <div class="card-footer clearfix">
+                    {{ $products->links() }}
+                </div>
 
             </div>
 
-            <div class="card-footer clearfix">
 
-                {{ $products->links() }}
-
-            </div>
 
         </div>
 
