@@ -406,100 +406,7 @@
 
     </div>
 </div>
-<div
-    class="modal fade"
-    id="salaryModal"
-    tabindex="-1"
->
 
-    <div class="modal-dialog modal-dialog-centered">
-
-        <div class="modal-content border-0 shadow-lg">
-
-            <div class="modal-header border-0">
-
-                <h5 class="modal-title">
-                    Add Salary
-                </h5>
-
-                <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                >
-                    <span>&times;</span>
-                </button>
-
-            </div>
-
-            <form
-                id="salaryForm"
-                method="POST"
-            >
-                @csrf
-
-                <div class="modal-body">
-
-                    <div class="mb-3">
-
-                        <label>Amount</label>
-
-                        <input
-                            type="number"
-                            name="amount"
-                            class="form-control"
-                            required
-                        >
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label>Type</label>
-
-                        <select
-                            name="type"
-                            class="form-control"
-                        >
-                            <option value="salary">Salary</option>
-                            <option value="bonus">Bonus</option>
-                            <option value="advance">Advance</option>
-                        </select>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label>Note</label>
-
-                        <textarea
-                            name="note"
-                            class="form-control"
-                            rows="3"
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-                <div class="modal-footer border-0">
-
-                    <button
-                        type="submit"
-                        class="btn btn-dark"
-                    >
-                        Save
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</div>
 @endsection
 @push('css')
 <style>
@@ -576,7 +483,7 @@
 </style>
 @endpush
 
-@push('js')
+@push('scripts')
 
 
 <script>
@@ -593,7 +500,6 @@ $('.edit-btn').on('click', function () {
     row.find('.edit-mode').removeClass('d-none');
 
     row.find('.edit-btn').addClass('d-none');
-    row.find('.salary-btn').addClass('d-none');
     row.find('.delete-form').addClass('d-none');
 
     row.find('.update-btn').removeClass('d-none');
@@ -630,7 +536,6 @@ $('.cancel-btn').on('click', function () {
     row.find('.edit-mode').addClass('d-none');
 
     row.find('.edit-btn').removeClass('d-none');
-    row.find('.salary-btn').removeClass('d-none');
     row.find('.delete-form').removeClass('d-none');
 
     row.find('.update-btn').addClass('d-none');
@@ -662,8 +567,12 @@ $('.update-btn').on('click', function () {
         url: '/admin/users/' + id + '/update',
         method: 'POST',
         data: payload,
-        success: function () {
-            location.reload();
+        success: function (response) {
+
+            if(response.success){
+                location.reload();
+            }
+
         },
         error: function (xhr) {
             alert(xhr.responseJSON.message || 'Update failed');
@@ -671,18 +580,7 @@ $('.update-btn').on('click', function () {
     });
 
 });
-$('.open-salary-modal').on('click', function () {
 
-    const userId = $(this).data('id');
-
-    $('#salaryForm').attr(
-        'action',
-        '/admin/accounts/store/' + userId
-    );
-
-    $('#salaryModal').modal('show');
-
-});
 
 </script>
 @endpush

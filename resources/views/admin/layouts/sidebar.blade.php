@@ -75,17 +75,17 @@
 
                         </li>
 
-                        {{-- ACCOUNTS MENU --}}
+                        {{-- Salary MENU --}}
                         <li class="nav-item">
 
                             <a
-                                href="{{ route('admin.accounts.index') }}"
-                                class="nav-link {{ request()->is('admin/accounts*') ? 'active' : '' }}"
+                                href="{{ route('admin.salary.index') }}"
+                                class="nav-link {{ request()->is('admin/salary*') ? 'active' : '' }}"
                             >
 
                                 <i class="fas fa-wallet nav-icon"></i>
 
-                                <p>Accounts</p>
+                                <p>Salary</p>
 
                             </a>
 
@@ -200,14 +200,52 @@
                     </ul>
 
                 </li>
-                <li class="nav-item">
-                    <a href=""
-                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
+                {{-- CUSTOMER MANAGEMENT --}}
+                <li class="nav-item has-treeview">
 
+                    <a href="#" class="nav-link">
+                    
                         <i class="nav-icon fas fa-users"></i>
 
-                        <p>Customer Management</p>
+                        <p>
+                            Customer Management
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+
                     </a>
+
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+
+                            <a href="{{ route('admin.customers.index') }}"
+                            class="nav-link">
+
+                                <i class="far fa-circle nav-icon"></i>
+
+                                <p>Customer List</p>
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a href="{{ route('admin.customers.top') }}"
+                            class="nav-link {{ request()->routeIs('admin.customers.top') ? 'active' : '' }}">
+
+                                <i class="nav-icon fas fa-crown"></i>
+
+                                <p>
+                                    Top Customers
+                                </p>
+
+                            </a>
+
+                        </li>
+                    </ul>
+
+
                 </li>
                 <li class="nav-item">
                     <a href=""

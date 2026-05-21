@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\CustomerController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
@@ -51,15 +52,13 @@ Route::post('/admin/login', [AuthController::class, 'adminLogin']);
 
 Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [InventoryController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');
         
-    Route::get('/admin/users/edit/{id}', [UserController::class, 'edit'])
-    ->name('admin.users.edit');
+    Route::get('/users/edit/{id}', [UserController::class, 'edit'])
+        ->name('users.edit');
 
     Route::post('/users/store', [UserController::class, 'store'])
         ->name('users.store');
@@ -83,58 +82,98 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         
     Route::get('/products/{id}', [ProductManagementController::class, 'show'])
     ->name('products.show');
+    // =====================================
+// CUSTOMER MANAGEMENT
+// =====================================
+
+    Route::get(
+        '/customers',
+        [App\Http\Controllers\Admin\CustomerController::class, 'index']
+    )->name('customers.index');
+
+    Route::get(
+        '/customers/order-history/{id}',
+        [App\Http\Controllers\Admin\CustomerController::class, 'orderHistory']
+    )->name('customers.order.history');
+
+    Route::get('/customers/top', 
+        [CustomerController::class, 'topCustomers']
+    )->name('customers.top');
+
+    Route::post('/top-customers/{id}/update-type',
+        [CustomerController::class, 'updateCustomerType']
+    )->name('customers.update.type');
+
+    
 });
 
-Route::middleware(['role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');
 
+    
+
+
 });
 //accounts
-
-
 
 Route::middleware(['role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-    // =============================
-// PRODUCT MANAGEMENT
-// =============================
+    /*
+    |--------------------------------------------------------------------------
+    | PRODUCT MANAGEMENT
+    |--------------------------------------------------------------------------
+    */
 
-    Route::get('/products', [App\Http\Controllers\Admin\ProductManagementController::class, 'index'])
-        ->name('products.index');
+    Route::get(
+        '/products',
+        [ProductManagementController::class, 'index']
+    )->name('products.index');
 
-    Route::post('/products/store', [App\Http\Controllers\Admin\ProductManagementController::class, 'store'])
-        ->name('products.store');
+    Route::post(
+        '/products/store',
+        [ProductManagementController::class, 'store']
+    )->name('products.store');
 
-    Route::put('/products/{id}/update', 
+    Route::put(
+        '/products/{id}/update',
         [ProductManagementController::class, 'update']
     )->name('products.update');
 
-    Route::delete('/products/{id}', [App\Http\Controllers\Admin\ProductManagementController::class, 'destroy'])
-        ->name('products.delete');
+    Route::delete(
+        '/products/{id}',
+        [ProductManagementController::class, 'destroy']
+    )->name('products.delete');
 
+    /*
+    |--------------------------------------------------------------------------
+    | SALARY MANAGEMENT
+    |--------------------------------------------------------------------------
+    */
 
-    Route::get('/accounts', [AccountController::class, 'index'])
-        ->name('accounts.index');
+    Route::get(
+        '/salary',
+        [AccountController::class, 'salary']
+    )->name('salary.index');
 
-    Route::get('/accounts/create/{id}', [AccountController::class, 'create'])
-        ->name('accounts.create');
+    Route::post(
+        '/salary/store',
+        [AccountController::class, 'salaryStore']
+    )->name('salary.store');
 
-    Route::post('/accounts/store/{id}', [AccountController::class, 'store'])
-        ->name('accounts.store');
+    Route::post(
+        '/salary/{id}/update',
+        [AccountController::class, 'salaryUpdate']
+    )->name('salary.update');
 
-    Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])
-        ->name('accounts.edit');
-
-    Route::post('/accounts/{id}/update', [AccountController::class, 'update'])
-        ->name('accounts.update');
-
-    Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])
-        ->name('accounts.delete');
+    Route::delete(
+        '/salary/{id}/delete',
+        [AccountController::class, 'salaryDelete']
+    )->name('salary.delete');
 
 });
 

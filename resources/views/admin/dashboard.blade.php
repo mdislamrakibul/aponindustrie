@@ -23,6 +23,333 @@
 
             </div>
         </div>
+      
+        {{-- USER ANALYTICS --}}
+        <div class="dashboard-section">
+
+            <div class="section-header mb-4">
+
+                <div>
+                    <h4 class="section-title">
+                        User Analytics
+                    </h4>
+
+                    <p class="section-subtitle">
+                        System users overview and role statistics
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                {{-- TOTAL USERS --}}
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <div class="modern-card modern-card-blue">
+
+                        <div class="modern-card-body">
+
+                            <div>
+                                <span class="card-label">
+                                    Total Users
+                                </span>
+
+                                <h2>
+                                    {{ $totalUsers }}
+                                </h2>
+                            </div>
+
+                            <div class="modern-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- ADMINS --}}
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <div class="modern-card modern-card-dark">
+
+                        <div class="modern-card-body">
+
+                            <div>
+                                <span class="card-label">
+                                    Admins
+                                </span>
+
+                                <h2>
+                                    {{ $totalAdmins }}
+                                </h2>
+                            </div>
+
+                            <div class="modern-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- VENDORS --}}
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <div class="modern-card modern-card-orange">
+
+                        <div class="modern-card-body">
+
+                            <div>
+                                <span class="card-label">
+                                    Vendors
+                                </span>
+
+                                <h2>
+                                    {{ $totalVendors }}
+                                </h2>
+                            </div>
+
+                            <div class="modern-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- CUSTOMERS --}}
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <div class="modern-card modern-card-purple">
+
+                        <div class="modern-card-body">
+
+                            <div>
+                                <span class="card-label">
+                                    Customers
+                                </span>
+
+                                <h2>
+                                    {{ $totalCustomers }}
+                                </h2>
+                            </div>
+
+                            <div class="modern-icon">
+                                <i class="fas fa-user-tag"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {{-- PRODUCT STOCK ANALYTICS --}}
+        <div class="dashboard-section mt-2">
+
+            <div class="section-header mb-4">
+
+                <div>
+                    <h4 class="section-title">
+                        Product Stock Analytics
+                    </h4>
+
+                    <p class="section-subtitle">
+                        Product availability and stock monitoring
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <div class="modern-card modern-card-cyan">
+
+                        <div class="modern-card-body">
+
+                            <div>
+                                <span class="card-label">
+                                    Total Products
+                                </span>
+
+                                <h2>{{ $totalProducts }}</h2>
+                            </div>
+
+                            <div class="modern-icon">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <div class="modern-card modern-card-green">
+
+                        <div class="modern-card-body">
+
+                            <div>
+                                <span class="card-label">
+                                    In Stock
+                                </span>
+
+                                <h2>{{ $inStockProducts }}</h2>
+                            </div>
+
+                            <div class="modern-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <div class="modern-card modern-card-yellow">
+
+                        <div class="modern-card-body">
+
+                            <div>
+                                <span class="card-label">
+                                    Low Stock
+                                </span>
+
+                                <h2>{{ $lowStockProducts }}</h2>
+                            </div>
+
+                            <div class="modern-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <div class="modern-card modern-card-red">
+
+                        <div class="modern-card-body">
+
+                            <div>
+                                <span class="card-label">
+                                    Out Of Stock
+                                </span>
+
+                                <h2>{{ $outOfStockProducts }}</h2>
+                            </div>
+
+                            <div class="modern-icon">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {{-- PRODUCT QUANTITY SUMMARY --}}
+        <div class="row mb-4">
+
+            <div class="col-12 mb-3">
+                <h5 class="dashboard-section-title">
+                    Product Quantity Summary
+                </h5>
+            </div>
+
+            {{-- TOTAL QUANTITY --}}
+            <div class="col-lg-4 col-md-6 col-12">
+
+                <div class="dashboard-card dashboard-card-dark">
+
+                    <div class="dashboard-card-content">
+
+                        <div>
+                            <h3>{{ $totalStockQuantity }}</h3>
+                            <p>Total Stock Quantity</p>
+                        </div>
+
+                        <div class="dashboard-icon">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- IN STOCK QUANTITY --}}
+            <div class="col-lg-4 col-md-6 col-12">
+
+                <div class="dashboard-card dashboard-card-success">
+
+                    <div class="dashboard-card-content">
+
+                        <div>
+                            <h3>{{ $inStockQuantity }}</h3>
+                            <p>In Stock Quantity</p>
+                        </div>
+
+                        <div class="dashboard-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- LOW STOCK QUANTITY --}}
+            <div class="col-lg-4 col-md-6 col-12">
+
+                <div class="dashboard-card dashboard-card-warning">
+
+                    <div class="dashboard-card-content">
+
+                        <div>
+                            <h3>{{ $lowStockQuantity }}</h3>
+                            <p>Low Stock Quantity</p>
+                        </div>
+
+                        <div class="dashboard-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
         <div class="row">
             <div class="col-lg-6">
@@ -281,3 +608,113 @@
   </div>
 
   @endsection
+
+
+@push('css')
+
+<style>
+
+.dashboard-section{
+    margin-bottom: 35px;
+}
+
+.section-title{
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.section-subtitle{
+    color: #6b7280;
+    margin: 0;
+    font-size: 14px;
+}
+
+.modern-card{
+    border-radius: 22px;
+    overflow: hidden;
+    padding: 26px;
+    position: relative;
+    transition: all .3s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.modern-card:hover{
+    transform: translateY(-6px);
+}
+
+.modern-card-body{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card-label{
+    font-size: 14px;
+    font-weight: 500;
+    opacity: .9;
+    display:block;
+    margin-bottom: 10px;
+    color:#fff;
+}
+
+.modern-card h2{
+    font-size: 34px;
+    font-weight: 800;
+    color:#fff;
+    margin:0;
+}
+
+.modern-icon{
+    width:70px;
+    height:70px;
+    border-radius:20px;
+    background:rgba(255,255,255,.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.modern-icon i{
+    color:#fff;
+    font-size:28px;
+}
+
+/* COLORS */
+
+.modern-card-blue{
+    background: linear-gradient(135deg,#2563eb,#1d4ed8);
+}
+
+.modern-card-dark{
+    background: linear-gradient(135deg,#111827,#1f2937);
+}
+
+.modern-card-orange{
+    background: linear-gradient(135deg,#f97316,#ea580c);
+}
+
+.modern-card-purple{
+    background: linear-gradient(135deg,#7c3aed,#6d28d9);
+}
+
+.modern-card-cyan{
+    background: linear-gradient(135deg,#06b6d4,#0891b2);
+}
+
+.modern-card-green{
+    background: linear-gradient(135deg,#10b981,#059669);
+}
+
+.modern-card-yellow{
+    background: linear-gradient(135deg,#f59e0b,#d97706);
+}
+
+.modern-card-red{
+    background: linear-gradient(135deg,#ef4444,#dc2626);
+}
+
+</style>
+
+@endpush

@@ -4,71 +4,148 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class AccountController extends Controller
 {
-    // LIST (user-wise)
-    public function index()
+
+    /*
+    |--------------------------------------------------------------------------
+    | SALARY PAGE
+    |--------------------------------------------------------------------------
+    */
+
+    public function salary()
     {
-        $accounts = DB::table('tbl_user_accounts')
-            ->join('tbl_info_user', 'tbl_user_accounts.user_id', '=', 'tbl_info_user.id')
-            ->select('tbl_user_accounts.*', 'tbl_info_user.first_name')
+        $users = DB::table('tbl_info_user')
+            ->whereIn('role', ['admin', 'vendor'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('admin.accounts.index', compact('accounts'));
+        $accounts = DB::table('tbl_user_accounts')
+            ->join(
+                'tbl_info_user',
+                'tbl_user_accounts.user_id',
+                '=',
+                'tbl_info_user.id'
+            )
+            ->select(
+                'tbl_user_accounts.*',
+                'tbl_info_user.first_name',
+                'tbl_info_user.last_name',
+                'tbl_info_user.role',
+                'tbl_info_user.salary'
+            )
+            ->latest('tbl_user_accounts.id')
+            ->get();
+
+        return view('admin.salary.index', compact(
+            'users',
+            'accounts'
+        ));
     }
 
-    // CREATE PAGE
-    public function create($id)
-    {
-        $user = DB::table('tbl_info_user')->where('id', $id)->first();
+    /*
+    |--------------------------------------------------------------------------
+    | STORE SALARY
+    |--------------------------------------------------------------------------
+    */
 
-        return view('admin.accounts.create', compact('user'));
-    }
-
-    // STORE
-    public function store(Request $request, $id)
+    public function salaryStore(Request $request)
     {
-        DB::table('tbl_user_accounts')->insert([
-            'user_id' => $id,
-            'amount' => $request->amount,
-            'type' => $request->type,
-            'note' => $request->note,
-            'created_at' => now()
+        $request->validate([
+
+            'user_id' => 'required',
+
+            'amount' => 'required|numeric',
+
+            'type' => 'required',
+
+            'note' => 'nullable',
         ]);
 
-        return redirect()->route('admin.accounts.index', $id)
-            ->with('success', 'Salary Added Successfully');
+        DB::table('tbl_user_accounts')->insert([
+
+            'user_id' => $request->user_id,
+
+            'amount' => $request->amount,
+
+            'type' => $request->type,
+
+            'note' => $request->note,
+
+            'created_at' => now(),
+
+            'updated_at' => now(),
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE USER SALARY COLUMN
+        |--------------------------------------------------------------------------
+        */
+
+        DB::table('tbl_info_user')
+            ->where('id', $request->user_id)
+            ->update([
+                'salary' => $request->amount,
+                'updated_at' => now(),
+            ]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Salary added successfully');
     }
 
-    // EDIT
-    public function edit($id)
-    {
-        $account = DB::table('tbl_user_accounts')->where('id', $id)->first();
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE SALARY
+    |--------------------------------------------------------------------------
+    */
 
-        return view('admin.accounts.edit', compact('account'));
-    }
-
-    // UPDATE
-    public function update(Request $request, $id)
+    public function salaryUpdate(Request $request, $id)
     {
+        $request->validate([
+
+            'amount' => 'required|numeric',
+
+            'type' => 'required',
+
+            'note' => 'nullable',
+        ]);
+
         DB::table('tbl_user_accounts')
             ->where('id', $id)
             ->update([
+
                 'amount' => $request->amount,
+
                 'type' => $request->type,
+
                 'note' => $request->note,
-                'updated_at' => now()
+
+                'updated_at' => now(),
             ]);
 
-        return back()->with('success', 'Updated Successfully');
+        return redirect()
+            ->back()
+            ->with('success', 'Salary updated successfully');
     }
 
-    // DELETE
-    public function destroy($id)
-    {
-        DB::table('tbl_user_accounts')->where('id', $id)->delete();
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE SALARY
+    |--------------------------------------------------------------------------
+    */
 
-        return back()->with('success', 'Deleted Successfully');
+    public function salaryDelete($id)
+    {
+        DB::table('tbl_user_accounts')
+            ->where('id', $id)
+            ->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Salary deleted successfully');
     }
 }

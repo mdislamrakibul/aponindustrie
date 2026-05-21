@@ -4,19 +4,17 @@
 
 <section class="content-header">
 
-    <div class="container-fluid">
-
-        <div class="row mb-2">
-
-            <div class="col-sm-6">
-                <h1>Inventory Management</h1>
-            </div>
-
-        </div>
-
-    </div>
 
 </section>
+<div class="d-flex align-items-center mb-3 mt-2">
+
+    <div class="summary-title-line"></div>
+
+    <h5 class="summary-title mb-0">
+        Product Stock Summary
+    </h5>
+
+</div>
 
 <section class="content">
 
@@ -111,6 +109,99 @@
             </div>
 
         </div>
+
+        <div class="d-flex align-items-center mb-3 mt-4">
+
+            <div class="summary-title-line bg-success"></div>
+
+            <h5 class="summary-title mb-0">
+                Product Quantity Summary
+            </h5>
+
+        </div>
+
+        <div class="row mt-4">
+
+            {{-- TOTAL QUANTITY --}}
+            <div class="col-lg-4 col-md-6 mb-4">
+
+                <div class="quantity-card quantity-card-primary">
+
+                    <div class="quantity-icon">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+
+                    <div class="quantity-content">
+
+                        <h3>
+                            {{ $totalStockQuantity ?? 0 }}
+                        </h3>
+
+                        <p>
+                            Total Stock Quantity
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- IN STOCK --}}
+            <div class="col-lg-4 col-md-6 mb-4">
+
+                <div class="quantity-card quantity-card-success">
+
+                    <div class="quantity-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+
+                    <div class="quantity-content">
+
+                        <h3>
+                            {{ $inStockQuantity ?? 0 }}
+                        </h3>
+
+                        <p>
+                            Available Stock Quantity
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- LOW STOCK --}}
+            <div class="col-lg-4 col-md-6 mb-4">
+
+                <div class="quantity-card quantity-card-warning">
+
+                    <div class="quantity-icon">
+                        <i class="fas fa-exclamation"></i>
+                    </div>
+
+                    <div class="quantity-content">
+
+                        <h3>
+                            {{ $lowStockQuantity ?? 0 }}
+                        </h3>
+
+                        <p>
+                            Low Stock Quantity
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        
+    </div>
+
+
         {{-- INVENTORY UPDATE --}}
         <div class="card">
 
@@ -366,3 +457,122 @@
 </section>
 
 @endsection
+@push('css')
+
+<style>
+
+/* =========================================
+QUANTITY SUMMARY NEW DESIGN
+========================================= */
+
+.quantity-card {
+
+    position: relative;
+
+    background: #fff;
+
+    border-radius: 18px;
+
+    padding: 28px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    transition: .3s ease;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,.06);
+
+    border: 1px solid #f1f5f9;
+}
+
+.quantity-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 12px 24px rgba(0,0,0,.10);
+}
+
+.quantity-icon {
+
+    width: 72px;
+
+    height: 72px;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 28px;
+
+    color: #fff;
+
+    flex-shrink: 0;
+}
+
+.quantity-content h3 {
+
+    margin: 0;
+
+    font-size: 32px;
+
+    font-weight: 700;
+
+    color: #111827;
+}
+
+.quantity-content p {
+
+    margin: 6px 0 0;
+
+    color: #64748b;
+
+    font-size: 15px;
+
+    font-weight: 500;
+}
+
+/* PRIMARY */
+
+.quantity-card-primary .quantity-icon {
+
+    background: linear-gradient(
+        135deg,
+        #3b82f6,
+        #2563eb
+    );
+}
+
+/* SUCCESS */
+
+.quantity-card-success .quantity-icon {
+
+    background: linear-gradient(
+        135deg,
+        #10b981,
+        #059669
+    );
+}
+
+/* WARNING */
+
+.quantity-card-warning .quantity-icon {
+
+    background: linear-gradient(
+        135deg,
+        #f59e0b,
+        #d97706
+    );
+}
+
+</style>
+
+@endpush
