@@ -14,8 +14,8 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
 
 @endphp
 <form method="POST"
-    action="{{ $isEdit 
-        ? route('admin.products.update', $product->id) 
+    action="{{ $isEdit
+        ? route('admin.products.update', $product->id)
         : route('admin.products.store') }}"
     enctype="multipart/form-data">
 
@@ -197,8 +197,8 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
 
                             <img
                                 id="preview-image"
-                                src="{{ $image 
-                                    ? asset($image->file_path . $image->image_name) 
+                                src="{{ $image
+                                    ? asset($image->file_path . $image->image_name)
                                     : asset('admin/no-image.png') }}"
                                 class="img-fluid rounded-4 border"
                                 style="height:250px;width:100%;object-fit:cover;">

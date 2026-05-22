@@ -220,7 +220,7 @@
 
     align-items: center;
 
-    gap: 10px;
+    gap: 5px;
 }
 
 </style>

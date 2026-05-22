@@ -2,7 +2,7 @@
 
     <!-- Brand Logo -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
-        
+
         <div class="image">
             <img
                 src="{{ !empty(session('user_image'))
@@ -93,8 +93,8 @@
 
                     </ul>
 
-                </li>                               
-                
+                </li>
+
                 <li class="nav-item has-treeview
                     {{ request()->is('admin/products*') ? 'menu-open' : '' }}">
 

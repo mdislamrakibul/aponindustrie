@@ -21,11 +21,10 @@ class ProductManagementController extends Controller
         // SEARCH
         if ($request->search) {
 
-            $query->where(function($q) use ($request){
+            $query->where(function ($q) use ($request) {
 
-                $q->where('name', 'LIKE', '%'.$request->search.'%')
-                  ->orWhere('id', $request->search);
-
+                $q->where('name', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('id', $request->search);
             });
         }
 
@@ -202,7 +201,6 @@ class ProductManagementController extends Controller
             );
 
             $product->is_featured = 1;
-
         } else {
 
             $product->product_adv_type = null;
@@ -256,5 +254,4 @@ class ProductManagementController extends Controller
             ->back()
             ->with('success', 'Product status updated successfully');
     }
-
 }
