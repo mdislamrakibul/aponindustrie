@@ -183,7 +183,7 @@
 
 
 
-        <div class="divider">PLEASE LOGIN TO START SESSION</div>
+        <div class="divider">PLEASE, LOGIN TO START SESSION</div>
 
        {{--  <div class="footer">
             Don't have an account? <a href="#">Sign up</a>
