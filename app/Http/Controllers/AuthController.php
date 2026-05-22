@@ -122,7 +122,6 @@ class AuthController extends Controller
         if (!$user) {
             return back()->with('error', 'Invalid credentials');
         }
-
         if (!Hash::check($request->password, $user->password)) {
             return back()->with('error', 'Invalid credentials');
         }
@@ -131,6 +130,7 @@ class AuthController extends Controller
         if (!in_array($user->role, ['ADMIN', 'VENDOR'])) {
             return back()->with('error', 'Unauthorized access');
         }
+
 
         // Update session
         session([
