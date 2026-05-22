@@ -62,9 +62,7 @@
                         $purchasePrice = (float) ($product->purchase_price ?? 0);
 
                         $salePrice = (float) (
-                            $product->package_price
-                            ?? $product->regular_price
-                            ?? 0
+                            $product->regular_price ?? 0
                         );
 
                         $discountPrice = (float) ($product->discount_value ?? 0);

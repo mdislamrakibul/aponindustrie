@@ -21,10 +21,99 @@ User Mgmt
                     </h3>
                 </div>
 
+
                 <button type="button" class="btn btn-primary btn-sm px-3" onclick="toggleUserForm()">
                     <i class="fas fa-user-plus mr-1"></i>
                     Add User
                 </button>
+
+            </div>
+            {{-- USER DASHBOARD CARDS --}}
+            <div class="row mb-4">
+
+                {{-- TOTAL USERS --}}
+                <div class="col-lg-3 col-6">
+
+                    <div class="small-box bg-info">
+
+                        <div class="inner">
+
+                            <h3>{{ $totalUsers }}</h3>
+
+                            <p>Total Users</p>
+
+                        </div>
+
+                        <div class="icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- ACTIVE USERS --}}
+                <div class="col-lg-3 col-6">
+
+                    <div class="small-box bg-success">
+
+                        <div class="inner">
+
+                            <h3>{{ $activeUsers }}</h3>
+
+                            <p>Active Users</p>
+
+                        </div>
+
+                        <div class="icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- INACTIVE USERS --}}
+                <div class="col-lg-3 col-6">
+
+                    <div class="small-box bg-danger">
+
+                        <div class="inner">
+
+                            <h3>{{ $inactiveUsers }}</h3>
+
+                            <p>Inactive Users</p>
+
+                        </div>
+
+                        <div class="icon">
+                            <i class="fas fa-user-times"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- CUSTOMERS --}}
+                <div class="col-lg-3 col-6">
+
+                    <div class="small-box bg-warning">
+
+                        <div class="inner">
+
+                            <h3>{{ $customerUsers }}</h3>
+
+                            <p>Customers</p>
+
+                        </div>
+
+                        <div class="icon">
+                            <i class="fas fa-user-tag"></i>
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 

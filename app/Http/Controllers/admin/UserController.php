@@ -5,19 +5,31 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Show all users
-     */
+
     public function index()
     {
-        $users = DB::table('tbl_info_user')
-            ->latest()
-            ->paginate(10);
+        $users = User::latest()->paginate(10);
 
-        return view('admin.users.index', compact('users'));
+        $totalUsers = User::count();
+
+        $activeUsers = User::where('status', 'active')->count();
+
+
+        $inactiveUsers = User::where('status', 'inactive')->count();
+
+        $customerUsers = User::where('role', 'customer')->count();
+
+        return view('admin.users.index', compact(
+            'users',
+            'totalUsers',
+            'activeUsers',
+            'inactiveUsers',
+            'customerUsers'
+        ));
     }
 
     public function store(Request $request)
@@ -123,4 +135,5 @@ class UserController extends Controller
         return redirect()->route('admin.users')
                          ->with('success', 'User deleted successfully');
     }
+
 }

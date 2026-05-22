@@ -126,8 +126,7 @@ class Product extends Model
         // 3rd param: The local key in tbl_products (id)
         return $this->hasMany(Media::class, 'model_id')
             ->where('image_type', 'PRODUCT')
-            ->where('model_type', self::class)
-            ->orderBy('position');
+            ->orderBy('position', 'asc');
     }
 
 

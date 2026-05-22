@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Login;
 use App\Models\User;
+use App\Models\Login;
+
 
 class AuthController extends Controller
 {
@@ -131,14 +132,19 @@ class AuthController extends Controller
             return back()->with('error', 'Unauthorized access');
         }
 
+        // Update session
         session([
             'user_id' => $user->id,
-            'user_name' => $user->first_name,
+            'user_name' => trim($user->first_name . ' ' . $user->last_name),
             'user_mobile' => $user->mobile_no,
-            'user_role' => $user->role,
+            'user_role' => strtolower($user->role),
         ]);
 
-        return redirect('/admin/dashboard');
+        // Security
+        $request->session()->regenerate();
+
+        return redirect('/admin/dashboard')
+            ->with('success', 'Admin login successful');
     }
     private function normalizeBdNumber($number)
     {

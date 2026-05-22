@@ -61,6 +61,9 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/admin/users/edit/{id}', [UserController::class, 'edit'])
         ->name('admin.users.edit');
 
+    Route::get('/admin/users/edit/{id}', [UserController::class, 'edit'])
+        ->name('admin.users.edit');
+
     Route::post('/users/store', [UserController::class, 'store'])
         ->name('users.store');
 
