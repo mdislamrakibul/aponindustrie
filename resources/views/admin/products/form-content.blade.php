@@ -8,11 +8,16 @@ $image = ($isEdit && $product)
     ? $product->media->first()
     : null;
 
-$featuredSections = ($isEdit && $product && $product->product_adv_type)
+$featuredSections = (
+    $isEdit &&
+    $product &&
+    $product->product_adv_type
+)
     ? json_decode($product->product_adv_type, true)
     : [];
 
 @endphp
+
 <form method="POST"
     action="{{ $isEdit 
         ? route('admin.products.update', $product->id) 
@@ -51,7 +56,15 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                                 name="name"
                                 class="form-control rounded-3"
                                 placeholder="Product Name"
-                                value="{{ $isEdit && $product ? $product->name : '' }}">
+                                value="{{ old('name', $isEdit && $product ? $product->name : '') }}">
+
+                            @error('name')
+
+                                <small class="text-danger">
+                                    {{ $message }}
+                                </small>
+
+                            @enderror
 
                         </div>
                         <div class="row">
@@ -65,7 +78,15 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                                 <input type="text"
                                     name="sku"
                                     class="form-control rounded-3"
-                                    value="{{ $isEdit && $product ? $product->sku : '' }}">
+                                    value="{{ old('sku', $isEdit && $product ? $product->sku : '') }}">
+
+                                @error('sku')
+
+                                    <small class="text-danger">
+                                        {{ $message }}
+                                    </small>
+
+                                @enderror
 
                             </div>
 
@@ -77,9 +98,16 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
 
                                 <input type="text"
                                     name="barcode"
+                                    @error('category_id')
+
+                                        <small class="text-danger">
+                                            {{ $message }}
+                                        </small>
+
+                                    @enderror
                                     class="form-control rounded-3"
                                     value="{{ $isEdit && $product ? $product->barcode : '' }}">
-
+                               
                             </div>
 
                         </div>
@@ -93,7 +121,15 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                             <textarea
                                 name="short_description"
                                 rows="4"
-                                class="form-control rounded-3">{{ $isEdit ? $product->short_description : '' }}</textarea>
+                                class="form-control rounded-3">{{ old('short_description', $isEdit ? $product->short_description : '') }}</textarea>
+
+                            @error('short_description')
+
+                                <small class="text-danger">
+                                    {{ $message }}
+                                </small>
+
+                            @enderror
 
                         </div>
 
@@ -105,7 +141,15 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                             <textarea
                             name="description"
                             rows="7"
-                            class="form-control rounded-3">{{ $isEdit ? $product->description : '' }}</textarea>
+                            class="form-control rounded-3">{{ old('description', $isEdit ? $product->description : '') }}</textarea>
+
+                            @error('description')
+
+                                <small class="text-danger">
+                                    {{ $message }}
+                                </small>
+
+                            @enderror
 
                         </div>
 
@@ -134,7 +178,11 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                                     name="regular_price"
                                     class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->regular_price : '' }}">
-
+                                @error('name')
+                                    <div class="text-danger small mt-1">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="col-md-4 mb-4">
 
@@ -146,7 +194,11 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                                     name="sale_price"
                                     class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->sale_price : '' }}">
-
+                                @error('name')
+                                    <div class="text-danger small mt-1">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
 
                             <div class="col-md-4 mb-4">
@@ -159,7 +211,11 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                                     name="stock_quantity"
                                     class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->stock_quantity : '' }}">
-
+                                @error('name')
+                                    <div class="text-danger small mt-1">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="col-md-4 mb-4">
 
@@ -171,7 +227,11 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                                     name="minimum_order"
                                     class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->minimum_order : 1 }}">
-
+                                @error('name')
+                                    <div class="text-danger small mt-1">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
 
                         </div>
@@ -197,18 +257,23 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
 
                             <img
                                 id="preview-image"
-                                src="{{ $image 
-                                    ? asset($image->file_path . $image->image_name) 
+                                src="{{ $image
+                                    ? asset($image->file_path . $image->image_name)
                                     : asset('admin/no-image.png') }}"
-                                class="img-fluid rounded-4 border"
-                                style="height:250px;width:100%;object-fit:cover;">
+                                class="preview-image img-fluid rounded-4 border">
 
                         </div>
 
                         <input type="file"
-                            name="image"
                             id="image-input"
-                            class="form-control rounded-3">
+                            name="image"
+                            class="image-input form-control rounded-3">
+                        
+                        @error('image')
+                            <div class="text-danger small mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
 
                     </div>
 
@@ -260,6 +325,13 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                                 @endforeach
 
                             </select>
+                            @error('category_id')
+
+                                <small class="text-danger">
+                                    {{ $message }}
+                                </small>
+
+                            @enderror
 
                         </div>
 
@@ -306,7 +378,11 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                                 class="form-control rounded-3"
                                 placeholder="kitchen, jar, plastic"
                                 value="{{ $isEdit ? $product->tags : '' }}">
-
+                            @error('name')
+                                <div class="text-danger small mt-1">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="mb-4">
 
@@ -333,7 +409,11 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
                                         name="featured_sections[]"
                                         value="{{ $value }}"
                                         {{ in_array($value, $featuredSections) ? 'checked' : '' }}>
-
+                                    @error('name')
+                                        <div class="text-danger small mt-1">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                     <label class="form-check-label">
                                         {{ $label }}
                                     </label>
@@ -361,3 +441,22 @@ $featuredSections = ($isEdit && $product && $product->product_adv_type)
     </div>
 
 </form>
+<script>
+$(document).on('change', '.image-input', function(e){
+
+    let reader = new FileReader();
+
+    let preview = $(this)
+        .closest('.card-body')
+        .find('.preview-image');
+
+    reader.onload = function(event){
+
+        preview.attr('src', event.target.result);
+
+    }
+
+    reader.readAsDataURL(e.target.files[0]);
+
+});
+</script>

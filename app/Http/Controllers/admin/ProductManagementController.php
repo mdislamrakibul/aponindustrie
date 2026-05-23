@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Media;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class ProductManagementController extends Controller
 {
@@ -81,14 +82,24 @@ class ProductManagementController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-
-            'name' => 'required|max:255',
+            'name' => 'required|string|max:255',
+            'sku' => 'required|string|unique:tbl_products,sku',
             'category_id' => 'required',
-            'regular_price' => 'required|numeric',
-
+            'short_description' => 'required',
+            'description' => 'required',
+            'status' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'name.required' => 'Product name is required',
+            'sku.required' => 'SKU is required',
+            'sku.unique' => 'This SKU already exists',
+            'category_id.required' => 'Please select category',
+            'image.required' => 'Product image is required',
         ]);
 
         $product = new Product();
+
+        $product->uploader_id = session('user_id');
 
         $product->name = $request->name;
 
@@ -104,9 +115,9 @@ class ProductManagementController extends Controller
 
         $product->barcode = $request->barcode;
 
-        $product->regular_price = $request->regular_price;
+        $product->regular_price = $request->regular_price ?? 0;
 
-        $product->sale_price = $request->sale_price;
+        $product->sale_price = $request->sale_price ?? 0;
 
         $product->stock_quantity = $request->stock_quantity ?? 0;
 
@@ -133,22 +144,29 @@ class ProductManagementController extends Controller
 
             $image = $request->file('image');
 
-            $imageName = time() . '.' . $image->extension();
+            $imageName = time() . '_' . uniqid() . '.' . $image->extension();
 
             $destinationPath = public_path('uploads/products/');
 
+            // CREATE FOLDER IF NOT EXISTS
+            if (!file_exists($destinationPath)) {
+
+                mkdir($destinationPath, 0777, true);
+            }
+
+            // MOVE IMAGE
             $image->move($destinationPath, $imageName);
 
+            // SAVE DATABASE
             Media::create([
-
+                'title' => $product->name,
                 'model_id' => $product->id,
-
                 'model_type' => Product::class,
-
-                'image_name' => $imageName,
-
                 'file_path' => 'uploads/products/',
-
+                'image_name' => $imageName,
+                'file_type' => 'image',
+                'image_type' => 'PRODUCT',
+                'is_active' => 1,
             ]);
         }
 
@@ -161,11 +179,13 @@ class ProductManagementController extends Controller
         $product = Product::findOrFail($id);
 
         $request->validate([
-
-            'name' => 'required|max:255',
+            'name' => 'required|string|max:255',
+            'sku' => 'required|unique:tbl_products,sku,' . $product->id,
             'category_id' => 'required',
-            'regular_price' => 'required|numeric',
-
+            'short_description' => 'required',
+            'description' => 'required',
+            'status' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $product->name = $request->name;
@@ -180,15 +200,7 @@ class ProductManagementController extends Controller
 
         $product->sku = $request->sku;
 
-        $product->barcode = $request->barcode;
-
-        $product->regular_price = $request->regular_price;
-
-        $product->sale_price = $request->sale_price;
-
-        $product->stock_quantity = $request->stock_quantity ?? 0;
-
-        $product->minimum_order = $request->minimum_order ?? 1;
+        //$product->barcode = $request->barcode;
 
         $product->status = $request->status;
 
@@ -213,13 +225,19 @@ class ProductManagementController extends Controller
         $product->save();
 
         // IMAGE UPDATE
+        
         if ($request->hasFile('image')) {
 
             $image = $request->file('image');
 
-            $imageName = time() . '.' . $image->extension();
+            $imageName = time() . '_' . uniqid() . '.' . $image->extension();
 
             $destinationPath = public_path('uploads/products/');
+
+            if (!file_exists($destinationPath)) {
+
+                mkdir($destinationPath, 0777, true);
+            }
 
             $image->move($destinationPath, $imageName);
 

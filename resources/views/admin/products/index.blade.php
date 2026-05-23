@@ -112,7 +112,9 @@
                         @endphp
 
                         <img
-                            src="{{ $image ? asset($image->file_path . $image->image_name) : asset('admin/no-image.png') }}"
+                            src="{{ $image 
+                                ? asset($image->file_path . $image->image_name)
+                                : asset('admin/no-image.png') }}"
                             width="50"
                             height="50"
                             style="object-fit:cover;border-radius:6px;"
@@ -308,19 +310,7 @@ $(document).on('click', '.edit-product-btn', function(){
 
 });
 
-$('#image-input').on('change', function(e){
 
-    let reader = new FileReader();
-
-    reader.onload = function(event){
-
-        $('#preview-image').attr('src', event.target.result);
-
-    }
-
-    reader.readAsDataURL(e.target.files[0]);
-
-});
 
 
 </script>

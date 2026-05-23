@@ -1,15 +1,26 @@
 @php
 
-$isEdit = isset($product);
+$isEdit = $isEdit ?? false;
+
+$product = $product ?? null;
+
+$image = null;
+
+if ($isEdit && $product && $product->media) {
+
+    $image = $product->media->first();
+
+}
 
 $featuredSections = [];
 
-if($isEdit && $product->product_adv_type){
+if ($isEdit && $product && $product->product_adv_type) {
 
     $featuredSections = json_decode(
         $product->product_adv_type,
         true
-    ) ?? [];
+    );
+
 }
 
 @endphp
@@ -48,9 +59,16 @@ if($isEdit && $product->product_adv_type){
                             </label>
 
                             <input type="text"
-                                   name="name"
-                                   class="form-control rounded-3"
-                                   value="{{ $isEdit ? $product->name : '' }}">
+                                name="name"
+                                class="form-control rounded-3 @error('name') is-invalid @enderror"
+                                placeholder="Product Name"
+                                value="{{ old('name', $isEdit && $product ? $product->name : '') }}">
+
+                            @error('name')
+                                <div class="text-danger small mt-1">
+                                    {{ $message }}
+                                </div>
+                            @enderror
 
                         </div>
 
@@ -67,18 +85,11 @@ if($isEdit && $product->product_adv_type){
                                        class="form-control rounded-3"
                                        value="{{ $isEdit ? $product->sku : '' }}">
 
-                            </div>
-
-                            <div class="col-md-6 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Barcode
-                                </label>
-
-                                <input type="text"
-                                       name="barcode"
-                                       class="form-control rounded-3"
-                                       value="{{ $isEdit ? $product->barcode : '' }}">
+                                @error('sku')
+                                    <div class="text-danger small mt-1">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
 
                             </div>
 
@@ -114,77 +125,6 @@ if($isEdit && $product->product_adv_type){
 
                 </div>
 
-                <!-- PRICING -->
-
-                <div class="card border-0 shadow-sm rounded-4 mt-4">
-
-                    <div class="card-body p-4">
-
-                        <h5 class="fw-bold mb-4">
-                            Pricing & Inventory
-                        </h5>
-
-                        <div class="row">
-
-                            <div class="col-md-4 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Regular Price
-                                </label>
-
-                                <input type="number"
-                                       name="regular_price"
-                                       class="form-control rounded-3"
-                                       value="{{ $isEdit ? $product->regular_price : '' }}">
-
-                            </div>
-
-                            <div class="col-md-4 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Sale Price
-                                </label>
-
-                                <input type="number"
-                                    name="sale_price"
-                                    class="form-control rounded-3"
-                                    step="0.01"
-                                    min="0"
-                                    value="{{ $isEdit ? number_format((float)$product->sale_price, 2, '.', '') : '' }}"
-
-                            </div>
-
-                            <div class="col-md-4 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Stock Quantity
-                                </label>
-
-                                <input type="number"
-                                       name="stock_quantity"
-                                       class="form-control rounded-3"
-                                       value="{{ $isEdit ? $product->stock_quantity : '' }}">
-
-                            </div>
-
-                            <div class="col-md-4 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Minimum Order
-                                </label>
-
-                                <input type="number"
-                                       name="minimum_order"
-                                       class="form-control rounded-3"
-                                       value="{{ $isEdit ? $product->minimum_order : 1 }}">
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
 
             </div>
 
@@ -202,31 +142,20 @@ if($isEdit && $product->product_adv_type){
                             Product Image
                         </h5>
 
-                        <div class="mb-3 text-center">
-
-                            @php
-                                $productImage = null;
-
-                                if($isEdit && $product->media->count()) {
-                                    $productImage = asset(
-                                        $product->media->first()->file_path .
-                                        $product->media->first()->image_name
-                                    );
-                                }
-                            @endphp
+                        <div class="mb-3">
 
                             <img
-                                id="preview-image"
-                                src="{{ $productImage ?? asset('admin/no-image.png') }}"
-                                class="img-fluid rounded-4 border"
+                                src="{{ $image 
+                                    ? asset($image->file_path . '/' . $image->image_name) 
+                                    : asset('admin/no-image.png') }}"
+                                class="preview-image img-fluid rounded-4 border"
                                 style="height:250px;width:100%;object-fit:cover;">
 
                         </div>
 
                         <input type="file"
-                               name="image"
-                               id="image-input"
-                               class="form-control rounded-3">
+                            name="image"
+                            class="image-input form-control rounded-3">
 
                     </div>
 
@@ -296,7 +225,7 @@ if($isEdit && $product->product_adv_type){
 
                                 <option
                                     value="PUBLISHED"
-                                    {{ $isEdit && $product->status == 'PUBLISHED' ? 'selected' : '' }}
+                                    {{ ($isEdit && $product->status == 'PUBLISHED') || (!$isEdit) ? 'selected' : '' }}
                                 >
                                     Published
                                 </option>
