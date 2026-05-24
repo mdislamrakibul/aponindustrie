@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Login;
+use App\Services\UserSyncService;
 
 
 
@@ -91,15 +92,15 @@ class AuthController extends Controller
             'password' => 'required|min:6'
         ]);
 
-        Login::create([
+        $loginUser = Login::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'phone' => $request->mobile_no,
             'password' => Hash::make($request->password),
-            'role' => 'USER',
-            'status' => 'ACTIVE'
+            'role' => 'customer',
+            'status' => 'active'
         ]);
-
+        UserSyncService::syncToUserTable($loginUser);
         return redirect('/login')->with('success', 'Account created successfully');
     }
 

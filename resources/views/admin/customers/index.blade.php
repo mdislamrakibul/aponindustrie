@@ -66,7 +66,7 @@
                             <tr>
 
                                 <td>
-                                    #{{ $customer->id }}
+                                    {{ $customer->id }}
                                 </td>
 
                                 <td>

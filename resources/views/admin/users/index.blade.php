@@ -128,6 +128,9 @@
                     </div>
                 @endif
 
+
+{{-- DELETE BUTTON HIDDEN TEMPORARILY
+
                 <form action="{{ route('admin.users.store') }}" method="POST">
                     @csrf
 
@@ -200,6 +203,7 @@
                     </div>
 
                 </form>
+    --}}
 
             </div>
 
@@ -295,6 +299,10 @@
 
                                         <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>
                                             Admin
+                                        </option>
+
+                                        <option value="" {{ $user->role == '' ? 'selected' : '' }}>
+                                            Accountent
                                         </option>
                                     </select>
 

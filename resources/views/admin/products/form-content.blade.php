@@ -90,25 +90,6 @@ $featuredSections = (
 
                             </div>
 
-                            <div class="col-md-6 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Barcode
-                                </label>
-
-                                <input type="text"
-                                    name="barcode"
-                                    @error('category_id')
-
-                                        <small class="text-danger">
-                                            {{ $message }}
-                                        </small>
-
-                                    @enderror
-                                    class="form-control rounded-3"
-                                    value="{{ $isEdit && $product ? $product->barcode : '' }}">
-                               
-                            </div>
 
                         </div>
 
@@ -442,21 +423,28 @@ $featuredSections = (
 
 </form>
 <script>
-$(document).on('change', '.image-input', function(e){
 
-    let reader = new FileReader();
+$(document).on('change', '.image-input', function (e) {
 
-    let preview = $(this)
-        .closest('.card-body')
-        .find('.preview-image');
+    const file = e.target.files[0];
 
-    reader.onload = function(event){
-
-        preview.attr('src', event.target.result);
-
+    if (!file) {
+        return;
     }
 
-    reader.readAsDataURL(e.target.files[0]);
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+
+        $('.preview-image').attr(
+            'src',
+            event.target.result
+        );
+
+    };
+
+    reader.readAsDataURL(file);
 
 });
+
 </script>

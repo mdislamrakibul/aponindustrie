@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductController as FrontProductController;
 
 use App\Http\Controllers\Admin\ProductManagementController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 
 
@@ -32,14 +33,26 @@ use App\Http\Controllers\Admin\InventoryController;
 */
 
 
-//login//
-Route::get('/login', [AuthController::class, 'showLogin']);
-Route::post('/login', [AuthController::class, 'login']);
-//login//
+/*
+|--------------------------------------------------------------------------
+| USER AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register');
+
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.post');
+
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.post');
 
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
-
 
     
 //OTP//
@@ -83,8 +96,8 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/products/{id}', [ProductManagementController::class, 'show'])
     ->name('products.show');
     // =====================================
-// CUSTOMER MANAGEMENT
-// =====================================
+    // CUSTOMER MANAGEMENT
+    // =====================================
 
     Route::get(
         '/customers',
@@ -103,6 +116,12 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('/top-customers/{id}/update-type',
         [CustomerController::class, 'updateCustomerType']
     )->name('customers.update.type');
+
+
+    Route::get(
+        '/activity-logs',
+        [App\Http\Controllers\Admin\ActivityLogController::class, 'index']
+    )->name('activity.logs');
 
     
 });

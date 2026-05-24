@@ -7,7 +7,9 @@
     <div class="col-md-4">
 
         <img
-            src="{{ $image ? asset($image->file_path . $image->image_name) : asset('admin/no-image.png') }}"
+            src="{{ $image 
+                ? asset($image->file_path . $image->image_name)
+                : asset('admin/no-image.png') }}"
             class="img-fluid rounded-4 border">
 
     </div>
@@ -52,8 +54,8 @@
             </tr>
 
             <tr>
-                <th>Barcode</th>
-                <td>{{ $product->barcode }}</td>
+                <th>Short Description</th>
+                <td>{{ $product->short_description }}</td>
             </tr>
 
             <tr>

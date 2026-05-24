@@ -84,7 +84,7 @@
 
                 <tr>
 
-                    <th>ID</th>
+                    <th>Product ID</th>
                     <th>Image</th>
                     <th>Name</th>
                     <th>Category</th>
@@ -103,7 +103,7 @@
 
                 <tr>
 
-                    <td>{{ $product->id }}</td>
+                    <td>#PRD{{ $product->id }}</td>
 
                     <td>
 
@@ -245,7 +245,14 @@
                 <h5 class="modal-title">
                      Product Details 
                 </h5> 
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button> 
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
             </div> 
             <div class="modal-body" id="viewProductContent"> Loading... 
 

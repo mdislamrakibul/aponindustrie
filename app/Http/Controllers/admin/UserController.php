@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\ActivityLog;
 
 class UserController extends Controller
 {
@@ -52,7 +53,7 @@ class UserController extends Controller
 
             ]);
 
-            DB::table('tbl_info_user')->insert([
+            $userId = DB::table('tbl_info_user')->insertGetId([
 
                 'first_name' => $validated['first_name'],
 
@@ -67,6 +68,24 @@ class UserController extends Controller
                 'created_at' => now(),
 
                 'updated_at' => now(),
+            ]);
+
+            ActivityLog::create([
+
+                'user_id' => session('user_id'),
+
+                'module' => 'User Management',
+
+                'item' => $validated['first_name'],
+
+                'action' => 'CREATE',
+
+                'details' =>
+                    'Created user: '
+                    . $validated['first_name']
+                    . ' (' . $validated['role'] . ')',
+
+                
             ]);
 
             return redirect()
@@ -104,7 +123,9 @@ class UserController extends Controller
             'status' => 'required|in:active,inactive',
 
         ]);
-
+        $oldUser = DB::table('tbl_info_user')
+            ->where('id', $id)
+            ->first();
         DB::table('tbl_info_user')
             ->where('id', $id)
             ->update([
@@ -118,6 +139,80 @@ class UserController extends Controller
 
             ]);
 
+        $newUser = DB::table('tbl_info_user')
+            ->where('id', $id)
+            ->first();
+
+        $changes = [];
+
+        if ($oldUser->first_name != $newUser->first_name) {
+
+            $changes[] =
+                'First Name: '
+                . $oldUser->first_name
+                . ' → '
+                . $newUser->first_name;
+        }
+
+        if ($oldUser->role != $newUser->role) {
+
+            $changes[] =
+                'Role: '
+                . $oldUser->role
+                . ' → '
+                . $newUser->role;
+        }
+
+        if ($oldUser->status != $newUser->status) {
+
+            $changes[] =
+                'Status: '
+                . $oldUser->status
+                . ' → '
+                . $newUser->status;
+        }
+        if (count($changes) > 0) {
+
+            ActivityLog::create([
+
+                'user_id' => session('user_id'),
+
+                'module' => 'User Management',
+
+                'item' => $newUser->first_name,
+
+                'action' => 'UPDATE',
+
+                'details' =>
+                    'Updated user: '
+                    . $newUser->first_name
+                    . ' | Changes: '
+                    . implode(', ', $changes),
+
+        
+
+            ]);
+        }
+
+        ActivityLog::create([
+
+            'user_id' => session('user_id'),
+
+            'module' => 'User Management',
+
+            'item' => $newUser->first_name,
+
+            'action' => 'UPDATE',
+
+            'details' =>
+                'Updated user: '
+                . $newUser->first_name
+                . ' | Changes: '
+                . implode(', ', $changes),
+
+
+        ]);
+
         return response()->json([
             'success' => true,
             'message' => 'User updated successfully'
@@ -129,12 +224,38 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('tbl_info_user')
+        $user = DB::table('tbl_info_user')
             ->where('id', $id)
-            ->delete();
+            ->first();
 
-        return redirect()->route('admin.users')
-                         ->with('success', 'User deleted successfully');
+        if ($user) {
+
+            ActivityLog::create([
+
+                'user_id' => session('user_id'),
+
+                'module' => 'User Management',
+
+                'item' => $user->first_name,
+
+                'action' => 'DELETE',
+
+                'details' =>
+                    'Deleted user: '
+                    . $user->first_name
+                    . ' (' . $user->role . ')',
+
+
+            ]);
+
+            DB::table('tbl_info_user')
+                ->where('id', $id)
+                ->delete();
+        }
+
+        return redirect()
+            ->route('admin.users')
+            ->with('success', 'User deleted successfully');
     }
 
 }

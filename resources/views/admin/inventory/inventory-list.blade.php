@@ -365,8 +365,9 @@
                     <thead>
 
                         <tr>
-                            <th>Product</th>
+                            <th>Product Name</th>
                             <th>Category</th>
+                            <th>SKU</th>
                             <th>Stock</th>
                             <th>Purchase Price</th>
                             <th>Selling Price</th>
@@ -388,6 +389,8 @@
                             <td>
                                 {{ $product->category->name ?? 'N/A' }}
                             </td>
+
+                            <td>{{ $product->sku }}</td>
 
                             <td>
                                 {{ $product->stock_quantity }}

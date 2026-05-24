@@ -162,7 +162,7 @@
 
                 <div>
                     <h4 class="section-title">
-                        Product Stock Analytics
+                        Product By Catagory Stock Analytics
                     </h4>
 
                     <p class="section-subtitle">
@@ -182,7 +182,7 @@
 
                             <div>
                                 <span class="card-label">
-                                    Total Products
+                                    Total Catagory
                                 </span>
 
                                 <h2>{{ $totalProducts }}</h2>
@@ -275,72 +275,99 @@
         </div>
 
         {{-- PRODUCT QUANTITY SUMMARY --}}
-        <div class="row mb-4">
+        <div class="dashboard-section mt-2">
 
-            <div class="col-12 mb-3">
-                <h5 class="dashboard-section-title">
-                    Product Quantity Summary
-                </h5>
+            <div class="section-header mb-4">
+
+                <div>
+                    <h4 class="section-title">
+                        Product Quantity Summary
+                    </h4>
+
+                    <p class="section-subtitle">
+                        Product quantity overview and stock distribution
+                    </p>
+                </div>
+
             </div>
 
-            {{-- TOTAL QUANTITY --}}
-            <div class="col-lg-4 col-md-6 col-12">
+            <div class="row">
 
-                <div class="dashboard-card dashboard-card-dark">
+                {{-- TOTAL QUANTITY --}}
+                <div class="col-lg-4 col-md-6 mb-4">
 
-                    <div class="dashboard-card-content">
+                    <div class="quantity-summary-card quantity-dark">
 
-                        <div>
-                            <h3>{{ $totalStockQuantity }}</h3>
-                            <p>Total Stock Quantity</p>
-                        </div>
+                        <div class="quantity-card-content">
 
-                        <div class="dashboard-icon">
-                            <i class="fas fa-cubes"></i>
+                            <div>
+                                <span class="quantity-label">
+                                    Total Stock Quantity
+                                </span>
+
+                                <h2>
+                                    {{ $totalStockQuantity }}
+                                </h2>
+                            </div>
+
+                            <div class="quantity-icon">
+                                <i class="fas fa-cubes"></i>
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
 
-            </div>
+                {{-- IN STOCK QUANTITY --}}
+                <div class="col-lg-4 col-md-6 mb-4">
 
-            {{-- IN STOCK QUANTITY --}}
-            <div class="col-lg-4 col-md-6 col-12">
+                    <div class="quantity-summary-card quantity-success">
 
-                <div class="dashboard-card dashboard-card-success">
+                        <div class="quantity-card-content">
 
-                    <div class="dashboard-card-content">
+                            <div>
+                                <span class="quantity-label">
+                                    In Stock Quantity
+                                </span>
 
-                        <div>
-                            <h3>{{ $inStockQuantity }}</h3>
-                            <p>In Stock Quantity</p>
-                        </div>
+                                <h2>
+                                    {{ $inStockQuantity }}
+                                </h2>
+                            </div>
 
-                        <div class="dashboard-icon">
-                            <i class="fas fa-layer-group"></i>
+                            <div class="quantity-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
 
-            </div>
+                {{-- LOW STOCK QUANTITY --}}
+                <div class="col-lg-4 col-md-6 mb-4">
 
-            {{-- LOW STOCK QUANTITY --}}
-            <div class="col-lg-4 col-md-6 col-12">
+                    <div class="quantity-summary-card quantity-warning">
 
-                <div class="dashboard-card dashboard-card-warning">
+                        <div class="quantity-card-content">
 
-                    <div class="dashboard-card-content">
+                            <div>
+                                <span class="quantity-label">
+                                    Low Stock Quantity
+                                </span>
 
-                        <div>
-                            <h3>{{ $lowStockQuantity }}</h3>
-                            <p>Low Stock Quantity</p>
-                        </div>
+                                <h2>
+                                    {{ $lowStockQuantity }}
+                                </h2>
+                            </div>
 
-                        <div class="dashboard-icon">
-                            <i class="fas fa-chart-line"></i>
+                            <div class="quantity-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+
                         </div>
 
                     </div>
@@ -350,7 +377,7 @@
             </div>
 
         </div>
-
+{{--
         <div class="row">
             <div class="col-lg-6">
               <div class="card">
@@ -593,7 +620,7 @@
             </div>
             <!-- /.col-md-6 -->
         </div>
-        
+--}}
         
     </div>
     
@@ -715,6 +742,75 @@
     background: linear-gradient(135deg,#ef4444,#dc2626);
 }
 
+
+/* PRODUCT QUANTITY SUMMARY */
+
+.quantity-summary-card{
+    border-radius: 22px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all .3s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    background: #fff;
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.quantity-summary-card:hover{
+    transform: translateY(-6px);
+}
+
+.quantity-card-content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.quantity-label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:10px;
+    color:rgba(255,255,255,.85);
+    letter-spacing:.3px;
+}
+
+.quantity-summary-card h2{
+    margin:0;
+    font-size:34px;
+    font-weight:800;
+    color:#fff;
+}
+
+.quantity-icon{
+    width:72px;
+    height:72px;
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.12);
+    backdrop-filter: blur(6px);
+}
+
+.quantity-icon i{
+    font-size:28px;
+    color:#fff;
+}
+
+/* CARD COLORS */
+
+.quantity-dark{
+    background: linear-gradient(135deg,#111827,#374151);
+}
+
+.quantity-success{
+    background: linear-gradient(135deg,#059669,#10b981);
+}
+
+.quantity-warning{
+    background: linear-gradient(135deg,#d97706,#f59e0b);
+}
 </style>
 
 @endpush

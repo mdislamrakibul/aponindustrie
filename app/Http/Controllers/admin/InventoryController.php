@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use App\Models\ActivityLog;
 
 class InventoryController extends Controller
 {
@@ -207,8 +208,21 @@ class InventoryController extends Controller
         | Laravel automatically updates updated_at
         |--------------------------------------------------------------------------
         */
-
+        $oldStock = $product->stock_quantity;
         $product->save();
+        ActivityLog::create([
+
+            'user_id' => session('user_id'),
+
+            'module' => 'Inventory Management',
+
+            'action' => 'STOCK UPDATE',
+
+            'item' => $product->name,
+
+            'details' => 'Stock updated to ' . $product->stock_quantity,
+
+        ]);
 
         return redirect()
             ->route('inventory.list')

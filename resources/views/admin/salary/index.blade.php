@@ -1,3 +1,4 @@
+{{-- 
 @extends('admin.layouts.app')
 
 @section('content')
@@ -470,3 +471,5 @@ $(document).ready(function () {
 </script>
 
 @endpush
+
+--}}

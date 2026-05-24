@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Media;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ActivityLog;
 
 class ProductManagementController extends Controller
 {
@@ -89,6 +90,10 @@ class ProductManagementController extends Controller
             'description' => 'required',
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'regular_price' => 'nullable|numeric',
+            'sale_price' => 'nullable|numeric',
+            'stock_quantity' => 'nullable|integer',
+            'minimum_order' => 'nullable|integer',
         ], [
             'name.required' => 'Product name is required',
             'sku.required' => 'SKU is required',
@@ -113,7 +118,7 @@ class ProductManagementController extends Controller
 
         $product->sku = $request->sku;
 
-        $product->barcode = $request->barcode;
+        //$product->barcode = $request->barcode;
 
         $product->regular_price = $request->regular_price ?? 0;
 
@@ -138,6 +143,19 @@ class ProductManagementController extends Controller
         }
 
         $product->save();
+        ActivityLog::create([
+
+            'user_id' => session('user_id'),
+
+            'module' => 'Product Management',
+
+            'action' => 'CREATE',
+
+            'item' => $product->name,
+
+            'details' => 'New product created',
+
+        ]);
 
         // IMAGE UPLOAD
         if ($request->hasFile('image')) {
@@ -159,14 +177,25 @@ class ProductManagementController extends Controller
 
             // SAVE DATABASE
             Media::create([
+
                 'title' => $product->name,
+
                 'model_id' => $product->id,
-                'model_type' => Product::class,
+
                 'file_path' => 'uploads/products/',
+
                 'image_name' => $imageName,
+
                 'file_type' => 'image',
+
                 'image_type' => 'PRODUCT',
+
+                'position' => 1,
+
                 'is_active' => 1,
+
+                'device_type' => 'ALL',
+
             ]);
         }
 
@@ -186,6 +215,7 @@ class ProductManagementController extends Controller
             'description' => 'required',
             'status' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            
         ]);
 
         $product->name = $request->name;
@@ -202,9 +232,18 @@ class ProductManagementController extends Controller
 
         //$product->barcode = $request->barcode;
 
+        $product->regular_price = $request->regular_price;
+
+        $product->sale_price = $request->sale_price;
+
+        $product->stock_quantity = $request->stock_quantity;
+
+        $product->minimum_order = $request->minimum_order;
+
         $product->status = $request->status;
 
         $product->tags = $request->tags;
+
 
         // FEATURED TYPES
         if ($request->featured_sections) {
@@ -223,6 +262,20 @@ class ProductManagementController extends Controller
         }
 
         $product->save();
+        ActivityLog::create([
+
+            'user_id' => session('user_id'),
+
+            'module' => 'Product Management',
+
+            'action' => 'UPDATE',
+
+            'item' => $product->name,
+
+            'details' => 'Product information updated',
+
+        ]);
+        
 
         // IMAGE UPDATE
         
@@ -245,14 +298,39 @@ class ProductManagementController extends Controller
 
                 [
                     'model_id' => $product->id,
-                    'model_type' => Product::class,
                 ],
 
                 [
+                    'title' => $product->name,
+
                     'image_name' => $imageName,
+
                     'file_path' => 'uploads/products/',
+
+                    'file_type' => 'image',
+
+                    'image_type' => 'PRODUCT',
+
+                    'position' => 1,
+
+                    'is_active' => 1,
+
+                    'device_type' => 'ALL',
                 ]
             );
+            ActivityLog::create([
+
+                'user_id' => session('user_id'),
+
+                'module' => 'Product Management',
+
+                'action' => 'IMAGE UPDATE',
+
+                'item' => $product->name,
+
+                'details' => 'Updated product image',
+
+            ]);
         }
 
         return redirect()
@@ -269,6 +347,19 @@ class ProductManagementController extends Controller
             : 'PUBLISHED';
 
         $product->save();
+        ActivityLog::create([
+
+            'user_id' => session('user_id'),
+
+            'module' => 'Product Management',
+
+            'action' => 'STATUS UPDATE',
+
+            'item' => $product->name,
+
+            'details' => 'Changed status to ' . $product->status,
+
+        ]);
 
         return redirect()
             ->back()

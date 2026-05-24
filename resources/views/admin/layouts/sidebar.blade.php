@@ -200,11 +200,15 @@
                     </ul>
 
                 </li>
+                {{-- ===================================== --}}
                 {{-- CUSTOMER MANAGEMENT --}}
-                <li class="nav-item has-treeview">
+                {{-- ===================================== --}}
 
-                    <a href="#" class="nav-link">
-                    
+                <li class="nav-item has-treeview {{ request()->is('admin/customers*') ? 'menu-open' : '' }}">
+
+                    <a href="#"
+                    class="nav-link {{ request()->is('admin/customers*') ? 'active' : '' }}">
+
                         <i class="nav-icon fas fa-users"></i>
 
                         <p>
@@ -216,37 +220,38 @@
 
                     <ul class="nav nav-treeview">
 
+                        {{-- ALL CUSTOMERS --}}
                         <li class="nav-item">
 
                             <a href="{{ route('admin.customers.index') }}"
-                            class="nav-link">
+                            class="nav-link {{ request()->is('admin/customers') ? 'active' : '' }}">
 
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="far fa-user-friends nav-icon"></i>
 
-                                <p>Customer List</p>
+                                <p>All Customers</p>
 
                             </a>
 
                         </li>
 
+                        {{-- TOP CUSTOMERS --}}
                         <li class="nav-item">
 
                             <a href="{{ route('admin.customers.top') }}"
-                            class="nav-link {{ request()->routeIs('admin.customers.top') ? 'active' : '' }}">
+                            class="nav-link {{ request()->is('admin/customers/top') ? 'active' : '' }}">
 
-                                <i class="nav-icon fas fa-crown"></i>
+                                <i class="far fa-star nav-icon"></i>
 
-                                <p>
-                                    Top Customers
-                                </p>
+                                <p>Top Customers</p>
 
                             </a>
 
                         </li>
+
                     </ul>
 
-
                 </li>
+                
                 <li class="nav-item">
                     <a href=""
                     class="nav-link {{ request()->is('') ? 'active' : '' }}">
@@ -255,6 +260,18 @@
 
                         <p>Order Management</p>
                     </a>
+                </li>
+                <li class="nav-item">
+
+                    <a href="{{ route('admin.activity.logs') }}"
+                    class="nav-link {{ request()->is('admin/activity-logs*') ? 'active' : '' }}">
+
+                        <i class="nav-icon fas fa-history"></i>
+
+                        <p>History Logs</p>
+
+                    </a>
+
                 </li>
 
             </ul>

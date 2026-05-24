@@ -8,11 +8,9 @@ class UserSyncService
 {
     public static function syncToUserTable($loginUser)
     {
-        $nameParts = explode(' ', $loginUser->name, 2);
+        $firstName = $loginUser->first_name ?? '';
 
-        $firstName = $nameParts[0] ?? '';
-
-        $lastName = $nameParts[1] ?? '';
+        $lastName = $loginUser->last_name ?? '';
 
         DB::table('tbl_info_user')->updateOrInsert(
 
