@@ -148,11 +148,11 @@
                         <div class="d-flex align-items-center gap-2">
 
                             {{-- VIEW --}}
-                            <button 
-                                type="button" 
-                                class="action-btn view-product-btn" 
-                                data-id="{{ $product->id }}" 
-                            > 
+                            <button
+                                type="button"
+                                class="action-btn view-product-btn"
+                                data-id="{{ $product->id }}"
+                            >
                                 <i class="fas fa-eye">
 
                                 </i>
@@ -236,13 +236,14 @@
 @include('admin.products.edit-form')
 <!-- VIEW PRODUCT MODAL -->
 <div class="modal fade"
-     id="viewProductModal" 
-     tabindex="-1" 
-     aria-hidden="true"> 
-     <div class="modal-dialog modal-xl modal-dialog-scrollable"> 
-        <div class="modal-content rounded-4 border-0"> 
+     id="viewProductModal"
+     tabindex="-1"
+     aria-hidden="true">
+     <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0">
             <div class="modal-header">
                 <h5 class="modal-title">
+<<<<<<< HEAD
                      Product Details 
                 </h5> 
                 <button type="button"
@@ -255,10 +256,17 @@
                 </button>
             </div> 
             <div class="modal-body" id="viewProductContent"> Loading... 
+=======
+                     Product Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="viewProductContent"> Loading...
+>>>>>>> 923cc0c2f3b00f0a69e681d317c16ec5d9138b24
 
-            </div> 
-        </div> 
-    </div> 
+            </div>
+        </div>
+    </div>
 </div>
 
 

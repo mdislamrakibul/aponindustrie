@@ -1,4 +1,11 @@
 @extends('admin.layouts.app')
+
+
+@section('title')
+User Mgmt
+@endsection
+
+
 @section('content')
 
 <div class="row">
@@ -13,13 +20,9 @@
                         Users
                     </h3>
                 </div>
-            
 
-                <button
-                    type="button"
-                    class="btn btn-primary btn-sm px-3"
-                    onclick="toggleUserForm()"
-                >
+
+                <button type="button" class="btn btn-primary btn-sm px-3" onclick="toggleUserForm()">
                     <i class="fas fa-user-plus mr-1"></i>
                     Add User
                 </button>
@@ -117,15 +120,15 @@
             {{-- INLINE CREATE FORM --}}
             <div class="card-body border-bottom bg-light" id="userCreateForm" style="display:none;">
                 @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
                 @endif
 
                 @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
                 @endif
 
 
@@ -139,45 +142,28 @@
                         <div class="col-lg-3 col-md-6 mb-3">
                             <label class="font-weight-semibold">First Name</label>
 
-                            <input
-                                type="text"
-                                name="first_name"
-                                class="form-control"
-                                placeholder="First Name"
-                                value="{{ old('first_name') }}"
-                                required
-                            >
-            
+                            <input type="text" name="first_name" class="form-control" placeholder="First Name"
+                                value="{{ old('first_name') }}" required>
+
                             @error('first_name')
-                                <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-lg-3 col-md-6 mb-3">
                             <label class="font-weight-semibold">Last Name</label>
 
-                            <input
-                                type="text"
-                                name="last_name"
-                                class="form-control"
-                                placeholder="Last Name (Optional)"
-                                value="{{ old('last_name') }}"
-                            >
+                            <input type="text" name="last_name" class="form-control" placeholder="Last Name (Optional)"
+                                value="{{ old('last_name') }}">
 
                             @error('last_name')
-                                <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 mb-3">
                             <label class="font-weight-semibold">Mobile Number</label>
-                            <input
-                                type="text"
-                                name="mobile_no"
-                                class="form-control"
-                                placeholder="01XXXXXXXXX"
-                                required
-                            >
+                            <input type="text" name="mobile_no" class="form-control" placeholder="01XXXXXXXXX" required>
                         </div>
 
                         <div class="col-lg-2 col-md-6 mb-3">
@@ -208,11 +194,11 @@
             </div>
 
             {{-- USER TABLE --}}
-            <div class="card-body p-0">
+            <div class="card-body p-2">
 
                 <div class="table-responsive">
 
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0" id="dataTable">
 
                         <thead class="bg-light">
                             <tr>
@@ -231,7 +217,7 @@
                             <tr id="row-{{ $user->id }}">
 
                                 {{-- NAME --}}
-                                <td class="pl-4">
+                                <td>
 
                                     <span class="view-mode name-text">
                                         {{ $user->first_name }} {{ $user->last_name }}
@@ -241,21 +227,13 @@
 
                                         <div class="d-flex align-items-center gap-2">
 
-                                            <input
-                                                type="text"
-                                                class="form-control form-control-sm"
-                                                value="{{ $user->first_name }}"
-                                                id="first-name-{{ $user->id }}"
-                                                placeholder="First Name"
-                                            >
+                                            <input type="text" class="form-control form-control-sm"
+                                                value="{{ $user->first_name }}" id="first-name-{{ $user->id }}"
+                                                placeholder="First Name">
 
-                                            <input
-                                                type="text"
-                                                class="form-control form-control-sm"
-                                                value="{{ $user->last_name }}"
-                                                id="last-name-{{ $user->id }}"
-                                                placeholder="Last Name"
-                                            >
+                                            <input type="text" class="form-control form-control-sm"
+                                                value="{{ $user->last_name }}" id="last-name-{{ $user->id }}"
+                                                placeholder="Last Name">
 
                                         </div>
 
@@ -270,25 +248,19 @@
                                         {{ $user->mobile_no }}
                                     </span>
 
-                                    <input
-                                        type="text"
-                                        class="form-control form-control-sm edit-mode d-none"
-                                        value="{{ $user->mobile_no }}"
-                                        id="mobile-{{ $user->id }}"
-                                    >
+                                    <input type="text" class="form-control form-control-sm edit-mode d-none"
+                                        value="{{ $user->mobile_no }}" id="mobile-{{ $user->id }}">
 
                                 </td>
-				                {{-- ROLE --}}
+                                {{-- ROLE --}}
                                 <td>
 
                                     <span class="view-mode badge badge-info px-3 py-2 rounded-pill">
                                         {{ ucfirst($user->role) }}
                                     </span>
 
-                                    <select
-                                        class="form-control form-control-sm edit-mode d-none"
-                                        id="role-{{ $user->id }}"
-                                    >
+                                    <select class="form-control form-control-sm edit-mode d-none"
+                                        id="role-{{ $user->id }}">
                                         <option value="customer" {{ $user->role == 'customer' ? 'selected' : '' }}>
                                             Customer
                                         </option>
@@ -307,17 +279,16 @@
                                     </select>
 
                                 </td>
-				{{-- STATUS --}}
+                                {{-- STATUS --}}
                                 <td>
 
-                                    <span class="view-mode badge px-3 py-2 rounded-pill {{ $user->status == 'active' ? 'badge-success' : 'badge-danger' }}">
+                                    <span
+                                        class="view-mode badge px-3 py-2 rounded-pill {{ $user->status == 'active' ? 'badge-success' : 'badge-danger' }}">
                                         {{ ucfirst($user->status) }}
                                     </span>
 
-                                    <select
-                                        class="form-control form-control-sm edit-mode d-none"
-                                        id="status-{{ $user->id }}"
-                                    >
+                                    <select class="form-control form-control-sm edit-mode d-none"
+                                        id="status-{{ $user->id }}">
                                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>
                                             Active
                                         </option>
@@ -328,57 +299,44 @@
                                     </select>
 
                                 </td>
-				{{-- ACTIONS --}}
+                                {{-- ACTIONS --}}
                                 <td>
 
                                     <div class="action-btn-group">
 
                                         {{-- EDIT --}}
-                                        <button
-                                            type="button"
-                                            class="icon-action-btn edit-btn"
-                                            data-id="{{ $user->id }}"
-                                            title="Edit User"
-                                        >
-                                            <i class="fas fa-pen"></i>
+                                        <button type="button" class="icon-action-btn edit-btn" data-id="{{ $user->id }}"
+                                            title="Edit User">
+                                            <i class="fas fa-pen" style="color: cornflowerblue;"></i>
                                         </button>
 
                                         {{-- SAVE --}}
-                                        <button
-                                            type="button"
-                                            class="icon-action-btn update-btn d-none"
-                                            data-id="{{ $user->id }}"
-                                            title="Save"
-                                        >
-                                            <i class="fas fa-check"></i>
+                                        <button type="button" class="icon-action-btn update-btn d-none"
+                                            data-id="{{ $user->id }}" title="Save">
+                                            <i class="fas fa-check" style="color: darkgreen;"></i>
                                         </button>
 
                                         {{-- CANCEL --}}
-                                        <button
-                                            type="button"
-                                            class="icon-action-btn cancel-btn d-none"
-                                            data-id="{{ $user->id }}"
-                                            title="Cancel"
-                                        >
-                                            <i class="fas fa-times"></i>
+                                        <button type="button" class="icon-action-btn cancel-btn d-none"
+                                            data-id="{{ $user->id }}" title="Cancel">
+                                            <i class="fas fa-times" style="color: maroon;"></i>
+                                        </button>
+
+                                        {{-- SALARY --}}
+                                        <button type="button" class="icon-action-btn open-salary-modal"
+                                            data-id="{{ $user->id }}">
+                                            <i class="fas fa-wallet" style="color: brown;"></i>
                                         </button>
 
                                         {{-- DELETE --}}
-                                        <form
-                                            action="{{ route('admin.users.delete', $user->id) }}"
-                                            method="POST"
-                                            class="delete-form d-inline-block m-0"
-                                        >
+                                        <form action="{{ route('admin.users.delete', $user->id) }}" method="POST"
+                                            class="delete-form d-inline-block m-0">
                                             @csrf
                                             @method('DELETE')
 
-                                            <button
-                                                type="submit"
-                                                class="icon-action-btn"
-                                                title="Delete User"
-                                                onclick="return confirm('Delete this user?')"
-                                            >
-                                                <i class="fas fa-trash"></i>
+                                            <button type="submit" class="icon-action-btn" title="Delete User"
+                                                onclick="return confirm('Delete this user?')">
+                                                <i class="fas fa-trash" style="color: red"></i>
                                             </button>
 
                                         </form>
@@ -388,7 +346,8 @@
                                 </td>
 
                             </tr>
-			                @empty
+
+                            @empty
 
                             <tr>
                                 <td colspan="5" class="text-center py-4">
@@ -406,88 +365,83 @@
 
             </div>
 
-            <div class="card-footer bg-white">
-                {{ $users->links() }}
-            </div>
-
         </div>
 
     </div>
 </div>
-
 @endsection
 @push('css')
 <style>
+    .table td,
+    .table th {
+        vertical-align: middle;
+        white-space: nowrap;
+    }
 
-.table td,
-.table th {
-    vertical-align: middle;
-    white-space: nowrap;
-}
+    .card {
+        overflow: hidden;
+    }
 
-.card {
-    overflow: hidden;
-}
+    .badge {
+        font-size: 12px;
+        font-weight: 600;
+    }
 
-.badge {
-    font-size: 12px;
-    font-weight: 600;
-}
+    .edit-mode {
+        min-width: 140px;
+    }
 
-.edit-mode {
-    min-width: 140px;
-}
+    .action-btn-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
 
-.action-btn-group {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
+    .icon-action-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        border: none !important;
+        outline: none !important;
 
-.icon-action-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    border: none !important;
-    outline: none !important;
+        background: #fff !important;
+        color: #000 !important;
 
-    background: #fff !important;
-    color: #000 !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+        transition: all .2s ease;
 
-    transition: all .2s ease;
+        text-decoration: none !important;
 
-    text-decoration: none !important;
+        box-shadow: none !important;
+    }
 
-    box-shadow: none !important;
-}
+    .icon-action-btn i {
+        font-size: 14px;
+    }
 
-.icon-action-btn i {
-    font-size: 14px;
-}
+    .icon-action-btn:hover {
+        background: lightgrey !important;
+        color: #fff !important;
 
-.icon-action-btn:hover {
-    background: #38bdf8 !important;
-    color: #fff !important;
+        transform: translateY(-2px);
+    }
 
-    transform: translateY(-2px);
-}
+    .icon-action-btn:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
 
-.icon-action-btn:focus {
-    outline: none !important;
-    box-shadow: none !important;
-}
+    .delete-form {
+        margin: 0;
+    }
 
-.delete-form {
-    margin: 0;
-}
-.gap-2 {
-    gap: 8px;
-}
+    .gap-2 {
+        gap: 8px;
+    }
 </style>
 @endpush
 
@@ -495,8 +449,7 @@
 
 
 <script>
-
-function toggleUserForm() {
+    function toggleUserForm() {
     $('#userCreateForm').slideToggle(200);
 }
 
@@ -592,4 +545,3 @@ $('.update-btn').on('click', function () {
 
 </script>
 @endpush
-

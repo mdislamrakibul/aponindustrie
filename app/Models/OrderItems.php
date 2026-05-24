@@ -18,4 +18,9 @@ class OrderItems extends Model
         'total'
         // add any other columns you are saving here
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

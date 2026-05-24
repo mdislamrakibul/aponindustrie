@@ -19,8 +19,8 @@ $featuredSections = (
 @endphp
 
 <form method="POST"
-    action="{{ $isEdit 
-        ? route('admin.products.update', $product->id) 
+    action="{{ $isEdit
+        ? route('admin.products.update', $product->id)
         : route('admin.products.store') }}"
     enctype="multipart/form-data">
 
@@ -249,7 +249,7 @@ $featuredSections = (
                             id="image-input"
                             name="image"
                             class="image-input form-control rounded-3">
-                        
+
                         @error('image')
                             <div class="text-danger small mt-1">
                                 {{ $message }}

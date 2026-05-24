@@ -145,8 +145,8 @@ if ($isEdit && $product && $product->product_adv_type) {
                         <div class="mb-3">
 
                             <img
-                                src="{{ $image 
-                                    ? asset($image->file_path . '/' . $image->image_name) 
+                                src="{{ $image
+                                    ? asset($image->file_path . '/' . $image->image_name)
                                     : asset('admin/no-image.png') }}"
                                 class="preview-image img-fluid rounded-4 border"
                                 style="height:250px;width:100%;object-fit:cover;">

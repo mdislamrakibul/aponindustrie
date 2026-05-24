@@ -54,7 +54,7 @@ Route::post('/login', [AuthController::class, 'login'])
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
-    
+
 //OTP//
 
 //OTP//
@@ -69,7 +69,7 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');
-        
+
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])
         ->name('users.edit');
 
@@ -88,13 +88,13 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         ->name('products.index');
 
     Route::get('/products/create', [ProductManagementController::class, 'create'])
-    ->name('products.create');
+        ->name('products.create');
 
     Route::get('/products/{id}/edit', [ProductManagementController::class, 'edit'])
         ->name('products.edit');
-        
+
     Route::get('/products/{id}', [ProductManagementController::class, 'show'])
-    ->name('products.show');
+        ->name('products.show');
     // =====================================
     // CUSTOMER MANAGEMENT
     // =====================================
@@ -109,11 +109,13 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         [App\Http\Controllers\Admin\CustomerController::class, 'orderHistory']
     )->name('customers.order.history');
 
-    Route::get('/customers/top', 
+    Route::get(
+        '/customers/top',
         [CustomerController::class, 'topCustomers']
     )->name('customers.top');
 
-    Route::post('/top-customers/{id}/update-type',
+    Route::post(
+        '/top-customers/{id}/update-type',
         [CustomerController::class, 'updateCustomerType']
     )->name('customers.update.type');
 
@@ -122,18 +124,12 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         '/activity-logs',
         [App\Http\Controllers\Admin\ActivityLogController::class, 'index']
     )->name('activity.logs');
-
-    
 });
 
 Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');
-
-    
-
-
 });
 //accounts
 
@@ -142,74 +138,74 @@ Route::middleware(['role:admin'])
     ->name('admin.')
     ->group(function () {
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | PRODUCT MANAGEMENT
     |--------------------------------------------------------------------------
     */
 
-    Route::get(
-        '/products',
-        [ProductManagementController::class, 'index']
-    )->name('products.index');
+        Route::get(
+            '/products',
+            [ProductManagementController::class, 'index']
+        )->name('products.index');
 
-    Route::post(
-        '/products/store',
-        [ProductManagementController::class, 'store']
-    )->name('products.store');
+        Route::post(
+            '/products/store',
+            [ProductManagementController::class, 'store']
+        )->name('products.store');
 
-    Route::put(
-        '/products/{id}/update',
-        [ProductManagementController::class, 'update']
-    )->name('products.update');
+        Route::put(
+            '/products/{id}/update',
+            [ProductManagementController::class, 'update']
+        )->name('products.update');
 
-    Route::delete(
-        '/products/{id}',
-        [ProductManagementController::class, 'destroy']
-    )->name('products.delete');
+        Route::delete(
+            '/products/{id}',
+            [ProductManagementController::class, 'destroy']
+        )->name('products.delete');
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | SALARY MANAGEMENT
     |--------------------------------------------------------------------------
     */
 
-    Route::get(
-        '/salary',
-        [AccountController::class, 'salary']
-    )->name('salary.index');
+        Route::get(
+            '/salary',
+            [AccountController::class, 'salary']
+        )->name('salary.index');
 
-    Route::post(
-        '/salary/store',
-        [AccountController::class, 'salaryStore']
-    )->name('salary.store');
+        Route::post(
+            '/salary/store',
+            [AccountController::class, 'salaryStore']
+        )->name('salary.store');
 
-    Route::post(
-        '/salary/{id}/update',
-        [AccountController::class, 'salaryUpdate']
-    )->name('salary.update');
+        Route::post(
+            '/salary/{id}/update',
+            [AccountController::class, 'salaryUpdate']
+        )->name('salary.update');
 
-    Route::delete(
-        '/salary/{id}/delete',
-        [AccountController::class, 'salaryDelete']
-    )->name('salary.delete');
-
-});
+        Route::delete(
+            '/salary/{id}/delete',
+            [AccountController::class, 'salaryDelete']
+        )->name('salary.delete');
+    });
 
 //inventory-management
 Route::prefix('admin/inventory')->group(function () {
 
-    Route::get('/list',
+    Route::get(
+        '/list',
         [InventoryController::class, 'inventoryList']
     )->name('inventory.list');
 
     Route::post('/update', [InventoryController::class, 'inventoryUpdate'])
         ->name('inventory.update');
 
-    Route::get('/accounts',
-    [InventoryController::class, 'inventoryAccounts']
+    Route::get(
+        '/accounts',
+        [InventoryController::class, 'inventoryAccounts']
     )->name('inventory.accounts');
-
 });
 //admin//
 
@@ -221,7 +217,8 @@ Route::get('/terms-and-conditions', [HomeController::class, 'Terms_And_Condition
 Route::get('/faq', [HomeController::class, 'FAQ'])->name('FAQ.index');
 Route::get('/our-service', [HomeController::class, 'Our_Service'])->name('Our_Service.index');
 
-Route::patch('/admin/products/{id}/toggle-status',
+Route::patch(
+    '/admin/products/{id}/toggle-status',
     [ProductManagementController::class, 'toggleStatus']
 )->name('admin.products.toggle-status');
 // Product urls
