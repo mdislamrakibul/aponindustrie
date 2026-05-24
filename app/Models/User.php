@@ -13,7 +13,7 @@ class User extends Authenticatable
 
     const ROLE_ADMIN = 'admin';
     const ROLE_CUSTOMER = 'customer';
-    const ROLE_BRANDER = 'vendor';
+    const ROLE_VENDOR = 'vendor';
 
     protected $table = 'tbl_info_user';
 

@@ -3,14 +3,19 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AccountController;
+
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\OrderController;
 
 use App\Http\Controllers\AuthController;
+
+use App\Http\Controllers\ProductController as FrontProductController;
+
+use App\Http\Controllers\Admin\ProductManagementController;
+use App\Http\Controllers\Admin\InventoryController;
 
 
 
@@ -34,6 +39,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
+
+
 //OTP//
 
 //OTP//
@@ -42,59 +49,113 @@ Route::post('/logout', [AuthController::class, 'logout'])
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin']);
 Route::post('/admin/login', [AuthController::class, 'adminLogin']);
 
-Route::middleware(['role:admin,vendor'])->group(function () {
+Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/admin/dashboard', function () {
-
-        if(session('user_role') != 'admin') {
-            abort(403);
-        }
-
+    Route::get('/dashboard', function () {
         return view('admin.dashboard');
+    })->name('dashboard');
 
-    })->name('admin.dashboard');
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('users');
 
-    Route::get('/admin/users', [UserController::class, 'index'])
-        ->name('admin.users');
+    Route::get('/admin/users/edit/{id}', [UserController::class, 'edit'])
+        ->name('admin.users.edit');
 
-        // USER MANAGEMENT
-        
-    Route::get('/users', [UserController::class, 'index'])->name('admin.users');
-    Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
-    Route::post('/users/store', [UserController::class, 'store'])->name('admin.users.store');
+    Route::get('/admin/users/edit/{id}', [UserController::class, 'edit'])
+        ->name('admin.users.edit');
 
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-    Route::post('/users/{id}/update', [UserController::class, 'update'])->name('admin.users.update');
+    Route::post('/users/store', [UserController::class, 'store'])
+        ->name('users.store');
 
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.delete');   
-    
+    Route::post('/users/{id}/update', [UserController::class, 'update'])
+        ->name('users.update');
+
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])
+        ->name('users.delete');
+
+    // PRODUCT MANAGEMENT
+
+    Route::get('/products', [ProductManagementController::class, 'index'])
+        ->name('products.index');
+
+    Route::get('/products/create', [ProductManagementController::class, 'create'])
+        ->name('products.create');
+
+    Route::get('/products/{id}/edit', [ProductManagementController::class, 'edit'])
+        ->name('products.edit');
+
+    Route::get('/products/{id}', [ProductManagementController::class, 'show'])
+        ->name('products.show');
+});
+
+Route::middleware(['role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('users');
 });
 //accounts
 
-Route::prefix('admin')->name('admin.')->group(function () {
 
 
+Route::middleware(['role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/accounts', [AccountController::class, 'index'])
-        ->name('accounts.index');
+        // =============================
+        // PRODUCT MANAGEMENT
+        // =============================
 
-    Route::get('/accounts/create/{id}', [AccountController::class, 'create'])
-        ->name('accounts.create');
+        Route::get('/products', [App\Http\Controllers\Admin\ProductManagementController::class, 'index'])
+            ->name('products.index');
 
-    Route::post('/accounts/store/{id}', [AccountController::class, 'store'])
-        ->name('accounts.store');
+        Route::post('/products/store', [App\Http\Controllers\Admin\ProductManagementController::class, 'store'])
+            ->name('products.store');
 
-    Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])
-        ->name('accounts.edit');
+        Route::put(
+            '/products/{id}/update',
+            [ProductManagementController::class, 'update']
+        )->name('products.update');
 
-    Route::post('/accounts/{id}/update', [AccountController::class, 'update'])
-        ->name('accounts.update');
+        Route::delete('/products/{id}', [App\Http\Controllers\Admin\ProductManagementController::class, 'destroy'])
+            ->name('products.delete');
 
-    Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])
-        ->name('accounts.delete');
 
+        Route::get('/accounts', [AccountController::class, 'index'])
+            ->name('accounts.index');
+
+        Route::get('/accounts/create/{id}', [AccountController::class, 'create'])
+            ->name('accounts.create');
+
+        Route::post('/accounts/store/{id}', [AccountController::class, 'store'])
+            ->name('accounts.store');
+
+        Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])
+            ->name('accounts.edit');
+
+        Route::post('/accounts/{id}/update', [AccountController::class, 'update'])
+            ->name('accounts.update');
+
+        Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])
+            ->name('accounts.delete');
+    });
+
+//inventory-management
+Route::prefix('admin/inventory')->group(function () {
+
+    Route::get(
+        '/list',
+        [InventoryController::class, 'inventoryList']
+    )->name('inventory.list');
+
+    Route::post('/update', [InventoryController::class, 'inventoryUpdate'])
+        ->name('inventory.update');
+
+    Route::get(
+        '/accounts',
+        [InventoryController::class, 'inventoryAccounts']
+    )->name('inventory.accounts');
 });
-
 //admin//
 
 
@@ -105,10 +166,16 @@ Route::get('/terms-and-conditions', [HomeController::class, 'Terms_And_Condition
 Route::get('/faq', [HomeController::class, 'FAQ'])->name('FAQ.index');
 Route::get('/our-service', [HomeController::class, 'Our_Service'])->name('Our_Service.index');
 
+Route::patch(
+    '/admin/products/{id}/toggle-status',
+    [ProductManagementController::class, 'toggleStatus']
+)->name('admin.products.toggle-status');
 // Product urls
 // your-site.com/product-details?category=electronics&min_price=100&max_price=500&brand=sony&sort=price_desc&page=2
-Route::get('/product-details', [ProductController::class, 'Product_Details'])->name('Product_Details');
-Route::get('/product-by-category', [ProductController::class, 'Product_by_category'])->name('Product_By_Category');
+Route::get('/product-details', [FrontProductController::class, 'Product_Details'])
+    ->name('Product_Details');
+Route::get('/product-by-category', [FrontProductController::class, 'Product_by_category'])
+    ->name('Product_By_Category');
 
 
 

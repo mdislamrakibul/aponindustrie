@@ -8,21 +8,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        // Check login session
-        if (!session()->has('user_role')) {
-            return redirect('/login')
+        if (!session()->has('user_id')) {
+            return redirect('/admin/login')
                 ->with('error', 'Please login first.');
         }
 
-        $userRole = session('user_role');
+        $userRole = strtolower(session('user_role'));
 
-        // Check allowed roles
-        if (!in_array($userRole, $roles)) {
+        $allowedRoles = array_map('strtolower', $roles);
+
+        if (!in_array($userRole, $allowedRoles)) {
             abort(403, 'Unauthorized access.');
         }
 

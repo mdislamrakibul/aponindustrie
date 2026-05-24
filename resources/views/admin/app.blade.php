@@ -25,7 +25,7 @@
 
         <ul class="navbar-nav">
 
-            <li class="nav-item">
+            <li class="nav-item has-treeview">
 
                 <a class="nav-link" data-widget="pushmenu" href="#">
 
@@ -84,6 +84,7 @@
     </div>
 
 </div>
+@stack('scripts')
 
 <script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
 

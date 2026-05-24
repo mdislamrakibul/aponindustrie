@@ -17,7 +17,7 @@ class StoreController extends Controller
      */
     public function Weekly_Featured(Request $request)
     {
-
+        $newProducts = [];
         $featuredProducts = Product::published([
             'id',
             'name',
@@ -96,7 +96,7 @@ class StoreController extends Controller
      */
     public function Hot_Sale_Item(Request $request)
     {
-
+        $newProducts = [];
         $featuredProducts = Product::published([
             'id',
             'name',
@@ -165,6 +165,7 @@ class StoreController extends Controller
      */
     public function Top_New_Items(Request $request)
     {
+        $newProducts = [];
         $featuredProducts = Product::published([
             'id',
             'name',
@@ -232,7 +233,7 @@ class StoreController extends Controller
      */
     public function Top_Selling(Request $request)
     {
-
+        $newProducts = [];
         $featuredProducts = Product::published([
             'id',
             'name',
@@ -301,7 +302,7 @@ class StoreController extends Controller
      */
     public function Top_Rated_Item(Request $request)
     {
-
+        $newProducts = [];
         $featuredProducts = Product::published([
             'id',
             'name',

@@ -138,9 +138,9 @@
 
                                             <span class="font-small ml-5 text-muted" style="font-weight: bolder;">
 
-                                                @if ($product->review)
-                                                <span style="color: #f15412;">count($product->review) {{
-                                                    count($product->review) > 9 ? "Reviews":
+                                                @if ($product->reviews)
+                                                <span style="color: #f15412;">count($product->reviews) {{
+                                                    count($product->reviews) > 9 ? "Reviews":
                                                     "Review" }}</span>
                                                 @else
                                                 <span style="color: #f15412;">0 Review</span>
@@ -221,7 +221,7 @@
                                     </div>
                                     <ul class="product-meta font-xs color-grey mt-50" style="font-weight: bold">
                                         <li class="mb-5">SKU: <a href="#">{{ $product->sku }}</a></li>
-                                        @if (count(json_decode($product->tags))>0)
+                                        @if($product->tags && count(json_decode($product->tags)) > 0)
                                         <li class="mb-5">Tags:
 
                                             <a href="#" rel="tag">{{implode(', ', json_decode($product->tags))}}</a>

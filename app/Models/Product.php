@@ -6,15 +6,66 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\Media;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
-{
+{   
+
     use HasFactory;
     protected $table = 'tbl_products';
+    protected $casts = [
+        'publish_date' => 'datetime',
+    ];
+    protected $fillable = [
 
-    // --- RELATIONSHIPS ---
+        'name',
+        'slug',
+        'category_id',
+        'brand_id',
+        'uploader_id',
 
+        'description',
+        'short_description',
 
+        'sku',
+        'barcode',
+
+        'purchase_price',
+        'regular_price',
+        'sale_price',
+
+        'discount_type',
+        'discount_value',
+
+        'stock_quantity',
+        'minimum_order',
+
+        'package_price',
+
+        'availability',
+        'status',
+
+        'product_type',
+        'product_adv_type',
+
+        'is_featured',
+        'is_discounted',
+
+        'tags',
+
+        'meta_title',
+        'meta_description',
+
+        'thumbnail',
+
+        'attributes',
+
+        'view_count',
+        'total_sales',
+
+        'publish_date',
+    ];
+
+    
     public function category()
     {
         // 1st param: The Model name
@@ -73,8 +124,9 @@ class Product extends Model
         // 1st param: The Media Model
         // 2nd param: The foreign key in tbl_media (model_id)
         // 3rd param: The local key in tbl_products (id)
-        return $this->hasMany(Media::class, 'model_id', 'id')
-            ->where('image_type', 'product');;
+        return $this->hasMany(Media::class, 'model_id')
+            ->where('image_type', 'PRODUCT')
+            ->orderBy('position', 'asc');
     }
 
 
