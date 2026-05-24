@@ -54,14 +54,16 @@ Route::post('/login', [AuthController::class, 'login'])
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
+Route::get('/admin/login', function () {
+
+    return view('admin.auth.login');
+
+});
 
 //OTP//
 
 //OTP//
-//admin//
 
-Route::get('/admin/login', [AuthController::class, 'showAdminLogin']);
-Route::post('/admin/login', [AuthController::class, 'adminLogin']);
 
 Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 

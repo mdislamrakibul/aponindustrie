@@ -165,7 +165,7 @@
     <div class="login-container">
         <h1>LOGIN</h1>
 
-        <form action="{{ url('/admin/login') }}" method="POST">
+        <form action="{{ route('login.post') }}" method="POST">
             @csrf
 
             <div class="input-group">
@@ -175,7 +175,7 @@
 
             <div class="input-group">
                 <label for="password">PASSWORD</label>
-                <input type="password" id="password" name="password"  placeholder="••••••••">
+                <input type="password" id="password" name="password" placeholder="••••••••">
             </div>
 
             <button type="submit">LOG IN</button>
@@ -185,7 +185,7 @@
 
         <div class="divider">PLEASE, LOGIN TO START SESSION</div>
 
-       {{--  <div class="footer">
+        {{-- <div class="footer">
             Don't have an account? <a href="#">Sign up</a>
         </div> --}}
     </div>

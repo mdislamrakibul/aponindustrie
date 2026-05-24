@@ -33,32 +33,11 @@
 
                     </div>
 
-                    {{-- Success Message --}}
-                    @if(session('success'))
-                        <div class="alert alert-success rounded-3">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                    
 
-                    {{-- Error Message --}}
-                    @if(session('error'))
-                        <div class="alert alert-danger rounded-3">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+                    @include('components.alerts')
 
-                    {{-- Validation Errors --}}
-                    @if($errors->any())
-                        <div class="alert alert-danger rounded-3">
-                            <ul class="mb-0">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ url('/login') }}">
+                    <form method="POST" action="{{ route('login.post') }}">
 
                         @csrf
 
@@ -73,7 +52,7 @@
                                 type="text"
                                 name="mobile_no"
                                 class="form-control form-control-lg rounded-3"
-                                placeholder="017XXXXXXXX"
+                                placeholder="Enter mobile number"
                                 value="{{ old('mobile_no') }}"
                                 required
                             >
@@ -120,6 +99,7 @@
     </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
