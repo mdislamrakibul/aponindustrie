@@ -2,27 +2,36 @@
 
 @section('content')
 
-<div class="container-fluid">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Dashboard</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Product</li>
+                    <li class="breadcrumb-item active">Create</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
 
-        <h3 class="fw-bold">
-            Add Product
-        </h3>
-
-        <a href="{{ route('admin.products.index') }}"
-           class="btn btn-secondary">
-            Back
-        </a>
-
-    </div>
-
-    @include('admin.products.form-content', [
+<section class="content">
+    <div class="container-fluid">
+         @include('admin.products.form-content', [
         'isEdit' => false,
         'product' => null
     ])
+    </div>
+</section>
 
-</div>
+
 
 @endsection
 @push('scripts')

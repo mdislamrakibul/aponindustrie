@@ -8,7 +8,7 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-      
+
       <!-- MessSages Dropdown Menu -->
       @if(false)
 
@@ -84,7 +84,7 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
         </div>
       </li>
-      
+
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -113,15 +113,42 @@
         </div>
       </li>
       @endif
-      <li class="nav-item">
 
-          <a
-              href="#"
-              class="nav-link text-danger"
+
+<div class="btn-group">
+  <button type="button" class="btn btn-primary " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="user-panel d-flex">
+        <div class="image">
+          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block text-white">Alexander Pierce</a>
+        </div>
+      </div>
+  </button>
+  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">
+      <span style="
+          gap: 10px;
+          display: flex;
+          align-items: center;"><i class="fas fa-user-circle" style="color: blue"></i> Profile</span>
+    </a>
+    {{-- <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a> --}}
+    <div class="dropdown-divider"></div>
+    <a href="#"  class="nav-link text-danger"
               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
           >
+           <span style="
+          gap: 10px;
+          display: flex;
+          align-items: center;">
               <i class="fas fa-sign-out-alt"></i>
               Logout
+      </span>
           </a>
 
           <form
@@ -132,8 +159,14 @@
           >
               @csrf
           </form>
+  </div>
+</div>
 
-      </li>
+
+
+
+
+
     </ul>
   </nav>
   <!-- /.navbar -->

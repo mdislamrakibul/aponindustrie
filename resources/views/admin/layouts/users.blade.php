@@ -1,7 +1,7 @@
 <table class="table table-bordered">
 
 <tr>
-    <th>ID</th>
+    <th>SL.</th>
     <th>Name</th>
     <th>Email</th>
     <th>Role</th>
@@ -13,7 +13,7 @@
 
 <tr>
 
-<td>{{ $user->id }}</td>
+<td>{{ $loop->iteration }}.</td>
 <td>{{ $user->name }}</td>
 <td>{{ $user->email }}</td>
 <td>{{ $user->role }}</td>

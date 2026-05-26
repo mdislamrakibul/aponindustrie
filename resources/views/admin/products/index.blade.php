@@ -1,232 +1,361 @@
 @extends('admin.layouts.app')
 
+@section('title', 'Product List')
+
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-
-    <h3>All Products</h3>
-
-    <button
-        type="button"
-        class="btn btn-dark rounded-3 px-4"
-        data-toggle="modal"
-        data-target="#addProductModal"
-    >
-        <i class="fas fa-plus me-1"></i>
-        Add Product
-    </button>
-
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Dashboard</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Product</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
 </div>
+<!-- /.content-header -->
 
-<form method="GET" class="mb-3">
 
-    <div class="row">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
 
-        <div class="col-md-4">
+                <div class="card shadow-sm border-0 p-2">
 
-            <input
-                type="text"
-                name="search"
-                class="form-control"
-                placeholder="Search by Product ID or Name"
-                value="{{ request('search') }}"
-            >
+                    <div class="card-header bg-white border-bottom d-flex align-items-center">
 
-        </div>
+                        <div class="flex-grow-1">
+                            <h3 class="card-title font-weight-bold mb-0">
+                                Products
+                            </h3>
+                        </div>
 
-        <div class="col-md-3">
 
-            <select
-                name="category_id"
-                class="form-control"
-            >
+                        <button type="button" class="btn btn-dark rounded-3 px-4" data-toggle="modal"
+                            data-target="#addProductModal">
+                            <i class="fas fa-plus me-1"></i>
+                            Add Product
+                        </button>
 
-                <option value="">
-                    All Categories
-                </option>
+                    </div>
+                    {{-- USER DASHBOARD CARDS --}}
 
-                @foreach($categories as $cat)
+                    @if(false)
+                    <div class="row mb-4">
 
-                    <option
-                        value="{{ $cat->id }}"
-                        {{ request('category_id') == $cat->id ? 'selected' : '' }}
-                    >
-                        {{ $cat->name }}
-                    </option>
+                        {{-- TOTAL USERS --}}
+                        <div class="col-lg-3 col-6">
 
-                @endforeach
+                            <div class="small-box bg-info">
 
-            </select>
+                                <div class="inner">
 
-        </div>
+                                    <h3>{{ $totalUsers }}</h3>
 
-        <div class="col-md-2">
+                                    <p>Total Users</p>
 
-            <button class="btn btn-primary w-100">
+                                </div>
 
-                Search
+                                <div class="icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
 
-            </button>
+                            </div>
 
-        </div>
+                        </div>
 
-    </div>
+                        {{-- ACTIVE USERS --}}
+                        <div class="col-lg-3 col-6">
 
-</form>
+                            <div class="small-box bg-success">
 
-<div class="card">
+                                <div class="inner">
 
-    <div class="card-body table-responsive p-0">
+                                    <h3>{{ $activeUsers }}</h3>
 
-        <table class="table table-hover text-nowrap">
+                                    <p>Active Users</p>
 
-            <thead>
+                                </div>
 
-                <tr>
+                                <div class="icon">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
 
-                    <th>Product ID</th>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                            </div>
 
-                </tr>
+                        </div>
 
-            </thead>
+                        {{-- INACTIVE USERS --}}
+                        <div class="col-lg-3 col-6">
 
-            <tbody>
+                            <div class="small-box bg-danger">
 
-                @forelse($products as $product)
+                                <div class="inner">
 
-                <tr>
+                                    <h3>{{ $inactiveUsers }}</h3>
 
-                    <td>#PRD{{ $product->id }}</td>
+                                    <p>Inactive Users</p>
 
-                    <td>
+                                </div>
 
-                        @php
-                            $image = $product->media->first();
-                        @endphp
+                                <div class="icon">
+                                    <i class="fas fa-user-times"></i>
+                                </div>
 
-                        <img
-                            src="{{ $image 
-                                ? asset($image->file_path . $image->image_name)
-                                : asset('admin/no-image.png') }}"
-                            width="50"
-                            height="50"
-                            style="object-fit:cover;border-radius:6px;"
-                        >
+                            </div>
 
-                    </td>
+                        </div>
 
-                    <td>{{ $product->name }}</td>
+                        {{-- CUSTOMERS --}}
+                        <div class="col-lg-3 col-6">
 
-                    <td>{{ $product->category->name ?? 'N/A' }}</td>
+                            <div class="small-box bg-warning">
 
-                    <td>৳ {{ $product->regular_price }}</td>
+                                <div class="inner">
 
-                    <td>{{ $product->stock_quantity }}</td>
+                                    <h3>{{ $customerUsers }}</h3>
 
-                    <td>
-                        <span class="badge
+                                    <p>Customers</p>
+
+                                </div>
+
+                                <div class="icon">
+                                    <i class="fas fa-user-tag"></i>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    @endif
+                    {{-- INLINE CREATE FORM --}}
+                    <div class="card-body border-bottom bg-light" id="userCreateForm" style="display:none;">
+                        @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                        @endif
+
+                        @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                        @endif
+
+
+                        {{-- DELETE BUTTON HIDDEN TEMPORARILY
+
+                        <form action="{{ route('admin.users.store') }}" method="POST">
+                            @csrf
+
+                            <div class="row">
+
+                                <div class="col-lg-3 col-md-6 mb-3">
+                                    <label class="font-weight-semibold">First Name</label>
+
+                                    <input type="text" name="first_name" class="form-control" placeholder="First Name"
+                                        value="{{ old('first_name') }}" required>
+
+                                    @error('first_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-lg-3 col-md-6 mb-3">
+                                    <label class="font-weight-semibold">Last Name</label>
+
+                                    <input type="text" name="last_name" class="form-control"
+                                        placeholder="Last Name (Optional)" value="{{ old('last_name') }}">
+
+                                    @error('last_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 mb-3">
+                                    <label class="font-weight-semibold">Mobile Number</label>
+                                    <input type="text" name="mobile_no" class="form-control" placeholder="01XXXXXXXXX"
+                                        required>
+                                </div>
+
+                                <div class="col-lg-2 col-md-6 mb-3">
+                                    <label class="font-weight-semibold">Role</label>
+
+                                    <select name="role" class="form-control" required>
+                                        <option value="">Select</option>
+                                        <option value="customer">Customer</option>
+                                        <option value="vendor">Vendor</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-2 col-md-6 mb-3">
+                                    <label class="font-weight-semibold d-block">&nbsp;</label>
+
+                                    <button type="submit" class="btn btn-success btn-block">
+                                        <i class="fas fa-save mr-1"></i>
+                                        Save User
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                        --}}
+
+                    </div>
+
+                    {{-- Product TABLE --}}
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle " id="dataTable">
+
+                                <thead class="bg-light">
+
+                                    <tr>
+
+                                        <th>SL.</th>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @forelse($products as $product)
+
+                                    <tr>
+
+                                        <td>{{ $loop->iteration }}.</td>
+
+                                        <td>
+
+                                            @php
+                                            $image = $product->media->first();
+                                            @endphp
+
+                                            <img src="{{ $image ? asset($image->file_path . $image->image_name) : asset('admin/no-image.png') }}"
+                                                width="50" height="50" style="object-fit:cover;border-radius:6px;">
+
+                                        </td>
+
+                                        <td>{{ $product->name }}</td>
+
+                                        <td>{{ $product->category->name ?? 'N/A' }}</td>
+
+                                        <td>৳ {{ $product->regular_price }}</td>
+
+                                        <td>{{ $product->stock_quantity }}</td>
+
+                                        <td>
+                                            <span class="badge
                             {{ $product->status == 'PUBLISHED' ? 'bg-success' : '' }}
                             {{ $product->status == 'INACTIVE' ? 'bg-danger' : '' }}
                             {{ $product->status == 'PENDING' ? 'bg-warning text-dark' : '' }}
                             px-3 py-2
                         ">
 
-                            {{ $product->status }}
+                                                {{ $product->status }}
 
-                        </span>
-                    </td>
+                                            </span>
+                                        </td>
 
-                    <td>
+                                        <td>
 
-                        <div class="d-flex align-items-center gap-2">
+                                            <div class="d-flex align-items-center gap-2">
 
-                            {{-- VIEW --}}
-                            <button
-                                type="button"
-                                class="action-btn view-product-btn"
-                                data-id="{{ $product->id }}"
-                            >
-                                <i class="fas fa-eye">
+                                                {{-- VIEW --}}
+                                                <button type="button" class="action-btn view-product-btn"
+                                                    data-id="{{ $product->id }}">
+                                                    <i class="fas fa-eye" style="color: blue;">
 
-                                </i>
-                            </button>
+                                                    </i>
+                                                </button>
 
-                            {{-- EDIT --}}
-                            <button
-                                type="button"
-                                class="action-btn edit-product-btn"
-                                data-id="{{ $product->id }}"
-                                title="Edit"
-                            >
+                                                {{-- EDIT --}}
+                                                <button type="button" class="action-btn edit-product-btn"
+                                                    data-id="{{ $product->id }}" title="Edit">
 
-                                <i class="fas fa-pen"></i>
+                                                    <i class="fas fa-pen" style="color: cornflowerblue;"></i>
 
-                            </button>
+                                                </button>
 
-                            {{-- STATUS TOGGLE --}}
-                            <form action="{{ route('admin.products.toggle-status', $product->id) }}"
-                                method="POST">
+                                                {{-- STATUS TOGGLE --}}
+                                                <form action="{{ route('admin.products.toggle-status', $product->id) }}"
+                                                    method="POST">
 
-                                @csrf
-                                @method('PATCH')
+                                                    @csrf
+                                                    @method('PATCH')
 
-                                <button type="submit"
-                                        class="action-btn border-0">
+                                                    <button type="submit" class="action-btn border-0">
 
-                                    @if($product->status == 'ACTIVE')
+                                                        @if($product->status == 'PUBLISHED')
 
-                                        <i class="fas fa-trash"></i>
+                                                        <i class="fas fa-trash" style="color: maroon;"></i>
 
-                                    @else
+                                                        @else
 
-                                        <i class="fas fa-undo"></i>
+                                                        <i class="fas fa-undo" style="color: green;"></i>
 
-                                    @endif
+                                                        @endif
 
-                                </button>
+                                                    </button>
 
-                            </form>
+                                                </form>
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                    @empty
+
+                                    <tr>
+
+                                        <td colspan="8" class="text-center">
+
+                                            No Products Found
+
+                                        </td>
+
+                                    </tr>
+
+                                    @endforelse
+
+                                </tbody>
+
+                            </table>
 
                         </div>
 
-                    </td>
+                    </div>
 
-                </tr>
+                </div>
 
-                @empty
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
 
-                <tr>
-
-                    <td colspan="8" class="text-center">
-
-                        No Products Found
-
-                    </td>
-
-                </tr>
-
-                @endforelse
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-<div class="mt-3 d-flex justify-content-center pagination-sm-wrapper">
-
-    {{ $products->onEachSide(1)->links('pagination::bootstrap-4') }}
-
-</div>
 
 
 {{-- ADD PRODUCT MODAL --}}
@@ -235,34 +364,18 @@
 {{-- EDIT PRODUCT MODAL --}}
 @include('admin.products.edit-form')
 <!-- VIEW PRODUCT MODAL -->
-<div class="modal fade"
-     id="viewProductModal"
-     tabindex="-1"
-     aria-hidden="true">
-     <div class="modal-dialog modal-xl modal-dialog-scrollable">
+<div class="modal fade" id="viewProductModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content rounded-4 border-0">
             <div class="modal-header">
                 <h5 class="modal-title">
-<<<<<<< HEAD
-                     Product Details 
-                </h5> 
-                <button type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close">
-
-                    <span aria-hidden="true">&times;</span>
-
-                </button>
-            </div> 
-            <div class="modal-body" id="viewProductContent"> Loading... 
-=======
-                     Product Details
+                    Product Details
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body" id="viewProductContent"> Loading...
->>>>>>> 923cc0c2f3b00f0a69e681d317c16ec5d9138b24
 
             </div>
         </div>
@@ -271,9 +384,9 @@
 
 
 @push('scripts')
-// VIEW PRODUCT
+{{-- // VIEW PRODUCT --}}
 <script>
-$(document).on('click', '.view-product-btn', function () {
+    $(document).on('click', '.view-product-btn', function () {
 
     let productId = $(this).data('id');
 
@@ -295,7 +408,7 @@ $(document).on('click', '.view-product-btn', function () {
 </script>
 
 <script>
-$(document).on('click', '.edit-product-btn', function(){
+    $(document).on('click', '.edit-product-btn', function(){
 
     let productId = $(this).data('id');
 
@@ -325,7 +438,19 @@ $(document).on('click', '.edit-product-btn', function(){
 
 });
 
+$('#image-input').on('change', function(e){
 
+    let reader = new FileReader();
+
+    reader.onload = function(event){
+
+        $('#preview-image').attr('src', event.target.result);
+
+    }
+
+    reader.readAsDataURL(e.target.files[0]);
+
+});
 
 
 </script>

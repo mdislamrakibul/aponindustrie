@@ -18,8 +18,7 @@ use App\Http\Controllers\ProductController as FrontProductController;
 use App\Http\Controllers\Admin\ProductManagementController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\ActivityLogController;
-
-
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +56,6 @@ Route::post('/logout', [AuthController::class, 'logout'])
 Route::get('/admin/login', function () {
 
     return view('admin.auth.login');
-
 });
 
 //OTP//
@@ -67,7 +65,7 @@ Route::get('/admin/login', function () {
 
 Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/dashboard', [InventoryController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');

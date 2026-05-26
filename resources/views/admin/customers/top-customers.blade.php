@@ -1,30 +1,28 @@
 @extends('admin.layouts.app')
 
+@section('title', 'Top Customer List')
+
+
 @section('content')
 
-<section class="content-header">
 
+<!-- Content Header (Page header) -->
+<div class="content-header">
     <div class="container-fluid">
-
-        <div class="d-flex justify-content-between align-items-center mb-3">
-
-            <div>
-
-                <h1 class="mb-1">
-                    Top Customers
-                </h1>
-
-                <p class="text-muted mb-0">
-                    Customers ranked by total spending
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Dashboard</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Home</a></li>
+                    <li class="breadcrumb-item active">Top Customer</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
 
 <section class="content">
 
@@ -35,20 +33,20 @@
             <div class="card-header bg-white border-0">
 
                 <h3 class="card-title">
-                    Top Customer List
+                    Top Customer List <span style="color:brown; font-weight: bold">[Customers ranked by total spending]</span>
                 </h3>
 
             </div>
 
-            <div class="card-body table-responsive p-0">
+            <div class="card-body table-responsive">
 
-                <table class="table table-hover align-middle">
+                <table class="table table-hover align-middle" id="dataTable">
 
                     <thead class="bg-light">
 
                         <tr>
 
-                            <th>#</th>
+                            <th>SL.</th>
                             <th>Customer</th>
                             <th>Mobile</th>
                             <th>Total Orders</th>
@@ -68,7 +66,7 @@
                         <tr>
 
                             <td>
-                                {{ $customer->id }}
+                                {{ $loop->iteration }}.
                             </td>
 
                             <td>

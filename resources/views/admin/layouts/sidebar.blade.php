@@ -1,24 +1,12 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
     <!-- Brand Logo -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+    <div class="mt-3 pb-3 mb-3 d-flex align-items-center">
 
-        <div class="image">
-            <img
-                src="{{ !empty(session('user_image'))
-                    ? asset(session('user_image'))
-                    : asset('dist/img/user2-160x160.jpg') }}"
-                class="img-circle elevation-2"
-                alt=""
-                style="width:35px;height:35px;object-fit:cover;"
-            >
-        </div>
-
-        <div class="info">
-            <a href="#" class="d-block text-white">
-                {{ session('user_name') }}
-            </a>
-        </div>
+        <a href="{{ route('admin.dashboard.index') }}" class="brand-link">
+            <i class="fas fa-user-secret" style="margin-left: .8rem;   margin-right: .5rem;"></i>
+            <span class="brand-text font-weight-light">Admin Panel</span>
+        </a>
 
     </div>
 
@@ -33,7 +21,7 @@
                 role="menu">
 
                 <li class="nav-item">
-                    <a href="{{ route('admin.dashboard') }}"
+                    <a href="{{ route('admin.dashboard.index') }}"
                     class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
@@ -70,22 +58,6 @@
                                 <i class="nav-icon fas fa-list"></i>
 
                                 <p>Users</p>
-
-                            </a>
-
-                        </li>
-
-                        {{-- Salary MENU --}}
-                        <li class="nav-item">
-
-                            <a
-                                href="{{ route('admin.salary.index') }}"
-                                class="nav-link {{ request()->is('admin/salary*') ? 'active' : '' }}"
-                            >
-
-                                <i class="fas fa-wallet nav-icon"></i>
-
-                                <p>Salary</p>
 
                             </a>
 
@@ -251,7 +223,7 @@
                     </ul>
 
                 </li>
-                
+
                 <li class="nav-item">
                     <a href=""
                     class="nav-link {{ request()->is('') ? 'active' : '' }}">

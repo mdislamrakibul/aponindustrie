@@ -14,6 +14,7 @@
 
 <table class="table table-bordered mt-3">
     <tr>
+        <th>SL.</th>
         <th>User</th>
         <th>Amount</th>
         <th>Type</th>
@@ -23,6 +24,7 @@
 
     @foreach($accounts as $acc)
     <tr>
+        <td>{{ $loop->iteration }}.</td>
         <td>{{ $acc->first_name ?? 'N/A' }}</td>
         <td>{{ $acc->amount }}</td>
         <td>{{ $acc->type }}</td>
