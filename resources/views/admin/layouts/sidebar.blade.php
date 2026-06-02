@@ -16,24 +16,21 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
 
-            <ul class="nav nav-pills nav-sidebar flex-column"
-                data-widget="treeview"
-                role="menu">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
 
                 <li class="nav-item">
                     <a href="{{ route('admin.dashboard.index') }}"
-                    class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
 
-                <li class="nav-item has-treeview {{ request()->is('admin/users*') || request()->is('admin/accounts*') ? 'menu-open' : '' }}">
+                <li
+                    class="nav-item has-treeview {{ request()->is('admin/users*') || request()->is('admin/accounts*') ? 'menu-open' : '' }}">
 
-                    <a
-                        href="#"
-                        class="nav-link {{ request()->is('admin/users*') || request()->is('admin/accounts*') ? 'active' : '' }}"
-                    >
+                    <a href="#"
+                        class="nav-link {{ request()->is('admin/users*') || request()->is('admin/accounts*') ? 'active' : '' }}">
 
                         <i class="nav-icon fas fa-users"></i>
 
@@ -50,10 +47,8 @@
                         {{-- USER MENU --}}
                         <li class="nav-item">
 
-                            <a
-                                href="{{ route('admin.users') }}"
-                                class="nav-link {{ request()->is('admin/users*') ? 'active' : '' }}"
-                            >
+                            <a href="{{ route('admin.users') }}"
+                                class="nav-link {{ request()->is('admin/users*') ? 'active' : '' }}">
 
                                 <i class="nav-icon fas fa-list"></i>
 
@@ -70,8 +65,7 @@
                 <li class="nav-item has-treeview
                     {{ request()->is('admin/products*') ? 'menu-open' : '' }}">
 
-                    <a href="#"
-                    class="nav-link
+                    <a href="#" class="nav-link
                     {{ request()->is('admin/products*') ? 'active' : '' }}">
 
                         <i class="nav-icon fas fa-box-open"></i>
@@ -89,8 +83,7 @@
                         {{-- ALL PRODUCTS --}}
                         <li class="nav-item">
 
-                            <a href="{{ route('admin.products.index') }}"
-                            class="nav-link
+                            <a href="{{ route('admin.products.index') }}" class="nav-link
                             {{ request()->is('admin/products') ? 'active' : '' }}">
 
                                 <i class="fas fa-boxes nav-icon"></i>
@@ -104,8 +97,7 @@
                         {{-- ADD PRODUCT --}}
                         <li class="nav-item">
 
-                            <a href="{{ route('admin.products.create') }}"
-                            class="nav-link
+                            <a href="{{ route('admin.products.create') }}" class="nav-link
                             {{ request()->is('admin/products/create') ? 'active' : '' }}">
 
                                 <i class="fas fa-plus-square nav-icon"></i>
@@ -123,8 +115,7 @@
                 <li class="nav-item has-treeview
                 {{ request()->is('admin/inventory*') ? 'menu-open' : '' }}">
 
-                    <a href="#"
-                    class="nav-link
+                    <a href="#" class="nav-link
                     {{ request()->is('admin/inventory*') ? 'active' : '' }}">
 
                         <i class="nav-icon fas fa-boxes"></i>
@@ -142,8 +133,7 @@
                         {{-- INVENTORY LIST --}}
                         <li class="nav-item">
 
-                            <a href="{{ route('inventory.list') }}"
-                            class="nav-link
+                            <a href="{{ route('inventory.list') }}" class="nav-link
                             {{ request()->is('admin/inventory/list') ? 'active' : '' }}">
 
                                 <i class="fas fa-list nav-icon"></i>
@@ -157,8 +147,7 @@
                         {{-- ACCOUNTS TRACKING --}}
                         <li class="nav-item">
 
-                            <a href="{{ route('inventory.accounts') }}"
-                            class="nav-link
+                            <a href="{{ route('inventory.accounts') }}" class="nav-link
                             {{ request()->is('admin/inventory/accounts') ? 'active' : '' }}">
 
                                 <i class="fas fa-wallet nav-icon"></i>
@@ -178,8 +167,7 @@
 
                 <li class="nav-item has-treeview {{ request()->is('admin/customers*') ? 'menu-open' : '' }}">
 
-                    <a href="#"
-                    class="nav-link {{ request()->is('admin/customers*') ? 'active' : '' }}">
+                    <a href="#" class="nav-link {{ request()->is('admin/customers*') ? 'active' : '' }}">
 
                         <i class="nav-icon fas fa-users"></i>
 
@@ -196,9 +184,9 @@
                         <li class="nav-item">
 
                             <a href="{{ route('admin.customers.index') }}"
-                            class="nav-link {{ request()->is('admin/customers') ? 'active' : '' }}">
+                                class="nav-link {{ request()->is('admin/customers') ? 'active' : '' }}">
 
-                                <i class="far fa-user-friends nav-icon"></i>
+                                <i class="fas fa-user-friends nav-icon"></i>
 
                                 <p>All Customers</p>
 
@@ -210,7 +198,7 @@
                         <li class="nav-item">
 
                             <a href="{{ route('admin.customers.top') }}"
-                            class="nav-link {{ request()->is('admin/customers/top') ? 'active' : '' }}">
+                                class="nav-link {{ request()->is('admin/customers/top') ? 'active' : '' }}">
 
                                 <i class="far fa-star nav-icon"></i>
 
@@ -225,8 +213,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href=""
-                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
+                    <a href="{{ route('admin.orders.index') }}"
+                        class="nav-link {{ request()->is('admin/orders*') ? 'active' : '' }}">
 
                         <i class="nav-icon fas fa-shopping-cart"></i>
 
@@ -236,7 +224,7 @@
                 <li class="nav-item">
 
                     <a href="{{ route('admin.activity.logs') }}"
-                    class="nav-link {{ request()->is('admin/activity-logs*') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('admin/activity-logs*') ? 'active' : '' }}">
 
                         <i class="nav-icon fas fa-history"></i>
 
@@ -254,17 +242,15 @@
 
 </aside>
 <style>
+    .nav-treeview .nav-link {
 
-.nav-treeview .nav-link {
+        padding-left: 38px !important;
+    }
 
-    padding-left: 38px !important;
-}
+    .nav-treeview .nav-icon {
 
-.nav-treeview .nav-icon {
+        font-size: 12px !important;
 
-    font-size: 12px !important;
-
-    width: 18px !important;
-}
-
+        width: 18px !important;
+    }
 </style>

@@ -154,11 +154,19 @@
 
                             <td class="text-center">
 
-                                <button class="btn btn-sm btn-dark">
+                                <div class="action-btn-group">
 
-                                    <i class="fas fa-edit"></i>
+                                    <button type="button"
+                                            class="icon-action-btn"
+                                            title="Edit Customer">
 
-                                </button>
+                                        <i class="fas fa-pen"
+                                        style="color: blue;">
+                                        </i>
+
+                                    </button>
+
+                                </div>
 
                             </td>
 

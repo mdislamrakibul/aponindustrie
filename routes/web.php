@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\AdminOrderController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
@@ -82,6 +83,10 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::delete('/users/{id}', [UserController::class, 'destroy'])
         ->name('users.delete');
 
+    Route::post('/users/{id}/toggle-status',
+        [UserController::class, 'toggleStatus'])
+        ->name('users.toggle-status');
+
     // PRODUCT MANAGEMENT
 
     Route::get('/products', [ProductManagementController::class, 'index'])
@@ -124,12 +129,15 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         '/activity-logs',
         [App\Http\Controllers\Admin\ActivityLogController::class, 'index']
     )->name('activity.logs');
+
+
 });
 
 Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');
+
 });
 //accounts
 
@@ -137,6 +145,11 @@ Route::middleware(['role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
+        Route::get(
+            '/orders',
+            [AdminOrderController::class, 'order_index']
+        )->name('orders.index');
 
         /*
     |--------------------------------------------------------------------------

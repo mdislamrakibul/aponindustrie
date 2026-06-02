@@ -220,42 +220,55 @@ class UserController extends Controller
     }
 
     /**
-     * Delete user
+     * Status update user
      */
-    public function destroy($id)
+    
+    public function toggleStatus($id)
     {
         $user = DB::table('tbl_info_user')
             ->where('id', $id)
             ->first();
 
-        if ($user) {
+        if (!$user) {
 
-            ActivityLog::create([
-
-                'user_id' => session('user_id'),
-
-                'module' => 'User Management',
-
-                'item' => $user->first_name,
-
-                'action' => 'DELETE',
-
-                'details' =>
-                    'Deleted user: '
-                    . $user->first_name
-                    . ' (' . $user->role . ')',
-
-
+            return response()->json([
+                'success' => false
             ]);
-
-            DB::table('tbl_info_user')
-                ->where('id', $id)
-                ->delete();
         }
 
-        return redirect()
-            ->route('admin.users')
-            ->with('success', 'User deleted successfully');
+        $newStatus =
+            $user->status == 'active'
+            ? 'inactive'
+            : 'active';
+
+        DB::table('tbl_info_user')
+            ->where('id', $id)
+            ->update([
+                'status' => $newStatus,
+                'updated_at' => now()
+            ]);
+
+        ActivityLog::create([
+
+            'user_id' => session('user_id'),
+
+            'module' => 'User Management',
+
+            'item' => $user->first_name,
+
+            'action' => 'STATUS CHANGE',
+
+            'details' =>
+                'User status changed from '
+                . $user->status
+                . ' to '
+                . $newStatus,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'status' => $newStatus
+        ]);
     }
 
 }

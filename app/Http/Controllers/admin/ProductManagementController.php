@@ -38,7 +38,7 @@ class ProductManagementController extends Controller
 
         $products = $query
             ->latest()
-            ->paginate(10);
+            ->paginate(100);
 
         $categories = Category::with('children')
             ->where('parent_id', 0)

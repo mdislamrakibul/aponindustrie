@@ -123,6 +123,8 @@ class InventoryController extends Controller
 
         $product->regular_price = $request->regular_price;
 
+        $product->minimum_order = $request->minimum_order;
+
         /*
         |--------------------------------------------------------------------------
         | UPDATED TIME
@@ -131,6 +133,7 @@ class InventoryController extends Controller
         |--------------------------------------------------------------------------
         */
         $oldStock = $product->stock_quantity;
+
         $product->save();
         ActivityLog::create([
 

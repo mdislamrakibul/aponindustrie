@@ -4,201 +4,135 @@
 
 @section('content')
 
-<!-- Content Header (Page header) -->
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Dashboard</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Customer</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-
-
-<section class="content">
-
-    <div class="container-fluid">
-
-        <div class="card shadow-sm border-0">
-
-            <div class="card-header bg-white">
-
-                <h3 class="card-title">
-                    Customer Management
-                </h3>
-
-            </div>
-
-            <div class="card-body table-responsive">
-
-                <table class="table table-hover" id="dataTable">
-
-                    <thead class="bg-light">
-
-                        <tr>
-
-                            <th>SL</th>
-                            <th>Name</th>
-                            <th>Mobile</th>
-                            <th>Joined Date</th>
-                            <th>Status</th>
-                            <th class="text-center">
-                                Actions
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        @forelse($customers as $customer)
-
-                            <tr>
-
-                                <td>
-                                    {{ $loop->iteration }}.
-                                </td>
-
-                                <td>
-                                    {{ $customer->first_name }}
-                                    {{ $customer->last_name }}
-                                </td>
-
-                                <td>
-                                    {{ $customer->phone ?? 'N/A' }}
-                                </td>
-
-                                <td>
-                                    {{ date('d M Y', strtotime($customer->created_at)) }}
-                                </td>
-
-                                <td>
-
-                                    <span class="badge bg-success">
-                                        Active
-                                    </span>
-
-                                </td>
-
-                                <td class="text-center">
-
-                                    <div class="action-buttons">
-
-                                        {{-- ORDER HISTORY --}}
-                                        <button type="button"
-                                                class="btn-action btn-history viewHistoryBtn"
-                                                data-id="{{ $customer->id }}">
-
-                                            <i class="fas fa-eye"></i>
-
-                                        </button>
-
-                                        {{-- EDIT --}}
-                                        <button type="button"
-                                                class="btn-action btn-edit">
-
-                                            <i class="fas fa-edit"></i>
-
-                                        </button>
-
-                                        {{-- DELETE --}}
-                                        <button type="button"
-                                                class="btn-action btn-delete">
-
-                                            <i class="fas fa-trash"></i>
-
-                                        </button>
-
-                                    </div>
-
-                                </td>
-                            </tr>
-
-                        @empty
-
-                            <tr>
-
-                                <td colspan="6" class="text-center py-4">
-
-                                    No Customers Found
-
-                                </td>
-
-                            </tr>
-
-                        @endforelse
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Dashboard</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Home</a></li>
+                        <li class="breadcrumb-item active">Customer</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
+    <!-- /.content-header -->
 
-</section>
 
-<!-- ORDER HISTORY MODAL -->
+    <section class="content">
 
-<div class="modal fade"
-     id="orderHistoryModal"
-     tabindex="-1">
+        <div class="container-fluid">
 
-    <div class="modal-dialog modal-xl">
+            <div class="card shadow-sm border-0">
 
-        <div class="modal-content border-0 shadow-lg">
+                <div class="card-header bg-white">
 
-            {{-- HEADER --}}
-            <div class="modal-header bg-dark">
+                    <h3 class="card-title">
+                        Customer Management
+                    </h3>
 
-                <h5 class="modal-title text-white">
+                </div>
 
-                    Customer Order History
+                <div class="card-body table-responsive">
 
-                </h5>
-
-                <button type="button"
-                        class="close text-white"
-                        data-dismiss="modal">
-
-                    <span>&times;</span>
-
-                </button>
-
-            </div>
-
-            {{-- BODY --}}
-            <div class="modal-body">
-
-                <div class="table-responsive">
-
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="dataTable">
 
                         <thead class="bg-light">
 
                             <tr>
 
-                                <th>Invoice</th>
-                                <th>Date</th>
-                                <th>Amount</th>
+                                <th>SL</th>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Joined Date</th>
                                 <th>Status</th>
+                                <th class="text-center">
+                                    Actions
+                                </th>
 
                             </tr>
 
                         </thead>
 
-                        <tbody id="orderHistoryData">
+                        <tbody>
+
+                            @forelse($customers as $customer)
+
+                                <tr>
+
+                                    <td>
+                                        {{ $loop->iteration }}.
+                                    </td>
+
+                                    <td>
+                                        {{ $customer->first_name }}
+                                        {{ $customer->last_name }}
+                                    </td>
+
+                                    <td>
+                                        {{ $customer->phone ?? 'N/A' }}
+                                    </td>
+
+                                    <td>
+                                        {{ date('d M Y', strtotime($customer->created_at)) }}
+                                    </td>
+
+                                    <td>
+
+                                        <span class="badge bg-success">
+                                            Active
+                                        </span>
+
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <div class="action-btn-group">
+
+                                            <button type="button" class="icon-action-btn viewHistoryBtn"
+                                                data-id="{{ $customer->id }}" title="Order History">
+
+                                                <i class="fas fa-eye" style="color: cornflowerblue;">
+                                                </i>
+
+                                            </button>
+
+                                            <button type="button" class="icon-action-btn" title="Edit">
+
+                                                <i class="fas fa-pen" style="color: blue;">
+                                                </i>
+
+                                            </button>
+
+                                            <button type="button" class="icon-action-btn" title="Delete">
+
+                                                <i class="fas fa-trash" style="color: red;">
+                                                </i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="6" class="text-center py-4">
+
+                                        No Customers Found
+
+                                    </td>
+
+                                </tr>
+
+                            @endforelse
 
                         </tbody>
 
@@ -210,179 +144,192 @@
 
         </div>
 
-    </div>
+    </section>
 
-</div>
-@push('scripts')
+    <!-- ORDER HISTORY MODAL -->
 
-<script>
+    <div class="modal fade" id="orderHistoryModal" tabindex="-1">
 
-    $(document).ready(function () {
+        <div class="modal-dialog modal-xl">
 
-        $('.viewHistoryBtn').click(function () {
+            <div class="modal-content border-0 shadow-lg">
 
-            let customerId = $(this).data('id');
+                {{-- HEADER --}}
+                <div class="modal-header bg-dark">
 
-            $.ajax({
+                    <h5 class="modal-title text-white">
 
-                url: '/admin/customers/order-history/' + customerId,
-                type: 'GET',
+                        Customer Order History
 
-                success: function (response) {
+                    </h5>
 
-                    let rows = '';
+                    <button type="button" class="close text-white" data-dismiss="modal">
 
-                    if(response.orders.length > 0){
+                        <span>&times;</span>
 
-                        response.orders.forEach(function(order){
+                    </button>
 
-                            rows += `
+                </div>
+
+                {{-- BODY --}}
+                <div class="modal-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover">
+
+                            <thead class="bg-light">
 
                                 <tr>
 
-                                    <td>#${order.invoice_id ?? order.id}</td>
-
-                                    <td>${order.created_at}</td>
-
-                                    <td>৳ ${order.total_amount ?? 0}</td>
-
-                                    <td>
-
-                                        <span class="badge bg-success">
-
-                                            ${order.status ?? 'Completed'}
-
-                                        </span>
-
-                                    </td>
+                                    <th>Invoice</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
 
                                 </tr>
 
-                            `;
+                            </thead>
 
-                        });
+                            <tbody id="orderHistoryData">
 
-                    } else {
+                            </tbody>
 
-                        rows = `
+                        </table>
 
-                            <tr>
+                    </div>
 
-                                <td colspan="4" class="text-center py-4">
+                </div>
 
-                                    No Order History Found
+            </div>
 
-                                </td>
+        </div>
 
-                            </tr>
+    </div>
+    @push('scripts')
 
-                        `;
+        <script>
 
-                    }
+            $(document).ready(function () {
 
-                    $('#orderHistoryData').html(rows);
+                $('.viewHistoryBtn').click(function () {
 
-                    $('#orderHistoryModal').modal('show');
+                    let customerId = $(this).data('id');
 
-                }
+                    $.ajax({
+
+                        url: '/admin/customers/order-history/' + customerId,
+                        type: 'GET',
+
+                        success: function (response) {
+
+                            let rows = '';
+
+                            if (response.orders.length > 0) {
+
+                                response.orders.forEach(function (order) {
+
+                                    rows += `
+
+                                        <tr>
+
+                                            <td>#${order.invoice_id ?? order.id}</td>
+
+                                            <td>${order.created_at}</td>
+
+                                            <td>৳ ${order.total_amount ?? 0}</td>
+
+                                            <td>
+
+                                                <span class="badge bg-success">
+
+                                                    ${order.status ?? 'Completed'}
+
+                                                </span>
+
+                                            </td>
+
+                                        </tr>
+
+                                    `;
+
+                                });
+
+                            } else {
+
+                                rows = `
+
+                                    <tr>
+
+                                        <td colspan="4" class="text-center py-4">
+
+                                            No Order History Found
+
+                                        </td>
+
+                                    </tr>
+
+                                `;
+
+                            }
+
+                            $('#orderHistoryData').html(rows);
+
+                            $('#orderHistoryModal').modal('show');
+
+                        }
+
+                    });
+
+                });
 
             });
 
-        });
+        </script>
 
-    });
+    @endpush
 
-</script>
+    @push('styles')
 
-@endpush
+        <style>
+            .btn-history:hover {
 
-@push('styles')
+                background: #138496;
+                transform: translateY(-2px);
 
-<style>
+            }
 
-    .action-buttons {
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
+            .btn-edit:hover {
 
-    }
+                background: #0056b3;
+                transform: translateY(-2px);
 
-    .btn-action {
+            }
 
-        width: 36px;
-        height: 36px;
 
-        border: none;
-        border-radius: 10px;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+            .btn-delete:hover {
 
-        transition: 0.3s ease;
+                background: #b02a37;
+                transform: translateY(-2px);
 
-        color: #fff;
+            }
 
-        cursor: pointer;
+            .table tbody tr:hover {
 
-    }
+                background: #f8f9fa;
 
-    .btn-history {
+            }
 
-        background: #17a2b8;
+            .modal-content {
 
-    }
+                border-radius: 16px;
+                overflow: hidden;
 
-    .btn-history:hover {
+            }
+        </style>
 
-        background: #138496;
-        transform: translateY(-2px);
-
-    }
-
-    .btn-edit {
-
-        background: #007bff;
-
-    }
-
-    .btn-edit:hover {
-
-        background: #0056b3;
-        transform: translateY(-2px);
-
-    }
-
-    .btn-delete {
-
-        background: #dc3545;
-
-    }
-
-    .btn-delete:hover {
-
-        background: #b02a37;
-        transform: translateY(-2px);
-
-    }
-
-    .table tbody tr:hover {
-
-        background: #f8f9fa;
-
-    }
-
-    .modal-content {
-
-        border-radius: 16px;
-        overflow: hidden;
-
-    }
-
-</style>
-
-@endpush
+    @endpush
 
 @endsection
