@@ -1,3 +1,9 @@
+@php
+  $currentUser = \App\Models\User::where(
+    'mobile_no',
+    session('user_mobile')
+  )->first();
+@endphp
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
@@ -117,10 +123,27 @@
       <button type="button" class="btn btn-primary " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <div class="user-panel d-flex">
           <div class="image">
-            <img src="{{ asset('admin/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+            <img src="{{
+
+  $currentUser &&
+  $currentUser->profile_photo
+
+  ? asset(
+    'storage/' .
+    $currentUser->profile_photo
+  )
+
+  : asset(
+    'admin/dist/img/user2-160x160.jpg'
+  )
+
+            }}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block text-white">Alexander Pierce</a>
+            <a href="#" class="d-block text-white">
+              {{ $currentUser?->first_name }}
+              {{ $currentUser?->last_name }}
+            </a>
           </div>
         </div>
       </button>
@@ -129,7 +152,7 @@
         <span class="sr-only">Toggle Dropdown</span>
       </button>
       <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">
+        <a class="dropdown-item" href="{{ route('admin.profile') }}">
           <span style="
           gap: 10px;
           display: flex;

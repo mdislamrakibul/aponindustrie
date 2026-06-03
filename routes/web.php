@@ -130,6 +130,16 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         [App\Http\Controllers\Admin\ActivityLogController::class, 'index']
     )->name('activity.logs');
 
+    Route::get(
+        '/profile',
+        [App\Http\Controllers\Admin\AdminProfileController::class, 'index']
+    )->name('profile');
+
+    Route::post(
+        '/profile/update',
+        [App\Http\Controllers\Admin\AdminProfileController::class, 'update']
+    )->name('profile.update');
+
 
 });
 
