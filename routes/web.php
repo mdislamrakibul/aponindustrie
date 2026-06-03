@@ -140,6 +140,11 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         [App\Http\Controllers\Admin\AdminProfileController::class, 'update']
     )->name('profile.update');
 
+    //order view//
+    Route::get(
+        '/orders/{id}',
+        [AdminOrderController::class, 'show']
+    )->name('orders.show');
 
 });
 
