@@ -151,9 +151,9 @@
                                 {{ \Carbon\Carbon::parse($customer->created_at)->format('d M Y') }}
 
                             </td>
-
+ 
                             <td class="text-center">
-
+{{-- 
                                 <div class="action-btn-group">
 
                                     <button type="button"
@@ -167,7 +167,7 @@
                                     </button>
 
                                 </div>
-
+--}}
                             </td>
 
                         </tr>

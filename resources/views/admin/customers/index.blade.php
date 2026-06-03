@@ -93,7 +93,7 @@
 
                                         <div class="action-btn-group">
 
-                                            <button type="button" class="icon-action-btn viewHistoryBtn"
+                                            <button type="button" class="action-btn-custom viewHistoryBtn"
                                                 data-id="{{ $customer->id }}" title="Order History">
 
                                                 <i class="fas fa-eye" style="color: cornflowerblue;">
@@ -101,19 +101,7 @@
 
                                             </button>
 
-                                            <button type="button" class="icon-action-btn" title="Edit">
 
-                                                <i class="fas fa-pen" style="color: blue;">
-                                                </i>
-
-                                            </button>
-
-                                            <button type="button" class="icon-action-btn" title="Delete">
-
-                                                <i class="fas fa-trash" style="color: red;">
-                                                </i>
-
-                                            </button>
 
                                         </div>
 
@@ -174,28 +162,69 @@
                 {{-- BODY --}}
                 <div class="modal-body">
 
-                    <div class="table-responsive">
+                    <div class="row">
 
-                        <table class="table table-hover">
+                        <!-- Left -->
 
-                            <thead class="bg-light">
+                        <div class="col-md-4">
 
-                                <tr>
+                            <div class="card">
 
-                                    <th>Invoice</th>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
+                                <div class="card-header">
 
-                                </tr>
+                                    Customer Details
 
-                            </thead>
+                                </div>
 
-                            <tbody id="orderHistoryData">
+                                <div class="card-body">
 
-                            </tbody>
+                                    <p>
+                                        <strong>Name:</strong>
+                                        <span id="customerName"></span>
+                                    </p>
 
-                        </table>
+                                    <p>
+                                        <strong>Phone:</strong>
+                                        <span id="customerPhone"></span>
+                                    </p>
+
+                                    <p>
+                                        <strong>Joined:</strong>
+                                        <span id="customerJoinDate"></span>
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Right -->
+
+                        <div class="col-md-8">
+
+                            <table class="table table-hover">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>Invoice</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="orderHistoryData">
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
 
                     </div>
 
@@ -221,7 +250,21 @@
                         url: '/admin/customers/order-history/' + customerId,
                         type: 'GET',
 
+
                         success: function (response) {
+
+                            $('#customerName').text(
+                                (response.customer.first_name ?? '') + ' ' +
+                                (response.customer.last_name ?? '')
+                            );
+
+                            $('#customerPhone').text(
+                                response.customer.phone ?? 'N/A'
+                            );
+
+                            $('#customerJoinDate').text(
+                                response.customer.created_at ?? 'N/A'
+                            );
 
                             let rows = '';
 
@@ -231,27 +274,27 @@
 
                                     rows += `
 
-                                        <tr>
+                                                                                                                                    <tr>
 
-                                            <td>#${order.invoice_id ?? order.id}</td>
+                                                                                                                                        <td>#${order.invoice_id ?? order.id}</td>
 
-                                            <td>${order.created_at}</td>
+                                                                                                                                        <td>${order.created_at}</td>
 
-                                            <td>৳ ${order.total_amount ?? 0}</td>
+                                                                                                                                        <td>৳ ${order.total_amount ?? 0}</td>
 
-                                            <td>
+                                                                                                                                        <td>
 
-                                                <span class="badge bg-success">
+                                                                                                                                            <span class="badge bg-success">
 
-                                                    ${order.status ?? 'Completed'}
+                                                                                                                                                ${order.status ?? 'Completed'}
 
-                                                </span>
+                                                                                                                                            </span>
 
-                                            </td>
+                                                                                                                                        </td>
 
-                                        </tr>
+                                                                                                                                    </tr>
 
-                                    `;
+                                                                                                                                `;
 
                                 });
 
@@ -259,17 +302,17 @@
 
                                 rows = `
 
-                                    <tr>
+                                                                                                                            <tr>
 
-                                        <td colspan="4" class="text-center py-4">
+                                                                                                                                <td colspan="4" class="text-center py-4">
 
-                                            No Order History Found
+                                                                                                                                    No Order History Found
 
-                                        </td>
+                                                                                                                                </td>
 
-                                    </tr>
+                                                                                                                            </tr>
 
-                                `;
+                                                                                                                        `;
 
                             }
 
@@ -290,46 +333,52 @@
     @endpush
 
     @push('styles')
-
         <style>
-            .btn-history:hover {
-
-                background: #138496;
-                transform: translateY(-2px);
-
-            }
-
-
-            .btn-edit:hover {
-
-                background: #0056b3;
-                transform: translateY(-2px);
-
-            }
-
-
-
-            .btn-delete:hover {
-
-                background: #b02a37;
-                transform: translateY(-2px);
-
-            }
-
-            .table tbody tr:hover {
-
+            .action-btn-custom {
+                width: 40px;
+                height: 40px;
+                border: none !important;
+                outline: none !important;
                 background: #f8f9fa;
-
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all .3s ease;
+                cursor: pointer;
             }
 
-            .modal-content {
+            .action-btn-custom:hover {
+                background: #fff;
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, .15);
+            }
 
-                border-radius: 16px;
-                overflow: hidden;
+            .action-btn-custom:focus {
+                outline: none !important;
+                box-shadow: none !important;
+            }
 
+            .action-btn-custom i {
+                font-size: 15px;
+            }
+
+            .action-btn-custom {
+                border: none !important;
+            }
+
+            .action-btn-custom:hover {
+                border: none !important;
+            }
+
+            .action-btn-custom:focus {
+                border: none !important;
+            }
+
+            .action-btn-custom:active {
+                border: none !important;
             }
         </style>
-
     @endpush
 
 @endsection

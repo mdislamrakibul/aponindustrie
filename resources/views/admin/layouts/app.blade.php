@@ -221,6 +221,7 @@
       box-shadow: none;
     }
   </style>
+  @stack('styles')
 
 </head>
 
