@@ -214,6 +214,18 @@
 @push('css')
 
     <style>
+        .gov-header {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .nbr-header {
+            font-size: 13px;
+            margin-top: 2px;
+            margin-bottom: 15px;
+        }
+
         .invoice-wrapper {
             background: #fff;
             padding: 25px;
@@ -329,232 +341,232 @@
                             order.order_items.forEach((item, index) => {
 
                                 rows += `
-                                            <tr>
-                                                <td>${index + 1}</td>
-                                                <td>${item.product?.name ?? 'Product'}</td>
-                                                <td>${item.price}</td>
-                                                <td>${item.quantity}</td>
-                                                <td>${item.total}</td>
-                                            </tr>
-                                        `;
+                                                            <tr>
+                                                                <td>${index + 1}</td>
+                                                                <td>${item.product?.name ?? 'Product'}</td>
+                                                                <td>${item.price}</td>
+                                                                <td>${item.quantity}</td>
+                                                                <td>${item.total}</td>
+                                                            </tr>
+                                                        `;
 
                             });
 
                             $('#invoiceContent').html(`
 
-                                    <div class="invoice-wrapper">
+                                                    <div class="invoice-wrapper">
 
-                                        <div class="invoice-header">
+                                                        <div class="invoice-header">
 
-                                            <div>
-                                                Government of the People's Republic of Bangladesh
-                                            </div>
+                                                            <div class="gov-header">
+                                                                Government of the People's Republic of Bangladesh
+                                                            </div>
 
-                                            <div>
-                                                National Board of Revenue
-                                            </div>
+                                                            <div class="nbr-header">
+                                                                National Board of Revenue
+                                                            </div>
 
-                                            <br>
+                                                            <br>
 
-                                            <h4>
-                                                APON PLASTIC INDUSTRIES
-                                            </h4>
+                                                            <h4>
+                                                                APON PLASTIC INDUSTRIES
+                                                            </h4>
 
-                                            <div>
-                                                Gazipur, Dhaka, Bangladesh
-                                            </div>
+                                                            <div>
+                                                                Gazipur, Dhaka, Bangladesh
+                                                            </div>
 
-                                            <div>
-                                                Phone: 017xxxxxxxx
-                                            </div>
+                                                            <div>
+                                                                Phone: 017xxxxxxxx
+                                                            </div>
 
-                                            <div>
-                                                Email: info@aponplastic.com
-                                            </div>
+                                                            <div>
+                                                                Email: info@aponplastic.com
+                                                            </div>
 
-                                            <div>
-                                                Website: www.aponplastic.com
-                                            </div>
+                                                            <div>
+                                                                Website: www.aponplastic.com
+                                                            </div>
 
-                                            <div>
-                                                BIN: 123456789
-                                            </div>
+                                                            <div>
+                                                                BIN: 123456789
+                                                            </div>
 
-                                            <br>
+                                                            <br>
 
-                                            <h5>
-                                                RETAIL INVOICE
-                                            </h5>
+                                                            <h5>
+                                                                RETAIL INVOICE
+                                                            </h5>
 
-                                        </div>
+                                                        </div>
 
-                                        <div class="row invoice-meta">
+                                                        <div class="row invoice-meta">
 
-                                            <div class="col-md-6">
+                                                            <div class="col-md-6">
 
-                                                <div class="invoice-section-title">
-                                                    Customer Information
-                                                </div>
+                                                                <div class="invoice-section-title">
+                                                                    Customer Information
+                                                                </div>
 
-                                                <p>
-                                                    <strong>Name:</strong>
-                                                    ${order.order_address.first_name}
-                                                    ${order.order_address.last_name}
-                                                </p>
+                                                                <p>
+                                                                    <strong>Name:</strong>
+                                                                    ${order.order_address.first_name}
+                                                                    ${order.order_address.last_name}
+                                                                </p>
 
-                                                <p>
-                                                    <strong>Phone:</strong>
-                                                    ${order.order_address.phone}
-                                                </p>
+                                                                <p>
+                                                                    <strong>Phone:</strong>
+                                                                    ${order.order_address.phone}
+                                                                </p>
 
-                                                <p>
-                                                    <strong>Email:</strong>
-                                                    ${order.order_address.email}
-                                                </p>
+                                                                <p>
+                                                                    <strong>Email:</strong>
+                                                                    ${order.order_address.email}
+                                                                </p>
 
-                                                <p>
-                                                    <strong>Address:</strong>
-                                                    ${order.order_address.address_line1}
-                                                </p>
+                                                                <p>
+                                                                    <strong>Address:</strong>
+                                                                    ${order.order_address.address_line1}
+                                                                </p>
 
-                                            </div>
+                                                            </div>
 
-                                            <div class="col-md-6">
+                                                            <div class="col-md-6">
 
-                                                <div class="invoice-section-title">
-                                                    Invoice Information
-                                                </div>
+                                                                <div class="invoice-section-title">
+                                                                    Invoice Information
+                                                                </div>
 
-                                                <p>
-                                                    <strong>Invoice No:</strong>
-                                                    ${order.order_number}
-                                                </p>
+                                                                <p>
+                                                                    <strong>Invoice No:</strong>
+                                                                    ${order.order_number}
+                                                                </p>
 
-                                                <p>
-                                                    <strong>Date:</strong>
-                                                    ${order.created_at}
-                                                </p>
+                                                                <p>
+                                                                    <strong>Date:</strong>
+                                                                    ${order.created_at}
+                                                                </p>
 
-                                                <p>
-                                                    <strong>Transaction:</strong>
-                                                    ${order.transaction_id}
-                                                </p>
+                                                                <p>
+                                                                    <strong>Transaction:</strong>
+                                                                    ${order.transaction_id}
+                                                                </p>
 
-                                            </div>
+                                                            </div>
 
-                                        </div>
+                                                        </div>
 
-                                        <table class="table table-bordered invoice-table mt-3">
+                                                        <table class="table table-bordered invoice-table mt-3">
 
-                                            <thead>
+                                                            <thead>
 
-                                                <tr>
+                                                                <tr>
 
-                                                    <th>SL</th>
+                                                                    <th>SL</th>
 
-                                                    <th>Product</th>
+                                                                    <th>Product</th>
 
-                                                    <th>Unit Price</th>
+                                                                    <th>Unit Price</th>
 
-                                                    <th>Qty</th>
+                                                                    <th>Qty</th>
 
-                                                    <th>Total</th>
+                                                                    <th>Total</th>
 
-                                                </tr>
+                                                                </tr>
 
-                                            </thead>
+                                                            </thead>
 
-                                            <tbody>
+                                                            <tbody>
 
-                                                ${rows}
+                                                                ${rows}
 
-                                            </tbody>
+                                                            </tbody>
 
-                                        </table>
+                                                        </table>
 
-                                        <div class="invoice-summary">
+                                                        <div class="invoice-summary">
 
-                                            <table>
+                                                            <table>
 
-                                                <tr>
+                                                                <tr>
 
-                                                    <td>Subtotal</td>
+                                                                    <td>Subtotal</td>
 
-                                                    <td class="text-right">
-                                                        ৳ ${order.total_amount}
-                                                    </td>
+                                                                    <td class="text-right">
+                                                                        ৳ ${order.total_amount}
+                                                                    </td>
 
-                                                </tr>
+                                                                </tr>
 
-                                                <tr>
+                                                                <tr>
 
-                                                    <td>Shipping</td>
+                                                                    <td>Shipping</td>
 
-                                                    <td class="text-right">
-                                                        ৳ ${order.shipping_amount}
-                                                    </td>
+                                                                    <td class="text-right">
+                                                                        ৳ ${order.shipping_amount}
+                                                                    </td>
 
-                                                </tr>
+                                                                </tr>
 
-                                                <tr>
+                                                                <tr>
 
-                                                    <td>VAT / TAX</td>
+                                                                    <td>VAT / TAX</td>
 
-                                                    <td class="text-right">
-                                                        ৳ ${order.tax_amount}
-                                                    </td>
+                                                                    <td class="text-right">
+                                                                        ৳ ${order.tax_amount}
+                                                                    </td>
 
-                                                </tr>
+                                                                </tr>
 
-                                                <tr class="invoice-total">
+                                                                <tr class="invoice-total">
 
-                                                    <td>Net Payable</td>
+                                                                    <td>Net Payable</td>
 
-                                                    <td class="text-right">
-                                                        ৳ ${order.total_amount}
-                                                    </td>
+                                                                    <td class="text-right">
+                                                                        ৳ ${order.total_amount}
+                                                                    </td>
 
-                                                </tr>
+                                                                </tr>
 
-                                            </table>
+                                                            </table>
 
-                                        </div>
+                                                        </div>
 
-                                        <hr>
+                                                        <hr>
 
-                                        <div>
+                                                        <div>
 
-                                            <p>
-                                                <strong>Payment Method:</strong>
-                                                ${order.payment_method}
-                                            </p>
+                                                            <p>
+                                                                <strong>Payment Method:</strong>
+                                                                ${order.payment_method}
+                                                            </p>
 
-                                            <p>
-                                                <strong>Payment Status:</strong>
-                                                ${order.payment_status}
-                                            </p>
+                                                            <p>
+                                                                <strong>Payment Status:</strong>
+                                                                ${order.payment_status}
+                                                            </p>
 
-                                            <p>
-                                                <strong>Order Status:</strong>
-                                                ${order.order_status}
-                                            </p>
+                                                            <p>
+                                                                <strong>Order Status:</strong>
+                                                                ${order.order_status}
+                                                            </p>
 
-                                        </div>
+                                                        </div>
 
-                                        <div class="text-center print-btn">
+                                                        <div class="text-center print-btn">
 
-                                            <button
-                                                onclick="window.print()"
-                                                class="btn btn-primary"
-                                            >
-                                                Print Invoice
-                                            </button>
+                                                            <button
+                                                                onclick="window.print()"
+                                                                class="btn btn-primary"
+                                                            >
+                                                                Print Invoice
+                                                            </button>
 
-                                        </div>
+                                                        </div>
 
-                                    </div>
+                                                    </div>
 
-                                    `);
+                                                    `);
 
                             $('#orderViewModal').modal('show');
 

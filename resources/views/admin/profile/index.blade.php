@@ -27,22 +27,15 @@
                     <div class="row">
                         <div class="col-md-12 text-center mb-4">
 
-                            <img src="{{
+                            <img id="profilePreview" src="{{
         $user->profile_photo
-        ?
-        asset(
-            'storage/' .
-            $user->profile_photo
-        )
-        :
-        asset(
-            'admin/dist/img/user2-160x160.jpg'
-        )
-                                                }}" class="img-circle elevation-2" style="
-                                                    width:120px;
-                                                    height:120px;
-                                                    object-fit:cover;
-                                                ">
+        ? asset('storage/' . $user->profile_photo)
+        : asset('admin/dist/img/user2-160x160.jpg')
+                }}" class="img-circle elevation-2" style="
+                    width:120px;
+                    height:120px;
+                    object-fit:cover;
+                ">
 
                         </div>
 
@@ -54,7 +47,8 @@
 
                             </label>
 
-                            <input type="file" name="profile_photo" class="form-control">
+                            <input type="file" id="profilePhotoInput" name="profile_photo" class="form-control"
+                                accept="image/*">
 
                         </div>
 
@@ -123,3 +117,37 @@
     </div>
 
 @endsection
+@push('js')
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#profilePhotoInput').on('change', function () {
+
+                let file = this.files[0];
+
+                if (file) {
+
+                    let reader = new FileReader();
+
+                    reader.onload = function (e) {
+
+                        $('#profilePreview').attr(
+                            'src',
+                            e.target.result
+                        );
+
+                    }
+
+                    reader.readAsDataURL(file);
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+@endpush

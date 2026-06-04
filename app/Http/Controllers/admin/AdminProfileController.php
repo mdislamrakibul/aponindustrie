@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class AdminProfileController extends Controller
 {
     public function index()
     {
         $user = User::where(
-            'mobile_no',
-            session('user_mobile')
+            'login_id',
+            session('user_id')
         )->firstOrFail();
 
         return view(
@@ -24,9 +25,11 @@ class AdminProfileController extends Controller
     public function update(Request $request)
     {
         $user = User::where(
-            'mobile_no',
-            session('user_mobile')
+            'login_id',
+            session('user_id')
         )->firstOrFail();
+
+        $profilePhoto = $user->profile_photo;
 
         $request->validate([
             'first_name' => 'required',
@@ -35,13 +38,21 @@ class AdminProfileController extends Controller
             'email'      => 'nullable|email',
 
             'profile_photo' =>
-
-                'nullable|
-                image|
-                mimes:jpg,jpeg,png,webp|
-                max:2048',
+                'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
         if ($request->hasFile('profile_photo')) {
+            if (
+                $user->profile_photo &&
+                Storage::disk('public')->exists(
+                    $user->profile_photo
+                )
+            ) {
+
+                Storage::disk('public')->delete(
+                    $user->profile_photo
+                );
+
+            }
 
             $file = $request->file('profile_photo');
 
@@ -71,12 +82,8 @@ class AdminProfileController extends Controller
         ]);
 
         session([
-            'user_name' =>
-            trim(
-                $request->first_name .
-                ' ' .
-                $request->last_name
-            )
+            'user_mobile' => $user->mobile_no,
+            'user_name' => $user->first_name . ' ' . $user->last_name
         ]);
 
         return back()->with(
