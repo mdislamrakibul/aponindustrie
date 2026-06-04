@@ -110,11 +110,11 @@ class CheckoutController extends Controller
             // Create Login Info
             $login = new Login();
             $login->user_id = $user->id;
-            $login->name = $request->fname + ' ' + $request->lname;
+            $login->name = $request->fname . ' ' . $request->lname;
             $login->email = $request->email;
             $login->phone = $request->phone;
             $login->address = $request->billing_address;
-            $login->password = 'USER - ' + uniqid();
+            $login->password = 'USER - ' . uniqid();
             $login->save();
 
             // 2. Create the Order
@@ -144,12 +144,17 @@ class CheckoutController extends Controller
 
             // 3. Save Order Items & Reduce Stock
             foreach ($cart as $id => $details) {
+
+                $qty = $details['minimum_order'] * $details['quantity'];
+
+                $lineTotal = $details['price'] * $qty;
+
                 OrderItems::create([
                     'order_id'   => $order->id,
                     'product_id' => $id,
-                    'quantity'   => $details['minimum_order'] * $details['quantity'],
+                    'quantity'   => $qty,
                     'price'      => $details['price'],
-                    'total'      => $this->calculateTotal($cart),
+                    'total'      => $lineTotal,
                 ]);
 
                 // Reduce Product Stock in DB

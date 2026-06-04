@@ -4,7 +4,21 @@
     Order Mgmt
 @endsection
 
+<style>
+    .invoice-wrapper {
+        background: #fff;
+        padding: 30px;
+    }
 
+    .invoice-top {
+        border-bottom: 3px solid red;
+    }
+
+    .invoice-table thead th {
+        background: blue !important;
+        color: white !important;
+    }
+</style>
 @section('content')
 
 
@@ -180,7 +194,7 @@
 
     <div class="modal fade" id="orderViewModal" tabindex="-1" aria-labelledby="orderModalLabel">
 
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl" style="max-width:1400px;">
 
             <div class="modal-content">
 
@@ -214,74 +228,223 @@
 @push('css')
 
     <style>
-        .gov-header {
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .nbr-header {
-            font-size: 13px;
-            margin-top: 2px;
-            margin-bottom: 15px;
-        }
-
         .invoice-wrapper {
             background: #fff;
-            padding: 25px;
+            color: #222;
             font-family: 'Segoe UI', sans-serif;
+            padding: 30px;
+            font-size: 14px;
         }
 
-        .invoice-header {
+        .invoice-top {
             text-align: center;
-            border-bottom: 2px dashed #ddd;
+            border-bottom: 2px solid #ddd;
             padding-bottom: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .invoice-header h4 {
-            margin: 0;
-            font-weight: 700;
+        .invoice-top .gov {
+            font-size: 16px;
+            font-weight: 600;
         }
 
-        .invoice-header h5 {
-            margin: 4px 0;
-            font-weight: 700;
+        .invoice-top .nbr {
+            font-size: 16px;
+            font-weight: 600;
         }
 
-        .invoice-meta {
+        .company-name {
+            font-size: 34px;
+            font-weight: 800;
+            color: #0d6efd !important;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .govt-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+            line-height: 28px;
+        }
+
+        .company-info {
+            margin-top: 10px;
+            line-height: 26px;
+            font-size: 14px;
+        }
+
+        .invoice-title {
             margin-top: 15px;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #444;
+
+        }
+
+        .invoice-top-section {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            display: block !important;
+            background: #0d6efd !important;
+            color: #fff !important;
+            padding: 12px 15px !important;
+            border-radius: 4px !important;
         }
 
         .invoice-section-title {
             font-weight: 700;
-            border-bottom: 1px solid #ddd;
+            text-transform: uppercase;
+            font-size: 14px;
             margin-bottom: 10px;
-            padding-bottom: 5px;
+            color: #111;
         }
 
-        .invoice-table th {
-            background: #f8f9fa;
+        .customer-box,
+        .invoice-box {
+            min-height: 160px;
         }
 
-        .invoice-summary {
+        .invoice-meta {
+            margin-top: 30px;
+            margin-bottom: 25px;
+        }
+
+        .invoice-meta p {
+            margin-bottom: 10px;
+        }
+
+        .invoice-table {
             margin-top: 20px;
         }
 
-        .invoice-summary table {
+        .invoice-table thead tr {
+            background: #0d6efd !important;
+        }
+
+        .invoice-table thead th {
+            background: #0d6efd !important;
+            color: #fff !important;
+            border: 1px solid #0d6efd !important;
+            font-weight: 700;
+        }
+
+        .invoice-table th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .invoice-table td {
+            vertical-align: middle;
+        }
+
+        .invoice-table tbody tr:nth-child(even) {
+            background: #f7f9fc;
+        }
+
+        .summary-table {
             width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
         }
 
-        .invoice-summary td {
-            padding: 5px 0;
+        .summary-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
         }
 
-        .invoice-total {
+        .summary-table tr:last-child td {
+            background: #0d6efd !important;
+            color: #fff !important;
+            font-weight: 700;
+        }
+
+        .invoice-header {
+            text-align: center;
+            border-bottom: 3px solid #0d6efd !important;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-label {
+            font-weight: 600;
+        }
+
+        .net-payable {
+            background: #f8f9fa;
             font-size: 18px;
             font-weight: 700;
         }
 
+        .invoice-footer {
+            margin-top: 40px;
+        }
+
+        .status-box {
+            margin-top: 10px;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .payment-badge {
+            background: #ffc107 !important;
+            color: #000 !important;
+        }
+
+        .order-badge {
+            background: #0d6efd !important;
+            color: #fff !important;
+        }
+
+        .badge-payment {
+            background: #ffc107;
+            color: #000;
+            padding: 4px 10px;
+            font-weight: 600;
+        }
+
+        .badge-order {
+            background: #0d6efd;
+            color: #fff;
+            padding: 4px 10px;
+            font-weight: 600;
+        }
+
+        .signature-box {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .signature-line {
+            width: 220px;
+            margin: 40px auto 10px;
+            border-top: 2px solid #000;
+        }
+
+        .thankyou {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .company-footer {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+        }
+
         .print-btn {
+            text-align: center;
             margin-top: 20px;
         }
 
@@ -306,6 +469,8 @@
             .print-btn {
                 display: none;
             }
+
+
 
         }
     </style>
@@ -332,241 +497,300 @@
 
                         if (response.success) {
 
-
-
                             let order = response.order;
 
                             let rows = '';
 
+                            let subtotal = 0;
+
                             order.order_items.forEach((item, index) => {
 
-                                rows += `
-                                                            <tr>
-                                                                <td>${index + 1}</td>
-                                                                <td>${item.product?.name ?? 'Product'}</td>
-                                                                <td>${item.price}</td>
-                                                                <td>${item.quantity}</td>
-                                                                <td>${item.total}</td>
-                                                            </tr>
-                                                        `;
+                                let lineTotal =
+                                    parseFloat(item.price) *
+                                    parseInt(item.quantity);
 
+                                subtotal += lineTotal;
+
+                                rows += `
+                                                                                                                                                                    <tr>
+                                                                                                                                                                        <td class="text-center">
+                                                                                                                                                                            ${index + 1}
+                                                                                                                                                                        </td>
+
+                                                                                                                                                                        <td>
+                                                                                                                                                                            ${item.product?.name ?? '-'}
+                                                                                                                                                                        </td>
+
+                                                                                                                                                                        <td class="text-center">
+                                                                                                                                                                            ৳ ${parseFloat(item.price).toFixed(2)}
+                                                                                                                                                                        </td>
+
+                                                                                                                                                                        <td class="text-center">
+                                                                                                                                                                            ${item.quantity}
+                                                                                                                                                                        </td>
+
+                                                                                                                                                                        <td class="text-right">
+                                                                                                                                                                            ৳ ${lineTotal.toFixed(2)}
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                `;
                             });
 
                             $('#invoiceContent').html(`
 
-                                                    <div class="invoice-wrapper">
+                                                                                                                                                <div class="invoice-wrapper">
 
-                                                        <div class="invoice-header">
+                                                                                                                                                    <!-- Header -->
 
-                                                            <div class="gov-header">
-                                                                Government of the People's Republic of Bangladesh
-                                                            </div>
+                                                                                                                                                    <div class="invoice-header text-center">
 
-                                                            <div class="nbr-header">
-                                                                National Board of Revenue
-                                                            </div>
+                                                                                                                                                        <div class="govt-title">
+                                                                                                                                                            Government of the People's Republic of Bangladesh
+                                                                                                                                                        </div>
 
-                                                            <br>
+                                                                                                                                                        <div class="govt-title">
+                                                                                                                                                            National Board of Revenue
+                                                                                                                                                        </div>
 
-                                                            <h4>
-                                                                APON PLASTIC INDUSTRIES
-                                                            </h4>
+                                                                                                                                                        <div class="company-name">
+                                                                                                                                                            APON PLASTIC INDUSTRIES
+                                                                                                                                                        </div>
 
-                                                            <div>
-                                                                Gazipur, Dhaka, Bangladesh
-                                                            </div>
+                                                                                                                                                        <div class="company-info">
+                                                                                                                                                            Gazipur, Dhaka, Bangladesh
+                                                                                                                                                        </div>
 
-                                                            <div>
-                                                                Phone: 017xxxxxxxx
-                                                            </div>
+                                                                                                                                                        <div class="company-info">
+                                                                                                                                                            Phone : 017xxxxxxxx
+                                                                                                                                                        </div>
 
-                                                            <div>
-                                                                Email: info@aponplastic.com
-                                                            </div>
+                                                                                                                                                        <div class="company-info">
+                                                                                                                                                            Email : info@aponplastic.com
+                                                                                                                                                        </div>
 
-                                                            <div>
-                                                                Website: www.aponplastic.com
-                                                            </div>
+                                                                                                                                                        <div class="company-info">
+                                                                                                                                                            Website : www.aponplastic.com
+                                                                                                                                                        </div>
 
-                                                            <div>
-                                                                BIN: 123456789
-                                                            </div>
+                                                                                                                                                        <div class="company-info">
+                                                                                                                                                            BIN : 123456789
+                                                                                                                                                        </div>
 
-                                                            <br>
+                                                                                                                                                        <div class="invoice-title">
+                                                                                                                                                            RETAIL INVOICE
+                                                                                                                                                        </div>
 
-                                                            <h5>
-                                                                RETAIL INVOICE
-                                                            </h5>
+                                                                                                                                                    </div>
 
-                                                        </div>
 
-                                                        <div class="row invoice-meta">
+                                                                                                                                                    <!-- Customer & Invoice -->
 
-                                                            <div class="col-md-6">
+                                                                                                                                                    <div class="row invoice-top-section">
 
-                                                                <div class="invoice-section-title">
-                                                                    Customer Information
-                                                                </div>
+                                                                                                                                                        <div class="col-md-6">
 
-                                                                <p>
-                                                                    <strong>Name:</strong>
-                                                                    ${order.order_address.first_name}
-                                                                    ${order.order_address.last_name}
-                                                                </p>
+                                                                                                                                                            <h6 class="section-title">
+                                                                                                                                                                CUSTOMER INFORMATION
+                                                                                                                                                            </h6>
 
-                                                                <p>
-                                                                    <strong>Phone:</strong>
-                                                                    ${order.order_address.phone}
-                                                                </p>
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Name :</strong>
+                                                                                                                                                                ${order.order_address.first_name}
+                                                                                                                                                                ${order.order_address.last_name}
+                                                                                                                                                            </p>
 
-                                                                <p>
-                                                                    <strong>Email:</strong>
-                                                                    ${order.order_address.email}
-                                                                </p>
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Phone :</strong>
+                                                                                                                                                                ${order.order_address.phone}
+                                                                                                                                                            </p>
 
-                                                                <p>
-                                                                    <strong>Address:</strong>
-                                                                    ${order.order_address.address_line1}
-                                                                </p>
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Email :</strong>
+                                                                                                                                                                ${order.order_address.email}
+                                                                                                                                                            </p>
 
-                                                            </div>
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Address :</strong>
+                                                                                                                                                                ${order.order_address.address_line1}
+                                                                                                                                                            </p>
 
-                                                            <div class="col-md-6">
+                                                                                                                                                        </div>
 
-                                                                <div class="invoice-section-title">
-                                                                    Invoice Information
-                                                                </div>
+                                                                                                                                                        <div class="col-md-6">
 
-                                                                <p>
-                                                                    <strong>Invoice No:</strong>
-                                                                    ${order.order_number}
-                                                                </p>
+                                                                                                                                                            <h6 class="section-title">
+                                                                                                                                                                INVOICE INFORMATION
+                                                                                                                                                            </h6>
 
-                                                                <p>
-                                                                    <strong>Date:</strong>
-                                                                    ${order.created_at}
-                                                                </p>
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Invoice No :</strong>
+                                                                                                                                                                ${order.order_number}
+                                                                                                                                                            </p>
 
-                                                                <p>
-                                                                    <strong>Transaction:</strong>
-                                                                    ${order.transaction_id}
-                                                                </p>
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Date :</strong>
+                                                                                                                                                                ${new Date(order.created_at).toLocaleString()}
+                                                                                                                                                            </p>
 
-                                                            </div>
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Transaction :</strong>
+                                                                                                                                                                ${order.transaction_id}
+                                                                                                                                                            </p>
 
-                                                        </div>
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Payment :</strong>
+                                                                                                                                                                ${order.payment_method}
+                                                                                                                                                            </p>
 
-                                                        <table class="table table-bordered invoice-table mt-3">
+                                                                                                                                                        </div>
 
-                                                            <thead>
+                                                                                                                                                    </div>
 
-                                                                <tr>
 
-                                                                    <th>SL</th>
+                                                                                                                                                    <!-- Product Table -->
 
-                                                                    <th>Product</th>
+                                                                                                                                                    <table class="table invoice-table">
 
-                                                                    <th>Unit Price</th>
+                                                                                                                                                        <thead>
 
-                                                                    <th>Qty</th>
+                                                                                                                                                            <tr>
 
-                                                                    <th>Total</th>
+                                                                                                                                                                <th width="6%">SL</th>
 
-                                                                </tr>
+                                                                                                                                                                <th>Product Description</th>
 
-                                                            </thead>
+                                                                                                                                                                <th width="14%">Unit Price</th>
 
-                                                            <tbody>
+                                                                                                                                                                <th width="8%">Qty</th>
 
-                                                                ${rows}
+                                                                                                                                                                <th width="14%">Total</th>
 
-                                                            </tbody>
+                                                                                                                                                            </tr>
 
-                                                        </table>
+                                                                                                                                                        </thead>
 
-                                                        <div class="invoice-summary">
+                                                                                                                                                        <tbody>
 
-                                                            <table>
+                                                                                                                                                            ${rows}
 
-                                                                <tr>
+                                                                                                                                                        </tbody>
 
-                                                                    <td>Subtotal</td>
+                                                                                                                                                    </table>
 
-                                                                    <td class="text-right">
-                                                                        ৳ ${order.total_amount}
-                                                                    </td>
 
-                                                                </tr>
+                                                                                                                                                    <!-- Summary -->
 
-                                                                <tr>
+                                                                                                                                                    <table class="table table-bordered summary-table">
 
-                                                                    <td>Shipping</td>
+                                                                                                                                                        <tr>
 
-                                                                    <td class="text-right">
-                                                                        ৳ ${order.shipping_amount}
-                                                                    </td>
+                                                                                                                                                            <td>Sub Total</td>
 
-                                                                </tr>
+                                                                                                                                                            <td class="text-right">
+                                                                                                                                                                ৳ ${order.total_amount}
+                                                                                                                                                            </td>
 
-                                                                <tr>
+                                                                                                                                                        </tr>
 
-                                                                    <td>VAT / TAX</td>
+                                                                                                                                                        <tr>
 
-                                                                    <td class="text-right">
-                                                                        ৳ ${order.tax_amount}
-                                                                    </td>
+                                                                                                                                                            <td>Shipping</td>
 
-                                                                </tr>
+                                                                                                                                                            <td class="text-right">
+                                                                                                                                                                ৳ ${order.shipping_amount}
+                                                                                                                                                            </td>
 
-                                                                <tr class="invoice-total">
+                                                                                                                                                        </tr>
 
-                                                                    <td>Net Payable</td>
+                                                                                                                                                        <tr>
 
-                                                                    <td class="text-right">
-                                                                        ৳ ${order.total_amount}
-                                                                    </td>
+                                                                                                                                                            <td>VAT / TAX</td>
 
-                                                                </tr>
+                                                                                                                                                            <td class="text-right">
+                                                                                                                                                                ৳ ${order.tax_amount}
+                                                                                                                                                            </td>
 
-                                                            </table>
+                                                                                                                                                        </tr>
 
-                                                        </div>
+                                                                                                                                                        <tr class="net-payable">
 
-                                                        <hr>
+                                                                                                                                                            <td>NET PAYABLE</td>
 
-                                                        <div>
+                                                                                                                                                            <td class="text-right">
+                                                                                                                                                                ৳ ${order.total_amount}
+                                                                                                                                                            </td>
 
-                                                            <p>
-                                                                <strong>Payment Method:</strong>
-                                                                ${order.payment_method}
-                                                            </p>
+                                                                                                                                                        </tr>
 
-                                                            <p>
-                                                                <strong>Payment Status:</strong>
-                                                                ${order.payment_status}
-                                                            </p>
+                                                                                                                                                    </table>
 
-                                                            <p>
-                                                                <strong>Order Status:</strong>
-                                                                ${order.order_status}
-                                                            </p>
 
-                                                        </div>
+                                                                                                                                                    <!-- Footer -->
 
-                                                        <div class="text-center print-btn">
+                                                                                                                                                    <div class="row mt-4">
 
-                                                            <button
-                                                                onclick="window.print()"
-                                                                class="btn btn-primary"
-                                                            >
-                                                                Print Invoice
-                                                            </button>
+                                                                                                                                                        <div class="col-md-6">
 
-                                                        </div>
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Payment Status :</strong>
 
-                                                    </div>
+                                                                                                                                                                <span class="status-badge payment-badge">
+                                                                                                                                                                    ${order.payment_status}
+                                                                                                                                                                </span>
 
-                                                    `);
+                                                                                                                                                            </p>
+
+                                                                                                                                                            <p>
+                                                                                                                                                                <strong>Order Status :</strong>
+
+                                                                                                                                                                <span class="status-badge order-badge">
+                                                                                                                                                                    ${order.order_status}
+                                                                                                                                                                </span>
+
+                                                                                                                                                            </p>
+
+                                                                                                                                                        </div>
+
+                                                                                                                                                        <div class="col-md-6 text-center">
+
+                                                                                                                                                            <div class="signature-line"></div>
+
+                                                                                                                                                            <small>
+                                                                                                                                                                Authorized Signature
+                                                                                                                                                            </small>
+
+                                                                                                                                                        </div>
+
+                                                                                                                                                    </div>
+
+
+                                                                                                                                                    <div class="invoice-footer text-center">
+
+                                                                                                                                                        <p>
+                                                                                                                                                            Thank You For Your Business
+                                                                                                                                                        </p>
+
+                                                                                                                                                        <small>
+                                                                                                                                                            Apon Plastic Industries
+                                                                                                                                                        </small>
+
+                                                                                                                                                    </div>
+
+
+                                                                                                                                                    <div class="text-center print-btn">
+
+                                                                                                                                                        <button
+                                                                                                                                                            onclick="window.print()"
+                                                                                                                                                            class="btn btn-primary"
+                                                                                                                                                        >
+                                                                                                                                                            Print Invoice
+                                                                                                                                                        </button>
+
+                                                                                                                                                    </div>
+
+                                                                                                                                                </div>
+
+                                                                                                                                                `);
 
                             $('#orderViewModal').modal('show');
 
