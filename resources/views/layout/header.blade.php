@@ -151,17 +151,17 @@
 
                             <li>
                                 <i class="fa fa-unlock"></i>
-                                <a href="{{ url('/login') }}" style="padding: 0px !important;">
+                                <a href="{{ url('/admin/login') }}" style="padding: 0px !important;">
                                     Log In
                                 </a>
 
-                                /
+                                {{-- /
 
                                 <i class="fa fa-lock" style="padding-left: 5px !important;"></i>
 
                                 <a href="{{ url('/register') }}" style="padding: 0px !important;">
                                     Sign Up
-                                </a>
+                                </a> --}}
                             </li>
 
                             @endif
