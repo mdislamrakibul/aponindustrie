@@ -1,25 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\AccountController;
-use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\AdminOrderController;
-
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\admin\AccountController;
+use App\Http\Controllers\admin\AdminOrderController;
+use App\Http\Controllers\admin\CustomerController;
+use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\InventoryController;
+use App\Http\Controllers\admin\ProductManagementController;
+use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\StoreController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
-
-use App\Http\Controllers\AuthController;
-
 use App\Http\Controllers\ProductController as FrontProductController;
-
-use App\Http\Controllers\Admin\ProductManagementController;
-use App\Http\Controllers\Admin\InventoryController;
-use App\Http\Controllers\Admin\ActivityLogController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\StoreController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +26,6 @@ use App\Http\Controllers\Admin\DashboardController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 
 /*
 |--------------------------------------------------------------------------
@@ -59,10 +53,9 @@ Route::get('/admin/login', function () {
     return view('admin.auth.login');
 });
 
-//OTP//
+// OTP//
 
-//OTP//
-
+// OTP//
 
 Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
@@ -83,8 +76,10 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::delete('/users/{id}', [UserController::class, 'destroy'])
         ->name('users.delete');
 
-    Route::post('/users/{id}/toggle-status',
-        [UserController::class, 'toggleStatus'])
+    Route::post(
+        '/users/{id}/toggle-status',
+        [UserController::class, 'toggleStatus']
+    )
         ->name('users.toggle-status');
 
     // PRODUCT MANAGEMENT
@@ -106,12 +101,12 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get(
         '/customers',
-        [App\Http\Controllers\Admin\CustomerController::class, 'index']
+        [App\Http\Controllers\admin\CustomerController::class, 'index']
     )->name('customers.index');
 
     Route::get(
         '/customers/order-history/{id}',
-        [App\Http\Controllers\Admin\CustomerController::class, 'orderHistory']
+        [App\Http\Controllers\admin\CustomerController::class, 'orderHistory']
     )->name('customers.order.history');
 
     Route::get(
@@ -124,22 +119,18 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         [CustomerController::class, 'updateCustomerType']
     )->name('customers.update.type');
 
-
     Route::get(
         '/activity-logs',
-        [App\Http\Controllers\Admin\ActivityLogController::class, 'index']
+        [App\Http\Controllers\admin\ActivityLogController::class, 'index']
     )->name('activity.logs');
-
-
 });
 
 Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users');
-
 });
-//accounts
+// accounts
 
 Route::middleware(['role:admin'])
     ->prefix('admin')
@@ -204,7 +195,7 @@ Route::middleware(['role:admin'])
         )->name('salary.delete');
     });
 
-//inventory-management
+// inventory-management
 Route::prefix('admin/inventory')->group(function () {
 
     Route::get(
@@ -220,8 +211,7 @@ Route::prefix('admin/inventory')->group(function () {
         [InventoryController::class, 'inventoryAccounts']
     )->name('inventory.accounts');
 });
-//admin//
-
+// admin//
 
 Route::get('/', [HomeController::class, 'Index'])->name('home.index');
 Route::get('/about-us', [HomeController::class, 'About_Us'])->name('about_us.index');
@@ -241,8 +231,6 @@ Route::get('/product-details', [FrontProductController::class, 'Product_Details'
 Route::get('/product-by-category', [FrontProductController::class, 'Product_by_category'])
     ->name('Product_By_Category');
 
-
-
 // Cart Url
 Route::get('/product-cart/add', [CartController::class, 'Product_Cart_Add'])->name('Product_Cart_Add');
 Route::get('/product-cart', [CartController::class, 'Product_Cart'])->name('Product_Cart');
@@ -250,21 +238,15 @@ Route::get('/product-cart/remove/all', [CartController::class, 'Product_Cart_Rem
 Route::get('/product-cart/remove/single/{id}', [CartController::class, 'Product_Cart_Remove_Single'])->name('Product_Cart_Remove_Single');
 Route::get('/product-cart/update/single/{id}/quantity/{quantity}', [CartController::class, 'Product_Cart_update_Single'])->name('Product_Cart_update_Single');
 
-
 // checkout Url
 Route::get('/product-checkout', [CheckoutController::class, 'Product_Checkout'])->name('Product_Checkout');
 Route::post('/product-checkout/create', [CheckoutController::class, 'Product_Checkout_Create'])->name('Product_Checkout_Create');
 
-
-
 // order success Url
 Route::get('/product/order/success/{id}', [OrderController::class, 'Order_Success'])->name('Order_Success');
 
-
-
 // product/weekly-featured Url
 Route::get('/product/weekly-featured', [StoreController::class, 'Weekly_Featured'])->name('Weekly_Featured');
-
 
 // product/weekly-featured Url
 Route::get('/product/hot-sale-item', [StoreController::class, 'Hot_Sale_Item'])->name('Hot_Sale_Item');
