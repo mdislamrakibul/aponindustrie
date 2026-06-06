@@ -77,7 +77,7 @@ if ($isEdit && $product && $product->product_adv_type) {
                             <div class="col-md-6 mb-4">
 
                                 <label class="form-label fw-semibold">
-                                    SKU
+                                    SKU 
                                 </label>
 
                                 <input type="text"

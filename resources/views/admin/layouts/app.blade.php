@@ -10,6 +10,7 @@
 
   <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
   <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('admin/custom/dashboard.css') }}?v={{ time() }}">
   <link rel="stylesheet" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.css" />
 
 

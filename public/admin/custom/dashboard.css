@@ -1,0 +1,62 @@
+.quantity-card {
+    position: relative !important;
+
+    background: #fff !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 18px !important;
+
+    padding: 24px !important;
+
+    min-height: 130px !important;
+
+    border-radius: 16px !important;
+
+    border: 1px solid #e5e7eb !important;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, .06) !important;
+}
+
+.quantity-icon {
+
+    width: 70px;
+
+    height: 70px;
+
+    display: flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    color: #fff;
+
+    font-size: 28px;
+}
+
+.quantity-content h3 {
+    font-size: 32px;
+    margin: 0;
+}
+
+.quantity-content p {
+    margin-top: 8px;
+}
+
+.quantity-card-primary .quantity-icon {
+    background: #2563eb !important;
+}
+
+.quantity-card-success .quantity-icon {
+    background: #059669 !important;
+}
+
+.quantity-card-warning .quantity-icon {
+    background: #d97706 !important;
+}

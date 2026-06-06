@@ -1,12 +1,31 @@
 <footer class="main-footer">
-    <strong>
-        Copyright &copy; 2026
-        <a href="#">Apon Industry</a>.
-    </strong>
 
-    All rights reserved.
+    <div class="d-flex
+justify-content-between
+align-items-center
+flex-wrap">
 
-    <div class="float-right d-none d-sm-inline-block">
-        <b>Version</b> 1.0
+        <div>
+
+            <strong>
+
+                Copyright &copy; 2026
+
+                <a href="#">Apon Industry</a>.
+
+            </strong>
+
+        </div>
+
+        <div class="footer-credit">
+
+            Design, Developed &amp; Managed by
+            <strong>
+                Versedsoft
+            </strong>
+
+        </div>
+
     </div>
+
 </footer>
