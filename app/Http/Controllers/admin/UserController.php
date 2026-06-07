@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::latest()->paginate(10);
+        $users = User::all();
 
         $totalUsers = User::count();
 

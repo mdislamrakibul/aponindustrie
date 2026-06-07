@@ -85,43 +85,54 @@
 
                         </div>
 
+                        {{-- SHORT DESCRIPTION --}}
                         <div class="mb-4">
-
                             <label class="form-label fw-semibold">
                                 Short Description
+                                <span class="text-muted fw-normal" style="font-size:13px;">(Max 500 characters)</span>
                             </label>
 
-                            <textarea name="short_description" rows="4"
-                                class="form-control rounded-3">{{ old('short_description', $isEdit ? $product->short_description : '') }}</textarea>
+                            <textarea name="short_description" id="short_description" rows="4" maxlength="500"
+                                class="form-control rounded-3 @error('short_description') is-invalid @enderror"
+                                oninput="updateCounter('short_description', 'short_counter', 500)">{{ old('short_description', $isEdit ? $product->short_description : '') }}</textarea>
 
-                            @error('short_description')
-
-                                <small class="text-danger">
-                                    {{ $message }}
+                            {{-- Character Counter --}}
+                            <div class="d-flex justify-content-between mt-1">
+                                <div>
+                                    @error('short_description')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <small id="short_counter" style="font-size:12px; color:#6c757d;">
+                                    {{ strlen(old('short_description', $isEdit ? $product->short_description : '')) }} /
+                                    500
                                 </small>
-
-                            @enderror
-
+                            </div>
                         </div>
 
-                        <div>
+                        {{-- FULL DESCRIPTION --}}
+                        <div class="mb-4">
                             <label class="form-label fw-semibold">
                                 Full Description
+                                <span class="text-muted fw-normal" style="font-size:13px;">(Max 5000 characters)</span>
                             </label>
 
-                            <textarea name="description" rows="7"
-                                class="form-control rounded-3">{{ old('description', $isEdit ? $product->description : '') }}</textarea>
+                            <textarea name="description" id="description" rows="7" maxlength="5000"
+                                class="form-control rounded-3 @error('description') is-invalid @enderror"
+                                oninput="updateCounter('description', 'full_counter', 5000)">{{ old('description', $isEdit ? $product->description : '') }}</textarea>
 
-                            @error('description')
-
-                                <small class="text-danger">
-                                    {{ $message }}
+                            {{-- Character Counter --}}
+                            <div class="d-flex justify-content-between mt-1">
+                                <div>
+                                    @error('description')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <small id="full_counter" style="font-size:12px; color:#6c757d;">
+                                    {{ strlen(old('description', $isEdit ? $product->description : '')) }} / 5000
                                 </small>
-
-                            @enderror
-
+                            </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -404,5 +415,20 @@
         reader.readAsDataURL(file);
 
     });
+    function updateCounter(fieldId, counterId, maxLength) {
+        const field = document.getElementById(fieldId);
+        const counter = document.getElementById(counterId);
+        const currentLength = field.value.length;
+
+        counter.textContent = currentLength + ' / ' + maxLength;
+
+        if (currentLength >= maxLength) {
+            counter.style.color = '#dc3545'; // red — limit reached
+        } else if (currentLength >= maxLength * 0.9) {
+            counter.style.color = '#fd7e14'; // orange — 90% warning
+        } else {
+            counter.style.color = '#6c757d'; // default gray
+        }
+    }
 
 </script>
