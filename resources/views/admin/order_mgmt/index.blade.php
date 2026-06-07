@@ -556,286 +556,286 @@
                                 subtotal += lineTotal;
 
                                 rows += `
-                                                                                                                                                                                                    <tr>
-                                                                                                                                                                                                        <td class="text-center">
-                                                                                                                                                                                                            ${index + 1}
-                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                <tr>
+                                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                                        ${index + 1}
+                                                                                                                                                                                                                    </td>
 
-                                                                                                                                                                                                        <td>
-                                                                                                                                                                                                            ${item.product?.name ?? '-'}
-                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                    <td>
+                                                                                                                                                                                                                        ${item.product?.name ?? '-'}
+                                                                                                                                                                                                                    </td>
 
-                                                                                                                                                                                                        <td class="text-center">
-                                                                                                                                                                                                            ৳ ${parseFloat(item.price).toFixed(2)}
-                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                                        ৳ ${parseFloat(item.price).toFixed(2)}
+                                                                                                                                                                                                                    </td>
 
-                                                                                                                                                                                                        <td class="text-center">
-                                                                                                                                                                                                            ${item.quantity}
-                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                                        ${item.quantity}
+                                                                                                                                                                                                                    </td>
 
-                                                                                                                                                                                                        <td class="text-right">
-                                                                                                                                                                                                            ৳ ${lineTotal.toFixed(2)}
-                                                                                                                                                                                                        </td>
-                                                                                                                                                                                                    </tr>
-                                                                                                                                                                                                `;
+                                                                                                                                                                                                                    <td class="text-right">
+                                                                                                                                                                                                                        ৳ ${lineTotal.toFixed(2)}
+                                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                                </tr>
+                                                                                                                                                                                                            `;
                             });
 
                             $('#invoiceContent').html(`
 
-                                                                                                                                                                                <div class="invoice-wrapper">
+                                                                                                                                                                                            <div class="invoice-wrapper">
 
-                                                                                                                                                                                    <!-- Header -->
+                                                                                                                                                                                                <!-- Header -->
 
-                                                                                                                                                                                    <div class="invoice-header text-center">
+                                                                                                                                                                                                <div class="invoice-header text-center">
 
-                                                                                                                                                                                        <div class="govt-title">
-                                                                                                                                                                                            Government of the People's Republic of Bangladesh
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    <div class="govt-title">
+                                                                                                                                                                                                        Government of the People's Republic of Bangladesh
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="govt-title">
-                                                                                                                                                                                            National Board of Revenue
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    <div class="govt-title">
+                                                                                                                                                                                                        National Board of Revenue
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="company-name">
-                                                                                                                                                                                            APON PLASTIC INDUSTRIES
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    <div class="company-name">
+                                                                                                                                                                                                        APON PLASTIC INDUSTRIES
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="company-info">
-                                                                                                                                                                                            Gazipur, Dhaka, Bangladesh
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    <div class="company-info">
+                                                                                                                                                                                                        Gazipur, Dhaka, Bangladesh
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="company-info">
-                                                                                                                                                                                            Phone : 017xxxxxxxx
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    <div class="company-info">
+                                                                                                                                                                                                        Phone : 017xxxxxxxx
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="company-info">
-                                                                                                                                                                                            Email : info@aponplastic.com
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    <div class="company-info">
+                                                                                                                                                                                                        Email : info@aponplastic.com
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="company-info">
-                                                                                                                                                                                            Website : www.aponplastic.com
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    <div class="company-info">
+                                                                                                                                                                                                        Website : www.aponplastic.com
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="company-info">
-                                                                                                                                                                                            BIN : 123456789
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    <div class="company-info">
+                                                                                                                                                                                                        BIN : 123456789
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="invoice-title">
-                                                                                                                                                                                            RETAIL INVOICE
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    <div class="invoice-title">
+                                                                                                                                                                                                        RETAIL INVOICE
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                    </div>
+                                                                                                                                                                                                </div>
 
 
-                                                                                                                                                                                    <!-- Customer & Invoice -->
+                                                                                                                                                                                                <!-- Customer & Invoice -->
 
-                                                                                                                                                                                    <div class="row invoice-top-section">
+                                                                                                                                                                                                <div class="row invoice-top-section">
 
-                                                                                                                                                                                        <div class="col-md-6 customer-box">
+                                                                                                                                                                                                    <div class="col-md-6 customer-box">
 
-                                                                                                                                                                                            <h6 class="section-title">
-                                                                                                                                                                                                CUSTOMER INFORMATION
-                                                                                                                                                                                            </h6>
+                                                                                                                                                                                                        <h6 class="section-title">
+                                                                                                                                                                                                            CUSTOMER INFORMATION
+                                                                                                                                                                                                        </h6>
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Name :</strong>
-                                                                                                                                                                                                ${order.order_address.first_name}
-                                                                                                                                                                                                ${order.order_address.last_name}
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Name :</strong>
+                                                                                                                                                                                                            ${order.order_address.first_name}
+                                                                                                                                                                                                            ${order.order_address.last_name}
+                                                                                                                                                                                                        </p>
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Phone :</strong>
-                                                                                                                                                                                                ${order.order_address.phone}
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Phone :</strong>
+                                                                                                                                                                                                            ${order.order_address.phone}
+                                                                                                                                                                                                        </p>
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Email :</strong>
-                                                                                                                                                                                                ${order.order_address.email}
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Email :</strong>
+                                                                                                                                                                                                            ${order.order_address.email}
+                                                                                                                                                                                                        </p>
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Address :</strong>
-                                                                                                                                                                                                ${order.order_address.address_line1}
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Address :</strong>
+                                                                                                                                                                                                            ${order.order_address.address_line1}
+                                                                                                                                                                                                        </p>
 
 
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="col-md-6">
+                                                                                                                                                                                                    <div class="col-md-6">
 
-                                                                                                                                                                                            <h6 class="section-title">
-                                                                                                                                                                                                INVOICE INFORMATION
-                                                                                                                                                                                            </h6>
+                                                                                                                                                                                                        <h6 class="section-title">
+                                                                                                                                                                                                            INVOICE INFORMATION
+                                                                                                                                                                                                        </h6>
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Invoice No :</strong>
-                                                                                                                                                                                                ${order.order_number}
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Invoice No :</strong>
+                                                                                                                                                                                                            ${order.order_number}
+                                                                                                                                                                                                        </p>
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Date :</strong>
-                                                                                                                                                                                                ${new Date(order.created_at).toLocaleString()}
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Date :</strong>
+                                                                                                                                                                                                            ${new Date(order.created_at).toLocaleString()}
+                                                                                                                                                                                                        </p>
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Transaction :</strong>
-                                                                                                                                                                                                ${order.transaction_id}
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Transaction :</strong>
+                                                                                                                                                                                                            ${order.transaction_id}
+                                                                                                                                                                                                        </p>
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Payment :</strong>
-                                                                                                                                                                                                ${order.payment_method}
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Payment :</strong>
+                                                                                                                                                                                                            ${order.payment_method}
+                                                                                                                                                                                                        </p>
 
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                    </div>
+                                                                                                                                                                                                </div>
 
 
-                                                                                                                                                                                    <!-- Product Table -->
+                                                                                                                                                                                                <!-- Product Table -->
 
-                                                                                                                                                                                    <table class="table invoice-table">
+                                                                                                                                                                                                <table class="table invoice-table">
 
-                                                                                                                                                                                        <thead>
+                                                                                                                                                                                                    <thead>
 
-                                                                                                                                                                                            <tr>
+                                                                                                                                                                                                        <tr>
 
-                                                                                                                                                                                                <th width="6%">SL</th>
+                                                                                                                                                                                                            <th width="6%">SL</th>
 
-                                                                                                                                                                                                <th>Product Description</th>
+                                                                                                                                                                                                            <th>Product Description</th>
 
-                                                                                                                                                                                                <th width="14%">Unit Price</th>
+                                                                                                                                                                                                            <th width="14%">Unit Price</th>
 
-                                                                                                                                                                                                <th width="8%">Qty</th>
+                                                                                                                                                                                                            <th width="8%">Qty</th>
 
-                                                                                                                                                                                                <th width="14%">Total</th>
+                                                                                                                                                                                                            <th width="14%">Total</th>
 
-                                                                                                                                                                                            </tr>
+                                                                                                                                                                                                        </tr>
 
-                                                                                                                                                                                        </thead>
+                                                                                                                                                                                                    </thead>
 
-                                                                                                                                                                                        <tbody>
+                                                                                                                                                                                                    <tbody>
 
-                                                                                                                                                                                            ${rows}
+                                                                                                                                                                                                        ${rows}
 
-                                                                                                                                                                                        </tbody>
+                                                                                                                                                                                                    </tbody>
 
-                                                                                                                                                                                    </table>
+                                                                                                                                                                                                </table>
 
 
-                                                                                                                                                                                    <!-- Summary -->
+                                                                                                                                                                                                <!-- Summary -->
 
-                                                                                                                                                                                    <table class="table table-bordered summary-table">
+                                                                                                                                                                                                <table class="table table-bordered summary-table">
 
-                                                                                                                                                                                        <tr>
+                                                                                                                                                                                                    <tr>
 
-                                                                                                                                                                                            <td>Sub Total</td>
+                                                                                                                                                                                                        <td>Sub Total</td>
 
-                                                                                                                                                                                            <td class="text-right">
-                                                                                                                                                                                                ৳ ${order.total_amount}
-                                                                                                                                                                                            </td>
+                                                                                                                                                                                                        <td class="text-right">
+                                                                                                                                                                                                            ৳ ${order.total_amount}
+                                                                                                                                                                                                        </td>
 
-                                                                                                                                                                                        </tr>
+                                                                                                                                                                                                    </tr>
 
-                                                                                                                                                                                        <tr>
+                                                                                                                                                                                                    <tr>
 
-                                                                                                                                                                                            <td>Shipping</td>
+                                                                                                                                                                                                        <td>Shipping</td>
 
-                                                                                                                                                                                            <td class="text-right">
-                                                                                                                                                                                                ৳ ${order.shipping_amount}
-                                                                                                                                                                                            </td>
+                                                                                                                                                                                                        <td class="text-right">
+                                                                                                                                                                                                            ৳ ${order.shipping_amount}
+                                                                                                                                                                                                        </td>
 
-                                                                                                                                                                                        </tr>
+                                                                                                                                                                                                    </tr>
 
-                                                                                                                                                                                        <tr>
+                                                                                                                                                                                                    <tr>
 
-                                                                                                                                                                                            <td>VAT / TAX</td>
+                                                                                                                                                                                                        <td>VAT / TAX</td>
 
-                                                                                                                                                                                            <td class="text-right">
-                                                                                                                                                                                                ৳ ${order.tax_amount}
-                                                                                                                                                                                            </td>
+                                                                                                                                                                                                        <td class="text-right">
+                                                                                                                                                                                                            ৳ ${order.tax_amount}
+                                                                                                                                                                                                        </td>
 
-                                                                                                                                                                                        </tr>
+                                                                                                                                                                                                    </tr>
 
-                                                                                                                                                                                        <tr class="net-payable">
+                                                                                                                                                                                                    <tr class="net-payable">
 
-                                                                                                                                                                                            <td>NET PAYABLE</td>
+                                                                                                                                                                                                        <td>NET PAYABLE</td>
 
-                                                                                                                                                                                            <td class="text-right">
-                                                                                                                                                                                                ৳ ${order.total_amount}
-                                                                                                                                                                                            </td>
+                                                                                                                                                                                                        <td class="text-right">
+                                                                                                                                                                                                            ৳ ${order.total_amount}
+                                                                                                                                                                                                        </td>
 
-                                                                                                                                                                                        </tr>
+                                                                                                                                                                                                    </tr>
 
-                                                                                                                                                                                    </table>
+                                                                                                                                                                                                </table>
 
 
-                                                                                                                                                                                    <!-- Footer -->
+                                                                                                                                                                                                <!-- Footer -->
 
-                                                                                                                                                                                    <div class="row mt-4">
+                                                                                                                                                                                                <div class="row mt-4">
 
-                                                                                                                                                                                        <div class="col-md-6">
+                                                                                                                                                                                                    <div class="col-md-6">
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Payment Status :</strong>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Payment Status :</strong>
 
-                                                                                                                                                                                                <span class="status-badge payment-badge">
-                                                                                                                                                                                                    ${order.payment_status}
-                                                                                                                                                                                                </span>
+                                                                                                                                                                                                            <span class="status-badge payment-badge">
+                                                                                                                                                                                                                ${order.payment_status}
+                                                                                                                                                                                                            </span>
 
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        </p>
 
-                                                                                                                                                                                            <p>
-                                                                                                                                                                                                <strong>Order Status :</strong>
+                                                                                                                                                                                                        <p>
+                                                                                                                                                                                                            <strong>Order Status :</strong>
 
-                                                                                                                                                                                                <span class="status-badge order-badge">
-                                                                                                                                                                                                    ${order.order_status}
-                                                                                                                                                                                                </span>
+                                                                                                                                                                                                            <span class="status-badge order-badge">
+                                                                                                                                                                                                                ${order.order_status}
+                                                                                                                                                                                                            </span>
 
-                                                                                                                                                                                            </p>
+                                                                                                                                                                                                        </p>
 
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                        <div class="col-md-6 text-center">
+                                                                                                                                                                                                    <div class="col-md-6 text-center">
 
-                                                                                                                                                                                            <div class="signature-line"></div>
+                                                                                                                                                                                                        <div class="signature-line"></div>
 
-                                                                                                                                                                                            <small>
-                                                                                                                                                                                                Authorized Signature
-                                                                                                                                                                                            </small>
+                                                                                                                                                                                                        <small>
+                                                                                                                                                                                                            Authorized Signature
+                                                                                                                                                                                                        </small>
 
-                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    </div>
 
-                                                                                                                                                                                    </div>
+                                                                                                                                                                                                </div>
 
 
-                                                                                                                                                                                    <div class="invoice-footer text-center">
+                                                                                                                                                                                                <div class="invoice-footer text-center">
 
-                                                                                                                                                                                        <p>
-                                                                                                                                                                                            Thank You For Your Business
-                                                                                                                                                                                        </p>
+                                                                                                                                                                                                    <p>
+                                                                                                                                                                                                        Thank You For Your Business
+                                                                                                                                                                                                    </p>
 
-                                                                                                                                                                                        <small>
-                                                                                                                                                                                            Apon Plastic Industries
-                                                                                                                                                                                        </small>
+                                                                                                                                                                                                    <small>
+                                                                                                                                                                                                        Apon Plastic Industries
+                                                                                                                                                                                                    </small>
 
-                                                                                                                                                                                    </div>
+                                                                                                                                                                                                </div>
 
 
-                                                                                                                                                                                    <div class="text-center print-btn">
+                                                                                                                                                                                                <div class="text-center print-btn">
 
-                                                                                                                                                                                        <button
-                                                                                                                                                                                            onclick="window.print()"
-                                                                                                                                                                                            class="btn btn-primary"
-                                                                                                                                                                                        >
-                                                                                                                                                                                            Print Invoice
-                                                                                                                                                                                        </button>
+                                                                                                                                                                                                    <button
+                                                                                                                                                                                                        onclick="window.print()"
+                                                                                                                                                                                                        class="btn btn-primary"
+                                                                                                                                                                                                    >
+                                                                                                                                                                                                        Print Invoice
+                                                                                                                                                                                                    </button>
 
-                                                                                                                                                                                    </div>
+                                                                                                                                                                                                </div>
 
-                                                                                                                                                                                </div>
+                                                                                                                                                                                            </div>
 
-                                                                                                                                                                                `);
+                                                                                                                                                                                            `);
 
                             $('#orderViewModal').modal('show');
 

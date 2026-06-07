@@ -211,83 +211,87 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">
-
-                        Product Quantity Summary
-                    </h3>
+                    <h3 class="card-title">Product Quantity Summary</h3>
                 </div>
                 <div class="card-body">
                     <div class="row mt-4">
 
                         {{-- TOTAL QUANTITY --}}
                         <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="quantity-card quantity-card-primary"
-                                style="box-shadow: 1px 1px 1px 1px #2563eb !important ">
-                                <div class="quantity-icon">
+                            <div style="
+                                                                display: flex;
+                                                                align-items: center;
+                                                                background: linear-gradient(135deg, #1e40af, #17a2b8);
+                                                                border-radius: 12px;
+                                                                padding: 24px 20px;
+                                                                color: white;
+                                                                box-shadow: 0 4px 15px rgba(23, 162, 184, 1);
+                                                                gap: 16px;
+                                                            ">
+                                <div style="font-size: 2.5rem; opacity: 0.85;">
                                     <i class="fas fa-cubes"></i>
                                 </div>
-                                <div class="quantity-content">
-                                    <h3>
+                                <div>
+                                    <h3 style="margin: 0; font-size: 2rem; font-weight: 700;">
                                         {{ $totalStockQuantity ?? 0 }}
                                     </h3>
-                                    <p>
+                                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
                                         Total Stock Quantity
                                     </p>
                                 </div>
                             </div>
-
                         </div>
 
                         {{-- IN STOCK --}}
                         <div class="col-lg-4 col-md-6 mb-4">
-
-                            <div class="quantity-card quantity-card-success"
-                                style="box-shadow: 1px 1px 1px 1px #059669 !important ">
-
-                                <div class="quantity-icon">
+                            <div style="
+                                                                display: flex;
+                                                                align-items: center;
+                                                                background: linear-gradient(135deg, #065f46, #28a745);
+                                                                border-radius: 12px;
+                                                                padding: 24px 20px;
+                                                                color: white;
+                                                                box-shadow: 0 4px 15px rgba(5,150,105,0.4);
+                                                                gap: 16px;
+                                                            ">
+                                <div style="font-size: 2.5rem; opacity: 0.85;">
                                     <i class="fas fa-layer-group"></i>
                                 </div>
-
-                                <div class="quantity-content">
-
-                                    <h3>
+                                <div>
+                                    <h3 style="margin: 0; font-size: 2rem; font-weight: 700;">
                                         {{ $inStockQuantity ?? 0 }}
                                     </h3>
-
-                                    <p>
+                                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
                                         Available Stock Quantity
                                     </p>
-
                                 </div>
-
                             </div>
-
                         </div>
 
                         {{-- LOW STOCK --}}
                         <div class="col-lg-4 col-md-6 mb-4">
-
-                            <div class="quantity-card quantity-card-warning"
-                                style="box-shadow: 1px 1px 1px 1px #d97706 !important ">
-
-                                <div class="quantity-icon">
+                            <div style="
+                                                                display: flex;
+                                                                align-items: center;
+                                                                background: linear-gradient(135deg, #d97706, #ffc107);
+                                                                border-radius: 12px;
+                                                                padding: 24px 20px;
+                                                                color: white;
+                                                                box-shadow: 0 4px 15px rgba(217,119,6,0.4);
+                                                                gap: 16px;
+                                                            ">
+                                <div style="font-size: 2.5rem; opacity: 0.85;">
                                     <i class="fas fa-exclamation"></i>
                                 </div>
-
-                                <div class="quantity-content">
-
-                                    <h3>
+                                <div>
+                                    <h3 style="margin: 0; font-size: 2rem; font-weight: 700;">
                                         {{ $lowStockQuantity ?? 0 }}
                                     </h3>
-
-                                    <p>
+                                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
                                         Low Stock Quantity
                                     </p>
-
                                 </div>
-
                             </div>
-
                         </div>
 
                     </div>
@@ -301,10 +305,3 @@
     <!-- /.content -->
 
 @endsection
-
-
-@push('css')
-
-    <link rel="stylesheet" href="{{ asset('admin/custom/dashboard.css') }}">
-
-@endpush
