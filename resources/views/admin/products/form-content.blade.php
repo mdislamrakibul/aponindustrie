@@ -94,7 +94,7 @@
 
                             <textarea name="short_description" id="short_description" rows="4" maxlength="500"
                                 class="form-control rounded-3 @error('short_description') is-invalid @enderror"
-                                oninput="updateCounter('short_description', 'short_counter', 500)">{{ old('short_description', $isEdit ? $product->short_description : '') }}</textarea>
+                                oninput="updateCounter('short_description', 'short_counter', 500)">{{ old('short_description', $isEdit ? ($product->short_description ?? '') : '') }}</textarea>
 
                             {{-- Character Counter --}}
                             <div class="d-flex justify-content-between mt-1">
@@ -119,7 +119,7 @@
 
                             <textarea name="description" id="description" rows="7" maxlength="5000"
                                 class="form-control rounded-3 @error('description') is-invalid @enderror"
-                                oninput="updateCounter('description', 'full_counter', 5000)">{{ old('description', $isEdit ? $product->description : '') }}</textarea>
+                                oninput="updateCounter('description', 'full_counter', 5000)">{{ old('description', $isEdit ? ($product->description ?? '') : '') }}</textarea>
 
                             {{-- Character Counter --}}
                             <div class="d-flex justify-content-between mt-1">
@@ -393,28 +393,33 @@
 </form>
 <script>
 
-    $(document).on('change', '.image-input', function (e) {
-
-        const file = e.target.files[0];
-
-        if (!file) {
-            return;
-        }
-
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-
-            $('.preview-image').attr(
-                'src',
-                event.target.result
-            );
-
-        };
-
-        reader.readAsDataURL(file);
-
+    document.querySelectorAll('.image-input').forEach(function (input) {
+        input.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                document.querySelectorAll('.preview-image').forEach(function (img) {
+                    img.src = event.target.result;
+                });
+            };
+            reader.readAsDataURL(file);
+        });
     });
+
+    function updateCounter(fieldId, counterId, maxLength) {
+        const field = document.getElementById(fieldId);
+        const counter = document.getElementById(counterId);
+        const currentLength = field.value.length;
+        counter.textContent = currentLength + ' / ' + maxLength;
+        if (currentLength >= maxLength) {
+            counter.style.color = '#dc3545';
+        } else if (currentLength >= maxLength * 0.9) {
+            counter.style.color = '#fd7e14';
+        } else {
+            counter.style.color = '#6c757d';
+        }
+    }
     function updateCounter(fieldId, counterId, maxLength) {
         const field = document.getElementById(fieldId);
         const counter = document.getElementById(counterId);
