@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::latest()->paginate(10);
+        $users = User::all();
 
         $totalUsers = User::count();
 
@@ -194,24 +194,7 @@ class UserController extends Controller
             ]);
         }
 
-        ActivityLog::create([
-
-            'user_id' => session('user_id'),
-
-            'module' => 'User Management',
-
-            'item' => $newUser->first_name,
-
-            'action' => 'UPDATE',
-
-            'details' =>
-                'Updated user: '
-                . $newUser->first_name
-                . ' | Changes: '
-                . implode(', ', $changes),
-
-
-        ]);
+        
 
         return response()->json([
             'success' => true,

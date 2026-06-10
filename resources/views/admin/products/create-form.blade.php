@@ -37,24 +37,4 @@
 
 </div>
 
-@push('scripts')
 
-<script>
-
-$('#image-input').on('change', function(e){
-
-    let reader = new FileReader();
-
-    reader.onload = function(event){
-
-        $('#preview-image').attr('src', event.target.result);
-
-    }
-
-    reader.readAsDataURL(e.target.files[0]);
-
-});
-
-</script>
-
-@endpush

@@ -135,7 +135,15 @@
                         </div>
 
                         {{-- INLINE CREATE FORM --}}
-                        <div class="card-body border-bottom bg-light" id="userCreateForm" style="display:none;">
+                        <div class="card-body border-bottom bg-light"
+                            id="userCreateForm"
+
+                            style="
+                            {{ session('success') || session('error')
+                            ? 'display:block'
+                            : 'display:none'
+                            }};
+                            ">
                             @if(session('success'))
                                 <div class="alert alert-success">
                                     {{ session('success') }}

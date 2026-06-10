@@ -85,8 +85,8 @@ class ProductManagementController extends Controller
             'name' => 'required|string|max:255',
             'sku' => 'required|string|unique:tbl_products,sku',
             'category_id' => 'required',
-            'short_description' => 'required',
-            'description' => 'required',
+            'short_description' => 'required|string|max:500',
+            'description' => 'required|string|max:5000',
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'regular_price' => 'nullable|numeric',
@@ -99,6 +99,11 @@ class ProductManagementController extends Controller
             'sku.unique' => 'This SKU already exists',
             'category_id.required' => 'Please select category',
             'image.required' => 'Product image is required',
+            'short_description.max'
+            => 'Short description maximum 300 characters',
+
+            'description.max'
+            => 'Full description maximum 3000 characters',
         ]);
 
         $product = new Product();

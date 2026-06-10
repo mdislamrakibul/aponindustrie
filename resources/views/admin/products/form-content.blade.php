@@ -1,36 +1,33 @@
 @php
 
-$isEdit = $isEdit ?? false;
+    $isEdit = $isEdit ?? false;
 
-$product = $product ?? null;
+    $product = $product ?? null;
 
-$image = ($isEdit && $product)
-    ? $product->media->first()
-    : null;
+    $image = ($isEdit && $product)
+        ? $product->media->first()
+        : null;
 
-$featuredSections = (
-    $isEdit &&
-    $product &&
-    $product->product_adv_type
-)
-    ? json_decode($product->product_adv_type, true)
-    : [];
+    $featuredSections = (
+        $isEdit &&
+        $product &&
+        $product->product_adv_type
+    )
+        ? json_decode($product->product_adv_type, true)
+        : [];
 
 @endphp
 
-<form method="POST"
-    action="{{ $isEdit
-        ? route('admin.products.update', $product->id)
-        : route('admin.products.store') }}"
-    enctype="multipart/form-data">
+<form method="POST" action="{{ $isEdit
+    ? route('admin.products.update', $product->id)
+    : route('admin.products.store') }}" enctype="multipart/form-data">
 
     @csrf
     @if($isEdit)
         @method('PUT')
     @endif
 
-    <div class="modal-body bg-light"
-        style="max-height:75vh; overflow-y:auto;">
+    <div class="modal-body bg-light" style="max-height:75vh; overflow-y:auto;">
 
         <div class="row g-4">
 
@@ -52,10 +49,7 @@ $featuredSections = (
                                 Product Name
                             </label>
 
-                            <input type="text"
-                                name="name"
-                                class="form-control rounded-3"
-                                placeholder="Product Name"
+                            <input type="text" name="name" class="form-control rounded-3" placeholder="Product Name"
                                 value="{{ old('name', $isEdit && $product ? $product->name : '') }}">
 
                             @error('name')
@@ -72,12 +66,10 @@ $featuredSections = (
                             <div class="col-md-6 mb-4">
 
                                 <label class="form-label fw-semibold">
-                                    SKU
+                                    SKU (Stock Keeping Unit)
                                 </label>
 
-                                <input type="text"
-                                    name="sku"
-                                    class="form-control rounded-3"
+                                <input type="text" name="sku" class="form-control rounded-3"
                                     value="{{ old('sku', $isEdit && $product ? $product->sku : '') }}">
 
                                 @error('sku')
@@ -93,47 +85,54 @@ $featuredSections = (
 
                         </div>
 
+                        {{-- SHORT DESCRIPTION --}}
                         <div class="mb-4">
-
                             <label class="form-label fw-semibold">
                                 Short Description
+                                <span class="text-muted fw-normal" style="font-size:13px;">(Max 500 characters)</span>
                             </label>
 
-                            <textarea
-                                name="short_description"
-                                rows="4"
-                                class="form-control rounded-3">{{ old('short_description', $isEdit ? $product->short_description : '') }}</textarea>
+                            <textarea name="short_description" id="short_description" rows="4" maxlength="500"
+                                class="form-control rounded-3 @error('short_description') is-invalid @enderror"
+                                oninput="updateCounter('short_description', 'short_counter', 500)">{{ old('short_description', $isEdit ? ($product->short_description ?? '') : '') }}</textarea>
 
-                            @error('short_description')
-
-                                <small class="text-danger">
-                                    {{ $message }}
+                            {{-- Character Counter --}}
+                            <div class="d-flex justify-content-between mt-1">
+                                <div>
+                                    @error('short_description')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <small id="short_counter" style="font-size:12px; color:#6c757d;">
+                                    {{ strlen(old('short_description', $isEdit ? $product->short_description : '')) }} /
+                                    500
                                 </small>
-
-                            @enderror
-
+                            </div>
                         </div>
 
-                        <div>
+                        {{-- FULL DESCRIPTION --}}
+                        <div class="mb-4">
                             <label class="form-label fw-semibold">
                                 Full Description
+                                <span class="text-muted fw-normal" style="font-size:13px;">(Max 5000 characters)</span>
                             </label>
 
-                            <textarea
-                            name="description"
-                            rows="7"
-                            class="form-control rounded-3">{{ old('description', $isEdit ? $product->description : '') }}</textarea>
+                            <textarea name="description" id="description" rows="7" maxlength="5000"
+                                class="form-control rounded-3 @error('description') is-invalid @enderror"
+                                oninput="updateCounter('description', 'full_counter', 5000)">{{ old('description', $isEdit ? ($product->description ?? '') : '') }}</textarea>
 
-                            @error('description')
-
-                                <small class="text-danger">
-                                    {{ $message }}
+                            {{-- Character Counter --}}
+                            <div class="d-flex justify-content-between mt-1">
+                                <div>
+                                    @error('description')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <small id="full_counter" style="font-size:12px; color:#6c757d;">
+                                    {{ strlen(old('description', $isEdit ? $product->description : '')) }} / 5000
                                 </small>
-
-                            @enderror
-
+                            </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -155,9 +154,7 @@ $featuredSections = (
                                     Regular Price
                                 </label>
 
-                                <input type="number"
-                                    name="regular_price"
-                                    class="form-control rounded-3"
+                                <input type="number" name="regular_price" class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->regular_price : '' }}">
                                 @error('name')
                                     <div class="text-danger small mt-1">
@@ -171,9 +168,7 @@ $featuredSections = (
                                     Sale Price
                                 </label>
 
-                                <input type="number"
-                                    name="sale_price"
-                                    class="form-control rounded-3"
+                                <input type="number" name="sale_price" class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->sale_price : '' }}">
                                 @error('name')
                                     <div class="text-danger small mt-1">
@@ -188,9 +183,7 @@ $featuredSections = (
                                     Stock Quantity
                                 </label>
 
-                                <input type="number"
-                                    name="stock_quantity"
-                                    class="form-control rounded-3"
+                                <input type="number" name="stock_quantity" class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->stock_quantity : '' }}">
                                 @error('name')
                                     <div class="text-danger small mt-1">
@@ -204,9 +197,7 @@ $featuredSections = (
                                     Minimum Order
                                 </label>
 
-                                <input type="number"
-                                    name="minimum_order"
-                                    class="form-control rounded-3"
+                                <input type="number" name="minimum_order" class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->minimum_order : 1 }}">
                                 @error('name')
                                     <div class="text-danger small mt-1">
@@ -236,19 +227,13 @@ $featuredSections = (
 
                         <div class="mb-3 text-center">
 
-                            <img
-                                id="preview-image"
-                                src="{{ $image
-                                    ? asset($image->file_path . $image->image_name)
-                                    : asset('admin/no-image.png') }}"
-                                class="preview-image img-fluid rounded-4 border">
+                            <img id="preview-image" src="{{ $image
+    ? asset($image->file_path . $image->image_name)
+    : asset('admin/no-image.png') }}" class="preview-image img-fluid rounded-4 border">
 
                         </div>
 
-                        <input type="file"
-                            id="image-input"
-                            name="image"
-                            class="image-input form-control rounded-3">
+                        <input type="file" id="image-input" name="image" class="image-input form-control rounded-3">
 
                         @error('image')
                             <div class="text-danger small mt-1">
@@ -274,8 +259,7 @@ $featuredSections = (
                             <label class="form-label fw-semibold">
                                 Category
                             </label>
-                            <select name="category_id"
-                                    class="form-select rounded-3">
+                            <select name="category_id" class="form-select rounded-3">
 
                                 <option value="">
                                     Select Category
@@ -283,9 +267,7 @@ $featuredSections = (
 
                                 @foreach($categories as $category)
 
-                                    <option
-                                        value="{{ $category->id }}"
-                                        {{ $isEdit && $product->category_id == $category->id ? 'selected' : '' }}>
+                                    <option value="{{ $category->id }}" {{ $isEdit && $product->category_id == $category->id ? 'selected' : '' }}>
 
                                         {{ $category->name }}
 
@@ -293,9 +275,7 @@ $featuredSections = (
 
                                     @foreach($category->children as $child)
 
-                                        <option
-                                            value="{{ $child->id }}"
-                                            {{ $isEdit && $product->category_id == $child->id ? 'selected' : '' }}>
+                                        <option value="{{ $child->id }}" {{ $isEdit && $product->category_id == $child->id ? 'selected' : '' }}>
 
                                             └── {{ $child->name }}
 
@@ -322,26 +302,21 @@ $featuredSections = (
                                 Status
                             </label>
 
-                            <select name="status"
-                                    class="form-select rounded-3">
+                            <select name="status" class="form-select rounded-3">
 
-                                <option value="PUBLISHED"
-                                    {{ $isEdit && $product->status == 'PUBLISHED' ? 'selected' : '' }}>
+                                <option value="PUBLISHED" {{ $isEdit && $product->status == 'PUBLISHED' ? 'selected' : '' }}>
                                     Published
                                 </option>
 
-                                <option value="INACTIVE"
-                                    {{ $isEdit && $product->status == 'INACTIVE' ? 'selected' : '' }}>
+                                <option value="INACTIVE" {{ $isEdit && $product->status == 'INACTIVE' ? 'selected' : '' }}>
                                     Inactive
                                 </option>
 
-                                <option value="PENDING"
-                                    {{ $isEdit && $product->status == 'PENDING' ? 'selected' : '' }}>
+                                <option value="PENDING" {{ $isEdit && $product->status == 'PENDING' ? 'selected' : '' }}>
                                     Pending
                                 </option>
 
-                                <option value="DRAFT"
-                                    {{ $isEdit && $product->status == 'DRAFT' ? 'selected' : '' }}>
+                                <option value="DRAFT" {{ $isEdit && $product->status == 'DRAFT' ? 'selected' : '' }}>
                                     Draft
                                 </option>
 
@@ -354,11 +329,8 @@ $featuredSections = (
                                 Tags
                             </label>
 
-                            <input type="text"
-                                name="tags"
-                                class="form-control rounded-3"
-                                placeholder="kitchen, jar, plastic"
-                                value="{{ $isEdit ? $product->tags : '' }}">
+                            <input type="text" name="tags" class="form-control rounded-3"
+                                placeholder="kitchen, jar, plastic" value="{{ $isEdit ? $product->tags : '' }}">
                             @error('name')
                                 <div class="text-danger small mt-1">
                                     {{ $message }}
@@ -385,11 +357,8 @@ $featuredSections = (
 
                                 <div class="form-check">
 
-                                    <input class="form-check-input"
-                                        type="checkbox"
-                                        name="featured_sections[]"
-                                        value="{{ $value }}"
-                                        {{ in_array($value, $featuredSections) ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="featured_sections[]"
+                                        value="{{ $value }}" {{ in_array($value, $featuredSections) ? 'checked' : '' }}>
                                     @error('name')
                                         <div class="text-danger small mt-1">
                                             {{ $message }}
@@ -424,27 +393,47 @@ $featuredSections = (
 </form>
 <script>
 
-$(document).on('change', '.image-input', function (e) {
+    document.querySelectorAll('.image-input').forEach(function (input) {
+        input.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                document.querySelectorAll('.preview-image').forEach(function (img) {
+                    img.src = event.target.result;
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+    });
 
-    const file = e.target.files[0];
-
-    if (!file) {
-        return;
+    function updateCounter(fieldId, counterId, maxLength) {
+        const field = document.getElementById(fieldId);
+        const counter = document.getElementById(counterId);
+        const currentLength = field.value.length;
+        counter.textContent = currentLength + ' / ' + maxLength;
+        if (currentLength >= maxLength) {
+            counter.style.color = '#dc3545';
+        } else if (currentLength >= maxLength * 0.9) {
+            counter.style.color = '#fd7e14';
+        } else {
+            counter.style.color = '#6c757d';
+        }
     }
+    function updateCounter(fieldId, counterId, maxLength) {
+        const field = document.getElementById(fieldId);
+        const counter = document.getElementById(counterId);
+        const currentLength = field.value.length;
 
-    const reader = new FileReader();
+        counter.textContent = currentLength + ' / ' + maxLength;
 
-    reader.onload = function (event) {
-
-        $('.preview-image').attr(
-            'src',
-            event.target.result
-        );
-
-    };
-
-    reader.readAsDataURL(file);
-
-});
+        if (currentLength >= maxLength) {
+            counter.style.color = '#dc3545'; // red — limit reached
+        } else if (currentLength >= maxLength * 0.9) {
+            counter.style.color = '#fd7e14'; // orange — 90% warning
+        } else {
+            counter.style.color = '#6c757d'; // default gray
+        }
+    }
 
 </script>

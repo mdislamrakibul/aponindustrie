@@ -110,7 +110,7 @@ class AuthController extends Controller
         return view('admin.auth.login');
     }
     public function adminLogin(Request $request)
-    {
+    {   
         $request->validate([
             'mobile_no' => 'required',
             'password' => 'required',
@@ -121,10 +121,10 @@ class AuthController extends Controller
         $user = User::where('mobile_no', $mobile)->first();
 
         if (!$user) {
-            return back()->with('error', 'Invalid credentials');
+            return back()->with('error', 'The phone number or password you entered is incorrect.');
         }
         if (!Hash::check($request->password, $user->password)) {
-            return back()->with('error', 'Invalid credentials');
+            return back()->with('error', 'The phone number or password you entered is incorrect.');
         }
 
         // ONLY ADMIN + VENDOR ALLOWED

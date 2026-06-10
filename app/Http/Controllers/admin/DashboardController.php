@@ -24,18 +24,17 @@ class DashboardController extends Controller
 
         $totalUsers = DB::table('tbl_info_user')->count();
 
-        $totalAdmins = DB::table('tbl_info_user')
-            ->where('role', 'admin')
+        $activeUsers = DB::table('tbl_info_user')
+            ->where('status', 'active')
             ->count();
 
-        $totalVendors = DB::table('tbl_info_user')
-            ->where('role', 'vendor')
+        $inactiveUsers = DB::table('tbl_info_user')
+            ->where('status', '!=', 'active')
             ->count();
 
-        $totalCustomers = DB::table('tbl_info_user')
+        $customerUsers = DB::table('tbl_info_user')
             ->where('role', 'customer')
             ->count();
-
 
         // TOTAL PRODUCTS
         $totalProducts = DB::table('tbl_products')->count();
@@ -72,9 +71,9 @@ class DashboardController extends Controller
 
                 // USER
                 'totalUsers',
-                'totalAdmins',
-                'totalVendors',
-                'totalCustomers',
+                'activeUsers',
+                'inactiveUsers',
+                'customerUsers',
 
                 // PRODUCT
                 'totalProducts',
