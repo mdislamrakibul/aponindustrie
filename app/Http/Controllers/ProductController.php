@@ -21,13 +21,15 @@ class ProductController extends Controller
         $newProducts = [];
         // dd($request->all());
         $products_by_category = Product::query()
-            ->with(['media', 'category'])
-            // Pass sub_category_id or category_id from the URL
+            ->with([
+                'media' => function ($q) {
+                    $q->where('image_type', 'PRODUCT')
+                    ->orderBy('position', 'asc');
+                },
+                'category'
+            ])
             ->GetProductByLevelOrCategory($request->sub_category_id, $request->category_id)
-
-            // ->inStock()
             ->inRandomOrder()
-
             ->get()
             ->toArray();
 

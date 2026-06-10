@@ -14,34 +14,11 @@ use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
-
-    /**
-     * calculateTotal
-     *
-     * @param  mixed $cart
-     * @return void
-     */
-    private function calculateTotal($cart)
-    {
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['product']['sale_price'] * $item['quantity'];
-        }
-        return $total;
-    }
-
-    /**
-     * Product_Cart
-     *
-     * @param  mixed $request
-     * @return void
-     */
     public function Product_Checkout(Request $request)
     {
-
         $cart = session()->get('cart', []);
 
-        if (!isset($cart) || (isset($cart) && count($cart) < 0)) {
+        if (!isset($cart) || count($cart) < 1) {
             return redirect()->route('home.index');
         }
 
@@ -49,132 +26,123 @@ class CheckoutController extends Controller
             return $item['price'] * $item['quantity'];
         });
 
-
-        // dd([
-        //     'cart_info' => session()->get('cart'),
-        //     'subTotal' => $subtotal,
-        //     'newProducts' => $newProducts,
-
-        // ]);
-
-
         return view('checkout.Checkout', [
             'cart_info' => session()->get('cart'),
-            'subTotal' => $subtotal,
+            'subTotal'  => $subtotal,
         ]);
     }
 
-
-    /**
-     * Product_Checkout_Create
-     *
-     * @return void
-     */
     public function Product_Checkout_Create(Request $request)
     {
         $request->validate([
-            'fname' => 'required|string|max:255',
-            'lname' => 'required|string|max:255',
+            'fname'           => 'required|string|max:255',
+            'lname'           => 'required|string|max:255',
             'billing_address' => 'required',
-            'phone' => [
+            'phone'           => [
                 'required',
                 'regex:/^(?:\+88|88)?(01[3-9]\d{8})$/'
             ],
             'email' => 'required|email',
         ]);
 
-
-
         $cart = Session::get('cart');
-        if (!$cart) {
-            return response()->json(['status' => 'error', 'message' => 'Cart is empty'], 400);
+
+        if (!$cart || count($cart) === 0) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Cart is empty'
+            ], 400);
         }
 
-
-        // foreach ($cart as $id => $details) {
-        //     dd($details['quantity']);
-        // }
-        // Use a Transaction to ensure everything saves or nothing saves
         DB::beginTransaction();
 
         try {
-
-            // 2. Create the user
-            $user = new User();
-            $user->first_name = $request->fname;
-            $user->last_name = $request->lname;
-            $user->mobile_no = $request->phone;
-            // $user->password = uniqid();
-            $user->save();
-
-            // Create Login Info
-            $login = new Login();
-            $login->user_id = $user->id;
-            $login->name = $request->fname . ' ' . $request->lname;
-            $login->email = $request->email;
-            $login->phone = $request->phone;
-            $login->address = $request->billing_address;
-            $login->password = 'USER - ' . uniqid();
-            $login->save();
-
-            // 2. Create the Order
-            $order = new Order();
-            $order->user_id = session('user_id') ?? $user->id; // Null if guest checkout
-            $order->order_number = 'ORD-' . strtoupper(uniqid());
-            $order->total_amount = $this->calculateTotal($cart);
-            $order->payment_method = "CASH";
-            $order->payment_status = "PENDING";
-            $order->order_status = "PROCESSING";
-            $order->transaction_id = 'TRX-' . strtoupper(uniqid());
-            $order->notes = $request->order_notes;
-            $order->save();
-
-            // create billing address
-            $orderAddress = new OrderAddress();
-            $orderAddress->order_id = $order->id;
-            $orderAddress->type = "BILLING";
-            $orderAddress->first_name = $request->fname;
-            $orderAddress->last_name = $request->lname;
-            $orderAddress->email = $request->email;
-            $orderAddress->phone = $request->phone;
-            $orderAddress->address_line1 = $request->billing_address;
-            $orderAddress->save();
+            // ── STEP 1: User resolve ── //
 
 
+            if (session('user_id')) {
+                $userId = session('user_id');
+            } else {
+                $phone = preg_replace('/^(\+88|88)/', '', $request->phone);
+                $existingUser = User::where('mobile_no', $phone)->first();
 
-            // 3. Save Order Items & Reduce Stock
-            foreach ($cart as $id => $details) {
+                if ($existingUser) {
+                    $userId = $existingUser->id;
+                } else {
+                    
+                    $user = User::create([
+                        'first_name' => $request->fname,
+                        'last_name'  => $request->lname,
+                        'mobile_no'  => $phone,
+                        'role'       => 'customer',
+                        'status'     => 'active',
+                    ]);
 
-                $qty = $details['minimum_order'] * $details['quantity'];
+                    $userId = $user->id;
+                }
+            }
 
-                $lineTotal = $details['price'] * $qty;
+            // ── STEP 2: Total calculate ──
+
+            $totalAmount = collect($cart)->sum(function ($item) {
+                return ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
+            });
+
+            // ── STEP 3: Order save ──
+            $order = Order::create([
+                'user_id'        => $userId,
+                'order_number'   => 'ORD-' . strtoupper(uniqid()),
+                'total_amount'   => $totalAmount,
+                'payment_method' => 'CASH',
+                'payment_status' => 'PENDING',
+                'order_status'   => 'PROCESSING',
+                'transaction_id' => 'TRX-' . strtoupper(uniqid()),
+                'notes'          => $request->order_notes,
+            ]);
+
+            // ── STEP 4: Billing address save ──
+            OrderAddress::create([
+                'order_id'      => $order->id,
+                'type'          => 'BILLING',
+                'first_name'    => $request->fname,
+                'last_name'     => $request->lname,
+                'email'         => $request->email,
+                'phone'         => $request->phone,
+                'address_line1' => $request->billing_address,
+            ]);
+
+            // ── STEP 5: Order items save + stock  ──
+            foreach ($cart as $productId => $details) {
+                $qty       = ($details['minimum_order'] ?? 1) * ($details['quantity'] ?? 1);
+                $lineTotal = ($details['price'] ?? 0) * ($details['quantity'] ?? 1);
 
                 OrderItems::create([
                     'order_id'   => $order->id,
-                    'product_id' => $id,
+                    'product_id' => $productId,
                     'quantity'   => $qty,
-                    'price'      => $details['price'],
+                    'price'      => $details['price'] ?? 0,
                     'total'      => $lineTotal,
                 ]);
 
-                // Reduce Product Stock in DB
-                Product::where('id', $id)->decrement('stock_quantity', $details['minimum_order'] * $details['quantity']);
+                Product::where('id', $productId)
+                    ->decrement('stock_quantity', $qty);
             }
 
             DB::commit();
-
-            // 4. Clear the Cart
             Session::forget('cart');
 
-
             return response()->json([
-                'status' => 'success',
+                'status'       => 'success',
                 'order_number' => $order->order_number,
-                'message' => 'Order placed successfully!'
+                'message'      => 'Order placed successfully!',
             ]);
+
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
         }
     }
 }

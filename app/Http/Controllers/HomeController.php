@@ -30,7 +30,14 @@ class HomeController extends Controller
             'product_type',
             'is_discounted'
         ])
-            ->with(['category:id,name,slug', 'media:id,title,file_path,image_type,position,model_id,image_name'])
+            ->with([
+                'category:id,name,slug',
+                'media' => function ($q) {
+                    $q->where('image_type', 'PRODUCT')
+                    ->orderBy('position', 'asc')
+                    ->select('id', 'title', 'file_path', 'image_type', 'position', 'model_id', 'image_name');
+                }
+            ])
             // ->productType("FEATURED")
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');

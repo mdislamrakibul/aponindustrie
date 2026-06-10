@@ -201,7 +201,29 @@ class ProductManagementController extends Controller
                 'device_type' => 'ALL',
 
             ]);
+            
         }
+        // IMAGE 2 UPLOAD (optional)
+        if ($request->hasFile('image2')) {
+
+            $image2     = $request->file('image2');
+            $imageName2 = time() . '_' . uniqid() . '.' . $image2->extension();
+
+            $image2->move(public_path('uploads/products/'), $imageName2);
+
+            Media::create([
+                'title'      => $product->name,
+                'model_id'   => $product->id,
+                'file_path'  => 'uploads/products/',
+                'image_name' => $imageName2,
+                'file_type'  => 'image',
+                'image_type' => 'PRODUCT',
+                'position'   => 2,      // ← position 2 মানে second image
+                'is_active'  => 1,
+                'device_type'=> 'ALL',
+            ]);
+        }
+        
 
         return redirect()
             ->back()
@@ -334,6 +356,31 @@ class ProductManagementController extends Controller
                 'details' => 'Updated product image',
 
             ]);
+        }
+
+        // IMAGE 2 UPDATE (optional)
+        if ($request->hasFile('image2')) {
+
+            $image2     = $request->file('image2');
+            $imageName2 = time() . '_' . uniqid() . '.' . $image2->extension();
+
+            $image2->move(public_path('uploads/products/'), $imageName2);
+
+            Media::updateOrCreate(
+                [
+                    'model_id' => $product->id,
+                    'position' => 2,        // ← position 2 দিয়ে খুঁজবে
+                ],
+                [
+                    'title'      => $product->name,
+                    'image_name' => $imageName2,
+                    'file_path'  => 'uploads/products/',
+                    'file_type'  => 'image',
+                    'image_type' => 'PRODUCT',
+                    'is_active'  => 1,
+                    'device_type'=> 'ALL',
+                ]
+            );
         }
 
         return redirect()

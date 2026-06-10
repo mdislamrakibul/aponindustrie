@@ -80,80 +80,75 @@ class InventoryController extends Controller
     public function inventoryUpdate(Request $request)
     {
         $request->validate([
-            'product_id' => 'required|exists:tbl_products,id',
-            'stock_quantity' => 'required|numeric|min:0',
-            'purchase_price' => 'required|numeric|min:0',
-            'regular_price' => 'required|numeric|min:0',
+            'product_id'     => 'required|exists:tbl_products,id',
+            'stock_quantity' => 'nullable|numeric|min:0', // required → nullable
+            'purchase_price' => 'nullable|numeric|min:0',
+            'regular_price'  => 'nullable|numeric|min:0',
+            'per_piece_price'=> 'required|numeric|min:0',
+            'minimum_order'  => 'required|integer|min:1',
+            'tax_percentage' => 'nullable|numeric|min:0|max:100',
+            'discount_value' => 'nullable|numeric|min:0',
+            'discount_type'  => 'nullable|in:NONE,FLAT,PERCENTAGE',
         ]);
 
         $product = Product::findOrFail($request->product_id);
 
-        /*
-        |--------------------------------------------------------------------------
-        | STOCK UPDATE LOGIC
-        |--------------------------------------------------------------------------
-        | Existing stock এর সাথে নতুন quantity ADD হবে
-        | Example:
-        | Existing = 50
-        | New Input = 20
-        | Result = 70
-        |--------------------------------------------------------------------------
-        */
+        // ── Stock ──
+      
+        $addStock = (int) ($request->stock_quantity ?? 0);
+        $product->stock_quantity = (int) $product->stock_quantity + $addStock;
 
-        $product->stock_quantity =
-            (int) $product->stock_quantity +
-            (int) $request->stock_quantity;
+        // ── Purchase Price ──
 
-        /*
-        |--------------------------------------------------------------------------
-        | PRICE UPDATE
-        |--------------------------------------------------------------------------
-        */
+        if ($request->filled('purchase_price')) {
+            $product->purchase_price = $request->purchase_price;
+        }
 
-        $product->purchase_price = $request->purchase_price;
+        // ── Per Piece Price → sale_price ──
+        $product->sale_price = $request->per_piece_price;
 
-        /*
-        |--------------------------------------------------------------------------
-        | SELLING PRICE
-        |--------------------------------------------------------------------------
-        | IMPORTANT:
-        | regular_price কে Selling Price হিসেবে use করা হচ্ছে
-        |--------------------------------------------------------------------------
-        */
-
-        $product->regular_price = $request->regular_price;
-
+        // ── Minimum Order ──
         $product->minimum_order = $request->minimum_order;
 
-        /*
-        |--------------------------------------------------------------------------
-        | UPDATED TIME
-        |--------------------------------------------------------------------------
-        | Laravel automatically updates updated_at
-        |--------------------------------------------------------------------------
-        */
-        $oldStock = $product->stock_quantity;
+        // ── Package Price = per_piece × minimum_order ──
+        $product->package_price = round(
+            $request->per_piece_price * $request->minimum_order
+        );
+
+        // ── Regular Price ──
+       
+        if ($request->filled('regular_price')) {
+            $product->regular_price = $request->regular_price;
+        } else {
+            $product->regular_price = $product->package_price;
+        }
+
+        // ── Tax / VAT ──
+        $product->tax_percentage = $request->tax_percentage ?? 0;
+
+        // ── Discount ──
+        $product->discount_value = $request->discount_value ?? 0;
+        $product->discount_type  = $request->discount_type  ?? 'NONE';
 
         $product->save();
+
         ActivityLog::create([
-
             'user_id' => session('user_id'),
-
-            'module' => 'Inventory Management',
-
-            'action' => 'STOCK UPDATE',
-
-            'item' => $product->name,
-
-            'details' => 'Stock updated to ' . $product->stock_quantity,
-
+            'module'  => 'Inventory Management',
+            'action'  => 'STOCK UPDATE',
+            'item'    => $product->name,
+            'details' => 'Stock: '          . $product->stock_quantity .
+                        ' | Per Piece: ৳'  . $product->sale_price .
+                        ' | Min Order: '   . $product->minimum_order .
+                        ' | Package: ৳'    . $product->package_price .
+                        ' | Regular: ৳'    . $product->regular_price .
+                        ' | Tax: '         . $product->tax_percentage . '%',
         ]);
 
         return redirect()
             ->route('inventory.list')
             ->with('success', 'Inventory updated successfully.');
     }
-
     public function accountsTracking()
     {
         $products = Product::latest()->get();

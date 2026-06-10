@@ -274,27 +274,27 @@
 
                                     rows += `
 
-                                                                                                                                    <tr>
+                                                                                                                                            <tr>
 
-                                                                                                                                        <td>#${order.invoice_id ?? order.id}</td>
+                                                                                                                                                <td>#${order.invoice_id ?? order.id}</td>
 
-                                                                                                                                        <td>${order.created_at}</td>
+                                                                                                                                                <td>${order.created_at}</td>
 
-                                                                                                                                        <td>৳ ${order.total_amount ?? 0}</td>
+                                                                                                                                                <td>৳ ${order.total_amount ?? 0}</td>
 
-                                                                                                                                        <td>
+                                                                                                                                                <td>
 
-                                                                                                                                            <span class="badge bg-success">
+                                                                                                                                                    <span class="badge bg-success">
 
-                                                                                                                                                ${order.status ?? 'Completed'}
+                                                                                                                                                        ${order.status ?? 'Completed'}
 
-                                                                                                                                            </span>
+                                                                                                                                                    </span>
 
-                                                                                                                                        </td>
+                                                                                                                                                </td>
 
-                                                                                                                                    </tr>
+                                                                                                                                            </tr>
 
-                                                                                                                                `;
+                                                                                                                                        `;
 
                                 });
 
@@ -302,17 +302,17 @@
 
                                 rows = `
 
-                                                                                                                            <tr>
+                                                                                                                                    <tr>
 
-                                                                                                                                <td colspan="4" class="text-center py-4">
+                                                                                                                                        <td colspan="4" class="text-center py-4">
 
-                                                                                                                                    No Order History Found
+                                                                                                                                            No Order History Found
 
-                                                                                                                                </td>
+                                                                                                                                        </td>
 
-                                                                                                                            </tr>
+                                                                                                                                    </tr>
 
-                                                                                                                        `;
+                                                                                                                                `;
 
                             }
 

@@ -105,15 +105,10 @@ class CartController extends Controller
      */
     public function Product_Cart_Remove(Request $request)
     {
-
-
-        session()->flush();
-
-        // dd(session()->get('cart'));
-
+        Session::forget('cart'); 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Cart cleared successfully',
+            'status'    => 'success',
+            'message'   => 'Cart cleared successfully',
             'cartCount' => 0
         ]);
     }
@@ -166,8 +161,8 @@ class CartController extends Controller
         // 2. Check if requested quantity exceeds database stock
         if ($quantity > $product->stock_quantity) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Only ' . $product->stock . ' units left in stock.'
+                'status'  => 'error',
+                'message' => 'Only ' . $product->stock_quantity . ' units left in stock.'
             ], 400); // 400 Bad Request
         }
 

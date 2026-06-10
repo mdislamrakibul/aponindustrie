@@ -135,6 +135,7 @@ class AuthController extends Controller
 
         // Update session
         session([
+            'user_id'     => $user->user_id,
             'user_id' => $user->id,
             'user_name' => trim($user->first_name . ' ' . $user->last_name),
             'user_mobile' => $user->mobile_no,

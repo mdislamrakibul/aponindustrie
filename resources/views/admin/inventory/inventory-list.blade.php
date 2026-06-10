@@ -290,76 +290,185 @@
                 <div class="card-body">
                     <form action="{{ route('inventory.update') }}" method="POST">
                         @csrf
+
+                        @if(session('success'))
+                            <div class="alert alert-success alert-dismissible fade show mb-4">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                {{ session('success') }}
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                        @endif
+
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Product</label>
-                                    <select id="product_select" name="product_id" class="form-control" required>
-                                        <option value="">
-                                            Select Product
+
+                            {{-- Product Select --}}
+                            <div class="col-md-4 mb-3">
+                                <label class="font-weight-semibold">Product</label>
+                                <select id="product_select" name="product_id" class="form-control" required>
+                                    <option value="">— Select Product —</option>
+                                    @foreach($products as $prod)
+                                        <option value="{{ $prod->id }}" data-stock="{{ $prod->stock_quantity }}"
+                                            data-purchase="{{ $prod->purchase_price }}"
+                                            data-regularprice="{{ $prod->regular_price }}"
+                                            data-perprice="{{ $prod->sale_price }}" data-minimum="{{ $prod->minimum_order }}"
+                                            data-package="{{ $prod->package_price }}"
+                                            data-tax="{{ $prod->tax_percentage ?? 0 }}"
+                                            data-discount="{{ $prod->discount_value ?? 0 }}"
+                                            data-discounttype="{{ $prod->discount_type ?? 'NONE' }}">
+                                            {{ $prod->name }}
                                         </option>
-
-                                        @foreach($products as $product)
-
-                                            <option value="{{ $product->id }}" data-stock="{{ $product->stock_quantity }}"
-                                                data-purchase="{{ $product->purchase_price }}"
-                                                data-selling="{{ $product->regular_price }}"
-                                                data-minimum="{{ $product->minimum_order }}">
-                                                {{ $product->name }}
-                                            </option>
-
-                                        @endforeach
-                                    </select>
-                                </div>
+                                    @endforeach
+                                </select>
                             </div>
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Quantity</label>
-                                    <input type="number" id="stock_quantity" name="stock_quantity" class="form-control">
-                                </div>
+                            {{-- Current Stock (readonly, just for reference) --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">
+                                    Current Stock
+                                    <small class="text-muted">()</small>
+                                </label>
+                                <input type="number" id="current_stock" class="form-control bg-light" readonly>
                             </div>
 
+                            {{-- Add Stock --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">
+                                    Add Stock
+                                    <small class="text-muted">(Add new stock)</small>
+                                </label>
+                                <input type="number" id="stock_quantity" name="stock_quantity" class="form-control" min="0"
+                                    placeholder="0 ">
+                            </div>
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Purchase Price</label>
+                            {{-- Minimum Order --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">Min. Order (pcs)</label>
+                                <input type="number" id="minimum_order" name="minimum_order" class="form-control" min="1"
+                                    placeholder="1" oninput="calcPackagePrice()" required>
+                            </div>
+
+                            {{-- Purchase Price --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">Purchase Price (৳)</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">৳</span>
+                                    </div>
                                     <input type="number" step="0.01" id="purchase_price" name="purchase_price"
-                                        class="form-control">
+                                        class="form-control" placeholder="0.00">
                                 </div>
-
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Selling Price</label>
+
+                            {{-- Regular Price --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">Regular Price (৳)</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">৳</span>
+                                    </div>
                                     <input type="number" step="0.01" id="regular_price" name="regular_price"
-                                        class="form-control">
+                                        class="form-control" placeholder="0.00">
                                 </div>
-
                             </div>
-                            <div class="col-md-3">
 
-                                <div class="form-group">
-
-                                    <label>
-                                        Minimum Order
-                                    </label>
-
-                                    <input type="number" id="minimum_order" name="minimum_order" class="form-control">
-
+                            {{-- Per Piece Price --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">Per Piece Price (৳)</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">৳</span>
+                                    </div>
+                                    <input type="number" step="0.01" id="per_piece_price" name="per_piece_price"
+                                        class="form-control" placeholder="0.00" oninput="calcPackagePrice()" required>
                                 </div>
-
                             </div>
-                            @if(session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
+
+                            {{-- Package Price (auto calculated, readonly) --}}
+                            <div class="col-md-3 mb-3">
+                                <label class="font-weight-semibold">
+                                    Package Price (৳)
+                                    <small class="text-muted">(auto)</small>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">৳</span>
+                                    </div>
+                                    <input type="number" step="0.01" id="package_price_preview"
+                                        class="form-control bg-light" readonly placeholder="Per Piece × Min Order">
                                 </div>
-                            @endif
+                                <small class="text-muted">Per Piece × Min Order</small>
+                            </div>
+
+                            {{-- Tax / VAT --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">Tax / VAT (%)</label>
+                                <div class="input-group">
+                                    <input type="number" step="0.01" id="tax_percentage" name="tax_percentage"
+                                        class="form-control" placeholder="0" min="0" max="100" oninput="updateSummary()">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Discount Type --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">Discount Type</label>
+                                <select name="discount_type" id="discount_type" class="form-control"
+                                    onchange="updateSummary(); updateDiscountLabel()">
+                                    <option value="NONE">No Discount</option>
+                                    <option value="FLAT">Flat (৳)</option>
+                                    <option value="PERCENTAGE">Percentage (%)</option>
+                                </select>
+                            </div>
+
+                            {{-- Discount Value --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">
+                                    Discount Value
+                                    <span id="discount_unit" class="text-muted">(৳)</span>
+                                </label>
+                                <input type="number" step="0.01" id="discount_value" name="discount_value"
+                                    class="form-control" placeholder="0" min="0" oninput="updateSummary()">
+                            </div>
+
+                            {{-- Live Summary Card --}}
+                            <div class="col-md-3 mb-3">
+                                <label class="font-weight-semibold">Live Summary</label>
+                                <div style="
+                                                                                    background:#f8fafc;
+                                                                                    border:1px solid #e2e8f0;
+                                                                                    border-radius:8px;
+                                                                                    padding:10px 14px;
+                                                                                    font-size:13px;
+                                                                                    line-height:24px;
+                                                                                ">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Package Price</span>
+                                        <strong id="s_package">—</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Tax Amount</span>
+                                        <strong id="s_tax" class="text-warning">—</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Discount</span>
+                                        <strong id="s_discount" class="text-danger">—</strong>
+                                    </div>
+                                    <hr class="my-1">
+                                    <div class="d-flex justify-content-between">
+                                        <span style="color:#1a365d; font-weight:700;">Final Price</span>
+                                        <strong id="s_final" style="color:#1a365d;">—</strong>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
 
-                        <button type="submit" class="btn btn-primary">
-                            Save Inventory
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-save mr-2"></i> Save Inventory
                         </button>
 
                     </form>
@@ -389,7 +498,10 @@
                                     <th>SKU</th>
                                     <th>Stock</th>
                                     <th>Purchase Price</th>
-                                    <th>Selling Price</th>
+                                    <th>Per Piece (৳)</th>
+                                    <th>Package Price (৳)</th>
+                                    <th>Min Order</th>
+                                    <th>Tax %</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -412,13 +524,11 @@
                                             {{ $product->stock_quantity }}
                                         </td>
 
-                                        <td>
-                                            ৳ {{ number_format($product->purchase_price, 2) }}
-                                        </td>
-
-                                        <td>
-                                            ৳ {{ number_format($product->regular_price, 2) }}
-                                        </td>
+                                        <td>৳ {{ number_format($product->purchase_price, 2) }}</td>
+                                        <td>৳ {{ number_format($product->sale_price, 2) }}</td>
+                                        <td>৳ {{ number_format($product->package_price, 2) }}</td>
+                                        <td>{{ $product->minimum_order }} pcs</td>
+                                        <td>{{ $product->tax_percentage ?? 0 }}%</td>
 
                                         <td>
                                             @if($product->stock_quantity == 0)
@@ -468,35 +578,85 @@
 
 @endsection
 @push('scripts')
-
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
 
-            const productSelect =
-                document.getElementById('product_select');
+            const sel = document.getElementById('product_select');
+            const curStock = document.getElementById('current_stock');
+            const perPriceIn = document.getElementById('per_piece_price');
+            const minOrderIn = document.getElementById('minimum_order');
+            const pkgPreview = document.getElementById('package_price_preview');
+            const taxIn = document.getElementById('tax_percentage');
+            const discValIn = document.getElementById('discount_value');
+            const discTypeIn = document.getElementById('discount_type');
 
-            productSelect.addEventListener('change', function () {
+            // ── Product select  ──
+            sel.addEventListener('change', function () {
+                const o = this.options[this.selectedIndex];
+                if (!o.value) return;
 
-                const selected =
-                    this.options[this.selectedIndex];
-
-                document.getElementById('stock_quantity').value =
-                    selected.dataset.stock || '';
+                curStock.value = o.dataset.stock || '0';
 
                 document.getElementById('purchase_price').value =
-                    selected.dataset.purchase || '';
+                    o.dataset.purchase || '';
 
                 document.getElementById('regular_price').value =
-                    selected.dataset.selling || '';
+                    o.dataset.regularprice || '';
 
-                document.getElementById('minimum_order').value =
-                    selected.dataset.minimum || '';
+                perPriceIn.value = o.dataset.perprice || '';
+                minOrderIn.value = o.dataset.minimum || '';
+                taxIn.value = o.dataset.tax || '0';
+                discValIn.value = o.dataset.discount || '0';
+                discTypeIn.value = o.dataset.discounttype || 'NONE';
 
+                calcPackagePrice();
+                updateDiscountLabel();
             });
 
         });
 
-    </script>
+        // ── Package Price auto calculate ──
+        // per_piece_price × minimum_order = package_price
+        function calcPackagePrice() {
+            const perPrice = parseFloat(document.getElementById('per_piece_price').value) || 0;
+            const minOrder = parseInt(document.getElementById('minimum_order').value) || 1;
+            const pkg = perPrice * minOrder;
 
+            document.getElementById('package_price_preview').value =
+                pkg > 0 ? pkg.toFixed(2) : '';
+
+            updateSummary();
+        }
+
+        // ── Discount label update ──
+        function updateDiscountLabel() {
+            const type = document.getElementById('discount_type').value;
+            document.getElementById('discount_unit').textContent =
+                type === 'PERCENTAGE' ? '(%)' : '(৳)';
+            updateSummary();
+        }
+
+        // ── Live Summary ──
+        function updateSummary() {
+            const perPrice = parseFloat(document.getElementById('per_piece_price').value) || 0;
+            const minOrder = parseInt(document.getElementById('minimum_order').value) || 1;
+            const taxPct = parseFloat(document.getElementById('tax_percentage').value) || 0;
+            const discVal = parseFloat(document.getElementById('discount_value').value) || 0;
+            const discType = document.getElementById('discount_type').value;
+
+            const pkg = perPrice * minOrder;
+            const taxAmt = (pkg * taxPct) / 100;
+
+            let discAmt = 0;
+            if (discType === 'FLAT') discAmt = discVal;
+            if (discType === 'PERCENTAGE') discAmt = (pkg * discVal) / 100;
+
+            const final = pkg + taxAmt - discAmt;
+
+            document.getElementById('s_package').textContent = '৳ ' + pkg.toFixed(2);
+            document.getElementById('s_tax').textContent = taxPct > 0 ? '+৳ ' + taxAmt.toFixed(2) : '—';
+            document.getElementById('s_discount').textContent = discAmt > 0 ? '-৳ ' + discAmt.toFixed(2) : '—';
+            document.getElementById('s_final').textContent = '৳ ' + final.toFixed(2);
+        }
+    </script>
 @endpush

@@ -26,40 +26,23 @@
                     </a>
                 </li>
 
-                <li
-                    class="nav-item has-treeview {{ request()->is('admin/users*') || request()->is('admin/accounts*') ? 'menu-open' : '' }}">
-
-                    <a href="#"
-                        class="nav-link {{ request()->is('admin/users*') || request()->is('admin/accounts*') ? 'active' : '' }}">
-
+                <li class="nav-item has-treeview {{ request()->is('admin/users*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->is('admin/users*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
-
                         <p>
                             User Management
-
                             <i class="right fas fa-angle-left"></i>
                         </p>
-
                     </a>
-
                     <ul class="nav nav-treeview">
-
-                        {{-- USER MENU --}}
                         <li class="nav-item">
-
                             <a href="{{ route('admin.users') }}"
                                 class="nav-link {{ request()->is('admin/users*') ? 'active' : '' }}">
-
                                 <i class="nav-icon fas fa-list"></i>
-
                                 <p>Users</p>
-
                             </a>
-
                         </li>
-
                     </ul>
-
                 </li>
 
                 <li class="nav-item has-treeview
@@ -221,6 +204,25 @@
                         <p>Order Management</p>
                     </a>
                 </li>
+                <li class="nav-item has-treeview {{ request()->is('admin/accounts*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->is('admin/accounts*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                        <p>
+                            Accounts Management
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.accounts.order.history') }}"
+                                class="nav-link {{ request()->is('admin/accounts/order-history') ? 'active' : '' }}">
+                                <i class="fas fa-history nav-icon"></i>
+                                <p>Order History</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="nav-item">
 
                     <a href="{{ route('admin.activity.logs') }}"

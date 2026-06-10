@@ -92,20 +92,22 @@
                                 <span class="text-muted fw-normal" style="font-size:13px;">(Max 500 characters)</span>
                             </label>
 
-                            <textarea name="short_description" id="short_description" rows="4" maxlength="500"
-                                class="form-control rounded-3 @error('short_description') is-invalid @enderror"
-                                oninput="updateCounter('short_description', 'short_counter', 500)">{{ old('short_description', $isEdit ? ($product->short_description ?? '') : '') }}</textarea>
+                            @php $shortId = 'short_description_' . ($isEdit ? 'edit' : 'create'); @endphp
+                            @php $shortCounterId = 'short_counter_' . ($isEdit ? 'edit' : 'create'); @endphp
 
-                            {{-- Character Counter --}}
+                            <textarea name="short_description" id="{{ $shortId }}" rows="4" maxlength="500"
+                                class="form-control rounded-3 @error('short_description') is-invalid @enderror"
+                                oninput="updateCounter('{{ $shortId }}', '{{ $shortCounterId }}', 500)">{{ old('short_description', $isEdit ? ($product->short_description ?? '') : '') }}</textarea>
+
                             <div class="d-flex justify-content-between mt-1">
                                 <div>
                                     @error('short_description')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <small id="short_counter" style="font-size:12px; color:#6c757d;">
-                                    {{ strlen(old('short_description', $isEdit ? $product->short_description : '')) }} /
-                                    500
+                                <small id="{{ $shortCounterId }}" style="font-size:12px; color:#6c757d;">
+                                    {{ strlen(old('short_description', $isEdit ? ($product->short_description ?? '') : '')) }}
+                                    / 500
                                 </small>
                             </div>
                         </div>
@@ -117,19 +119,22 @@
                                 <span class="text-muted fw-normal" style="font-size:13px;">(Max 5000 characters)</span>
                             </label>
 
-                            <textarea name="description" id="description" rows="7" maxlength="5000"
-                                class="form-control rounded-3 @error('description') is-invalid @enderror"
-                                oninput="updateCounter('description', 'full_counter', 5000)">{{ old('description', $isEdit ? ($product->description ?? '') : '') }}</textarea>
+                            @php $descId = 'description_' . ($isEdit ? 'edit' : 'create'); @endphp
+                            @php $descCounterId = 'full_counter_' . ($isEdit ? 'edit' : 'create'); @endphp
 
-                            {{-- Character Counter --}}
+                            <textarea name="description" id="{{ $descId }}" rows="7" maxlength="5000"
+                                class="form-control rounded-3 @error('description') is-invalid @enderror"
+                                oninput="updateCounter('{{ $descId }}', '{{ $descCounterId }}', 5000)">{{ old('description', $isEdit ? ($product->description ?? '') : '') }}</textarea>
+
                             <div class="d-flex justify-content-between mt-1">
                                 <div>
                                     @error('description')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <small id="full_counter" style="font-size:12px; color:#6c757d;">
-                                    {{ strlen(old('description', $isEdit ? $product->description : '')) }} / 5000
+                                <small id="{{ $descCounterId }}" style="font-size:12px; color:#6c757d;">
+                                    {{ strlen(old('description', $isEdit ? ($product->description ?? '') : '')) }} /
+                                    5000
                                 </small>
                             </div>
                         </div>
@@ -165,7 +170,7 @@
                             <div class="col-md-4 mb-4">
 
                                 <label class="form-label fw-semibold">
-                                    Sale Price
+                                    Per Product Price
                                 </label>
 
                                 <input type="number" name="sale_price" class="form-control rounded-3"
@@ -218,31 +223,64 @@
             <div class="col-lg-4">
 
                 <div class="card border-0 shadow-sm rounded-4">
-
                     <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4">Product Images</h5>
 
-                        <h5 class="fw-bold mb-4">
-                            Product Image
-                        </h5>
+                        @php
+                            $images = ($isEdit && $product) ? $product->media->take(2) : collect();
+                            $image1 = $images->get(0);
+                            $image2 = $images->get(1);
+                            $suffix = $isEdit ? 'edit' : 'create';
+                        @endphp
 
-                        <div class="mb-3 text-center">
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
 
-                            <img id="preview-image" src="{{ $image
-    ? asset($image->file_path . $image->image_name)
-    : asset('admin/no-image.png') }}" class="preview-image img-fluid rounded-4 border">
+                                <h5 class="fw-bold mb-4">Product Images</h5>
 
-                        </div>
+                                {{-- Image 1 --}}
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold">
+                                        Main Image
+                                        @if(!$isEdit)<span class="text-danger">*</span>@endif
+                                    </label>
+                                    <div class="mb-2 text-center">
+                                        <img id="preview-image-1-{{ $suffix }}" src="{{ $image1
+    ? asset($image1->file_path . $image1->image_name)
+    : asset('admin/no-image.png') }}" class="img-fluid rounded-4 border"
+                                            style="max-height:160px; object-fit:cover; width:100%;">
+                                    </div>
+                                    <input type="file" name="image" class="form-control rounded-3"
+                                        accept="image/jpg,image/jpeg,image/png,image/webp"
+                                        onchange="previewImage(this, 'preview-image-1-{{ $suffix }}')">
+                                    @error('image')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                        <input type="file" id="image-input" name="image" class="image-input form-control rounded-3">
+                                {{-- Image 2 --}}
+                                <div class="mb-2">
+                                    <label class="form-label fw-semibold">
+                                        Second Image
+                                        <small class="text-muted">(optional)</small>
+                                    </label>
+                                    <div class="mb-2 text-center">
+                                        <img id="preview-image-2-{{ $suffix }}" src="{{ $image2
+    ? asset($image2->file_path . $image2->image_name)
+    : asset('admin/no-image.png') }}" class="img-fluid rounded-4 border"
+                                            style="max-height:160px; object-fit:cover; width:100%;">
+                                    </div>
+                                    <input type="file" name="image2" class="form-control rounded-3"
+                                        accept="image/jpg,image/jpeg,image/png,image/webp"
+                                        onchange="previewImage(this, 'preview-image-2-{{ $suffix }}')">
+                                    @error('image2')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                        @error('image')
-                            <div class="text-danger small mt-1">
-                                {{ $message }}
                             </div>
-                        @enderror
-
+                        </div>
                     </div>
-
                 </div>
 
 
@@ -345,11 +383,11 @@
 
                             @php
                                 $sections = [
-                                    'WEEKLY_FEATURED' => 'Weekly Featured',
-                                    'HOT_SALE' => 'Hot Sale',
-                                    'TOP_NEW' => 'Top New',
-                                    'TOP_SELLING' => 'Top Selling',
-                                    'TOP_RATED' => 'Top Rated',
+                                    'WEEKLYFEATURED' => 'Weekly Featured',
+                                    'HOTSALEITEMS' => 'Hot Sale',
+                                    'TOPNEWITEMS' => 'Top New',
+                                    'TOPSELLING' => 'Top Selling',
+                                    'TOPRATEDITEMS' => 'Top Rated',
                                 ];
                             @endphp
 
@@ -392,48 +430,38 @@
 
 </form>
 <script>
-
-    document.querySelectorAll('.image-input').forEach(function (input) {
-        input.addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                document.querySelectorAll('.preview-image').forEach(function (img) {
-                    img.src = event.target.result;
-                });
-            };
-            reader.readAsDataURL(file);
-        });
-    });
+    function previewImage(input, previewId) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById(previewId).src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
 
     function updateCounter(fieldId, counterId, maxLength) {
         const field = document.getElementById(fieldId);
         const counter = document.getElementById(counterId);
-        const currentLength = field.value.length;
-        counter.textContent = currentLength + ' / ' + maxLength;
-        if (currentLength >= maxLength) {
-            counter.style.color = '#dc3545';
-        } else if (currentLength >= maxLength * 0.9) {
-            counter.style.color = '#fd7e14';
-        } else {
-            counter.style.color = '#6c757d';
-        }
+        if (!field || !counter) return;
+        const len = field.value.length;
+        counter.textContent = len + ' / ' + maxLength;
+        counter.style.color = len >= maxLength
+            ? '#dc3545'
+            : len >= maxLength * 0.9
+                ? '#fd7e14'
+                : '#6c757d';
     }
     function updateCounter(fieldId, counterId, maxLength) {
         const field = document.getElementById(fieldId);
         const counter = document.getElementById(counterId);
-        const currentLength = field.value.length;
-
-        counter.textContent = currentLength + ' / ' + maxLength;
-
-        if (currentLength >= maxLength) {
-            counter.style.color = '#dc3545'; // red — limit reached
-        } else if (currentLength >= maxLength * 0.9) {
-            counter.style.color = '#fd7e14'; // orange — 90% warning
-        } else {
-            counter.style.color = '#6c757d'; // default gray
-        }
+        if (!field || !counter) return;
+        const len = field.value.length;
+        counter.textContent = len + ' / ' + maxLength;
+        counter.style.color = len >= maxLength
+            ? '#dc3545'
+            : len >= maxLength * 0.9
+                ? '#fd7e14'
+                : '#6c757d';
     }
-
 </script>

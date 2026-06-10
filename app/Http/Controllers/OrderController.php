@@ -3,28 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-
-
-    /**
-     * Order_Success
-     *
-     * @param  mixed $request
-     * @return void
-     */
     public function Order_Success(Request $request, $id)
     {
-        // If ID is wrong, it immediately stops and shows a 404 page
-        $order = Order::where([
-            'order_number' => $id
-        ])->first();
+        $order = Order::with([
+            'order_items.product',
+            'order_address'
+        ])->where('order_number', $id)->firstOrFail();
 
-        return view('order.Order_Success', [
-            'order' => $id
-        ]);
+        return view('order.Order_Success', compact('order'));
     }
 }

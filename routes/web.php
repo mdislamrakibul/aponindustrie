@@ -139,13 +139,20 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         '/orders/{id}',
         [AdminOrderController::class, 'show']
     )->name('orders.show');
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCOUNTS MANAGEMENT
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/accounts/order-history',
+        [App\Http\Controllers\Admin\AccountsManagementController::class, 'orderHistory']
+    )->name('accounts.order.history');
 });
 
-Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/users', [UserController::class, 'index'])
-        ->name('users');
-});
 // accounts
 
 Route::middleware(['role:admin'])
