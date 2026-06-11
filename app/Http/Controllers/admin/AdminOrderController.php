@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -44,7 +44,7 @@ class AdminOrderController extends Controller
                 'message' => 'Order not found'
             ]);
         }
-        
+
         return response()->json([
             'success' => true,
             'order' => $order

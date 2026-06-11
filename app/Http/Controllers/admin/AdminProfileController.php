@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -38,7 +38,7 @@ class AdminProfileController extends Controller
             'email'      => 'nullable|email',
 
             'profile_photo' =>
-                'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
         if ($request->hasFile('profile_photo')) {
             if (
@@ -51,7 +51,6 @@ class AdminProfileController extends Controller
                 Storage::disk('public')->delete(
                     $user->profile_photo
                 );
-
             }
 
             $file = $request->file('profile_photo');
