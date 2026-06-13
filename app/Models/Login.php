@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Login extends Model
 {
@@ -29,4 +30,9 @@ class Login extends Model
         'password',
         'remember_token',
     ];
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'login_id', 'id');
+    }
 }

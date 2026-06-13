@@ -36,6 +36,8 @@ class Product extends Model
         'discount_type',
         'discount_value',
 
+        'tax_percentage',
+
         'stock_quantity',
         'minimum_order',
 

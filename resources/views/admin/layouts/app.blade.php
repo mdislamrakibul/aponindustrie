@@ -980,6 +980,8 @@
       $('#dataTable').DataTable();
     });
   </script>
+  <!-- SweetAlert2 (required by order accept/cancel buttons) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   @stack('scripts')
   @stack('js')
 </body>

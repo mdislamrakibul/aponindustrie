@@ -72,10 +72,14 @@ class AccountsManagementController extends Controller
             ->whereIn('order_id', $deliveredOrderIds)
             ->get();
 
+        // quantity = total units; price = per-package price at order time; purchase_price = per-package cost
+        // packages sold = quantity / minimum_order
         $profit = $profitItems->sum(function ($item) {
             $purchasePrice = $item->product->purchase_price ?? 0;
-            $salePrice     = $item->price; // price at time of order
-            return ($salePrice - $purchasePrice) * $item->quantity;
+            $packagePrice  = $item->product->package_price ?? $item->price;
+            $minOrder      = $item->product->minimum_order ?? 1;
+            $packages      = $minOrder > 0 ? $item->quantity / $minOrder : $item->quantity;
+            return ($packagePrice - $purchasePrice) * $packages;
         });
 
         // ── Other stats ──

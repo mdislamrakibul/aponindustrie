@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+
     protected $table = 'tbl_orders';
+
     protected $fillable = [
         'user_id',
         'order_number',
@@ -19,16 +21,25 @@ class Order extends Model
         'payment_status',
         'order_status',
         'transaction_id',
+        'payer_number',
+        'payment_screenshot',
         'notes',
     ];
-    
+
+    /**
+     * order_status values:
+     *   PENDING    → newly placed, waiting for admin review (shown in notification panel)
+     *   PROCESSING → accepted by admin (shown in order management table)
+     *   SHIPPED    → dispatched
+     *   DELIVERED  → completed
+     *   CANCELLED  → rejected or cancelled
+     */
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // A product has many reviews
     public function order_items()
     {
         return $this->hasMany(OrderItems::class);

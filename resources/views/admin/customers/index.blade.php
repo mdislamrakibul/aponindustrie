@@ -48,6 +48,7 @@
                                 <th>SL</th>
                                 <th>Name</th>
                                 <th>Mobile</th>
+                                <th>Email</th>
                                 <th>Joined Date</th>
                                 <th>Status</th>
                                 <th class="text-center">
@@ -64,62 +65,48 @@
 
                                 <tr>
 
+                                    <td>{{ $loop->iteration }}.</td>
+
                                     <td>
-                                        {{ $loop->iteration }}.
+                                        {{ $customer->first_name }} {{ $customer->last_name }}
+                                        @if($customer->is_guest)
+                                            <span class="badge badge-warning ml-1" style="font-size:10px;">Guest</span>
+                                        @endif
                                     </td>
 
                                     <td>
-                                        {{ $customer->first_name }}
-                                        {{ $customer->last_name }}
+                                        {{ $customer->phone ?? $customer->mobile_no ?? 'N/A' }}
                                     </td>
 
-                                    <td>
-                                        {{ $customer->phone ?? 'N/A' }}
-                                    </td>
+                                    <td>{{ $customer->email ?? 'N/A' }}</td>
 
                                     <td>
                                         {{ date('d M Y', strtotime($customer->created_at)) }}
                                     </td>
 
                                     <td>
-
-                                        <span class="badge bg-success">
-                                            Active
-                                        </span>
-
+                                        @if($customer->is_guest)
+                                            <span class="badge badge-secondary">Guest</span>
+                                        @else
+                                            <span class="badge bg-success">Active</span>
+                                        @endif
                                     </td>
 
                                     <td class="text-center">
-
                                         <div class="action-btn-group">
-
                                             <button type="button" class="action-btn-custom viewHistoryBtn"
                                                 data-id="{{ $customer->id }}" title="Order History">
-
-                                                <i class="fas fa-eye" style="color: cornflowerblue;">
-                                                </i>
-
+                                                <i class="fas fa-eye" style="color: cornflowerblue;"></i>
                                             </button>
-
-
-
                                         </div>
-
                                     </td>
+
                                 </tr>
 
                             @empty
-
                                 <tr>
-
-                                    <td colspan="6" class="text-center py-4">
-
-                                        No Customers Found
-
-                                    </td>
-
+                                    <td colspan="7" class="text-center py-4">No Customers Found</td>
                                 </tr>
-
                             @endforelse
 
                         </tbody>
@@ -253,73 +240,44 @@
 
                         success: function (response) {
 
-                            $('#customerName').text(
-                                (response.customer.first_name ?? '') + ' ' +
-                                (response.customer.last_name ?? '')
-                            );
+                            let isGuest = response.customer.is_guest == 1;
+                            let nameLabel = (response.customer.first_name ?? '') + ' ' + (response.customer.last_name ?? '');
+                            if (isGuest) nameLabel += ' <span class="badge badge-warning">Guest</span>';
 
-                            $('#customerPhone').text(
-                                response.customer.phone ?? 'N/A'
-                            );
+                            $('#customerName').html(nameLabel);
 
-                            $('#customerJoinDate').text(
-                                response.customer.created_at ?? 'N/A'
-                            );
+                            // Phone: for guest try contactInfo first
+                            let phone = response.customer.phone || response.customer.mobile_no || 'N/A';
+                            if (isGuest && response.contactInfo && response.contactInfo.phone) {
+                                phone = response.contactInfo.phone;
+                            }
+                            $('#customerPhone').text(phone);
+
+                            // Email (guest only)
+                            if (isGuest && response.contactInfo && response.contactInfo.email) {
+                                $('#customerEmail').text(response.contactInfo.email).closest('p').show();
+                            } else {
+                                $('#customerEmail').closest('p').hide();
+                            }
+
+                            $('#customerJoinDate').text(response.customer.created_at ?? 'N/A');
 
                             let rows = '';
-
                             if (response.orders.length > 0) {
-
                                 response.orders.forEach(function (order) {
-
-                                    rows += `
-
-                                                                                                                                            <tr>
-
-                                                                                                                                                <td>#${order.invoice_id ?? order.id}</td>
-
-                                                                                                                                                <td>${order.created_at}</td>
-
-                                                                                                                                                <td>৳ ${order.total_amount ?? 0}</td>
-
-                                                                                                                                                <td>
-
-                                                                                                                                                    <span class="badge bg-success">
-
-                                                                                                                                                        ${order.status ?? 'Completed'}
-
-                                                                                                                                                    </span>
-
-                                                                                                                                                </td>
-
-                                                                                                                                            </tr>
-
-                                                                                                                                        `;
-
+                                    rows += `<tr>
+                        <td>#${order.order_number ?? order.id}</td>
+                        <td>${order.created_at}</td>
+                        <td>৳ ${parseFloat(order.total_amount ?? 0).toFixed(2)}</td>
+                        <td><span class="badge bg-success">${order.order_status ?? 'Processing'}</span></td>
+                    </tr>`;
                                 });
-
                             } else {
-
-                                rows = `
-
-                                                                                                                                    <tr>
-
-                                                                                                                                        <td colspan="4" class="text-center py-4">
-
-                                                                                                                                            No Order History Found
-
-                                                                                                                                        </td>
-
-                                                                                                                                    </tr>
-
-                                                                                                                                `;
-
+                                rows = `<tr><td colspan="4" class="text-center py-4">No Order History Found</td></tr>`;
                             }
 
                             $('#orderHistoryData').html(rows);
-
                             $('#orderHistoryModal').modal('show');
-
                         }
 
                     });

@@ -21,7 +21,7 @@ flex-wrap">
 
             Design, Developed &amp; Managed by
             <strong>
-                Versedsoft
+                <a href="https://versedsoft.com/" target="_blank" rel="noopener">Versedsoft</a>
             </strong>
 
         </div>

@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class CheckoutController extends Controller
 {
@@ -45,6 +46,16 @@ class CheckoutController extends Controller
             'email' => 'required|email',
         ]);
 
+        $paymentMethod = $request->input('payment_method_override', 'CASH');
+        $isOnline      = $paymentMethod !== 'CASH';
+
+        if ($isOnline) {
+            $request->validate([
+                'payer_number'       => 'required|string|max:50',
+                'payment_screenshot' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            ]);
+        }
+
         $cart = Session::get('cart');
 
         if (!$cart || count($cart) === 0) {
@@ -57,8 +68,7 @@ class CheckoutController extends Controller
         DB::beginTransaction();
 
         try {
-            // ── STEP 1: User resolve ── //
-
+            // ── STEP 1: User resolve ──
 
             if (session('user_id')) {
                 $userId = session('user_id');
@@ -69,7 +79,6 @@ class CheckoutController extends Controller
                 if ($existingUser) {
                     $userId = $existingUser->id;
                 } else {
-                    
                     $user = User::create([
                         'first_name' => $request->fname,
                         'last_name'  => $request->lname,
@@ -88,19 +97,29 @@ class CheckoutController extends Controller
                 return ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
             });
 
-            // ── STEP 3: Order save ──
+            // ── STEP 3: Screenshot upload ──
+
+            $screenshotPath = null;
+            if ($isOnline && $request->hasFile('payment_screenshot')) {
+                $screenshotPath = $request->file('payment_screenshot')
+                    ->store('payment-screenshots', 'public');
+            }
+
+            // ── STEP 4: Order save ──
             $order = Order::create([
-                'user_id'        => $userId,
-                'order_number'   => 'ORD-' . strtoupper(uniqid()),
-                'total_amount'   => $totalAmount,
-                'payment_method' => 'CASH',
-                'payment_status' => 'PENDING',
-                'order_status'   => 'PROCESSING',
-                'transaction_id' => 'TRX-' . strtoupper(uniqid()),
-                'notes'          => $request->order_notes,
+                'user_id'            => $userId,
+                'order_number'       => 'ORD-' . strtoupper(uniqid()),
+                'total_amount'       => $totalAmount,
+                'payment_method'     => $paymentMethod,
+                'payment_status'     => 'PENDING',
+                'order_status'       => 'PENDING',
+                'transaction_id'     => $request->input('transaction_ref') ?: ('TRX-' . strtoupper(uniqid())),
+                'payer_number'       => $isOnline ? $request->input('payer_number') : null,
+                'payment_screenshot' => $screenshotPath,
+                'notes'              => $request->order_notes,
             ]);
 
-            // ── STEP 4: Billing address save ──
+            // ── STEP 5: Billing address save ──
             OrderAddress::create([
                 'order_id'      => $order->id,
                 'type'          => 'BILLING',
@@ -111,7 +130,7 @@ class CheckoutController extends Controller
                 'address_line1' => $request->billing_address,
             ]);
 
-            // ── STEP 5: Order items save + stock  ──
+            // ── STEP 6: Order items save + stock ──
             foreach ($cart as $productId => $details) {
                 $qty       = ($details['minimum_order'] ?? 1) * ($details['quantity'] ?? 1);
                 $lineTotal = ($details['price'] ?? 0) * ($details['quantity'] ?? 1);

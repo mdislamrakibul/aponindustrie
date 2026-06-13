@@ -46,7 +46,7 @@
                                         <td class="image product-thumbnail">
 
                                             @foreach ($cart['product']['media'] as $media)
-                                            @if ($media['position'] == 0)
+                                            @if ($media['position'] == 1)
                                             <img src="{{ asset( $media['file_path']. $media['image_name'])}}" alt={{
                                                 $media['image_name'] }}>
 
@@ -217,7 +217,7 @@
                                 <a href="{{ route('Product_Details', ['product_name' => $prod['name'],'category_name' => $prod['category']['name'],'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                         'category_id' => $prod['category']['id'],'product_id'=>$prod['id'] ]) }}">
                                     @foreach ($prod['media'] as $media)
-                                    @if ($media['position'] == 0)
+                                    @if ($media['position'] == 1)
                                     <img class="default-img"
                                         src="{{ asset( $media['file_path']. $media['image_name'])}}" alt={{
                                         $media['image_name'] }}>
