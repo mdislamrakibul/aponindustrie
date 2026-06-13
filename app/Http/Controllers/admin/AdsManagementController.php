@@ -108,6 +108,22 @@ class AdsManagementController extends Controller
         return redirect()->route('admin.ads.index')->with('success', 'Slide deleted.');
     }
 
+    public function updateText(Request $request, $id)
+    {
+        $banner = Banner::findOrFail($id);
+
+        $banner->update([
+            'slide_top'       => $request->input('slide_top') ?: null,
+            'slide_title'     => $request->input('slide_title') ?: null,
+            'slide_highlight' => $request->input('slide_highlight') ?: null,
+            'slide_desc'      => $request->input('slide_desc') ?: null,
+        ]);
+
+        activityLog('Ads Management', 'UPDATE', 'Slide text updated: ' . $banner->label);
+
+        return redirect()->route('admin.ads.index')->with('success', 'Slide text updated for: ' . $banner->label);
+    }
+
     private function ensureUploadDir(): void
     {
         $dir = public_path('uploads/ads/');

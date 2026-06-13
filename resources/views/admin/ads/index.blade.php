@@ -140,6 +140,19 @@
                                             @endif
                                         </div>
 
+                                        {{-- Edit slide text --}}
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-info w-100 mt-2"
+                                                onclick="openTextModal(
+                                                    {{ $slider->id }},
+                                                    {{ json_encode($slider->slide_top ?? '') }},
+                                                    {{ json_encode($slider->slide_title ?? '') }},
+                                                    {{ json_encode($slider->slide_highlight ?? '') }},
+                                                    {{ json_encode($slider->slide_desc ?? '') }}
+                                                )">
+                                            <i class="fas fa-pen mr-1"></i> Edit Text
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>
@@ -215,5 +228,70 @@
 
         </div>
     </section>
+
+    {{-- ── Slide Text Edit Modal ── --}}
+    <div class="modal fade" id="slideTextModal" tabindex="-1" role="dialog" aria-labelledby="slideTextModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="slideTextModalLabel">
+                        <i class="fas fa-pen mr-2 text-info"></i>Edit Slide Text
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" id="slideTextForm">
+                    @csrf
+                    <div class="modal-body">
+                        <p class="text-muted small mb-3">
+                            Leave any field blank to fall back to the default text on the live site.
+                        </p>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Top Label</label>
+                            <small class="text-muted d-block mb-1">Small line above the main title — e.g. "Trade-in offer"</small>
+                            <input type="text" name="slide_top" id="modalSlideTop"
+                                   class="form-control" placeholder="Trade-in offer" maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Title</label>
+                            <small class="text-muted d-block mb-1">Medium heading — e.g. "Supper deals"</small>
+                            <input type="text" name="slide_title" id="modalSlideTitle"
+                                   class="form-control" placeholder="Supper deals" maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Highlight</label>
+                            <small class="text-muted d-block mb-1">Large green heading — e.g. "On all products"</small>
+                            <input type="text" name="slide_highlight" id="modalSlideHighlight"
+                                   class="form-control" placeholder="On all products" maxlength="100">
+                        </div>
+                        <div class="form-group mb-0">
+                            <label class="font-weight-bold">Description</label>
+                            <small class="text-muted d-block mb-1">Subtext below headings — e.g. "Save more with coupons & up to 70% off"</small>
+                            <input type="text" name="slide_desc" id="modalSlideDesc"
+                                   class="form-control" placeholder="Save more with coupons & up to 70% off" maxlength="200">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save mr-1"></i> Save Text
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function openTextModal(id, top, title, highlight, desc) {
+        document.getElementById('slideTextForm').action = '/admin/ads/' + id + '/text';
+        document.getElementById('modalSlideTop').value       = top       || '';
+        document.getElementById('modalSlideTitle').value     = title     || '';
+        document.getElementById('modalSlideHighlight').value = highlight || '';
+        document.getElementById('modalSlideDesc').value      = desc      || '';
+        $('#slideTextModal').modal('show');
+    }
+    </script>
 
 @endsection

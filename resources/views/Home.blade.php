@@ -348,10 +348,10 @@
                                     <div class="row align-items-center slider-animated-1">
                                         <div class="col-lg-5 col-md-6">
                                             <div class="hero-slider-content-2">
-                                                <h4 class="animated">Trade-in offer</h4>
-                                                <h2 class="animated fw-900">Supper deals</h2>
-                                                <h1 class="animated fw-900 text-brand">On all products</h1>
-                                                <p class="animated">Save more with coupons & up to 70% off</p>
+                                                <h4 class="animated">{{ $slide->slide_top ?: 'Trade-in offer' }}</h4>
+                                                <h2 class="animated fw-900">{{ $slide->slide_title ?: 'Supper deals' }}</h2>
+                                                <h1 class="animated fw-900 text-brand">{{ $slide->slide_highlight ?: 'On all products' }}</h1>
+                                                <p class="animated">{{ $slide->slide_desc ?: 'Save more with coupons & up to 70% off' }}</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-7 col-md-6">

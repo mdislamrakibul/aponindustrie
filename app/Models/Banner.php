@@ -12,6 +12,7 @@ class Banner extends Model
         'type', 'slot', 'label', 'image_path',
         'rec_width', 'rec_height', 'sort_order',
         'is_locked', 'is_active',
+        'slide_top', 'slide_title', 'slide_highlight', 'slide_desc',
     ];
 
     protected $casts = [
