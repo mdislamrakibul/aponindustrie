@@ -21,118 +21,127 @@
 <!-- /.content-header -->
 
 
-<div class="card shadow-sm rounded-4">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
 
+                <div class="card shadow-sm rounded-4">
 
-    <div class="card-header bg-white">
+                    <div class="card-header bg-white">
 
-        <h3 class="card-title">
-            Activity History Logs
-        </h3>
+                        <h3 class="card-title">
+                            Activity History Logs
+                        </h3>
 
+                    </div>
+
+                    <div class="card-body table-responsive">
+
+                        <table class="table table-hover align-middle" id="dataTable">
+
+                            <thead class="table-light">
+
+                                <tr>
+
+                                    <th>SL.</th>
+
+                                    <th>Admin</th>
+
+                                    <th>Module</th>
+
+                                    <th>Action</th>
+
+                                    <th>Item</th>
+
+                                    <th>Details</th>
+
+                                    <th>Date & Time</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @forelse($logs as $log)
+
+                                <tr>
+
+                                    <td>
+                                        {{ $loop->iteration }}.
+                                    </td>
+
+                                    <td>
+                                        {{ $log->user->first_name ?? 'Unknown' }}
+                                    </td>
+
+                                    <td>
+
+                                        <span class="badge bg-primary px-3 py-2">
+
+                                            {{ $log->module }}
+
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <span class="badge bg-dark px-3 py-2">
+
+                                            {{ $log->action }}
+
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ $log->item }}
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ $log->details }}
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ $log->created_at->format('d M Y h:i A') }}
+
+                                    </td>
+
+                                </tr>
+
+                                @empty
+
+                                <tr>
+
+                                    <td colspan="7" class="text-center py-5">
+
+                                        No Activity Found
+
+                                    </td>
+
+                                </tr>
+
+                                @endforelse
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
     </div>
-
-    <div class="card-body table-responsive">
-
-        <table class="table table-hover align-middle" id="dataTable">
-
-            <thead class="table-light">
-
-                <tr>
-
-                    <th>SL.</th>
-
-                    <th>Admin</th>
-
-                    <th>Module</th>
-
-                    <th>Action</th>
-
-                    <th>Item</th>
-
-                    <th>Details</th>
-
-                    <th>Date & Time</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                @forelse($logs as $log)
-
-                <tr>
-
-                    <td>
-                        {{ $loop->iteration }}.
-                    </td>
-
-                    <td>
-                        {{ $log->user->first_name ?? 'Unknown' }}
-                    </td>
-
-                    <td>
-
-                        <span class="badge bg-primary px-3 py-2">
-
-                            {{ $log->module }}
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <span class="badge bg-dark px-3 py-2">
-
-                            {{ $log->action }}
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        {{ $log->item }}
-
-                    </td>
-
-                    <td>
-
-                        {{ $log->details }}
-
-                    </td>
-
-                    <td>
-
-                        {{ $log->created_at->format('d M Y h:i A') }}
-
-                    </td>
-
-                </tr>
-
-                @empty
-
-                <tr>
-
-                    <td colspan="7" class="text-center py-5">
-
-                        No Activity Found
-
-                    </td>
-
-                </tr>
-
-                @endforelse
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
+</section>
 
 
 @endsection

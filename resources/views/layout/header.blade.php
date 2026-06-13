@@ -116,9 +116,9 @@
 
                             <li>
                                 <i class="fa fa-user"></i>
-                                <span style="padding-right: 10px;">
+                                <a href="{{ route('customer.profile') }}" style="padding: 0px !important; padding-right: 10px !important;">
                                     {{ session('user_name') }}
-                                </span>
+                                </a>
                             </li>
 
                             @if(
@@ -154,14 +154,11 @@
                                 <a href="{{ url('/admin/login') }}" style="padding: 0px !important;">
                                     Log In
                                 </a>
-
-                                {{-- /
-
+                                /
                                 <i class="fa fa-lock" style="padding-left: 5px !important;"></i>
-
                                 <a href="{{ url('/register') }}" style="padding: 0px !important;">
-                                    Sign Up
-                                </a> --}}
+                                    Register
+                                </a>
                             </li>
 
                             @endif
@@ -265,7 +262,7 @@
                                             <div class="shopping-cart-img">
 
                                                     @foreach ($cart['product']['media'] as $media)
-                                                    @if ($media['position'] == 0)
+                                                    @if ($media['position'] == 1)
                                                     <img src="{{ asset( $media['file_path']. $media['image_name'])}}"
                                                         alt={{ $media['image_name'] }}>
                                                     @endif
@@ -450,7 +447,7 @@
 
 
                                             @foreach ($cart['product']['media'] as $media)
-                                            @if ($media['position'] == 0)
+                                            @if ($media['position'] == 1)
                                             <img src="{{ asset( $media['file_path']. $media['image_name'])}}" alt={{
                                                 $media['image_name'] }}>
                                             @endif

@@ -277,7 +277,8 @@
                 </div>
                 <div class="coppy-right-item item-right">
                     <div class="wrap-nav horizontal-nav">
-                        <p class="coppy-right-text">Design & Developed by Versedsoft</p>
+                        <p class="coppy-right-text">Design &amp; Developed by
+                            <a href="https://versedsoft.com/" target="_blank" rel="noopener">Versedsoft</a></p>
 
                         {{-- <ul>
                             <li class="menu-item"><a href="about-us.html" class="link-term">About us</a></li>

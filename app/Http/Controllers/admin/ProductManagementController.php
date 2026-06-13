@@ -89,6 +89,7 @@ class ProductManagementController extends Controller
             'description' => 'required|string|max:5000',
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'regular_price' => 'nullable|numeric',
             'sale_price' => 'nullable|numeric',
             'stock_quantity' => 'nullable|integer',
@@ -218,12 +219,29 @@ class ProductManagementController extends Controller
                 'image_name' => $imageName2,
                 'file_type'  => 'image',
                 'image_type' => 'PRODUCT',
-                'position'   => 2,      // ← position 2 মানে second image
+                'position'   => 2,
                 'is_active'  => 1,
                 'device_type'=> 'ALL',
             ]);
         }
-        
+
+        // IMAGE 3 UPLOAD (optional)
+        if ($request->hasFile('image3')) {
+            $image3     = $request->file('image3');
+            $imageName3 = time() . '_' . uniqid() . '.' . $image3->extension();
+            $image3->move(public_path('uploads/products/'), $imageName3);
+            Media::create([
+                'title'      => $product->name,
+                'model_id'   => $product->id,
+                'file_path'  => 'uploads/products/',
+                'image_name' => $imageName3,
+                'file_type'  => 'image',
+                'image_type' => 'PRODUCT',
+                'position'   => 3,
+                'is_active'  => 1,
+                'device_type'=> 'ALL',
+            ]);
+        }
 
         return redirect()
             ->back()
@@ -240,8 +258,8 @@ class ProductManagementController extends Controller
             'short_description' => 'required',
             'description' => 'required',
             'status' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
+            'image'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $product->name = $request->name;
@@ -367,13 +385,29 @@ class ProductManagementController extends Controller
             $image2->move(public_path('uploads/products/'), $imageName2);
 
             Media::updateOrCreate(
-                [
-                    'model_id' => $product->id,
-                    'position' => 2,        // ← position 2 দিয়ে খুঁজবে
-                ],
+                ['model_id' => $product->id, 'position' => 2],
                 [
                     'title'      => $product->name,
                     'image_name' => $imageName2,
+                    'file_path'  => 'uploads/products/',
+                    'file_type'  => 'image',
+                    'image_type' => 'PRODUCT',
+                    'is_active'  => 1,
+                    'device_type'=> 'ALL',
+                ]
+            );
+        }
+
+        // IMAGE 3 UPDATE (optional)
+        if ($request->hasFile('image3')) {
+            $image3     = $request->file('image3');
+            $imageName3 = time() . '_' . uniqid() . '.' . $image3->extension();
+            $image3->move(public_path('uploads/products/'), $imageName3);
+            Media::updateOrCreate(
+                ['model_id' => $product->id, 'position' => 3],
+                [
+                    'title'      => $product->name,
+                    'image_name' => $imageName3,
                     'file_path'  => 'uploads/products/',
                     'file_type'  => 'image',
                     'image_type' => 'PRODUCT',

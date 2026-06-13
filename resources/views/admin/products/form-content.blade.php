@@ -227,9 +227,10 @@
                         <h5 class="fw-bold mb-4">Product Images</h5>
 
                         @php
-                            $images = ($isEdit && $product) ? $product->media->take(2) : collect();
+                            $images = ($isEdit && $product) ? $product->media->take(3) : collect();
                             $image1 = $images->get(0);
                             $image2 = $images->get(1);
+                            $image3 = $images->get(2);
                             $suffix = $isEdit ? 'edit' : 'create';
                         @endphp
 
@@ -274,6 +275,26 @@
                                         accept="image/jpg,image/jpeg,image/png,image/webp"
                                         onchange="previewImage(this, 'preview-image-2-{{ $suffix }}')">
                                     @error('image2')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                {{-- Image 3 --}}
+                                <div class="mb-2">
+                                    <label class="form-label fw-semibold">
+                                        Third Image
+                                        <small class="text-muted">(optional)</small>
+                                    </label>
+                                    <div class="mb-2 text-center">
+                                        <img id="preview-image-3-{{ $suffix }}" src="{{ $image3
+    ? asset($image3->file_path . $image3->image_name)
+    : asset('admin/no-image.png') }}" class="img-fluid rounded-4 border"
+                                            style="max-height:160px; object-fit:cover; width:100%;">
+                                    </div>
+                                    <input type="file" name="image3" class="form-control rounded-3"
+                                        accept="image/jpg,image/jpeg,image/png,image/webp"
+                                        onchange="previewImage(this, 'preview-image-3-{{ $suffix }}')">
+                                    @error('image3')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -435,23 +456,12 @@
         if (!file) return;
         const reader = new FileReader();
         reader.onload = function (e) {
-            document.getElementById(previewId).src = e.target.result;
+            const img = document.getElementById(previewId);
+            if (img) img.src = e.target.result;
         };
         reader.readAsDataURL(file);
     }
 
-    function updateCounter(fieldId, counterId, maxLength) {
-        const field = document.getElementById(fieldId);
-        const counter = document.getElementById(counterId);
-        if (!field || !counter) return;
-        const len = field.value.length;
-        counter.textContent = len + ' / ' + maxLength;
-        counter.style.color = len >= maxLength
-            ? '#dc3545'
-            : len >= maxLength * 0.9
-                ? '#fd7e14'
-                : '#6c757d';
-    }
     function updateCounter(fieldId, counterId, maxLength) {
         const field = document.getElementById(fieldId);
         const counter = document.getElementById(counterId);

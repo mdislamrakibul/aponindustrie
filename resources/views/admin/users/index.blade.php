@@ -218,6 +218,22 @@
 
                         </div>
 
+                        {{-- ROLE FILTER --}}
+                        <div class="card-body border-bottom bg-white py-3">
+                            <div class="row align-items-end g-3">
+                                <div class="col-lg-3 col-md-4">
+                                    <label class="form-label fw-semibold">Filter by Role</label>
+                                    <select id="roleFilter" class="form-select">
+                                        <option value="">All Roles</option>
+                                        <option value="vendor">Vendor</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="accountant">Accountant</option>
+                                        <option value="customer">Customer</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- USER TABLE --}}
                         <div class="card-body">
 
@@ -239,7 +255,7 @@
 
                                         @forelse($users as $user)
 
-                                            <tr id="row-{{ $user->id }}">
+                                            <tr id="row-{{ $user->id }}" data-role="{{ $user->role }}">
 
                                                 {{-- NAME --}}
                                                 <td>
@@ -351,12 +367,6 @@
                                                         <button type="button" class="action-btn cancel-btn d-none"
                                                             data-id="{{ $user->id }}" title="Cancel">
                                                             <i class="fas fa-times" style="color: maroon;"></i>
-                                                        </button>
-
-                                                        {{-- SALARY --}}
-                                                        <button type="button" class="action-btn open-salary-modal"
-                                                            data-id="{{ $user->id }}">
-                                                            <i class="fas fa-wallet" style="color: brown;"></i>
                                                         </button>
 
                                                         {{-- DELETE --}}
@@ -631,5 +641,21 @@
         });
 
 
+        // Role filter — uses data-role on <tr> to avoid false matches from hidden select options
+        $(function () {
+            var table   = $('#dataTable').DataTable();
+            var activeRole = '';
+
+            $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                if (settings.nTable.id !== 'dataTable') return true;
+                if (!activeRole) return true;
+                return $(table.row(dataIndex).node()).data('role') === activeRole;
+            });
+
+            $('#roleFilter').on('change', function () {
+                activeRole = $(this).val();
+                table.draw();
+            });
+        });
     </script>
 @endpush

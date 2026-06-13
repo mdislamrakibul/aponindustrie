@@ -83,18 +83,16 @@
                                 </select>
                             </div>
 
-                            <div class="col-lg-1 col-md-2">
+                            <div class="col-auto ms-auto">
                                 <label class="form-label d-block">&nbsp;</label>
-                                <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fas fa-filter"></i>
-                                </button>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2">
-                                <label class="form-label d-block">&nbsp;</label>
-                                <a href="{{ route('admin.accounts.order.history') }}" class="btn btn-secondary w-100">
-                                    <i class="fas fa-redo"></i>
-                                </a>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-filter"></i>
+                                    </button>
+                                    <a href="{{ route('admin.accounts.order.history') }}" class="btn btn-secondary">
+                                        <i class="fas fa-redo"></i>
+                                    </a>
+                                </div>
                             </div>
 
                         </div>
@@ -213,11 +211,16 @@
                                 @forelse($orders as $order)
                                     @php
                                         // Per-row profit calculation
+                                        // quantity = total units; price = per-package price; purchase_price = per-package cost
+                                        // packages sold = quantity / minimum_order
                                         $rowProfit = 0;
                                         if ($order->order_status === 'DELIVERED') {
                                             foreach ($order->order_items as $item) {
                                                 $purchasePrice = $item->product->purchase_price ?? 0;
-                                                $rowProfit += ($item->price - $purchasePrice) * $item->quantity;
+                                                $packagePrice  = $item->product->package_price ?? $item->price;
+                                                $minOrder      = $item->product->minimum_order ?? 1;
+                                                $packages      = $minOrder > 0 ? $item->quantity / $minOrder : $item->quantity;
+                                                $rowProfit    += ($packagePrice - $purchasePrice) * $packages;
                                             }
                                         }
 

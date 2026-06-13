@@ -195,14 +195,34 @@
 
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('admin.orders.index') }}"
-                        class="nav-link {{ request()->is('admin/orders*') ? 'active' : '' }}">
-
+                <li class="nav-item has-treeview {{ request()->is('admin/orders*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->is('admin/orders*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shopping-cart"></i>
-
-                        <p>Order Management</p>
+                        <p>
+                            Order Management
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.orders.new.page') }}"
+                                class="nav-link {{ request()->is('admin/orders/new') ? 'active' : '' }}">
+                                <i class="fas fa-bell nav-icon"></i>
+                                <p>New Orders
+                                    <span id="sidebarNewOrderBadge"
+                                        class="badge badge-danger badge-sm float-right"
+                                        style="display:none;"></span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.orders.index') }}"
+                                class="nav-link {{ request()->is('admin/orders') ? 'active' : '' }}">
+                                <i class="fas fa-list nav-icon"></i>
+                                <p>Orders</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item has-treeview {{ request()->is('admin/accounts*') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ request()->is('admin/accounts*') ? 'active' : '' }}">
@@ -221,6 +241,14 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.ads.index') }}"
+                        class="nav-link {{ request()->is('admin/ads*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-images"></i>
+                        <p>Ads Management</p>
+                    </a>
                 </li>
 
                 <li class="nav-item">
@@ -245,14 +273,11 @@
 </aside>
 <style>
     .nav-treeview .nav-link {
-
         padding-left: 38px !important;
     }
-
     .nav-treeview .nav-icon {
-
         font-size: 12px !important;
-
         width: 18px !important;
     }
 </style>
+

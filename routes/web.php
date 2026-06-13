@@ -1,15 +1,17 @@
 <?php
 
-use App\Http\Controllers\admin\AccountController;
-use App\Http\Controllers\admin\AdminOrderController;
-use App\Http\Controllers\admin\CustomerController;
-use App\Http\Controllers\admin\DashboardController;
-use App\Http\Controllers\admin\InventoryController;
-use App\Http\Controllers\admin\ProductManagementController;
-use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\ProductManagementController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdsManagementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomerProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController as FrontProductController;
@@ -47,6 +49,12 @@ Route::post('/login', [AuthController::class, 'login'])
 
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
+
+Route::get('/my-account', [CustomerProfileController::class, 'index'])
+    ->name('customer.profile');
+
+Route::get('/my-account/order/{id}', [CustomerProfileController::class, 'orderSummary'])
+    ->name('customer.order.summary');
 
 Route::get('/admin/login', function () {
 
@@ -101,12 +109,12 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get(
         '/customers',
-        [App\Http\Controllers\admin\CustomerController::class, 'index']
+        [App\Http\Controllers\Admin\CustomerController::class, 'index']
     )->name('customers.index');
 
     Route::get(
         '/customers/order-history/{id}',
-        [App\Http\Controllers\admin\CustomerController::class, 'orderHistory']
+        [App\Http\Controllers\Admin\CustomerController::class, 'orderHistory']
     )->name('customers.order.history');
 
     Route::get(
@@ -121,24 +129,36 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get(
         '/activity-logs',
-        [App\Http\Controllers\admin\ActivityLogController::class, 'index']
+        [App\Http\Controllers\Admin\ActivityLogController::class, 'index']
     )->name('activity.logs');
 
     Route::get(
         '/profile',
-        [App\Http\Controllers\admin\AdminProfileController::class, 'index']
+        [App\Http\Controllers\Admin\AdminProfileController::class, 'index']
     )->name('profile');
 
     Route::post(
         '/profile/update',
-        [App\Http\Controllers\admin\AdminProfileController::class, 'update']
+        [App\Http\Controllers\Admin\AdminProfileController::class, 'update']
     )->name('profile.update');
+
+    Route::get('/orders/new-orders', [AdminOrderController::class, 'newOrders'])->name('orders.new');
+    Route::get('/orders/new', [AdminOrderController::class, 'newOrdersPage'])->name('orders.new.page');
+    Route::post('/orders/{id}/accept', [AdminOrderController::class, 'acceptOrder'])->name('orders.accept');
+    Route::post('/orders/{id}/reject', [AdminOrderController::class, 'rejectOrder'])->name('orders.reject');
+    Route::post('/orders/{id}/payment-callback', [AdminOrderController::class, 'paymentCallback'])->name('orders.payment.callback');
 
     //order view//
     Route::get(
         '/orders/{id}',
         [AdminOrderController::class, 'show']
     )->name('orders.show');
+    Route::patch(
+        '/orders/{id}/update-status',
+        [AdminOrderController::class, 'updateStatus']
+    )->name('orders.update.status');
+    
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -150,6 +170,17 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         '/accounts/order-history',
         [App\Http\Controllers\Admin\AccountsManagementController::class, 'orderHistory']
     )->name('accounts.order.history');
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADS MANAGEMENT
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/ads', [AdsManagementController::class, 'index'])->name('ads.index');
+    Route::post('/ads', [AdsManagementController::class, 'store'])->name('ads.store');
+    Route::post('/ads/{id}/update', [AdsManagementController::class, 'update'])->name('ads.update');
+    Route::post('/ads/{id}/toggle', [AdsManagementController::class, 'toggle'])->name('ads.toggle');
+    Route::delete('/ads/{id}', [AdsManagementController::class, 'destroy'])->name('ads.destroy');
 });
 
 

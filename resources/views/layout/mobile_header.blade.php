@@ -156,6 +156,8 @@
 
                             @endif
 
+                        <a href="{{ route('customer.profile') }}" style="display:block; margin-top:10px;">My Account</a>
+
                         <form action="{{ route('logout') }}" method="POST" style="margin-top:10px;">
                             @csrf
 

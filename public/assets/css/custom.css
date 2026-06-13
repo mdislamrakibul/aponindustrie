@@ -4,3 +4,32 @@
     width:50% !important;
   }
 }
+
+/* =====================================================
+   Mobile Responsive Fixes
+   ===================================================== */
+
+img { max-width: 100%; height: auto; }
+body { overflow-x: hidden; }
+
+/* Profile page: reduce vertical padding on mobile */
+@media (max-width: 576px) {
+    .profile-main {
+        padding-top: 24px !important;
+        padding-bottom: 24px !important;
+    }
+}
+
+/* Order summary modal: stack the 2-col info grid on small screens */
+@media (max-width: 576px) {
+    #orderModalBody div[style*="grid-template-columns"] {
+        display: block !important;
+    }
+    #orderModalBody div[style*="grid-template-columns"] > div {
+        margin-bottom: 12px;
+    }
+    #orderModal > div {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+}
