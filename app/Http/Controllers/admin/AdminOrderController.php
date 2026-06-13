@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -40,21 +40,21 @@ class AdminOrderController extends Controller
             ]);
         }
 
-       
+
         $order->order_items->transform(function ($item) {
             $minOrder = $item->product->minimum_order ?? 1;
 
             $item->package_price = (float) $item->price;
 
-           
+
             $item->qty_sets = $minOrder > 0
                 ? (int) round($item->quantity / $minOrder)
                 : (int) $item->quantity;
 
-           
+
             $item->min_order = $minOrder;
 
-        
+
             $item->line_total = $item->package_price * $item->qty_sets;
 
             return $item;

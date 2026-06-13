@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -81,17 +81,16 @@ class UserController extends Controller
                 'action' => 'CREATE',
 
                 'details' =>
-                    'Created user: '
+                'Created user: '
                     . $validated['first_name']
                     . ' (' . $validated['role'] . ')',
 
-                
+
             ]);
 
             return redirect()
                 ->route('admin.users')
                 ->with('success', 'User created successfully');
-
         } catch (\Throwable $e) {
 
             return redirect()
@@ -184,17 +183,17 @@ class UserController extends Controller
                 'action' => 'UPDATE',
 
                 'details' =>
-                    'Updated user: '
+                'Updated user: '
                     . $newUser->first_name
                     . ' | Changes: '
                     . implode(', ', $changes),
 
-        
+
 
             ]);
         }
 
-        
+
 
         return response()->json([
             'success' => true,
@@ -205,7 +204,7 @@ class UserController extends Controller
     /**
      * Status update user
      */
-    
+
     public function toggleStatus($id)
     {
         $user = DB::table('tbl_info_user')
@@ -242,7 +241,7 @@ class UserController extends Controller
             'action' => 'STATUS CHANGE',
 
             'details' =>
-                'User status changed from '
+            'User status changed from '
                 . $user->status
                 . ' to '
                 . $newStatus,
@@ -253,5 +252,4 @@ class UserController extends Controller
             'status' => $newStatus
         ]);
     }
-
 }
