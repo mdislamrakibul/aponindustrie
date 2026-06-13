@@ -1,5 +1,9 @@
 @extends('admin.layouts.app')
 
+
+@section('title', 'Accounts Tracking')
+
+
 @section('content')
 
 <!-- Content Header (Page header) -->

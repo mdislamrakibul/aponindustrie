@@ -1,5 +1,8 @@
 @extends('admin.layouts.app')
 
+@section('title', 'History Logs')
+
+
 @section('content')
 
 <!-- Content Header (Page header) -->
