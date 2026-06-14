@@ -48,7 +48,7 @@
                         <i class="fas fa-sliders-h mr-2 text-primary"></i>
                         Hero Sliders
                     </h3>
-                    <small class="text-muted ml-2">Recommended size: 655 × 330 px</small>
+                    <small class="text-muted ml-2">Recommended size: 980 × 450 px</small>
                 </div>
                 <div class="card-body">
 
@@ -57,7 +57,7 @@
                         <div class="card-body py-3">
                             <h6 class="font-weight-bold mb-3">
                                 <i class="fas fa-plus-circle mr-1 text-success"></i> Add New Slide
-                                <small class="text-muted font-weight-normal">(Recommended: 655 × 330 px)</small>
+                                <small class="text-muted font-weight-normal">(Recommended: 980 × 450 px)</small>
                             </h6>
                             <form method="POST" action="{{ route('admin.ads.store') }}" enctype="multipart/form-data"
                                   class="d-flex align-items-center gap-3 flex-wrap">
@@ -96,7 +96,7 @@
                                             @endif
                                         </div>
                                         <small class="text-muted d-block mb-2">
-                                            Rec: 655 × 330 px &bull;
+                                            Rec: 980 × 450 px &bull;
                                             <span class="{{ $slider->is_active ? 'text-success' : 'text-danger' }}">
                                                 {{ $slider->is_active ? 'Active' : 'Inactive' }}
                                             </span>
@@ -108,7 +108,7 @@
                                             @csrf
                                             <div class="form-group mb-2">
                                                 <label class="small font-weight-bold mb-1">
-                                                    Replace Image <span class="text-muted font-weight-normal">(optional, 655×330)</span>
+                                                    Replace Image <span class="text-muted font-weight-normal">(optional, 980×450)</span>
                                                 </label>
                                                 <input type="file" name="image"
                                                        accept="image/jpg,image/jpeg,image/png,image/webp"
