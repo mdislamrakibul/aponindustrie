@@ -483,7 +483,7 @@
             $.get(BASE_URL + '/' + id).done(function (res) {
                 if (!res.success) { $('#invoiceContent').html('<div class="alert alert-danger m-3">Order not found.</div>'); return; }
 
-                var o = res.order, rows = '', sub = 0;
+                var o = res.order, rows = '', sub = 0, totalDiscount = 0;
                 o.order_items.forEach(function (item, i) {
                     var pp = parseFloat(item.package_price || 0);
                     var qs = parseInt(item.qty_sets || 1);
@@ -491,6 +491,7 @@
                     var lt = parseFloat(item.line_total || 0); sub += lt;
                     var ppp = mo > 0 ? pp / mo : pp;
                     var da = parseFloat(item.discount_amount || 0);
+                    totalDiscount += da * qs;
                     rows += '<tr style="background:' + (i%2===0?'#fff':'#f7f9fc') + ';">' +
                         '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + (i+1) + '</td>' +
                         '<td style="border:1px solid #dee2e6;padding:10px;">' + (item.product ? item.product.name : '-') + '</td>' +
@@ -553,6 +554,7 @@
                     '</tr></thead><tbody>' + rows + '</tbody></table>' +
                     '<table style="width:50%;border-collapse:collapse;margin-top:20px;margin-left:auto;">' +
                       '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Sub Total</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + sub.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
+                      '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Discount (−)</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;' + (totalDiscount > 0 ? 'color:#dc3545;font-weight:600;' : '') + '">' + (totalDiscount > 0 ? '− ৳ ' + totalDiscount.toLocaleString('en-BD',{minimumFractionDigits:2}) : '৳ 0.00') + '</td></tr>' +
                       '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Shipping</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + ship.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
                       '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">VAT</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + tax.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
                       '<tr><td style="background:#0d6efd;color:#fff;font-weight:700;padding:12px;font-size:15px;border:1px solid #0d6efd;">NET PAYABLE</td><td style="background:#0d6efd;color:#fff;font-weight:700;padding:12px;text-align:right;font-size:15px;border:1px solid #0d6efd;">৳ ' + net.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
