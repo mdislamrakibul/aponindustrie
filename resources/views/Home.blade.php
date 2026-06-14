@@ -380,7 +380,7 @@
                             alt="menu_banner1">
                     </div>
                     <div class="side-banner">
-                        <img src="{{ banner('banner_2', 'assets/uploads/Right Banner/Right banner_Apon Plastic.png') }}"
+                        <img src="{{ banner('banner_1', 'assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
                             alt="menu_banner2">
                     </div>
                 </div>

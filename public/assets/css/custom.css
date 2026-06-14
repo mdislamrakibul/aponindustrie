@@ -130,7 +130,7 @@ body { overflow-x: hidden; }
 .side-banner-col {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
