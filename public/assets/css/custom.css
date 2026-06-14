@@ -135,7 +135,7 @@ body { overflow-x: hidden; }
     padding-bottom: 0 !important;
 }
 .side-banner {
-    height: 185px;
+    height: 215px;
     margin-bottom: 0 !important;
     border-radius: 8px;
     overflow: hidden;
@@ -148,7 +148,7 @@ body { overflow-x: hidden; }
     display: block;
 }
 @media (max-width: 991px) {
-    .side-banner { height: 185px; flex: unset; }
+    .side-banner { height: 215px; flex: unset; }
 }
 
 /* ── Hero Slider: 980×450 left-aligned with text overlay ── */

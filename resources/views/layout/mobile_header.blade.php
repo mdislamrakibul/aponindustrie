@@ -146,8 +146,8 @@
                         @if(session()->has('user_id'))
 
                             @if(
-                                session('user_role') == 'ADMIN' ||
-                                session('user_role') == 'VENDOR'
+                                session('user_role') == 'admin' ||
+                                session('user_role') == 'vendor'
                             )
 
                             <a href="{{ url('/admin/dashboard') }}">

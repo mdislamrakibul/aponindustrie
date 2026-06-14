@@ -139,7 +139,7 @@
                                                 <span class="font-small ml-5 text-muted" style="font-weight: bolder;">
 
                                                     @if ($product->reviews)
-                                                                                                <span style="color: #f15412;">count($product->reviews) {{
+                                                        <span style="color: #f15412;">{{ count($product->reviews) }} {{
                                                         count($product->reviews) > 9 ? "Reviews" :
                                                         "Review" }}</span>
                                                     @else
@@ -166,7 +166,7 @@
                                                             {{ number_format($product->discount_value, 0) }}% Off
                                                         @elseif($product->discount_type == 'FLAT')
                                                             {{-- Show flat amount (e.g., $50 Off) --}}
-                                                            ${{ number_format($product->discount_value, 0) }} Off
+                                                            ৳{{ number_format($product->discount_value, 0) }} Off
                                                         @endif
                                                     </span>
                                                 @endif

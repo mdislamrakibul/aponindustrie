@@ -159,6 +159,7 @@ class ProductController extends Controller
         // dd($newProducts);
 
         $category = Category::with('parent')->find($request->category_id);
+        if (!$category) abort(404);
 
         // dd($product);
 
@@ -187,8 +188,8 @@ class ProductController extends Controller
             'newProduct' => collect($newProducts)->shuffle()->take(7),
             'category_name' => $category->name,
             'sub_category_name' => $category->parent ? $category->parent->name : null,
-            '$ratingCounts' => $ratingCounts,
-            '$totalReviews' => $totalReviews
+            'ratingCounts' => $ratingCounts,
+            'totalReviews' => $totalReviews
         ]);
     }
 }

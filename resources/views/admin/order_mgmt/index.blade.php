@@ -503,7 +503,7 @@
 
                 var ship = parseFloat(o.shipping_amount||0);
                 var tax  = parseFloat(o.tax_amount||0);
-                var net  = sub + ship + tax;
+                var net  = sub - totalDiscount + ship + tax;
                 var addr = o.order_address || {};
                 var cn   = [addr.first_name,addr.last_name].filter(Boolean).join(' ') || 'N/A';
                 var pbg  = o.payment_status === 'PAID' ? '#28a745' : '#ffc107';
@@ -611,10 +611,17 @@
         );
         w.document.close();
 
+        var printFired = false;
         w.onload = function () {
+            if (printFired) return;
+            printFired = true;
             setTimeout(function () { w.focus(); w.print(); w.close(); }, 300);
         };
-        setTimeout(function () { try { w.focus(); w.print(); } catch (e) {} }, 700);
+        setTimeout(function () {
+            if (printFired) return;
+            printFired = true;
+            try { w.focus(); w.print(); } catch (e) {}
+        }, 700);
     }
     </script>
 @endpush

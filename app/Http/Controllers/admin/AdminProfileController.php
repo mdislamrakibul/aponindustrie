@@ -12,7 +12,7 @@ class AdminProfileController extends Controller
     public function index()
     {
         $user = User::where(
-            'login_id',
+            'id',
             session('user_id')
         )->firstOrFail();
 
@@ -25,7 +25,7 @@ class AdminProfileController extends Controller
     public function update(Request $request)
     {
         $user = User::where(
-            'login_id',
+            'id',
             session('user_id')
         )->firstOrFail();
 

@@ -105,7 +105,7 @@ class CartController extends Controller
      */
     public function Product_Cart_Remove(Request $request)
     {
-        Session::forget('cart'); 
+        session()->forget('cart'); 
         return response()->json([
             'status'    => 'success',
             'message'   => 'Cart cleared successfully',

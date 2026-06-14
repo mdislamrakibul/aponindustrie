@@ -380,7 +380,7 @@
                             alt="menu_banner1">
                     </div>
                     <div class="side-banner">
-                        <img src="{{ banner('banner_1', 'assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
+                        <img src="{{ banner('banner_2', 'assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
                             alt="menu_banner2">
                     </div>
                 </div>
@@ -1248,7 +1248,7 @@
                                                             @endfor
                                                         </div>
                                                         <div style="color:#f15412; font-weight: bold; font-size: 15px;">
-                                                            ({{number_format($prod['reviews_avg_rating'], 1)}})
+                                                            ({{number_format($prod['reviews_avg_rating'] ?? 0, 1)}})
                                                         </div>
                                                     </div>
                                                     <div class="product-price">

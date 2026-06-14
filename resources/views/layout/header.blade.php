@@ -162,7 +162,7 @@
 
                             <li>
                                 <i class="fa fa-unlock"></i>
-                                <a href="{{ url('/admin/login') }}" style="padding: 0px !important;">
+                                <a href="{{ url('/login') }}" style="padding: 0px !important;">
                                     Log In
                                 </a>
                                 /
@@ -249,7 +249,7 @@
                         <div class="header-action-2 wrap-icon right-section">
 
                             <div class="header-action-icon-2 wrap-icon-section minicart">
-                                <a href="#" class="link-direction">
+                                <a href="{{ route('Product_Cart') }}" class="link-direction">
                                     <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                                     <div class="left-info">
                                         <span class="index">

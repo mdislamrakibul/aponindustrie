@@ -161,7 +161,7 @@
 
                                 <input type="number" name="regular_price" class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->regular_price : '' }}">
-                                @error('name')
+                                @error('regular_price')
                                     <div class="text-danger small mt-1">
                                         {{ $message }}
                                     </div>
@@ -175,7 +175,7 @@
 
                                 <input type="number" name="sale_price" class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->sale_price : '' }}">
-                                @error('name')
+                                @error('sale_price')
                                     <div class="text-danger small mt-1">
                                         {{ $message }}
                                     </div>
@@ -190,7 +190,7 @@
 
                                 <input type="number" name="stock_quantity" class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->stock_quantity : '' }}">
-                                @error('name')
+                                @error('stock_quantity')
                                     <div class="text-danger small mt-1">
                                         {{ $message }}
                                     </div>
@@ -204,7 +204,7 @@
 
                                 <input type="number" name="minimum_order" class="form-control rounded-3"
                                     value="{{ $isEdit ? $product->minimum_order : 1 }}">
-                                @error('name')
+                                @error('minimum_order')
                                     <div class="text-danger small mt-1">
                                         {{ $message }}
                                     </div>
@@ -390,7 +390,7 @@
 
                             <input type="text" name="tags" class="form-control rounded-3"
                                 placeholder="kitchen, jar, plastic" value="{{ $isEdit ? $product->tags : '' }}">
-                            @error('name')
+                            @error('tags')
                                 <div class="text-danger small mt-1">
                                     {{ $message }}
                                 </div>
@@ -418,7 +418,7 @@
 
                                     <input class="form-check-input" type="checkbox" name="featured_sections[]"
                                         value="{{ $value }}" {{ in_array($value, $featuredSections) ? 'checked' : '' }}>
-                                    @error('name')
+                                    @error('featured_sections')
                                         <div class="text-danger small mt-1">
                                             {{ $message }}
                                         </div>
