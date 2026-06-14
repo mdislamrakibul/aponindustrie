@@ -193,7 +193,7 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('/ads/{id}/update', [AdsManagementController::class, 'update'])->name('ads.update');
     Route::post('/ads/{id}/toggle', [AdsManagementController::class, 'toggle'])->name('ads.toggle');
     Route::delete('/ads/{id}', [AdsManagementController::class, 'destroy'])->name('ads.destroy');
-    Route::post('/ads/{id}/text', [AdsManagementController::class, 'updateText'])->name('ads.updateText');
+    Route::post('/ads/{id}/remove-text', [AdsManagementController::class, 'removeText'])->name('ads.remove-text');
 });
 
 

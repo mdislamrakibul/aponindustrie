@@ -33,3 +33,33 @@ body { overflow-x: hidden; }
         max-width: calc(100% - 20px);
     }
 }
+
+/* ── Hero Slider: 980×450 left-aligned with text overlay ── */
+.home-slider .slider-stage {
+    position: relative;
+    width: 100%;
+    max-width: 980px;
+    height: 450px;
+    margin: 0 auto 0 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+.home-slider .slider-stage .slider-img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.home-slider .slider-overlay {
+    position: absolute;
+    top: 0; left: 0; height: 100%;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 30px 40px;
+    max-width: 55%;
+    background: linear-gradient(90deg, rgba(255,255,255,.85) 40%, rgba(255,255,255,0) 100%);
+}
+.home-slider .slider-overlay h1,
+.home-slider .slider-overlay h2,
+.home-slider .slider-overlay h4,
+.home-slider .slider-overlay p { margin: 0 0 8px; }
+@media (max-width: 991px) {
+    .home-slider .slider-stage { height: auto; aspect-ratio: 980/450; }
+    .home-slider .slider-overlay { max-width: 80%; padding: 18px 22px; }
+}

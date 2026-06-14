@@ -20,7 +20,11 @@ class AdsManagementController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'image'          => 'required|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'text_top'       => 'nullable|string|max:255',
+            'text_title'     => 'nullable|string|max:255',
+            'text_highlight' => 'nullable|string|max:255',
+            'text_sub'       => 'nullable|string|max:255',
         ]);
 
         $this->ensureUploadDir();
@@ -32,15 +36,19 @@ class AdsManagementController extends Controller
         $maxSort = Banner::where('type', 'SLIDER')->max('sort_order') ?? 0;
 
         Banner::create([
-            'type'       => 'SLIDER',
-            'slot'       => null,
-            'label'      => 'Slider ' . ($maxSort + 1),
-            'image_path' => 'uploads/ads/' . $fileName,
-            'rec_width'  => 731,
-            'rec_height' => 470,
-            'sort_order' => $maxSort + 1,
-            'is_locked'  => false,
-            'is_active'  => true,
+            'type'           => 'SLIDER',
+            'slot'           => null,
+            'label'          => 'Slider ' . ($maxSort + 1),
+            'image_path'     => 'uploads/ads/' . $fileName,
+            'rec_width'      => 980,
+            'rec_height'     => 450,
+            'sort_order'     => $maxSort + 1,
+            'is_locked'      => false,
+            'is_active'      => true,
+            'text_top'       => $request->input('text_top') ?: null,
+            'text_title'     => $request->input('text_title') ?: null,
+            'text_highlight' => $request->input('text_highlight') ?: null,
+            'text_sub'       => $request->input('text_sub') ?: null,
         ]);
 
         activityLog('Ads Management', 'CREATE', 'New slider image added');
@@ -51,30 +59,59 @@ class AdsManagementController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'image'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'text_top'       => 'nullable|string|max:255',
+            'text_title'     => 'nullable|string|max:255',
+            'text_highlight' => 'nullable|string|max:255',
+            'text_sub'       => 'nullable|string|max:255',
         ]);
 
         $banner = Banner::findOrFail($id);
 
-        // Delete old file only if it was an admin-uploaded file
-        if ($banner->image_path && str_starts_with($banner->image_path, 'uploads/ads/')) {
-            $oldPath = public_path($banner->image_path);
-            if (File::exists($oldPath)) {
-                File::delete($oldPath);
+        $fields = [
+            'text_top'       => $request->input('text_top') ?: null,
+            'text_title'     => $request->input('text_title') ?: null,
+            'text_highlight' => $request->input('text_highlight') ?: null,
+            'text_sub'       => $request->input('text_sub') ?: null,
+        ];
+
+        if ($request->hasFile('image')) {
+            if ($banner->image_path && str_starts_with($banner->image_path, 'uploads/ads/')) {
+                $oldPath = public_path($banner->image_path);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
             }
+
+            $this->ensureUploadDir();
+
+            $file                 = $request->file('image');
+            $fileName             = time() . '_' . uniqid() . '.' . $file->extension();
+            $file->move(public_path('uploads/ads/'), $fileName);
+            $fields['image_path'] = 'uploads/ads/' . $fileName;
         }
 
-        $this->ensureUploadDir();
+        $banner->update($fields);
 
-        $file     = $request->file('image');
-        $fileName = time() . '_' . uniqid() . '.' . $file->extension();
-        $file->move(public_path('uploads/ads/'), $fileName);
+        activityLog('Ads Management', 'UPDATE', 'Slide updated: ' . $banner->label);
 
-        $banner->update(['image_path' => 'uploads/ads/' . $fileName]);
+        return redirect()->route('admin.ads.index')->with('success', 'Slide updated successfully.');
+    }
 
-        activityLog('Ads Management', 'UPDATE', 'Image replaced for: ' . $banner->label);
+    public function removeText($id)
+    {
+        $banner = Banner::findOrFail($id);
 
-        return redirect()->route('admin.ads.index')->with('success', 'Image updated successfully.');
+        $banner->update([
+            'text_top'       => null,
+            'text_title'     => null,
+            'text_highlight' => null,
+            'text_sub'       => null,
+        ]);
+
+        activityLog('Ads Management', 'UPDATE', 'Removed slider text: ' . $banner->label);
+
+        return redirect()->route('admin.ads.index')->with('success', 'Slide text removed for: ' . $banner->label);
     }
 
     public function toggle($id)
@@ -106,22 +143,6 @@ class AdsManagementController extends Controller
         $banner->delete();
 
         return redirect()->route('admin.ads.index')->with('success', 'Slide deleted.');
-    }
-
-    public function updateText(Request $request, $id)
-    {
-        $banner = Banner::findOrFail($id);
-
-        $banner->update([
-            'slide_top'       => $request->input('slide_top') ?: null,
-            'slide_title'     => $request->input('slide_title') ?: null,
-            'slide_highlight' => $request->input('slide_highlight') ?: null,
-            'slide_desc'      => $request->input('slide_desc') ?: null,
-        ]);
-
-        activityLog('Ads Management', 'UPDATE', 'Slide text updated: ' . $banner->label);
-
-        return redirect()->route('admin.ads.index')->with('success', 'Slide text updated for: ' . $banner->label);
     }
 
     private function ensureUploadDir(): void

@@ -48,7 +48,7 @@
                         <i class="fas fa-sliders-h mr-2 text-primary"></i>
                         Hero Sliders
                     </h3>
-                    <small class="text-muted ml-2">Recommended size: 731 × 470 px</small>
+                    <small class="text-muted ml-2">Recommended size: 980 × 450 px</small>
                 </div>
                 <div class="card-body">
 
@@ -57,7 +57,7 @@
                         <div class="card-body py-3">
                             <h6 class="font-weight-bold mb-3">
                                 <i class="fas fa-plus-circle mr-1 text-success"></i> Add New Slide
-                                <small class="text-muted font-weight-normal">(Recommended: 731 × 470 px)</small>
+                                <small class="text-muted font-weight-normal">(Recommended: 980 × 450 px)</small>
                             </h6>
                             <form method="POST" action="{{ route('admin.ads.store') }}" enctype="multipart/form-data"
                                   class="d-flex align-items-center gap-3 flex-wrap">
@@ -96,30 +96,63 @@
                                             @endif
                                         </div>
                                         <small class="text-muted d-block mb-2">
-                                            Rec: 731 × 470 px &bull;
+                                            Rec: 980 × 450 px &bull;
                                             <span class="{{ $slider->is_active ? 'text-success' : 'text-danger' }}">
                                                 {{ $slider->is_active ? 'Active' : 'Inactive' }}
                                             </span>
                                         </small>
 
-                                        {{-- Replace form --}}
+                                        {{-- Combined update form: image (optional) + text fields --}}
                                         <form method="POST" action="{{ route('admin.ads.update', $slider->id) }}"
-                                              enctype="multipart/form-data" class="mb-2">
+                                              enctype="multipart/form-data">
                                             @csrf
-                                            <div class="input-group input-group-sm">
+                                            <div class="form-group mb-2">
+                                                <label class="small font-weight-bold mb-1">
+                                                    Replace Image <span class="text-muted font-weight-normal">(optional, 980×450)</span>
+                                                </label>
                                                 <input type="file" name="image"
                                                        accept="image/jpg,image/jpeg,image/png,image/webp"
-                                                       class="form-control form-control-sm" required>
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-sync-alt"></i>
-                                                    </button>
-                                                </div>
+                                                       class="form-control form-control-sm">
                                             </div>
+                                            <hr class="mt-2 mb-2">
+                                            <div class="form-group mb-1">
+                                                <label class="small font-weight-bold mb-0">Top Label</label>
+                                                <input type="text" name="text_top" class="form-control form-control-sm"
+                                                       value="{{ $slider->text_top }}" placeholder="e.g. Trade-in offer" maxlength="100">
+                                            </div>
+                                            <div class="form-group mb-1">
+                                                <label class="small font-weight-bold mb-0">Title</label>
+                                                <input type="text" name="text_title" class="form-control form-control-sm"
+                                                       value="{{ $slider->text_title }}" placeholder="e.g. Supper deals" maxlength="100">
+                                            </div>
+                                            <div class="form-group mb-1">
+                                                <label class="small font-weight-bold mb-0">Highlight</label>
+                                                <input type="text" name="text_highlight" class="form-control form-control-sm"
+                                                       value="{{ $slider->text_highlight }}" placeholder="e.g. On all products" maxlength="100">
+                                            </div>
+                                            <div class="form-group mb-2">
+                                                <label class="small font-weight-bold mb-0">Caption</label>
+                                                <input type="text" name="text_sub" class="form-control form-control-sm"
+                                                       value="{{ $slider->text_sub }}" placeholder="e.g. Save more with coupons" maxlength="200">
+                                            </div>
+                                            <button type="submit" class="btn btn-sm btn-primary w-100 mb-2">
+                                                <i class="fas fa-save mr-1"></i> Save
+                                            </button>
                                         </form>
 
-                                        {{-- Toggle + Delete row --}}
-                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                        {{-- Remove Text (only when text exists) --}}
+                                        @if($slider->text_top || $slider->text_title || $slider->text_highlight || $slider->text_sub)
+                                            <form method="POST" action="{{ route('admin.ads.remove-text', $slider->id) }}">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary w-100 mb-2"
+                                                        onclick="return confirm('Remove all text from this slide?')">
+                                                    <i class="fas fa-times mr-1"></i> Remove Text
+                                                </button>
+                                            </form>
+                                        @endif
+
+                                        {{-- Toggle + Delete --}}
+                                        <div class="d-flex justify-content-between align-items-center mt-1">
                                             <form method="POST" action="{{ route('admin.ads.toggle', $slider->id) }}">
                                                 @csrf
                                                 <button type="submit"
@@ -139,19 +172,6 @@
                                                 </form>
                                             @endif
                                         </div>
-
-                                        {{-- Edit slide text --}}
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-info w-100 mt-2"
-                                                onclick="openTextModal(
-                                                    {{ $slider->id }},
-                                                    {{ json_encode($slider->slide_top ?? '') }},
-                                                    {{ json_encode($slider->slide_title ?? '') }},
-                                                    {{ json_encode($slider->slide_highlight ?? '') }},
-                                                    {{ json_encode($slider->slide_desc ?? '') }}
-                                                )">
-                                            <i class="fas fa-pen mr-1"></i> Edit Text
-                                        </button>
 
                                     </div>
                                 </div>
@@ -228,70 +248,5 @@
 
         </div>
     </section>
-
-    {{-- ── Slide Text Edit Modal ── --}}
-    <div class="modal fade" id="slideTextModal" tabindex="-1" role="dialog" aria-labelledby="slideTextModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="slideTextModalLabel">
-                        <i class="fas fa-pen mr-2 text-info"></i>Edit Slide Text
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form method="POST" id="slideTextForm">
-                    @csrf
-                    <div class="modal-body">
-                        <p class="text-muted small mb-3">
-                            Leave any field blank to fall back to the default text on the live site.
-                        </p>
-                        <div class="form-group">
-                            <label class="font-weight-bold">Top Label</label>
-                            <small class="text-muted d-block mb-1">Small line above the main title — e.g. "Trade-in offer"</small>
-                            <input type="text" name="slide_top" id="modalSlideTop"
-                                   class="form-control" placeholder="Trade-in offer" maxlength="100">
-                        </div>
-                        <div class="form-group">
-                            <label class="font-weight-bold">Title</label>
-                            <small class="text-muted d-block mb-1">Medium heading — e.g. "Supper deals"</small>
-                            <input type="text" name="slide_title" id="modalSlideTitle"
-                                   class="form-control" placeholder="Supper deals" maxlength="100">
-                        </div>
-                        <div class="form-group">
-                            <label class="font-weight-bold">Highlight</label>
-                            <small class="text-muted d-block mb-1">Large green heading — e.g. "On all products"</small>
-                            <input type="text" name="slide_highlight" id="modalSlideHighlight"
-                                   class="form-control" placeholder="On all products" maxlength="100">
-                        </div>
-                        <div class="form-group mb-0">
-                            <label class="font-weight-bold">Description</label>
-                            <small class="text-muted d-block mb-1">Subtext below headings — e.g. "Save more with coupons & up to 70% off"</small>
-                            <input type="text" name="slide_desc" id="modalSlideDesc"
-                                   class="form-control" placeholder="Save more with coupons & up to 70% off" maxlength="200">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save mr-1"></i> Save Text
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script>
-    function openTextModal(id, top, title, highlight, desc) {
-        document.getElementById('slideTextForm').action = '/admin/ads/' + id + '/text';
-        document.getElementById('modalSlideTop').value       = top       || '';
-        document.getElementById('modalSlideTitle').value     = title     || '';
-        document.getElementById('modalSlideHighlight').value = highlight || '';
-        document.getElementById('modalSlideDesc').value      = desc      || '';
-        $('#slideTextModal').modal('show');
-    }
-    </script>
 
 @endsection
