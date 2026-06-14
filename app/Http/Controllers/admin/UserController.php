@@ -49,7 +49,7 @@ class UserController extends Controller
                     'unique:tbl_info_user,mobile_no'
                 ],
 
-                'role' => 'required|in:admin,vendor,customer',
+                'role' => 'required|in:admin,vendor,customer,accountant',
 
             ]);
 
@@ -117,7 +117,7 @@ class UserController extends Controller
                 'unique:tbl_info_user,mobile_no,' . $id
             ],
 
-            'role' => 'required|in:admin,vendor,customer',
+            'role' => 'required|in:admin,vendor,customer,accountant',
 
             'status' => 'required|in:active,inactive',
 
