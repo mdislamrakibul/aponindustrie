@@ -60,7 +60,7 @@
             </div>
 
             {{-- RIGHT: Order History --}}
-            <div class="col-12 col-md-8 col-lg-9">
+            <div class="col-12 col-md-8 col-lg-9" id="order-history">
                 <div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08);">
                     <div style="padding: 18px 22px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between;">
                         <h5 style="margin: 0; font-weight: 700; font-size: 16px; color: #222;">Order History</h5>

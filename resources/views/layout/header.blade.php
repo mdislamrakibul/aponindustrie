@@ -114,37 +114,48 @@
 
                             @if(session()->has('user_id'))
 
-                            <li>
-                                <i class="fa fa-user"></i>
-                                <a href="{{ route('customer.profile') }}" style="padding: 0px !important; padding-right: 10px !important;">
-                                    {{ session('user_name') }}
+                            <li class="account-dropdown-wrapper">
+                                <a href="{{ route('customer.profile') }}" class="account-dropdown-trigger">
+                                    <i class="fa fa-user-circle"></i>
+                                    <span class="account-name">{{ session('user_name') }}</span>
+                                    <i class="fa fa-caret-down" style="font-size:10px;margin-left:3px;"></i>
                                 </a>
-                            </li>
-
-                            @if(
-                                in_array(session('user_role'), ['admin', 'vendor'])
-                            )
-
-                            <li>
-                                <i class="fa fa-dashboard"></i>
-
-                                <a href="{{ url('/admin/dashboard') }}"
-                                style="padding: 0px !important;">
-                                    Dashboard
-                                </a>
-                            </li>
-
-                            @endif
-
-                            <li>
-                                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                                    @csrf
-
-                                    <button type="submit"
-                                            style="background:none;border:none;padding:0;color:inherit;cursor:pointer;">
-                                        <i class="fa fa-sign-out"></i> Logout
-                                    </button>
-                                </form>
+                                <div class="account-dropdown">
+                                    <div class="account-dropdown-header">
+                                        <i class="fa fa-user-circle" style="font-size:30px;color:#3BB77E;flex-shrink:0;"></i>
+                                        <div>
+                                            <strong>{{ session('user_name') }}</strong>
+                                            <small>{{ ucfirst(session('user_role', 'customer')) }}</small>
+                                        </div>
+                                    </div>
+                                    <ul class="account-dropdown-links">
+                                        <li>
+                                            <a href="{{ route('customer.profile') }}">
+                                                <i class="fa fa-user"></i> My Account
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('customer.profile') }}#order-history">
+                                                <i class="fa fa-shopping-bag"></i> My Orders
+                                            </a>
+                                        </li>
+                                        @if(in_array(session('user_role'), ['admin', 'vendor', 'accountant']))
+                                        <li>
+                                            <a href="{{ url('/admin/dashboard') }}">
+                                                <i class="fa fa-tachometer"></i> Dashboard
+                                            </a>
+                                        </li>
+                                        @endif
+                                    </ul>
+                                    <div class="account-dropdown-footer">
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button type="submit">
+                                                <i class="fa fa-sign-out"></i> Logout
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </li>
 
                             @else

@@ -34,6 +34,98 @@ body { overflow-x: hidden; }
     }
 }
 
+/* ── Account Dropdown (header top-right) ── */
+.account-dropdown-wrapper {
+    position: relative;
+}
+.account-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none !important;
+}
+.account-name {
+    font-weight: 600;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+.account-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 210px;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.13);
+    z-index: 9999;
+    overflow: hidden;
+}
+.account-dropdown-wrapper:hover .account-dropdown {
+    display: block;
+}
+.account-dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+.account-dropdown-header strong {
+    display: block;
+    font-size: 14px;
+    color: #253D4E;
+}
+.account-dropdown-header small {
+    font-size: 11px;
+    color: #888;
+    text-transform: capitalize;
+}
+.account-dropdown-links {
+    list-style: none;
+    padding: 6px 0;
+    margin: 0;
+}
+.account-dropdown-links li a {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 16px;
+    font-size: 13px;
+    color: #333;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+.account-dropdown-links li a:hover {
+    background: #f4f6f9;
+    color: #3BB77E;
+}
+.account-dropdown-footer {
+    border-top: 1px solid #eee;
+    padding: 8px 16px;
+}
+.account-dropdown-footer form button {
+    background: none;
+    border: none;
+    padding: 6px 0;
+    width: 100%;
+    text-align: left;
+    font-size: 13px;
+    color: #fd6282;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+.account-dropdown-footer form button:hover { color: #c0103a; }
+
 /* ── Side Banners: fill slider row height, split equally ── */
 .side-banner-col {
     display: flex;
