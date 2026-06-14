@@ -34,6 +34,32 @@ body { overflow-x: hidden; }
     }
 }
 
+/* ── Side Banners: fill slider row height, split equally ── */
+.side-banner-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.side-banner {
+    flex: 1;
+    min-height: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.side-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+/* Mobile: slider stacks above, give each banner a natural ratio */
+@media (max-width: 991px) {
+    .side-banner { aspect-ratio: 3 / 2; flex: unset; }
+}
+
 /* ── Hero Slider: 980×450 left-aligned with text overlay ── */
 .home-slider .slider-stage {
     position: relative;

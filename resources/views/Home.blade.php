@@ -374,24 +374,14 @@
                     </section>
                 </div>
 
-                <div class="col-lg-3 col-md-12 pt-lg-5 pt-3">
+                <div class="col-lg-3 col-md-12 side-banner-col">
                     <div class="side-banner">
                         <img src="{{ banner('banner_1', 'assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
                             alt="menu_banner1">
-                        {{-- <div class="banne_info">
-                            <h6>10% Off</h6>
-                            <h4>New Arrival</h4>
-                            <a href="#">Shop now</a>
-                        </div> --}}
                     </div>
                     <div class="side-banner">
                         <img src="{{ banner('banner_2', 'assets/uploads/Right Banner/Right banner_Apon Plastic.png') }}"
                             alt="menu_banner2">
-                        {{-- <div class="banne_info">
-                            <h6>15% Off</h6>
-                            <h4>Hot Deals</h4>
-                            <a href="#">Shop now</a>
-                        </div> --}}
                     </div>
                 </div>
             </div>
