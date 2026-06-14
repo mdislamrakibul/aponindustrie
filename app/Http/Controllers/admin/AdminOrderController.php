@@ -29,24 +29,39 @@ class AdminOrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::with(['order_items', 'order_items.product', 'order_address'])->find($id);
+        $order = Order::with(['order_items', 'order_items.product', 'order_address', 'acceptedBy'])->find($id);
 
         if (!$order) {
             return response()->json(['success' => false, 'message' => 'Order not found'], 404);
         }
 
         $order->order_items->transform(function ($item) {
-            $minOrder          = $item->product->minimum_order ?? 1;
+            $product             = $item->product;
+            $minOrder            = ($product->minimum_order ?? 1) ?: 1;
             $item->package_price = (float) $item->price;
+            $item->qty_sets      = (int) round($item->quantity / $minOrder);
+            $item->min_order     = $minOrder;
+            $item->line_total    = $item->package_price * $item->qty_sets;
 
+            $item->regular_price = (float) ($product->regular_price ?? 0);
+            $discount = 0;
+            if ($product) {
+                if (($product->discount_type ?? null) === 'percentage') {
+                    $discount = $item->regular_price * ((float) ($product->discount_value ?? 0) / 100);
+                } elseif (($product->discount_type ?? null) === 'fixed') {
+                    $discount = (float) ($product->discount_value ?? 0);
+                } else {
+                    $discount = max(0, $item->regular_price - $item->package_price);
+                }
+            }
+            $item->discount_amount = round($discount, 2);
 
-            $item->qty_sets = $minOrder > 0
-                ? (int) round($item->quantity / $minOrder)
-                : (int) $item->quantity;
-            $item->min_order   = $minOrder;
-            $item->line_total  = $item->package_price * $item->qty_sets;
             return $item;
         });
+
+        $order->accepted_by_name = $order->acceptedBy
+            ? trim(($order->acceptedBy->first_name ?? '') . ' ' . ($order->acceptedBy->last_name ?? ''))
+            : null;
 
         return response()->json(['success' => true, 'order' => $order]);
     }
@@ -112,7 +127,10 @@ class AdminOrderController extends Controller
             return response()->json(['success' => false, 'message' => 'Order not found'], 404);
         }
 
-        $order->update(['order_status' => 'PROCESSING']);
+        $order->update([
+            'order_status' => 'PROCESSING',
+            'accepted_by'  => session('user_id'),
+        ]);
         $order->refresh();
 
         $order->order_items->transform(function ($item) {

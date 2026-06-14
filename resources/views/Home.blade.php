@@ -1,4 +1,4 @@
-@if(session('success'))
+﻿@if(session('success'))
     <div class="alert alert-success text-center">
         {{ session('success') }}
     </div>
@@ -526,22 +526,8 @@
                                                                         <span class="badge hot">Hot</span>
                                                                     @elseif($prods['product_type'] == 'TOPSELLING')
                                                                         <span class="badge best-seller">Best Seller</span>
-                                                                    @elseif($prods['product_type'] == 'TOPNEWITEMS')
-                                                                        <span class="badge new">New</span>
                                                                     @endif
-
-                                                                    {{-- Discount Badge Logic --}}
-                                                                    @if($prods['is_discounted'])
-                                                                        <span class="badge sale">
-                                                                            @if($prods['discount_type'] == 'PERCENTAGE')
-                                                                                {{-- Show percentage (e.g., 20% Off) --}}
-                                                                                {{ number_format($prods['discount_value'], 0) }}% Off
-                                                                            @elseif($prods['discount_type'] == 'FLAT')
-                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
-                                                                                ${{ number_format($prods['discount_value'], 0) }} Off
-                                                                            @endif
-                                                                        </span>
-                                                                    @endif
+                                                                    @include('partials.discount-badge', ['prod' => $prods, 'badgeClass' => 'badge sale'])
                                                                 </div>
 
                                                                 <a href="{{ route('Product_Details', [
@@ -654,22 +640,8 @@
                                                                         <span class="badge hot">Hot</span>
                                                                     @elseif($prods['product_type'] == 'TOPSELLING')
                                                                         <span class="badge best-seller">Best Seller</span>
-                                                                    @elseif($prods['product_type'] == 'TOPNEWITEMS')
-                                                                        <span class="badge new">New</span>
                                                                     @endif
-
-                                                                    {{-- Discount Badge Logic --}}
-                                                                    @if($prods['is_discounted'])
-                                                                        <span class="badge sale">
-                                                                            @if($prods['discount_type'] == 'PERCENTAGE')
-                                                                                {{-- Show percentage (e.g., 20% Off) --}}
-                                                                                {{ number_format($prods['discount_value'], 0) }}% Off
-                                                                            @elseif($prods['discount_type'] == 'FLAT')
-                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
-                                                                                ${{ number_format($prods['discount_value'], 0) }} Off
-                                                                            @endif
-                                                                        </span>
-                                                                    @endif
+                                                                    @include('partials.discount-badge', ['prod' => $prods, 'badgeClass' => 'badge sale'])
                                                                 </div>
 
                                                                 <a href="{{ route('Product_Details', [
@@ -780,22 +752,8 @@
                                                                         <span class="badge hot">Hot</span>
                                                                     @elseif($prods['product_type'] == 'TOPSELLING')
                                                                         <span class="badge best-seller">Best Seller</span>
-                                                                    @elseif($prods['product_type'] == 'TOPNEWITEMS')
-                                                                        <span class="badge new">New</span>
                                                                     @endif
-
-                                                                    {{-- Discount Badge Logic --}}
-                                                                    @if($prods['is_discounted'])
-                                                                        <span class="badge sale">
-                                                                            @if($prods['discount_type'] == 'PERCENTAGE')
-                                                                                {{-- Show percentage (e.g., 20% Off) --}}
-                                                                                {{ number_format($prods['discount_value'], 0) }}% Off
-                                                                            @elseif($prods['discount_type'] == 'FLAT')
-                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
-                                                                                ${{ number_format($prods['discount_value'], 0) }} Off
-                                                                            @endif
-                                                                        </span>
-                                                                    @endif
+                                                                    @include('partials.discount-badge', ['prod' => $prods, 'badgeClass' => 'badge sale'])
                                                                 </div>
 
                                                                 <a href="{{ route('Product_Details', [
@@ -1137,6 +1095,11 @@
 
                                                         @endforeach
                                                     </a>
+                                                    @if($prod['is_discounted'])
+                                                    <div class="product-badges product-badges-position">
+                                                        @include('partials.discount-badge', ['prod' => $prod, 'badgeClass' => 'hot'])
+                                                    </div>
+                                                    @endif
                                                 </figure>
                                                 <h5><a href="{{ route('Product_Details', [
                                 'product_name' => $prod['name'],
@@ -1254,7 +1217,7 @@
                                                             tabindex="0"><i class="fi-rs-shuffle"></i></a>
                                                     </div> --}}
                                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="hot">Popular</span>
+                                                        @include('partials.discount-badge', ['prod' => $prod, 'badgeClass' => 'hot'])
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
