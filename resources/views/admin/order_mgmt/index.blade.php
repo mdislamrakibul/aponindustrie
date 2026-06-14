@@ -287,20 +287,17 @@
         margin-top:8px; cursor:pointer; display:block;
     }
 
-    /* ─── PRINT: show only invoice, preserve colors ── */
+    /* ─── PRINT: fallback for Ctrl+P on the modal page ── */
     @media print {
         body * { visibility: hidden !important; }
         #invoiceContent, #invoiceContent * { visibility: visible !important; }
         #invoiceContent {
             position: absolute; left: 0; top: 0; width: 100%;
-            padding: 0 !important; margin: 0 !important;
+            padding: 0 !important; margin: 0 !important; box-shadow: none !important;
         }
-        .no-print, .modal-header, .modal-footer,
-        #invoiceContent .no-print { display: none !important; }
+        .no-print, .modal-header, .modal-footer { display: none !important; }
+        .modal, .modal-dialog, .modal-content { position: static !important; border: 0 !important; box-shadow: none !important; }
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-        .modal, .modal-dialog, .modal-content {
-            position: static !important; box-shadow: none !important; border: 0 !important;
-        }
     }
     </style>
 @endpush
@@ -575,7 +572,7 @@
                       'Versedsoft &mdash; Your Complication, Our Solutions</a>' +
                     '</div>' +
                     '<div style="text-align:center;margin-top:20px;">' +
-                      '<button onclick="window.print()" class="btn btn-primary px-4 no-print"><i class="fas fa-print mr-2"></i> Print Invoice</button>' +
+                      '<button onclick="printInvoice()" class="btn btn-primary px-4 no-print"><i class="fas fa-print mr-2"></i> Print Invoice</button>' +
                     '</div></div>'
                 );
             }).fail(function (xhr) {
@@ -584,5 +581,40 @@
         });
 
     });
+
+    function printInvoice() {
+        var invoice = document.getElementById('invoiceContent');
+        if (!invoice) return;
+
+        var clone = invoice.cloneNode(true);
+        clone.querySelectorAll('.no-print').forEach(function (el) { el.remove(); });
+
+        var headStyles = '';
+        document.querySelectorAll('link[rel="stylesheet"], style').forEach(function (node) {
+            headStyles += node.outerHTML;
+        });
+
+        var printCss =
+            '<style>' +
+                '@media print { @page { margin: 12mm; } }' +
+                '* { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }' +
+                'body { margin: 0; padding: 20px; background: #fff; }' +
+                '.no-print { display: none !important; }' +
+            '</style>';
+
+        var w = window.open('', 'PRINT', 'width=900,height=700');
+        w.document.open();
+        w.document.write(
+            '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Invoice</title>' +
+            headStyles + printCss +
+            '</head><body>' + clone.outerHTML + '</body></html>'
+        );
+        w.document.close();
+
+        w.onload = function () {
+            setTimeout(function () { w.focus(); w.print(); w.close(); }, 300);
+        };
+        setTimeout(function () { try { w.focus(); w.print(); } catch (e) {} }, 700);
+    }
     </script>
 @endpush
