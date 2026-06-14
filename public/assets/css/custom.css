@@ -135,7 +135,7 @@ body { overflow-x: hidden; }
     padding-bottom: 0 !important;
 }
 .side-banner {
-    aspect-ratio: 218 / 155;
+    aspect-ratio: 218 / 220;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -147,7 +147,7 @@ body { overflow-x: hidden; }
     display: block;
 }
 @media (max-width: 991px) {
-    .side-banner { aspect-ratio: 218 / 155; flex: unset; }
+    .side-banner { aspect-ratio: 218 / 220; flex: unset; }
 }
 
 /* ── Hero Slider: 980×450 left-aligned with text overlay ── */
