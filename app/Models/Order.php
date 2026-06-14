@@ -24,6 +24,7 @@ class Order extends Model
         'payer_number',
         'payment_screenshot',
         'notes',
+        'accepted_by',
     ];
 
     /**
@@ -48,5 +49,10 @@ class Order extends Model
     public function order_address()
     {
         return $this->hasOne(OrderAddress::class);
+    }
+
+    public function acceptedBy()
+    {
+        return $this->belongsTo(User::class, 'accepted_by');
     }
 }

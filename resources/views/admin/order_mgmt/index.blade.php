@@ -286,6 +286,22 @@
         border:1px solid #dee2e6; border-radius:6px;
         margin-top:8px; cursor:pointer; display:block;
     }
+
+    /* ─── PRINT: show only invoice, preserve colors ── */
+    @media print {
+        body * { visibility: hidden !important; }
+        #invoiceContent, #invoiceContent * { visibility: visible !important; }
+        #invoiceContent {
+            position: absolute; left: 0; top: 0; width: 100%;
+            padding: 0 !important; margin: 0 !important;
+        }
+        .no-print, .modal-header, .modal-footer,
+        #invoiceContent .no-print { display: none !important; }
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        .modal, .modal-dialog, .modal-content {
+            position: static !important; box-shadow: none !important; border: 0 !important;
+        }
+    }
     </style>
 @endpush
 
@@ -473,13 +489,15 @@
                     var qs = parseInt(item.qty_sets || 1);
                     var mo = parseInt(item.min_order || 1);
                     var lt = parseFloat(item.line_total || 0); sub += lt;
-                    var ul = mo > 1
-                        ? '৳ ' + pp.toLocaleString('en-BD',{minimumFractionDigits:2}) + ' <small style="color:#888;font-size:11px;">/ ' + mo + ' pcs</small>'
-                        : '৳ ' + pp.toLocaleString('en-BD',{minimumFractionDigits:2});
+                    var rp = parseFloat(item.regular_price || 0);
+                    var da = parseFloat(item.discount_amount || 0);
                     rows += '<tr style="background:' + (i%2===0?'#fff':'#f7f9fc') + ';">' +
                         '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + (i+1) + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;">' + (o.order_items[i].product ? o.order_items[i].product.name : '-') + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + ul + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:10px;">' + (item.product ? item.product.name : '-') + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + mo + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + rp.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">' + (da > 0 ? '− ৳ ' + da.toLocaleString('en-BD',{minimumFractionDigits:2}) : '৳ 0.00') + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + pp.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
                         '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + qs + '</td>' +
                         '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + lt.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
                         '</tr>';
@@ -511,39 +529,38 @@
                       '</div></div>' +
                       '<div class="col-md-6"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:18px;">' +
                         '<div style="background:#0d6efd;color:#fff;padding:8px 14px;border-radius:4px;font-weight:700;margin-bottom:12px;font-size:13px;">INVOICE INFORMATION</div>' +
-                        '<p style="margin:0 0 7px;"><strong>Invoice No:</strong> ' + o.order_number + '</p>' +
+                        '<p style="margin:0 0 7px;"><strong>Order ID:</strong> ' + o.order_number + '</p>' +
+                        '<p style="margin:0 0 7px;"><strong>Accepted By:</strong> ' + (o.accepted_by_name || 'N/A') + '</p>' +
                         '<p style="margin:0 0 7px;"><strong>Date:</strong> ' + new Date(o.created_at).toLocaleString('en-BD') + '</p>' +
                         '<p style="margin:0 0 7px;"><strong>Transaction:</strong> ' + (o.transaction_id||'N/A') + '</p>' +
                         '<p style="margin:0 0 7px;"><strong>Payment:</strong> ' + o.payment_method + '</p>' +
                         (o.payment_method !== 'CASH'
-                            ? '<p style="margin:0 0 7px;"><strong>Payer No:</strong> ' + (o.payer_number || 'N/A') + '</p>' +
-                              (o.payment_screenshot
-                                ? '<p style="margin:0;"><strong>Screenshot:</strong><br>' +
-                                  '<a href="/storage/' + o.payment_screenshot + '" target="_blank">' +
-                                  '<img src="/storage/' + o.payment_screenshot + '" class="payment-proof-img" alt="Payment Screenshot">' +
-                                  '</a></p>'
-                                : '')
+                            ? '<p style="margin:0 0 7px;"><strong>Payer No:</strong> ' + (o.payer_number || 'N/A') + '</p>'
                             : '') +
+                        '<p style="margin:0;"><strong>Payment Status:</strong> <span style="background:' + pbg + ';color:' + ptx + ';padding:3px 12px;border-radius:4px;font-size:12px;font-weight:600;">' + o.payment_status + '</span></p>' +
                       '</div></div>' +
                     '</div>' +
                     '<table style="width:100%;border-collapse:collapse;margin-top:10px;">' +
                     '<thead><tr style="background:#0d6efd;">' +
-                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:center;width:5%;">SL</th>' +
+                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:center;width:4%;">SL</th>' +
                       '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:left;">Product</th>' +
-                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:center;width:18%;">Unit Price</th>' +
-                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:center;width:8%;">Qty</th>' +
-                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:right;width:14%;">Total</th>' +
+                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:center;width:10%;">Min Qty/Per</th>' +
+                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:right;width:12%;">Regular Price</th>' +
+                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:right;width:11%;">Discount (−)</th>' +
+                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:right;width:12%;">Package Price</th>' +
+                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:center;width:7%;">Qty</th>' +
+                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:right;width:12%;">Total</th>' +
                     '</tr></thead><tbody>' + rows + '</tbody></table>' +
                     '<table style="width:50%;border-collapse:collapse;margin-top:20px;margin-left:auto;">' +
                       '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Sub Total</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + sub.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
                       '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Shipping</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + ship.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
-                      '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">VAT / TAX</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + tax.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
+                      '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">VAT</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + tax.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
                       '<tr><td style="background:#0d6efd;color:#fff;font-weight:700;padding:12px;font-size:15px;border:1px solid #0d6efd;">NET PAYABLE</td><td style="background:#0d6efd;color:#fff;font-weight:700;padding:12px;text-align:right;font-size:15px;border:1px solid #0d6efd;">৳ ' + net.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
                     '</table>' +
-                    '<div class="row" style="margin-top:30px;">' +
-                      '<div class="col-md-6">' +
-                        '<p><strong>Payment Status:</strong> <span style="background:' + pbg + ';color:' + ptx + ';padding:3px 12px;border-radius:4px;font-size:12px;font-weight:600;">' + o.payment_status + '</span></p>' +
-                        '<p><strong>Order Status:</strong> <span style="background:#0d6efd;color:#fff;padding:3px 12px;border-radius:4px;font-size:12px;font-weight:600;">' + o.order_status + '</span></p>' +
+                    '<div class="row" style="margin-top:50px;">' +
+                      '<div class="col-md-6" style="text-align:center;">' +
+                        '<div style="width:200px;margin:40px auto 8px;border-top:2px solid #000;"></div>' +
+                        '<small style="color:#555;">Customer Signature</small>' +
                       '</div>' +
                       '<div class="col-md-6" style="text-align:center;">' +
                         '<div style="width:200px;margin:40px auto 8px;border-top:2px solid #000;"></div>' +
@@ -556,7 +573,7 @@
                       'Versedsoft &mdash; Your Complication, Our Solutions</a>' +
                     '</div>' +
                     '<div style="text-align:center;margin-top:20px;">' +
-                      '<button onclick="window.print()" class="btn btn-primary px-4"><i class="fas fa-print mr-2"></i> Print Invoice</button>' +
+                      '<button onclick="window.print()" class="btn btn-primary px-4 no-print"><i class="fas fa-print mr-2"></i> Print Invoice</button>' +
                     '</div></div>'
                 );
             }).fail(function (xhr) {
