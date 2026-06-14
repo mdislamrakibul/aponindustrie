@@ -3,10 +3,8 @@
 @push('css')
 <style>
 @media (max-width: 576px) {
-    .filter-bar { flex-direction: column; align-items: stretch; }
-    .filter-bar > div { width: 100%; }
-    .filter-bar select { min-width: unset !important; width: 100%; }
-    .filter-bar .d-flex { justify-content: flex-start !important; margin-left: 0 !important; }
+    .filter-btn { flex: 1 1 auto; justify-content: center; }
+    .filter-bar > a.btn { margin-left: 0 !important; margin-top: 4px; width: 100%; text-align: center; }
 }
 </style>
 @endpush
@@ -51,20 +49,21 @@
                             $cancelledCount = collect($orders)->filter(fn($o) => $o['order_status'] === 'CANCELLED')->count();
                         @endphp
                         <div class="filter-bar">
-                            <div>
-                                <label class="form-label fw-semibold mb-1 d-block">Filter by Status</label>
-                                <select id="orderStatusFilter" class="form-select" style="min-width:200px;">
-                                    <option value="all">All Orders ({{ $allCount }})</option>
-                                    <option value="active">Active ({{ $activeCount }})</option>
-                                    <option value="complete">Complete ({{ $completeCount }})</option>
-                                    <option value="cancelled">Cancelled ({{ $cancelledCount }})</option>
-                                </select>
-                            </div>
-                            <div class="d-flex justify-content-end align-items-end gap-2" style="margin-left:auto;">
-                                <a href="{{ route('admin.orders.new.page') }}" class="btn btn-sm btn-outline-warning">
-                                    <i class="fas fa-bell mr-1"></i> New Orders
-                                </a>
-                            </div>
+                            <button type="button" class="filter-btn active-filter" data-filter="all">
+                                All <span class="filter-count">{{ $allCount }}</span>
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="active">
+                                Active <span class="filter-count">{{ $activeCount }}</span>
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="complete">
+                                Complete <span class="filter-count">{{ $completeCount }}</span>
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="cancelled">
+                                Cancelled <span class="filter-count">{{ $cancelledCount }}</span>
+                            </button>
+                            <a href="{{ route('admin.orders.new.page') }}" class="btn btn-sm btn-outline-warning" style="margin-left:auto;">
+                                <i class="fas fa-bell mr-1"></i> New Orders
+                            </a>
                         </div>
 
                         <div class="card-body p-0">
@@ -324,9 +323,11 @@
             language: { emptyTable: 'No accepted orders yet.' }
         });
 
-        /* ── Status dropdown filter ── */
-        $('#orderStatusFilter').on('change', function () {
-            currentFilter = $(this).val();
+        /* ── Filter pill buttons ── */
+        $(document).on('click', '.filter-btn', function () {
+            currentFilter = $(this).data('filter');
+            $('.filter-btn').removeClass('active-filter');
+            $(this).addClass('active-filter');
             orderDT.draw();
         });
 
