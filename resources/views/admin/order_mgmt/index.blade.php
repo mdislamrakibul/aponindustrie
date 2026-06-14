@@ -489,13 +489,13 @@
                     var qs = parseInt(item.qty_sets || 1);
                     var mo = parseInt(item.min_order || 1);
                     var lt = parseFloat(item.line_total || 0); sub += lt;
-                    var rp = parseFloat(item.regular_price || 0);
+                    var ppp = mo > 0 ? pp / mo : pp;
                     var da = parseFloat(item.discount_amount || 0);
                     rows += '<tr style="background:' + (i%2===0?'#fff':'#f7f9fc') + ';">' +
                         '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + (i+1) + '</td>' +
                         '<td style="border:1px solid #dee2e6;padding:10px;">' + (item.product ? item.product.name : '-') + '</td>' +
                         '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + mo + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + rp.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + ppp.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
                         '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">' + (da > 0 ? '− ৳ ' + da.toLocaleString('en-BD',{minimumFractionDigits:2}) : '৳ 0.00') + '</td>' +
                         '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + pp.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
                         '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + qs + '</td>' +
@@ -545,7 +545,7 @@
                       '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:center;width:4%;">SL</th>' +
                       '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:left;">Product</th>' +
                       '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:center;width:10%;">Min Qty/Per</th>' +
-                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:right;width:12%;">Regular Price</th>' +
+                      '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:right;width:12%;">Per Piece Price</th>' +
                       '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:right;width:11%;">Discount (−)</th>' +
                       '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:right;width:12%;">Package Price</th>' +
                       '<th style="color:#fff;border:1px solid #0d6efd;padding:10px;text-align:center;width:7%;">Qty</th>' +
