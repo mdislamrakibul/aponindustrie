@@ -136,6 +136,7 @@ body { overflow-x: hidden; }
 }
 .side-banner {
     aspect-ratio: 218 / 220;
+    margin-bottom: 0 !important;
     border-radius: 8px;
     overflow: hidden;
 }
