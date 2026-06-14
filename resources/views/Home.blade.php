@@ -329,7 +329,7 @@
             clear: both;
         }
     </style>
-    <main class="main">
+    <main class="main" style="padding-top: 25px;">
 
         {{-- Top Slider --}}
         <div class="bg-square-left"></div>
