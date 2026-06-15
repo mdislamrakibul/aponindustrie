@@ -117,6 +117,7 @@ class AdsManagementController extends Controller
             'slide_title'     => $request->input('slide_title') ?: null,
             'slide_highlight' => $request->input('slide_highlight') ?: null,
             'slide_desc'      => $request->input('slide_desc') ?: null,
+            'hide_text'       => $request->boolean('hide_text'),
         ]);
 
         activityLog('Ads Management', 'UPDATE', 'Slide text updated: ' . $banner->label);
