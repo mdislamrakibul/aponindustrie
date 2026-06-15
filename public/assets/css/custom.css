@@ -38,6 +38,15 @@ body { overflow-x: hidden; }
 .account-dropdown-wrapper {
     position: relative;
 }
+/* Bridge the 8px gap so hover doesn't break when mouse moves to dropdown */
+.account-dropdown-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 12px;
+}
 .account-dropdown-trigger {
     display: inline-flex;
     align-items: center;
