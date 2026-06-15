@@ -136,7 +136,7 @@ body { overflow-x: hidden; }
 }
 .side-banner {
     height: 215px;
-    margin-bottom: 0 !important;
+    margin-bottom: 20px;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -152,6 +152,13 @@ body { overflow-x: hidden; }
 }
 
 /* ── Hero Slider: 980×450 left-aligned with text overlay ── */
+.home-slider .hero-slider-1 {
+    height: auto;
+    padding-bottom: 25px;
+}
+.home-slider .dot-style-1.dot-style-1-position-1 ul {
+    bottom: 5px;
+}
 .home-slider .slider-stage {
     position: relative;
     width: 100%;
@@ -161,7 +168,6 @@ body { overflow-x: hidden; }
     overflow: hidden;
     border-radius: 8px;
 }
-/* Fallback for browsers without aspect-ratio support */
 @supports not (aspect-ratio: 1/1) {
     .home-slider .slider-stage { height: 0; padding-bottom: 45.918%; }
 }

@@ -1,4 +1,4 @@
-﻿@if(session('success'))
+@if(session('success'))
     <div class="alert alert-success text-center">
         {{ session('success') }}
     </div>
@@ -259,101 +259,74 @@
             background: #3b3b3b;
         }
 
-        /* Container for the side banners */
+        /* Side Banners */
+        .side-banner-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
         .side-banner {
             position: relative;
-            margin-bottom: 20px;
+            height: 215px;
             overflow: hidden;
             border-radius: 10px;
-            /* Optional: adds a modern look */
         }
 
-        /* Ensure images always fit the width */
         .side-banner img {
-            /* width: 100%; */
-            height: auto;
-            /* display: block;
-            object-fit: cover; */
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
         }
 
-        /* Text info positioning */
-        .side-banner .banne_info {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-            padding: 20px;
-            width: 60%;
-            /* Limits text width to prevent overlap if image is small */
-        }
-
-        .side-banner .banne_info h4 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        /* RESPONSIVE FIXES */
-
-        /* Medium screens (Tablets): Stack the side banners horizontally */
-        @media (min-width: 768px) and (max-width: 991px) {
-            .col-md-12 .side-banner {
-                width: calc(50% - 10px);
-                float: left;
-                margin-right: 10px;
+        /* Mobile: side banners sit side by side */
+        @media (max-width: 991px) {
+            .side-banner-wrap {
+                flex-direction: row;
+                gap: 12px;
+                margin-top: 16px;
             }
-
-            .col-md-12 .side-banner:last-child {
-                margin-right: 0;
+            .side-banner {
+                flex: 1;
+                height: 150px;
             }
-        }
-
-        /* Small screens (Phones): Ensure text doesn't vanish or overlap */
-        @media (max-width: 576px) {
-            .side-banner .banne_info h4 {
-                font-size: 1rem;
-            }
-
-            .side-banner .banne_info h6 {
-                font-size: 0.8rem;
-            }
-
-            .side-banner .banne_info {
-                padding: 10px;
-            }
-        }
-
-        /* Clearfix for the floated items on tablet */
-        .col-lg-3::after {
-            content: "";
-            display: table;
-            clear: both;
         }
     </style>
-    <main class="main" style="padding-top: 25px;">
+    <main class="main">
 
         {{-- Top Slider --}}
         <div class="bg-square-left"></div>
 
 
 
-        <div class="container">
+        <div class="container" style="padding-top: 25px;">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
                     <section class="home-slider position-relative">
                         <div class="hero-slider-1 dot-style-1 dot-style-1-position-1">
 
-                            @forelse(sliders() as $slide)
+                            @forelse($sliders as $slide)
                             <div class="single-hero-slider single-animation-wrap">
                                 <div class="slider-stage">
                                     <img class="slider-img"
-                                         src="{{ $slide->image_path ? asset($slide->image_path) : asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
-                                         alt="">
-                                    @if($slide->text_top || $slide->text_title || $slide->text_highlight || $slide->text_sub)
+                                        src="{{ $slide->image_path ? asset($slide->image_path) : asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
+                                        alt="{{ $slide->slide_title ?? '' }}">
+                                    @if(!$slide->hide_text && ($slide->slide_top || $slide->slide_title || $slide->slide_highlight || $slide->slide_desc))
                                     <div class="slider-overlay">
-                                        @if($slide->text_top)<h4 class="animated">{{ $slide->text_top }}</h4>@endif
-                                        @if($slide->text_title)<h2 class="animated fw-900">{{ $slide->text_title }}</h2>@endif
-                                        @if($slide->text_highlight)<h1 class="animated fw-900 text-brand">{{ $slide->text_highlight }}</h1>@endif
-                                        @if($slide->text_sub)<p class="animated">{{ $slide->text_sub }}</p>@endif
+                                        @if($slide->slide_top)
+                                            <h4>{{ $slide->slide_top }}</h4>
+                                        @endif
+                                        @if($slide->slide_title)
+                                            <h2 class="fw-900">{{ $slide->slide_title }}</h2>
+                                        @endif
+                                        @if($slide->slide_highlight)
+                                            <h1 class="fw-900 text-brand">{{ $slide->slide_highlight }}</h1>
+                                        @endif
+                                        @if($slide->slide_desc)
+                                            <p>{{ $slide->slide_desc }}</p>
+                                        @endif
                                     </div>
                                     @endif
                                 </div>
@@ -362,8 +335,8 @@
                             <div class="single-hero-slider single-animation-wrap">
                                 <div class="slider-stage">
                                     <img class="slider-img"
-                                         src="{{ asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
-                                         alt="">
+                                        src="{{ asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
+                                        alt="Apon Plastic">
                                 </div>
                             </div>
                             @endforelse
@@ -374,15 +347,27 @@
                     </section>
                 </div>
 
-                <div class="col-lg-3 col-md-12 side-banner-col">
+                <div class="col-lg-3 col-md-12">
+                    <div class="side-banner-wrap">
                     <div class="side-banner">
-                        <img src="{{ banner('banner_1', 'assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
+                        <img src="{{ optional($banners->get('banner_1'))->image_path ? asset($banners->get('banner_1')->image_path) : asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
                             alt="menu_banner1">
+                        {{-- <div class="banne_info">
+                            <h6>10% Off</h6>
+                            <h4>New Arrival</h4>
+                            <a href="#">Shop now</a>
+                        </div> --}}
                     </div>
                     <div class="side-banner">
-                        <img src="{{ banner('banner_2', 'assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
+                        <img src="{{ optional($banners->get('banner_2'))->image_path ? asset($banners->get('banner_2')->image_path) : asset('assets/uploads/Right Banner/Right banner_Apon Plastic.png') }}"
                             alt="menu_banner2">
+                        {{-- <div class="banne_info">
+                            <h6>15% Off</h6>
+                            <h4>Hot Deals</h4>
+                            <a href="#">Shop now</a>
+                        </div> --}}
                     </div>
+                    </div>{{-- .side-banner-wrap --}}
                 </div>
             </div>
         </div>
@@ -526,8 +511,22 @@
                                                                         <span class="badge hot">Hot</span>
                                                                     @elseif($prods['product_type'] == 'TOPSELLING')
                                                                         <span class="badge best-seller">Best Seller</span>
+                                                                    @elseif($prods['product_type'] == 'TOPNEWITEMS')
+                                                                        <span class="badge new">New</span>
                                                                     @endif
-                                                                    @include('partials.discount-badge', ['prod' => $prods, 'badgeClass' => 'badge sale'])
+
+                                                                    {{-- Discount Badge Logic --}}
+                                                                    @if($prods['is_discounted'])
+                                                                        <span class="badge sale">
+                                                                            @if($prods['discount_type'] == 'PERCENTAGE')
+                                                                                {{-- Show percentage (e.g., 20% Off) --}}
+                                                                                {{ number_format($prods['discount_value'], 0) }}% Off
+                                                                            @elseif($prods['discount_type'] == 'FLAT')
+                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
+                                                                                ${{ number_format($prods['discount_value'], 0) }} Off
+                                                                            @endif
+                                                                        </span>
+                                                                    @endif
                                                                 </div>
 
                                                                 <a href="{{ route('Product_Details', [
@@ -640,8 +639,22 @@
                                                                         <span class="badge hot">Hot</span>
                                                                     @elseif($prods['product_type'] == 'TOPSELLING')
                                                                         <span class="badge best-seller">Best Seller</span>
+                                                                    @elseif($prods['product_type'] == 'TOPNEWITEMS')
+                                                                        <span class="badge new">New</span>
                                                                     @endif
-                                                                    @include('partials.discount-badge', ['prod' => $prods, 'badgeClass' => 'badge sale'])
+
+                                                                    {{-- Discount Badge Logic --}}
+                                                                    @if($prods['is_discounted'])
+                                                                        <span class="badge sale">
+                                                                            @if($prods['discount_type'] == 'PERCENTAGE')
+                                                                                {{-- Show percentage (e.g., 20% Off) --}}
+                                                                                {{ number_format($prods['discount_value'], 0) }}% Off
+                                                                            @elseif($prods['discount_type'] == 'FLAT')
+                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
+                                                                                ${{ number_format($prods['discount_value'], 0) }} Off
+                                                                            @endif
+                                                                        </span>
+                                                                    @endif
                                                                 </div>
 
                                                                 <a href="{{ route('Product_Details', [
@@ -752,8 +765,22 @@
                                                                         <span class="badge hot">Hot</span>
                                                                     @elseif($prods['product_type'] == 'TOPSELLING')
                                                                         <span class="badge best-seller">Best Seller</span>
+                                                                    @elseif($prods['product_type'] == 'TOPNEWITEMS')
+                                                                        <span class="badge new">New</span>
                                                                     @endif
-                                                                    @include('partials.discount-badge', ['prod' => $prods, 'badgeClass' => 'badge sale'])
+
+                                                                    {{-- Discount Badge Logic --}}
+                                                                    @if($prods['is_discounted'])
+                                                                        <span class="badge sale">
+                                                                            @if($prods['discount_type'] == 'PERCENTAGE')
+                                                                                {{-- Show percentage (e.g., 20% Off) --}}
+                                                                                {{ number_format($prods['discount_value'], 0) }}% Off
+                                                                            @elseif($prods['discount_type'] == 'FLAT')
+                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
+                                                                                ${{ number_format($prods['discount_value'], 0) }} Off
+                                                                            @endif
+                                                                        </span>
+                                                                    @endif
                                                                 </div>
 
                                                                 <a href="{{ route('Product_Details', [
@@ -856,7 +883,7 @@
         <section class="banner-2 section-padding pb-0">
             <div class="container">
                 <div class="banner-img banner-big wow fadeIn animated f-none">
-                    <img src="{{ banner('banner_3', 'assets/uploads/Large Adv/Large Adv_Apon Plastic-1.png') }}" alt="">
+                    <img src="{{ optional($banners->get('banner_3'))->image_path ? asset($banners->get('banner_3')->image_path) : asset('assets/uploads/Large Adv/Large Adv_Apon Plastic-1.png') }}" alt="">
                     {{-- <div class="banner-text d-md-block d-none">
                         <h4 class="mb-15 mt-40 text-brand">Repair Services</h4>
                         <h1 class="fw-600 mb-20">We're an Apple <br>Authorised Service Provider</h1>
@@ -919,7 +946,7 @@
                     <div class="col-12 col-md-3">
                         <h3 class="section-title style-1 mb-20"><span>See</span> Promotion</h3>
                         <div class="side-banner full-height-banner ">
-                            <img src="{{ banner('banner_4', 'assets/uploads/Left Side Adv Banner/Apon Plastic Left Side Adv Banner_Apon Plastic.png') }}"
+                            <img src="{{ optional($banners->get('banner_4'))->image_path ? asset($banners->get('banner_4')->image_path) : asset('assets/uploads/Left Side Adv Banner/Apon Plastic Left Side Adv Banner_Apon Plastic.png') }}"
                                 alt="promotion_banner">
                             {{-- <div class="banne_info">
                                 <h6>Limited Offer</h6>
@@ -1095,11 +1122,6 @@
 
                                                         @endforeach
                                                     </a>
-                                                    @if($prod['is_discounted'])
-                                                    <div class="product-badges product-badges-position">
-                                                        @include('partials.discount-badge', ['prod' => $prod, 'badgeClass' => 'hot'])
-                                                    </div>
-                                                    @endif
                                                 </figure>
                                                 <h5><a href="{{ route('Product_Details', [
                                 'product_name' => $prod['name'],
@@ -1217,7 +1239,7 @@
                                                             tabindex="0"><i class="fi-rs-shuffle"></i></a>
                                                     </div> --}}
                                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                                        @include('partials.discount-badge', ['prod' => $prod, 'badgeClass' => 'hot'])
+                                                        <span class="hot">Popular</span>
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
@@ -1248,7 +1270,7 @@
                                                             @endfor
                                                         </div>
                                                         <div style="color:#f15412; font-weight: bold; font-size: 15px;">
-                                                            ({{number_format($prod['reviews_avg_rating'] ?? 0, 1)}})
+                                                            ({{number_format($prod['reviews_avg_rating'], 1)}})
                                                         </div>
                                                     </div>
                                                     <div class="product-price">

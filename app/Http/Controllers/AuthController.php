@@ -47,7 +47,7 @@ class AuthController extends Controller
             $user->save();
             session([
                 'user_id' => $user->id,
-                'user_name' => $user->name,
+                'user_name' => trim($user->first_name . ' ' . $user->last_name),
                 'user_mobile' => $user->phone,
                 'user_role' => $user->role,
             ]);
