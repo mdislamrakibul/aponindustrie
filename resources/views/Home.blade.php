@@ -263,7 +263,7 @@
         .side-banner-wrap {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 0;
         }
 
         .side-banner {
