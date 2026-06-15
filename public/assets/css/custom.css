@@ -152,6 +152,13 @@ body { overflow-x: hidden; }
 }
 
 /* ── Hero Slider: 980×450 left-aligned with text overlay ── */
+.home-slider .hero-slider-1 {
+    height: auto;
+    padding-bottom: 25px;
+}
+.home-slider .dot-style-1.dot-style-1-position-1 ul {
+    bottom: 5px;
+}
 .home-slider .slider-stage {
     position: relative;
     width: 100%;
