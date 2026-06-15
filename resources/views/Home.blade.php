@@ -260,10 +260,15 @@
         }
 
         /* Side Banners */
+        .side-banner-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
         .side-banner {
             position: relative;
             height: 215px;
-            margin-bottom: 20px;
             overflow: hidden;
             border-radius: 10px;
         }
@@ -276,8 +281,17 @@
             object-position: center;
         }
 
+        /* Mobile: side banners sit side by side */
         @media (max-width: 991px) {
-            .side-banner { height: 215px; }
+            .side-banner-wrap {
+                flex-direction: row;
+                gap: 12px;
+                margin-top: 16px;
+            }
+            .side-banner {
+                flex: 1;
+                height: 150px;
+            }
         }
     </style>
     <main class="main">
@@ -334,6 +348,7 @@
                 </div>
 
                 <div class="col-lg-3 col-md-12">
+                    <div class="side-banner-wrap">
                     <div class="side-banner">
                         <img src="{{ optional($banners->get('banner_1'))->image_path ? asset($banners->get('banner_1')->image_path) : asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
                             alt="menu_banner1">
@@ -352,6 +367,7 @@
                             <a href="#">Shop now</a>
                         </div> --}}
                     </div>
+                    </div>{{-- .side-banner-wrap --}}
                 </div>
             </div>
         </div>
