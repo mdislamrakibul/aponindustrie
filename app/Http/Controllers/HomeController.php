@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -72,15 +73,32 @@ class HomeController extends Controller
         }
 
 
+        try {
+            $sliders = Banner::where('type', 'SLIDER')
+                ->where('is_active', 1)
+                ->orderBy('sort_order')
+                ->get();
+
+            $banners = Banner::where('type', 'BANNER')
+                ->where('is_active', 1)
+                ->get()
+                ->keyBy('slot');
+        } catch (\Throwable $e) {
+            $sliders = collect();
+            $banners = collect();
+        }
+
         // dd(collect($featuredProducts));
         return view('Home', [
-            'featuredProducts' => collect($featuredProducts)->shuffle()->take(8),
-            'popularProducts' => collect($popularProducts)->shuffle()->take(8),
-            'newAddedProducts' => collect($newAddedProducts)->shuffle()->take(8),
-            'newArrivals1stRow' => collect($newAddedProducts)->shuffle(),
-            'newArrivals2ndRow' => collect($newAddedProducts)->shuffle(),
+            'featuredProducts'    => collect($featuredProducts)->shuffle()->take(8),
+            'popularProducts'     => collect($popularProducts)->shuffle()->take(8),
+            'newAddedProducts'    => collect($newAddedProducts)->shuffle()->take(8),
+            'newArrivals1stRow'   => collect($newAddedProducts)->shuffle(),
+            'newArrivals2ndRow'   => collect($newAddedProducts)->shuffle(),
             'mostSellingProducts' => collect($popularProducts)->shuffle(),
             'mostPopularProducts' => collect($popularProducts)->shuffle(),
+            'sliders'             => $sliders,
+            'banners'             => $banners,
         ]);
     }
 

@@ -342,7 +342,7 @@
                     <section class="home-slider position-relative">
                         <div class="hero-slider-1 dot-style-1 dot-style-1-position-1">
 
-                            @forelse(sliders() as $slide)
+                            @forelse($sliders as $slide)
                             <div class="single-hero-slider single-animation-wrap">
                                 <div class="container">
                                     <div class="row align-items-center slider-animated-1">
@@ -396,7 +396,7 @@
 
                 <div class="col-lg-3 col-md-12 pt-lg-5 pt-3">
                     <div class="side-banner">
-                        <img src="{{ banner('banner_1', 'assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
+                        <img src="{{ optional($banners->get('banner_1'))->image_path ? asset($banners->get('banner_1')->image_path) : asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
                             alt="menu_banner1">
                         {{-- <div class="banne_info">
                             <h6>10% Off</h6>
@@ -405,7 +405,7 @@
                         </div> --}}
                     </div>
                     <div class="side-banner">
-                        <img src="{{ banner('banner_2', 'assets/uploads/Right Banner/Right banner_Apon Plastic.png') }}"
+                        <img src="{{ optional($banners->get('banner_2'))->image_path ? asset($banners->get('banner_2')->image_path) : asset('assets/uploads/Right Banner/Right banner_Apon Plastic.png') }}"
                             alt="menu_banner2">
                         {{-- <div class="banne_info">
                             <h6>15% Off</h6>
@@ -928,7 +928,7 @@
         <section class="banner-2 section-padding pb-0">
             <div class="container">
                 <div class="banner-img banner-big wow fadeIn animated f-none">
-                    <img src="{{ banner('banner_3', 'assets/uploads/Large Adv/Large Adv_Apon Plastic-1.png') }}" alt="">
+                    <img src="{{ optional($banners->get('banner_3'))->image_path ? asset($banners->get('banner_3')->image_path) : asset('assets/uploads/Large Adv/Large Adv_Apon Plastic-1.png') }}" alt="">
                     {{-- <div class="banner-text d-md-block d-none">
                         <h4 class="mb-15 mt-40 text-brand">Repair Services</h4>
                         <h1 class="fw-600 mb-20">We're an Apple <br>Authorised Service Provider</h1>
@@ -991,7 +991,7 @@
                     <div class="col-12 col-md-3">
                         <h3 class="section-title style-1 mb-20"><span>See</span> Promotion</h3>
                         <div class="side-banner full-height-banner ">
-                            <img src="{{ banner('banner_4', 'assets/uploads/Left Side Adv Banner/Apon Plastic Left Side Adv Banner_Apon Plastic.png') }}"
+                            <img src="{{ optional($banners->get('banner_4'))->image_path ? asset($banners->get('banner_4')->image_path) : asset('assets/uploads/Left Side Adv Banner/Apon Plastic Left Side Adv Banner_Apon Plastic.png') }}"
                                 alt="promotion_banner">
                             {{-- <div class="banne_info">
                                 <h6>Limited Offer</h6>
