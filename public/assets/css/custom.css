@@ -136,7 +136,7 @@ body { overflow-x: hidden; }
 }
 .side-banner {
     height: 215px;
-    margin-bottom: 0 !important;
+    margin-bottom: 20px;
     border-radius: 8px;
     overflow: hidden;
 }

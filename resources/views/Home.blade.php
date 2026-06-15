@@ -287,7 +287,7 @@
 
 
 
-        <div class="container">
+        <div class="container" style="padding-top: 25px;">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
                     <section class="home-slider position-relative">
