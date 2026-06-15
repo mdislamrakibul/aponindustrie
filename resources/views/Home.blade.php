@@ -259,74 +259,25 @@
             background: #3b3b3b;
         }
 
-        /* Container for the side banners */
+        /* Side Banners */
         .side-banner {
             position: relative;
+            height: 215px;
             margin-bottom: 20px;
             overflow: hidden;
             border-radius: 10px;
-            /* Optional: adds a modern look */
         }
 
-        /* Ensure images always fit the width */
         .side-banner img {
-            /* width: 100%; */
-            height: auto;
-            /* display: block;
-            object-fit: cover; */
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
         }
 
-        /* Text info positioning */
-        .side-banner .banne_info {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-            padding: 20px;
-            width: 60%;
-            /* Limits text width to prevent overlap if image is small */
-        }
-
-        .side-banner .banne_info h4 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        /* RESPONSIVE FIXES */
-
-        /* Medium screens (Tablets): Stack the side banners horizontally */
-        @media (min-width: 768px) and (max-width: 991px) {
-            .col-md-12 .side-banner {
-                width: calc(50% - 10px);
-                float: left;
-                margin-right: 10px;
-            }
-
-            .col-md-12 .side-banner:last-child {
-                margin-right: 0;
-            }
-        }
-
-        /* Small screens (Phones): Ensure text doesn't vanish or overlap */
-        @media (max-width: 576px) {
-            .side-banner .banne_info h4 {
-                font-size: 1rem;
-            }
-
-            .side-banner .banne_info h6 {
-                font-size: 0.8rem;
-            }
-
-            .side-banner .banne_info {
-                padding: 10px;
-            }
-        }
-
-        /* Clearfix for the floated items on tablet */
-        .col-lg-3::after {
-            content: "";
-            display: table;
-            clear: both;
+        @media (max-width: 991px) {
+            .side-banner { height: 215px; }
         }
     </style>
     <main class="main">
