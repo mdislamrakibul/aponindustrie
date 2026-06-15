@@ -148,7 +148,8 @@
                                                     {{ json_encode($slider->slide_top ?? '') }},
                                                     {{ json_encode($slider->slide_title ?? '') }},
                                                     {{ json_encode($slider->slide_highlight ?? '') }},
-                                                    {{ json_encode($slider->slide_desc ?? '') }}
+                                                    {{ json_encode($slider->slide_desc ?? '') }},
+                                                    {{ $slider->hide_text ? 'true' : 'false' }}
                                                 )">
                                             <i class="fas fa-pen mr-1"></i> Edit Text
                                         </button>
@@ -265,11 +266,20 @@
                             <input type="text" name="slide_highlight" id="modalSlideHighlight"
                                    class="form-control" placeholder="On all products" maxlength="100">
                         </div>
-                        <div class="form-group mb-0">
+                        <div class="form-group">
                             <label class="font-weight-bold">Description</label>
                             <small class="text-muted d-block mb-1">Subtext below headings — e.g. "Save more with coupons & up to 70% off"</small>
                             <input type="text" name="slide_desc" id="modalSlideDesc"
                                    class="form-control" placeholder="Save more with coupons & up to 70% off" maxlength="200">
+                        </div>
+                        <div class="form-group mb-0">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" name="hide_text" id="modalHideText" value="1">
+                                <label class="custom-control-label font-weight-bold" for="modalHideText">
+                                    Hide text — show image only
+                                </label>
+                            </div>
+                            <small class="text-muted">When enabled, all text is hidden and only the slider image is shown.</small>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -284,12 +294,13 @@
     </div>
 
     <script>
-    function openTextModal(id, top, title, highlight, desc) {
-        document.getElementById('slideTextForm').action = '/admin/ads/' + id + '/text';
+    function openTextModal(id, top, title, highlight, desc, hideText) {
+        document.getElementById('slideTextForm').action      = '/admin/ads/' + id + '/text';
         document.getElementById('modalSlideTop').value       = top       || '';
         document.getElementById('modalSlideTitle').value     = title     || '';
         document.getElementById('modalSlideHighlight').value = highlight || '';
         document.getElementById('modalSlideDesc').value      = desc      || '';
+        document.getElementById('modalHideText').checked     = !!hideText;
         $('#slideTextModal').modal('show');
     }
     </script>

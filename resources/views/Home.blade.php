@@ -295,46 +295,34 @@
 
                             @forelse($sliders as $slide)
                             <div class="single-hero-slider single-animation-wrap">
-                                <div class="container">
-                                    <div class="row align-items-center slider-animated-1">
-                                        <div class="col-lg-5 col-md-6">
-                                            <div class="hero-slider-content-2">
-                                                <h4 class="animated">{{ $slide->slide_top ?: 'Trade-in offer' }}</h4>
-                                                <h2 class="animated fw-900">{{ $slide->slide_title ?: 'Supper deals' }}</h2>
-                                                <h1 class="animated fw-900 text-brand">{{ $slide->slide_highlight ?: 'On all products' }}</h1>
-                                                <p class="animated">{{ $slide->slide_desc ?: 'Save more with coupons & up to 70% off' }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-7 col-md-6">
-                                            <div class="single-slider-img single-slider-img-1">
-                                                <img class="animated slider-1-1"
-                                                    src="{{ $slide->image_path ? asset($slide->image_path) : asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
-                                                    alt="">
-                                            </div>
-                                        </div>
+                                <div class="slider-stage">
+                                    <img class="slider-img"
+                                        src="{{ $slide->image_path ? asset($slide->image_path) : asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
+                                        alt="{{ $slide->slide_title ?? '' }}">
+                                    @if(!$slide->hide_text && ($slide->slide_top || $slide->slide_title || $slide->slide_highlight || $slide->slide_desc))
+                                    <div class="slider-overlay">
+                                        @if($slide->slide_top)
+                                            <h4>{{ $slide->slide_top }}</h4>
+                                        @endif
+                                        @if($slide->slide_title)
+                                            <h2 class="fw-900">{{ $slide->slide_title }}</h2>
+                                        @endif
+                                        @if($slide->slide_highlight)
+                                            <h1 class="fw-900 text-brand">{{ $slide->slide_highlight }}</h1>
+                                        @endif
+                                        @if($slide->slide_desc)
+                                            <p>{{ $slide->slide_desc }}</p>
+                                        @endif
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                             @empty
                             <div class="single-hero-slider single-animation-wrap">
-                                <div class="container">
-                                    <div class="row align-items-center slider-animated-1">
-                                        <div class="col-lg-5 col-md-6">
-                                            <div class="hero-slider-content-2">
-                                                <h4 class="animated">Trade-in offer</h4>
-                                                <h2 class="animated fw-900">Supper deals</h2>
-                                                <h1 class="animated fw-900 text-brand">On all products</h1>
-                                                <p class="animated">Save more with coupons & up to 70% off</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-7 col-md-6">
-                                            <div class="single-slider-img single-slider-img-1">
-                                                <img class="animated slider-1-1"
-                                                    src="{{ asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
-                                                    alt="">
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="slider-stage">
+                                    <img class="slider-img"
+                                        src="{{ asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
+                                        alt="Apon Plastic">
                                 </div>
                             </div>
                             @endforelse
@@ -345,7 +333,7 @@
                     </section>
                 </div>
 
-                <div class="col-lg-3 col-md-12 pt-lg-5 pt-3">
+                <div class="col-lg-3 col-md-12">
                     <div class="side-banner">
                         <img src="{{ optional($banners->get('banner_1'))->image_path ? asset($banners->get('banner_1')->image_path) : asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
                             alt="menu_banner1">

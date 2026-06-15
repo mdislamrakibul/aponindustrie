@@ -13,10 +13,12 @@ class Banner extends Model
         'rec_width', 'rec_height', 'sort_order',
         'is_locked', 'is_active',
         'slide_top', 'slide_title', 'slide_highlight', 'slide_desc',
+        'hide_text',
     ];
 
     protected $casts = [
-        'is_locked' => 'boolean',
-        'is_active' => 'boolean',
+        'is_locked'  => 'boolean',
+        'is_active'  => 'boolean',
+        'hide_text'  => 'boolean',
     ];
 }
