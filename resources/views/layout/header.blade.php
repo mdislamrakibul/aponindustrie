@@ -115,8 +115,8 @@
                             @if(session()->has('user_id'))
 
                             <li>
-                                <i class="fa fa-user"></i>
-                                <a href="{{ route('customer.profile') }}" style="padding: 0px !important; padding-right: 10px !important;">
+                                <a href="{{ route('customer.profile') }}" style="padding: 0px !important; padding-right: 10px !important; display:inline-flex; align-items:center; gap:5px;">
+                                    <i class="fa fa-user"></i>
                                     {{ session('user_name') }}
                                 </a>
                             </li>
