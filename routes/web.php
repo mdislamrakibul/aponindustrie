@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\AccountController;
-use App\Http\Controllers\Admin\AdminOrderController;
-use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\InventoryController;
-use App\Http\Controllers\Admin\ProductManagementController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\AdsManagementController;
+use App\Http\Controllers\admin\AccountController;
+use App\Http\Controllers\admin\AdminOrderController;
+use App\Http\Controllers\admin\CustomerController;
+use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\InventoryController;
+use App\Http\Controllers\admin\ProductManagementController;
+use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\AdsManagementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -121,12 +121,12 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get(
         '/customers',
-        [App\Http\Controllers\Admin\CustomerController::class, 'index']
+        [App\Http\Controllers\admin\CustomerController::class, 'index']
     )->name('customers.index');
 
     Route::get(
         '/customers/order-history/{id}',
-        [App\Http\Controllers\Admin\CustomerController::class, 'orderHistory']
+        [App\Http\Controllers\admin\CustomerController::class, 'orderHistory']
     )->name('customers.order.history');
 
     Route::get(
@@ -141,17 +141,17 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get(
         '/activity-logs',
-        [App\Http\Controllers\Admin\ActivityLogController::class, 'index']
+        [App\Http\Controllers\admin\ActivityLogController::class, 'index']
     )->name('activity.logs');
 
     Route::get(
         '/profile',
-        [App\Http\Controllers\Admin\AdminProfileController::class, 'index']
+        [App\Http\Controllers\admin\AdminProfileController::class, 'index']
     )->name('profile');
 
     Route::post(
         '/profile/update',
-        [App\Http\Controllers\Admin\AdminProfileController::class, 'update']
+        [App\Http\Controllers\admin\AdminProfileController::class, 'update']
     )->name('profile.update');
 
     Route::get('/orders/new-orders', [AdminOrderController::class, 'newOrders'])->name('orders.new');
@@ -180,7 +180,7 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get(
         '/accounts/order-history',
-        [App\Http\Controllers\Admin\AccountsManagementController::class, 'orderHistory']
+        [App\Http\Controllers\admin\AccountsManagementController::class, 'orderHistory']
     )->name('accounts.order.history');
 
     /*
