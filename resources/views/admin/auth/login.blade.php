@@ -165,7 +165,7 @@
     <div class="login-container">
         <h1>LOGIN</h1>
 
-        <form action="{{ route('login.post') }}" method="POST">
+        <form action="{{ route('admin.login.post') }}" method="POST">
             @csrf
 
             <div class="input-group">

@@ -68,10 +68,11 @@ Route::get('/my-account', [CustomerProfileController::class, 'index'])
 Route::get('/my-account/order/{id}', [CustomerProfileController::class, 'orderSummary'])
     ->name('customer.order.summary');
 
-Route::get('/admin/management-login', function () {
+Route::get('/admin/management-login', [AuthController::class, 'showAdminLogin'])
+    ->name('admin.login');
 
-    return view('admin.auth.login');
-});
+Route::post('/admin/management-login', [AuthController::class, 'adminLogin'])
+    ->name('admin.login.post');
 
 // OTP//
 

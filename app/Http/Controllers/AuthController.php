@@ -36,7 +36,7 @@ class AuthController extends Controller
 
         if ($user && Hash::check($request->password, $user->password)) {
             // CHECK ACCOUNT STATUS
-            if ($user->status !== 'ACTIVE') {
+            if (strtolower($user->status) !== 'active') {
                 return back()->withErrors([
                     'mobile_no' => 'Account is inactive or blocked'
                 ]);
@@ -133,7 +133,7 @@ class AuthController extends Controller
         }
 
         // ONLY ADMIN + VENDOR ALLOWED
-        if (!in_array($user->role, ['ADMIN', 'VENDOR'])) {
+        if (!in_array(strtolower($user->role), ['admin', 'vendor'])) {
             return back()->with('error', 'Unauthorized access');
         }
 
