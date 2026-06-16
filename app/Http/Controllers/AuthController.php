@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Login;
 use App\Services\UserSyncService;
-
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -54,6 +54,11 @@ class AuthController extends Controller
 
             $request->session()->regenerate();
 
+
+            if ($user->role === Str::lower(User::ROLE_ADMIN)) {
+                return redirect('/admin/dashboard')
+                    ->with('success', 'Login Successful');
+            }
             return redirect('/')
                 ->with('success', 'Login Successful');
         }
@@ -110,7 +115,7 @@ class AuthController extends Controller
         return view('admin.auth.login');
     }
     public function adminLogin(Request $request)
-    {   
+    {
         $request->validate([
             'mobile_no' => 'required',
             'password' => 'required',

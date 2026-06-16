@@ -68,7 +68,7 @@ Route::get('/my-account', [CustomerProfileController::class, 'index'])
 Route::get('/my-account/order/{id}', [CustomerProfileController::class, 'orderSummary'])
     ->name('customer.order.summary');
 
-Route::get('/admin/login', function () {
+Route::get('/admin/management-login', function () {
 
     return view('admin.auth.login');
 });
@@ -169,8 +169,8 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         '/orders/{id}/update-status',
         [AdminOrderController::class, 'updateStatus']
     )->name('orders.update.status');
-    
-    
+
+
 
     /*
     |--------------------------------------------------------------------------
