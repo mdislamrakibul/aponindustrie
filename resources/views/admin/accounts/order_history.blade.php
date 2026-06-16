@@ -195,7 +195,7 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle">
+                        <table class="table table-hover align-middle" id="dataTable">
                             <thead class="bg-light">
                                 <tr>
                                     <th>Order ID</th>
