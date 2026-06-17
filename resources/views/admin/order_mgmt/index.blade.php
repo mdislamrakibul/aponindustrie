@@ -514,18 +514,18 @@
                     '<div style="text-align:center;border-bottom:3px solid #0d6efd;padding-bottom:20px;margin-bottom:30px;">' +
                       '<div style="font-size:15px;font-weight:600;color:#444;line-height:26px;">Government of the People\'s Republic of Bangladesh<br>National Board of Revenue</div>' +
                       '<div style="font-size:32px;font-weight:800;color:#0d6efd;letter-spacing:1px;margin-top:10px;">APON PLASTIC INDUSTRIES</div>' +
-                      '<div style="margin-top:6px;font-size:13px;line-height:24px;color:#555;">Gazipur, Dhaka, Bangladesh<br>Phone: 017xxxxxxxx &nbsp;|&nbsp; Email: info@aponplastic.com</div>' +
+                      '<div style="margin-top:6px;font-size:13px;line-height:24px;color:#555;">Office &amp; Factory: Rupshi, Rupganj, Narayanganj.<br>Hotline: <a href="tel:+8801330473873" style="color:#0d6efd;text-decoration:none;">(+880)1330-473873</a></div>' +
                       '<div style="margin-top:14px;font-size:20px;font-weight:700;letter-spacing:3px;color:#444;">RETAIL INVOICE</div>' +
                     '</div>' +
-                    '<div class="row" style="margin-bottom:30px;">' +
-                      '<div class="col-md-6"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:18px;">' +
+                    '<div style="display:flex;gap:20px;margin-bottom:30px;align-items:stretch;">' +
+                      '<div style="flex:1;min-width:0;"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:18px;height:100%;">' +
                         '<div style="background:#0d6efd;color:#fff;padding:8px 14px;border-radius:4px;font-weight:700;margin-bottom:12px;font-size:13px;">CUSTOMER INFORMATION</div>' +
                         '<p style="margin:0 0 7px;"><strong>Name:</strong> ' + cn + '</p>' +
                         '<p style="margin:0 0 7px;"><strong>Phone:</strong> ' + (addr.phone||'N/A') + '</p>' +
                         '<p style="margin:0 0 7px;"><strong>Email:</strong> ' + (addr.email||'N/A') + '</p>' +
                         '<p style="margin:0;"><strong>Address:</strong> ' + (addr.address_line1||'N/A') + '</p>' +
                       '</div></div>' +
-                      '<div class="col-md-6"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:18px;">' +
+                      '<div style="flex:1;min-width:0;"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:18px;height:100%;">' +
                         '<div style="background:#0d6efd;color:#fff;padding:8px 14px;border-radius:4px;font-weight:700;margin-bottom:12px;font-size:13px;">INVOICE INFORMATION</div>' +
                         '<p style="margin:0 0 7px;"><strong>Order ID:</strong> ' + o.order_number + '</p>' +
                         '<p style="margin:0 0 7px;"><strong>Accepted By:</strong> ' + (o.accepted_by_name || 'N/A') + '</p>' +
@@ -554,14 +554,14 @@
                       '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Discount (−)</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;' + (totalDiscount > 0 ? 'color:#dc3545;font-weight:600;' : '') + '">' + (totalDiscount > 0 ? '− ৳ ' + totalDiscount.toLocaleString('en-BD',{minimumFractionDigits:2}) : '৳ 0.00') + '</td></tr>' +
                       '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Shipping</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + ship.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
                       '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">VAT</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + tax.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
-                      '<tr><td style="background:#0d6efd;color:#fff;font-weight:700;padding:12px;font-size:15px;border:1px solid #0d6efd;">NET PAYABLE</td><td style="background:#0d6efd;color:#fff;font-weight:700;padding:12px;text-align:right;font-size:15px;border:1px solid #0d6efd;">৳ ' + net.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
+                      '<tr><td style="background:#0d6efd;color:#fff;font-weight:700;padding:12px;font-size:15px;border:1px solid #0d6efd;">NET PAYABLE</td><td style="background:#0d6efd;color:#fff;font-weight:700;padding:12px;text-align:right;font-size:15px;border:1px solid #0d6efd;">৳ ' + net.toLocaleString('en-BD',{minimumFractionDigits:2}) + '<span style="display:block;font-size:11px;font-weight:600;color:#fff;margin-top:2px;">(' + numberToWords(net) + ' Taka Only)</span></td></tr>' +
                     '</table>' +
-                    '<div class="row" style="margin-top:50px;">' +
-                      '<div class="col-md-6" style="text-align:center;">' +
+                    '<div style="display:flex;margin-top:50px;">' +
+                      '<div style="flex:1;text-align:center;">' +
                         '<div style="width:200px;margin:40px auto 8px;border-top:2px solid #000;"></div>' +
                         '<small style="color:#555;">Customer Signature</small>' +
                       '</div>' +
-                      '<div class="col-md-6" style="text-align:center;">' +
+                      '<div style="flex:1;text-align:center;">' +
                         '<div style="width:200px;margin:40px auto 8px;border-top:2px solid #000;"></div>' +
                         '<small style="color:#555;">Authorized Signature</small>' +
                       '</div>' +
@@ -571,6 +571,7 @@
                       '<a href="https://versedsoft.com/" target="_blank" rel="noopener" style="color:#0d6efd;font-weight:600;text-decoration:none;">' +
                       'Versedsoft &mdash; Your Complication, Our Solutions</a>' +
                     '</div>' +
+                    '<div style="text-align:center;margin-top:6px;font-size:12px;color:#777;">+8801723821264 (Whatsapp)</div>' +
                     '<div style="text-align:center;margin-top:20px;">' +
                       '<button onclick="printInvoice()" class="btn btn-primary px-4 no-print"><i class="fas fa-print mr-2"></i> Print Invoice</button>' +
                     '</div></div>'
@@ -581,6 +582,22 @@
         });
 
     });
+
+    function numberToWords(num) {
+        num = Math.floor(num); if (num === 0) return 'Zero';
+        var a = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+        var b = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+        function two(n) { return n < 20 ? a[n] : b[Math.floor(n/10)] + (n%10 ? ' ' + a[n%10] : ''); }
+        function three(n) { return (n >= 100 ? a[Math.floor(n/100)] + ' Hundred' + (n%100 ? ' ' : '') : '') + (n%100 ? two(n%100) : ''); }
+        var s = '', cr = Math.floor(num/10000000); num %= 10000000;
+        var lk = Math.floor(num/100000); num %= 100000;
+        var th = Math.floor(num/1000); num %= 1000;
+        if (cr) s += three(cr) + ' Crore ';
+        if (lk) s += two(lk) + ' Lakh ';
+        if (th) s += two(th) + ' Thousand ';
+        if (num) s += three(num);
+        return s.trim();
+    }
 
     function printInvoice() {
         var invoice = document.getElementById('invoiceContent');
@@ -596,10 +613,18 @@
 
         var printCss =
             '<style>' +
-                '@media print { @page { margin: 12mm; } }' +
+                '@page { size: A4; margin: 10mm; }' +
                 '* { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }' +
                 'body { margin: 0; padding: 20px; background: #fff; }' +
                 '.no-print { display: none !important; }' +
+                '@media print {' +
+                    'html, body { height: auto; }' +
+                    '#invoiceContent { page-break-inside: avoid; }' +
+                    '#invoiceContent * { page-break-inside: avoid; }' +
+                    '#invoiceContent [style*="display:flex"] { display:flex !important; flex-wrap:nowrap !important; }' +
+                    '#invoiceContent [style*="margin-top:50px"] { margin-top: 24px !important; }' +
+                    '#invoiceContent [style*="margin-bottom:30px"] { margin-bottom: 16px !important; }' +
+                '}' +
             '</style>';
 
         var w = window.open('', 'PRINT', 'width=900,height=700');
@@ -610,6 +635,16 @@
             '</head><body>' + clone.outerHTML + '</body></html>'
         );
         w.document.close();
+
+        var doc = w.document;
+        var el = doc.getElementById('invoiceContent') || doc.body.firstElementChild;
+        var pageH = 1122;
+        if (el && el.scrollHeight > pageH) {
+            var scale = pageH / el.scrollHeight;
+            el.style.transformOrigin = 'top left';
+            el.style.transform = 'scale(' + scale + ')';
+            el.style.width = (100 / scale) + '%';
+        }
 
         var printFired = false;
         w.onload = function () {
