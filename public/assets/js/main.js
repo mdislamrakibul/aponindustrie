@@ -27,12 +27,7 @@
     });
 
     /*------ ScrollUp -------- */
-    $.scrollUp({
-        scrollText: '<i class="fi-rs-arrow-up"></i>',
-        easingType: "linear",
-        scrollSpeed: 900,
-        animation: "fade",
-    });
+    // $.scrollUp removed - using custom scroll-to-top button instead
 
     /*------ Wow Active ----*/
     new WOW().init();
@@ -55,9 +50,9 @@
         });
         $("#amount").val(
             "$" +
-                $("#slider-range").slider("values", 0) +
-                " - $" +
-                $("#slider-range").slider("values", 1)
+            $("#slider-range").slider("values", 0) +
+            " - $" +
+            $("#slider-range").slider("values", 1)
         );
     }
 
@@ -67,7 +62,7 @@
         slidesToScroll: 1,
         fade: true,
         loop: true,
-        dots: true,
+        dots: false,
         arrows: true,
         prevArrow:
             '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
@@ -272,10 +267,10 @@
             $(this).html(
                 event.strftime(
                     "" +
-                        '<span class="countdown-section"><span class="countdown-amount hover-up">%d</span><span class="countdown-period"> days </span></span>' +
-                        '<span class="countdown-section"><span class="countdown-amount hover-up">%H</span><span class="countdown-period"> hours </span></span>' +
-                        '<span class="countdown-section"><span class="countdown-amount hover-up">%M</span><span class="countdown-period"> mins </span></span>' +
-                        '<span class="countdown-section"><span class="countdown-amount hover-up">%S</span><span class="countdown-period"> sec </span></span>'
+                    '<span class="countdown-section"><span class="countdown-amount hover-up">%d</span><span class="countdown-period"> days </span></span>' +
+                    '<span class="countdown-section"><span class="countdown-amount hover-up">%H</span><span class="countdown-period"> hours </span></span>' +
+                    '<span class="countdown-section"><span class="countdown-amount hover-up">%M</span><span class="countdown-period"> mins </span></span>' +
+                    '<span class="countdown-section"><span class="countdown-amount hover-up">%S</span><span class="countdown-period"> sec </span></span>'
                 )
             );
         });
@@ -470,9 +465,9 @@
         });
         amountprice.val(
             "$" +
-                sliderrange.slider("values", 0) +
-                " - $" +
-                sliderrange.slider("values", 1)
+            sliderrange.slider("values", 0) +
+            " - $" +
+            sliderrange.slider("values", 1)
         );
     });
 

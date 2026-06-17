@@ -223,6 +223,7 @@
     }
   </style>
   @stack('styles')
+  @stack('css')
 
 </head>
 

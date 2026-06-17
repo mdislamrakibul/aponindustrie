@@ -1,4 +1,5 @@
-{{-- <!DOCTYPE html>
+{{--
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -57,6 +58,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html> --}}
 
 
@@ -221,8 +223,15 @@
             text-decoration: underline;
         }
 
-        .pwd-wrapper { position: relative; }
-        .pwd-wrapper input { width: 100%; padding-right: 60px; }
+        .pwd-wrapper {
+            position: relative;
+        }
+
+        .pwd-wrapper input {
+            width: 100%;
+            padding-right: 60px;
+        }
+
         #togglePwd {
             position: absolute;
             right: 0;
@@ -240,7 +249,10 @@
             user-select: none;
             background: transparent;
         }
-        #togglePwd:hover { background: #f0f0f0; }
+
+        #togglePwd:hover {
+            background: #f0f0f0;
+        }
     </style>
 </head>
 
@@ -258,14 +270,15 @@
                 <label for="mobile_no">MOBILE NUMBER</label>
                 {{-- <input type="text" id="mobile_no" name="mobile_no" placeholder="01XXXXXXXXX"> --}}
                 <input type="text" id="mobile_no" name="mobile_no" class="form-control form-control-lg rounded-3"
-                                placeholder="Enter mobile number" value="{{ old('mobile_no') }}" required>
+                    placeholder="Enter mobile number" value="{{ old('mobile_no') }}" required>
             </div>
 
             <div class="input-group">
                 <label for="password">PASSWORD</label>
                 <div class="pwd-wrapper">
                     <input type="password" id="password" name="password" placeholder="••••••••" required>
-                    <span id="togglePwd" onclick="var p=document.getElementById('password');var on=p.type==='password';p.type=on?'text':'password';this.textContent=on?'HIDE':'SHOW';">SHOW</span>
+                    <span id="togglePwd"
+                        onclick="var p=document.getElementById('password');var on=p.type==='password';p.type=on?'text':'password';this.textContent=on?'HIDE':'SHOW';">SHOW</span>
                 </div>
             </div>
 

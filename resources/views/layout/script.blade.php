@@ -1,6 +1,7 @@
 <!-- Vendor JS-->
 <script src="{{ asset('assets/js/vendor/modernizr-3.6.0.min.js')}}"></script>
 <script src="{{ asset('assets/js/vendor/jquery-3.6.0.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scrollUp/2.4.1/jquery.scrollUp.min.js"></script>
 <script src="{{ asset('assets/js/vendor/jquery-migrate-3.3.0.min.js')}}"></script>
 <script src="{{ asset('assets/js/vendor/bootstrap.bundle.min.js')}}"></script>
 <script src="{{ asset('assets/js/plugins/slick.js')}}"></script>
