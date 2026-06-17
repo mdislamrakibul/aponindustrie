@@ -48,7 +48,13 @@
             position: relative;
             overflow: hidden;
             background: #f8f9fa;
-            height: 250px;
+            height: auto;
+        }
+
+        .product-header .primary-img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         .image-box img {
@@ -62,6 +68,9 @@
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             opacity: 0;
             transform: scale(1.1);
         }
