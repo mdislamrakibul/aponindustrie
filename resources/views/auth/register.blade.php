@@ -208,7 +208,7 @@
         <div class="divider">CREATE YOUR ACCOUNT</div>
 
         <div class="footer">
-            Already have an account? <a href="{{ url('/admin/login') }}">Log In</a>
+            Already have an account? <a href="{{ route('login') }}">Log In</a>
         </div>
     </div>
 </body>
