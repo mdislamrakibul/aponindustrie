@@ -106,6 +106,27 @@
             transform: translate(-2px, -2px);
         }
 
+        .pwd-wrapper { position: relative; }
+        .pwd-wrapper input { width: 100%; padding-right: 60px; }
+        #togglePwd {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            border-left: 2px solid var(--primary);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: var(--primary);
+            user-select: none;
+            background: transparent;
+        }
+        #togglePwd:hover { background: #f0f0f0; }
+
         .divider {
             display: flex;
             align-items: center;
@@ -175,11 +196,9 @@
 
             <div class="input-group">
                 <label for="password">PASSWORD</label>
-                <div style="position:relative;">
-                    <input type="password" id="password" name="password" placeholder="••••••••" style="width:100%;padding-right:40px;">
-                    <span id="togglePwd"
-                        onclick="var p=document.getElementById('password');var on=p.type==='password';p.type=on?'text':'password';this.textContent=on?'🙈':'👁️';"
-                        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;user-select:none;font-size:16px;line-height:1;">👁️</span>
+                <div class="pwd-wrapper">
+                    <input type="password" id="password" name="password" placeholder="••••••••">
+                    <span id="togglePwd" onclick="var p=document.getElementById('password');var on=p.type==='password';p.type=on?'text':'password';this.textContent=on?'HIDE':'SHOW';">SHOW</span>
                 </div>
             </div>
 

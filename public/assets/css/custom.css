@@ -205,13 +205,10 @@ body { overflow-x: hidden; }
     .home-slider .slider-overlay { max-width: 80%; padding: 18px 22px; }
 }
 
-/* Browse Categories hover dropdown */
+/* Browse Categories hover dropdown
+   Theme hides with opacity:0 + visibility:hidden — match that approach */
 .main-categori-wrap { position: relative; }
-.main-categori-wrap .categori-dropdown-wrap,
-.main-categori-wrap .categori-dropdown-active-large {
-    display: none !important;
-}
-.main-categori-wrap:hover .categori-dropdown-wrap,
 .main-categori-wrap:hover .categori-dropdown-active-large {
-    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
