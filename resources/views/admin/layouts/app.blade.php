@@ -109,7 +109,7 @@
   </script>
   @stack('scripts')
   @stack('js')
-
+  @include('partials.scroll-to-top')
 
 </body>
 

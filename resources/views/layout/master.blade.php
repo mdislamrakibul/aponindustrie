@@ -20,8 +20,7 @@
 
     @include('layout.footer')
     @include('layout.script')
-
-
+    @include('partials.scroll-to-top')
 
 </body>
 
