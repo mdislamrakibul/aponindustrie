@@ -314,6 +314,8 @@ Route::post('/product-checkout/create', [CheckoutController::class, 'Product_Che
 Route::get('/product/order/success/{id}', [OrderController::class, 'Order_Success'])->name('Order_Success');
 
 // product/weekly-featured Url
+Route::get('/search', [StoreController::class, 'search'])->name('search');
+
 Route::get('/product/weekly-featured', [StoreController::class, 'Weekly_Featured'])->name('Weekly_Featured');
 
 // product/weekly-featured Url

@@ -142,4 +142,26 @@ class StoreController extends Controller
             'newProduct'       => collect($this->newProductsQuery())->shuffle()->take(5),
         ]);
     }
+
+    public function search(Request $request)
+    {
+        $q = trim($request->get('q', ''));
+
+        $products = Product::query()
+            ->where('status', 'PUBLISHED')
+            ->when($q !== '', function ($query) use ($q) {
+                $query->where(function ($w) use ($q) {
+                    $w->where('name', 'like', "%{$q}%")
+                      ->orWhere('sku', 'like', "%{$q}%")
+                      ->orWhere('short_description', 'like', "%{$q}%");
+                });
+            })
+            ->with(['media' => $this->mediaQuery()])
+            ->withAvg(['reviews as reviews_avg_rating' => fn($r) => $r->where('status', 'approved')], 'rating')
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('product.search', compact('products', 'q'));
+    }
 }

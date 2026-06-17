@@ -175,7 +175,12 @@
 
             <div class="input-group">
                 <label for="password">PASSWORD</label>
-                <input type="password" id="password" name="password" placeholder="••••••••">
+                <div style="position:relative;">
+                    <input type="password" id="password" name="password" placeholder="••••••••" style="width:100%;padding-right:40px;">
+                    <span id="togglePwd"
+                        onclick="var p=document.getElementById('password');var on=p.type==='password';p.type=on?'text':'password';this.textContent=on?'🙈':'👁️';"
+                        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;user-select:none;font-size:16px;line-height:1;">👁️</span>
+                </div>
             </div>
 
             <button type="submit">LOG IN</button>

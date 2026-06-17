@@ -204,3 +204,14 @@ body { overflow-x: hidden; }
 @media (max-width: 991px) {
     .home-slider .slider-overlay { max-width: 80%; padding: 18px 22px; }
 }
+
+/* Browse Categories hover dropdown */
+.main-categori-wrap { position: relative; }
+.main-categori-wrap .categori-dropdown-wrap,
+.main-categori-wrap .categori-dropdown-active-large {
+    display: none !important;
+}
+.main-categori-wrap:hover .categori-dropdown-wrap,
+.main-categori-wrap:hover .categori-dropdown-active-large {
+    display: block !important;
+}

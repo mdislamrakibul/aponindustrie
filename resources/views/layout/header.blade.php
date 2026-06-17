@@ -192,8 +192,9 @@
                 </div>
                 <div class="header-right">
                     <div class="search-style-1">
-                        <form action="#">
-                            <input type="text" placeholder="Search for items...">
+                        <form action="{{ route('search') }}" method="GET">
+                            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search for items...">
+                            <button type="submit" aria-label="Search"><i class="fi-rs-search"></i></button>
                         </form>
                     </div>
                     <div class="header-action-right">
