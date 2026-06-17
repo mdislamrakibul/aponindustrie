@@ -9,12 +9,48 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminProfileController extends Controller
 {
+    /**
+     * Resolve the User (tbl_info_user) for the current admin session,
+     * mirroring the same dual-path strategy used in CustomerProfileController:
+     *
+     *   New flow (adminLogin):  session('user_id') = tbl_info_user.id  → User::find()
+     *   Old flow (customer /login redirected to admin): session('user_id') = tbl_info_login.id
+     *     → fall back to mobile_no stored in session to find the real admin record
+     */
+    private function resolveUser(): ?User
+    {
+        $sid = session('user_id');
+        if (!$sid) {
+            return null;
+        }
+
+        // Primary path: session id matches tbl_info_user.id directly
+        $user = User::find($sid);
+        if ($user && in_array(strtolower($user->role ?? ''), ['admin', 'vendor'])) {
+            return $user;
+        }
+
+        // Fallback: session id was from tbl_info_login (old broken login route)
+        // Use the mobile stored in session to look up the real admin row
+        $mobile = session('user_mobile');
+        if ($mobile) {
+            $user = User::where('mobile_no', $mobile)->first();
+            if ($user && in_array(strtolower($user->role ?? ''), ['admin', 'vendor'])) {
+                return $user;
+            }
+        }
+
+        return null;
+    }
+
     public function index()
     {
-        $user = User::where(
-            'id',
-            session('user_id')
-        )->firstOrFail();
+        $user = $this->resolveUser();
+
+        if (!$user) {
+            return redirect('/admin/management-login')
+                ->with('error', 'Please log in to access your profile.');
+        }
 
         return view(
             'admin.profile.index',
@@ -24,10 +60,12 @@ class AdminProfileController extends Controller
 
     public function update(Request $request)
     {
-        $user = User::where(
-            'id',
-            session('user_id')
-        )->firstOrFail();
+        $user = $this->resolveUser();
+
+        if (!$user) {
+            return redirect('/admin/management-login')
+                ->with('error', 'Session expired. Please log in again.');
+        }
 
         $profilePhoto = $user->profile_photo;
 
