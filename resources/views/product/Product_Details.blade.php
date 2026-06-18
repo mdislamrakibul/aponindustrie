@@ -228,10 +228,11 @@
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50" style="font-weight: bold">
                                             <li class="mb-5">SKU: <a href="#">{{ $product->sku }}</a></li>
-                                            @if($product->tags && count(json_decode($product->tags)) > 0)
+                                            @php $productTags = is_string($product->tags) ? json_decode($product->tags, true) : null; @endphp
+                                            @if(!empty($productTags))
                                                 <li class="mb-5">Tags:
 
-                                                    <a href="#" rel="tag">{{implode(', ', json_decode($product->tags))}}</a>
+                                                    <a href="#" rel="tag">{{ implode(', ', $productTags) }}</a>
 
                                                 </li>
                                             @endif

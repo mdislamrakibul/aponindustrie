@@ -2,334 +2,254 @@
 
 @push('css')
 <style>
-    @media (max-width: 576px) {
-        .filter-btn {
-            flex: 1 1 auto;
-            justify-content: center;
-        }
-
-        .filter-bar>a.btn {
-            margin-left: 0 !important;
-            margin-top: 4px;
-            width: 100%;
-            text-align: center;
-        }
-    }
+@media (max-width: 576px) {
+    .filter-btn { flex: 1 1 auto; justify-content: center; }
+    .filter-bar > a.btn { margin-left: 0 !important; margin-top: 4px; width: 100%; text-align: center; }
+}
 </style>
 @endpush
 
 @section('title')
-Order Management
+    Order Management
 @endsection
 
 @section('content')
 
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Orders</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Orders</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</div>
-
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card shadow-sm border-0">
-
-                    <div class="card-header bg-white border-bottom d-flex align-items-center"
-                        style="padding:16px 20px;">
-                        <h3 class="card-title font-weight-bold mb-0">
-                            <i class="fas fa-shopping-cart mr-2 text-primary"></i> Order Management
-                        </h3>
-                    </div>
-
-
-
-                    <div class="card-body">
-
-                        {{-- ── Filter Bar ── --}}
-                        @php
-                        $allCount = count($orders);
-                        $activeCount = collect($orders)->filter(fn($o) => !in_array($o['order_status'],
-                        ['DELIVERED','CANCELLED']))->count();
-                        $completeCount = collect($orders)->filter(fn($o) => $o['order_status'] === 'DELIVERED' &&
-                        $o['payment_status'] === 'PAID')->count();
-                        $cancelledCount = collect($orders)->filter(fn($o) => $o['order_status'] ===
-                        'CANCELLED')->count();
-                        @endphp
-                        <div class="filter-bar">
-                            <button type="button" class="btn btn-sm btn-outline-info filter-btn active-filter"
-                                data-filter="all">
-                                All <span class="badge badge-info filter-count">{{ $allCount }}</span>
-                            </button>
-
-                            <button type="button" class="btn btn-sm btn-outline-success filter-btn"
-                                data-filter="complete">
-                                Complete <span class="badge badge-success filter-count">{{ $completeCount }}</span>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-primary filter-btn"
-                                data-filter="active">
-                                Active <span class="badge badge-primary filter-count">{{ $activeCount }}</span>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-danger filter-btn"
-                                data-filter="cancelled">
-                                Cancelled <span class="badge badge-danger filter-count">{{ $cancelledCount }}</span>
-                            </button>
-                            <a href="{{ route('admin.orders.new.page') }}" class="btn btn-sm btn-outline-warning"
-                                style="margin-left:auto;">
-                                <i class="fas fa-plus mr-1"></i> New Orders
-                            </a>
-                        </div>
-
-
-                        <div class="table-responsive">
-                            {{-- NOTE: id must be orderTable, NOT dataTable
-                            because layout.app.blade.php already calls
-                            $('#dataTable').DataTable() globally. --}}
-                            <table class="table table-hover align-middle mb-0" id="orderTable">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Order No.</th>
-                                        <th>Customer</th>
-                                        <th>Total</th>
-                                        <th>Payment Method</th>
-                                        <th>Date</th>
-                                        <th>Order Status</th>
-                                        <th>Payment Status</th>
-                                        <th class="text-center nosort" style="width:130px;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="orderTableBody">
-                                    @forelse ($orders as $order)
-                                    @php $isLocked = $order['order_status'] === 'DELIVERED' && $order['payment_status']
-                                    === 'PAID'; @endphp
-                                    <tr id="order-row-{{ $order['id'] }}" data-os="{{ $order['order_status'] }}"
-                                        data-ps="{{ $order['payment_status'] }}"
-                                        class="{{ $isLocked ? 'row-locked' : '' }}">
-
-                                        {{-- Order Number --}}
-                                        <td>
-                                            <span class="font-weight-bold text-primary">{{ $order['order_number']
-                                                }}</span>
-                                            <br><small class="text-muted">#{{ $order['id'] }}</small>
-                                        </td>
-
-                                        {{-- Customer --}}
-                                        <td>
-                                            @if(!empty($order['order_address']))
-                                            <span>{{ trim(($order['order_address']['first_name'] ?? '') . ' ' .
-                                                ($order['order_address']['last_name'] ?? '')) }}</span>
-                                            <br><small class="text-muted">{{ $order['order_address']['phone'] ?? ''
-                                                }}</small>
-                                            @else
-                                            <span class="text-muted">N/A</span>
-                                            @endif
-                                        </td>
-
-                                        {{-- Total --}}
-                                        <td class="font-weight-bold">৳ {{ number_format($order['total_amount'], 2) }}
-                                        </td>
-
-                                        {{-- Payment Method --}}
-                                        <td><span class="badge badge-light border">{{ $order['payment_method'] }}</span>
-                                        </td>
-
-                                        {{-- Date --}}
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($order['created_at'])->format('d M Y') }}
-                                            <br><small class="text-muted">{{
-                                                \Carbon\Carbon::parse($order['created_at'])->format('h:i A') }}</small>
-                                        </td>
-
-                                        {{-- Order Status --}}
-                                        <td>
-                                            <span class="view-mode order-status-badge-{{ $order['id'] }}">
-                                                @php $osBadge = match ($order['order_status']) {
-                                                'PROCESSING' => 'badge-warning', 'SHIPPED' => 'badge-info',
-                                                'DELIVERED' => 'badge-success', 'CANCELLED' => 'badge-danger',
-                                                default => 'badge-secondary'
-                                                }; @endphp
-                                                <span class="badge {{ $osBadge }} px-3 py-2">{{ $order['order_status']
-                                                    }}</span>
-                                            </span>
-                                            <select
-                                                class="form-control form-control-sm edit-mode d-none order-status-select"
-                                                id="order-status-{{ $order['id'] }}" style="min-width:130px;">
-                                                <option value="PROCESSING" {{ $order['order_status']=='PROCESSING'
-                                                    ? 'selected' : '' }}>Processing</option>
-                                                <option value="SHIPPED" {{ $order['order_status']=='SHIPPED'
-                                                    ? 'selected' : '' }}>Shipped</option>
-                                                <option value="DELIVERED" {{ $order['order_status']=='DELIVERED'
-                                                    ? 'selected' : '' }}>Delivered</option>
-                                                <option value="CANCELLED" {{ $order['order_status']=='CANCELLED'
-                                                    ? 'selected' : '' }}>Cancelled</option>
-                                            </select>
-                                        </td>
-
-                                        {{-- Payment Status --}}
-                                        <td>
-                                            <span class="view-mode payment-status-badge-{{ $order['id'] }}">
-                                                @php $psBadge = match ($order['payment_status']) {
-                                                'PAID' => 'badge-success', 'PENDING' => 'badge-warning',
-                                                'FAILED' => 'badge-danger', 'REFUNDED' => 'badge-info',
-                                                default => 'badge-secondary'
-                                                }; @endphp
-                                                <span class="badge {{ $psBadge }} px-3 py-2">{{ $order['payment_status']
-                                                    }}</span>
-                                            </span>
-                                            <select
-                                                class="form-control form-control-sm edit-mode d-none payment-status-select"
-                                                id="payment-status-{{ $order['id'] }}" style="min-width:120px;">
-                                                <option value="PENDING" {{ $order['payment_status']=='PENDING'
-                                                    ? 'selected' : '' }}>Pending</option>
-                                                <option value="PAID" {{ $order['payment_status']=='PAID' ? 'selected'
-                                                    : '' }}>Paid</option>
-                                                <option value="FAILED" {{ $order['payment_status']=='FAILED'
-                                                    ? 'selected' : '' }}>Failed</option>
-                                                <option value="REFUNDED" {{ $order['payment_status']=='REFUNDED'
-                                                    ? 'selected' : '' }}>Refunded</option>
-                                            </select>
-                                        </td>
-
-                                        {{-- Actions --}}
-                                        <td class="text-center">
-                                            <div class="d-flex align-items-center justify-content-center"
-                                                style="gap:5px;">
-                                                <button type="button" class="action-btn view-order-btn"
-                                                    data-id="{{ $order['id'] }}" title="View Invoice">
-                                                    <i class="fas fa-eye" style="color:cornflowerblue;"></i>
-                                                </button>
-                                                @if($isLocked)
-                                                <button type="button" class="action-btn" title="Order complete — locked"
-                                                    disabled style="cursor:default;opacity:.55;">
-                                                    <i class="fas fa-lock" style="color:#6c757d;"></i>
-                                                </button>
-                                                @else
-                                                <button type="button" class="action-btn order-edit-btn"
-                                                    data-id="{{ $order['id'] }}" title="Edit Status">
-                                                    <i class="fas fa-pen" style="color:#e67e22;"></i>
-                                                </button>
-                                                <button type="button" class="action-btn order-save-btn d-none"
-                                                    data-id="{{ $order['id'] }}" title="Save">
-                                                    <i class="fas fa-check" style="color:darkgreen;"></i>
-                                                </button>
-                                                <button type="button" class="action-btn order-discard-btn d-none"
-                                                    data-id="{{ $order['id'] }}" title="Discard">
-                                                    <i class="fas fa-times" style="color:maroon;"></i>
-                                                </button>
-                                                @endif
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    @empty
-                                    <tr id="empty-orders-row">
-                                        <td colspan="8" class="text-center py-5 text-muted">
-                                            <i class="fas fa-inbox fa-3x mb-3 d-block" style="color:#dee2e6;"></i>
-                                            No accepted orders yet. Go to
-                                            <a href="{{ route('admin.orders.new.page') }}">New Orders</a> to accept
-                                            pending orders.
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6"><h1 class="m-0">Orders</h1></div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Home</a></li>
+                        <li class="breadcrumb-item active">Orders</li>
+                    </ol>
                 </div>
             </div>
         </div>
     </div>
-</section>
 
-{{-- INVOICE MODAL --}}
-<div class="modal fade" id="orderViewModal" tabindex="-1">
-    <div class="modal-dialog modal-xl" style="max-width:1200px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Order Invoice</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm border-0">
+
+                        <div class="card-header bg-white border-bottom d-flex align-items-center" style="padding:16px 20px;">
+                            <h3 class="card-title font-weight-bold mb-0">
+                                <i class="fas fa-shopping-cart mr-2 text-primary"></i> Order Management
+                            </h3>
+                        </div>
+
+                        {{-- ── Filter Bar ── --}}
+                        @php
+                            $allCount       = count($orders);
+                            $activeCount    = collect($orders)->filter(fn($o) => !in_array($o['order_status'], ['DELIVERED','CANCELLED']))->count();
+                            $completeCount  = collect($orders)->filter(fn($o) => $o['order_status'] === 'DELIVERED' && $o['payment_status'] === 'PAID')->count();
+                            $cancelledCount = collect($orders)->filter(fn($o) => $o['order_status'] === 'CANCELLED')->count();
+                        @endphp
+                        <div class="filter-bar">
+                            <button type="button" class="filter-btn active-filter" data-filter="all">
+                                All <span class="filter-count">{{ $allCount }}</span>
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="active">
+                                Active <span class="filter-count">{{ $activeCount }}</span>
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="complete">
+                                Complete <span class="filter-count">{{ $completeCount }}</span>
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="cancelled">
+                                Cancelled <span class="filter-count">{{ $cancelledCount }}</span>
+                            </button>
+                            <a href="{{ route('admin.orders.new.page') }}" class="btn btn-sm btn-outline-warning" style="margin-left:auto;">
+                                <i class="fas fa-bell mr-1"></i> New Orders
+                            </a>
+                        </div>
+
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                {{-- NOTE: id must be orderTable, NOT dataTable
+                                     because layout.app.blade.php already calls
+                                     $('#dataTable').DataTable() globally. --}}
+                                <table class="table table-hover align-middle mb-0" id="orderTable">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Order No.</th>
+                                            <th>Customer</th>
+                                            <th>Total</th>
+                                            <th>Payment Method</th>
+                                            <th>Date</th>
+                                            <th>Order Status</th>
+                                            <th>Payment Status</th>
+                                            <th class="text-center nosort" style="width:130px;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="orderTableBody">
+                                    @forelse ($orders as $order)
+                                        @php $isLocked = $order['order_status'] === 'DELIVERED' && $order['payment_status'] === 'PAID'; @endphp
+                                        <tr id="order-row-{{ $order['id'] }}"
+                                            data-os="{{ $order['order_status'] }}"
+                                            data-ps="{{ $order['payment_status'] }}"
+                                            class="{{ $isLocked ? 'row-locked' : '' }}">
+
+                                            {{-- Order Number --}}
+                                            <td>
+                                                <span class="font-weight-bold text-primary">{{ $order['order_number'] }}</span>
+                                                <br><small class="text-muted">#{{ $order['id'] }}</small>
+                                            </td>
+
+                                            {{-- Customer --}}
+                                            <td>
+                                                @if(!empty($order['order_address']))
+                                                    <span>{{ trim(($order['order_address']['first_name'] ?? '') . ' ' . ($order['order_address']['last_name'] ?? '')) }}</span>
+                                                    <br><small class="text-muted">{{ $order['order_address']['phone'] ?? '' }}</small>
+                                                @else
+                                                    <span class="text-muted">N/A</span>
+                                                @endif
+                                            </td>
+
+                                            {{-- Total --}}
+                                            <td class="font-weight-bold">৳ {{ number_format($order['total_amount'], 2) }}</td>
+
+                                            {{-- Payment Method --}}
+                                            <td><span class="badge badge-light border">{{ $order['payment_method'] }}</span></td>
+
+                                            {{-- Date --}}
+                                            <td>
+                                                {{ \Carbon\Carbon::parse($order['created_at'])->format('d M Y') }}
+                                                <br><small class="text-muted">{{ \Carbon\Carbon::parse($order['created_at'])->format('h:i A') }}</small>
+                                            </td>
+
+                                            {{-- Order Status --}}
+                                            <td>
+                                                <span class="view-mode order-status-badge-{{ $order['id'] }}">
+                                                    @php $osBadge = match ($order['order_status']) {
+                                                        'PROCESSING' => 'badge-warning', 'SHIPPED' => 'badge-info',
+                                                        'DELIVERED' => 'badge-success', 'CANCELLED' => 'badge-danger',
+                                                        default => 'badge-secondary'
+                                                    }; @endphp
+                                                    <span class="badge {{ $osBadge }} px-3 py-2">{{ $order['order_status'] }}</span>
+                                                </span>
+                                                <select class="form-control form-control-sm edit-mode d-none order-status-select"
+                                                    id="order-status-{{ $order['id'] }}" style="min-width:130px;">
+                                                    <option value="PROCESSING" {{ $order['order_status'] == 'PROCESSING' ? 'selected' : '' }}>Processing</option>
+                                                    <option value="SHIPPED"    {{ $order['order_status'] == 'SHIPPED' ? 'selected' : '' }}>Shipped</option>
+                                                    <option value="DELIVERED"  {{ $order['order_status'] == 'DELIVERED' ? 'selected' : '' }}>Delivered</option>
+                                                    <option value="CANCELLED"  {{ $order['order_status'] == 'CANCELLED' ? 'selected' : '' }}>Cancelled</option>
+                                                </select>
+                                            </td>
+
+                                            {{-- Payment Status --}}
+                                            <td>
+                                                <span class="view-mode payment-status-badge-{{ $order['id'] }}">
+                                                    @php $psBadge = match ($order['payment_status']) {
+                                                        'PAID' => 'badge-success', 'PENDING' => 'badge-warning',
+                                                        'FAILED' => 'badge-danger', 'REFUNDED' => 'badge-info',
+                                                        default => 'badge-secondary'
+                                                    }; @endphp
+                                                    <span class="badge {{ $psBadge }} px-3 py-2">{{ $order['payment_status'] }}</span>
+                                                </span>
+                                                <select class="form-control form-control-sm edit-mode d-none payment-status-select"
+                                                    id="payment-status-{{ $order['id'] }}" style="min-width:120px;">
+                                                    <option value="PENDING"  {{ $order['payment_status'] == 'PENDING' ? 'selected' : '' }}>Pending</option>
+                                                    <option value="PAID"     {{ $order['payment_status'] == 'PAID' ? 'selected' : '' }}>Paid</option>
+                                                    <option value="FAILED"   {{ $order['payment_status'] == 'FAILED' ? 'selected' : '' }}>Failed</option>
+                                                    <option value="REFUNDED" {{ $order['payment_status'] == 'REFUNDED' ? 'selected' : '' }}>Refunded</option>
+                                                </select>
+                                            </td>
+
+                                            {{-- Actions --}}
+                                            <td class="text-center">
+                                                <div class="d-flex align-items-center justify-content-center" style="gap:5px;">
+                                                    <button type="button" class="action-btn view-order-btn"
+                                                        data-id="{{ $order['id'] }}" title="View Invoice">
+                                                        <i class="fas fa-eye" style="color:cornflowerblue;"></i>
+                                                    </button>
+                                                    @if($isLocked)
+                                                        <button type="button" class="action-btn" title="Order complete — locked" disabled style="cursor:default;opacity:.55;">
+                                                            <i class="fas fa-lock" style="color:#6c757d;"></i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button" class="action-btn order-edit-btn"
+                                                            data-id="{{ $order['id'] }}" title="Edit Status">
+                                                            <i class="fas fa-pen" style="color:#e67e22;"></i>
+                                                        </button>
+                                                        <button type="button" class="action-btn order-save-btn d-none"
+                                                            data-id="{{ $order['id'] }}" title="Save">
+                                                            <i class="fas fa-check" style="color:darkgreen;"></i>
+                                                        </button>
+                                                        <button type="button" class="action-btn order-discard-btn d-none"
+                                                            data-id="{{ $order['id'] }}" title="Discard">
+                                                            <i class="fas fa-times" style="color:maroon;"></i>
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    @empty
+                                        <tr id="empty-orders-row">
+                                            <td colspan="8" class="text-center py-5 text-muted">
+                                                <i class="fas fa-inbox fa-3x mb-3 d-block" style="color:#dee2e6;"></i>
+                                                No accepted orders yet. Go to
+                                                <a href="{{ route('admin.orders.new.page') }}">New Orders</a> to accept pending orders.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="modal-body p-0">
-                <div id="invoiceContent" style="padding:30px;"></div>
+        </div>
+    </section>
+
+    {{-- INVOICE MODAL --}}
+    <div class="modal fade" id="orderViewModal" tabindex="-1">
+        <div class="modal-dialog modal-xl" style="max-width:1200px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Order Invoice</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="invoiceContent" style="padding:30px;"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 @endsection
 
 @push('css')
-<style>
+    <style>
     /* ─── TABLE ── */
-    #orderTable td,
-    #orderTable th {
-        vertical-align: middle;
-    }
-
+    #orderTable td, #orderTable th { vertical-align: middle; }
     #orderTable thead th {
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .5px;
-        color: #555;
-        border-top: none;
-        padding: 14px 12px;
+        font-size: 12px; font-weight: 700;
+        text-transform: uppercase; letter-spacing:.5px;
+        color:#555; border-top:none; padding:14px 12px;
     }
-
-    #orderTable tbody td {
-        padding: 12px;
-    }
+    #orderTable tbody td { padding:12px; }
 
     /* ─── LOCKED ROW ── */
-    tr.row-locked {
-        background: #f6fff9 !important;
-    }
-
-    tr.row-locked td {
-        color: #555;
-    }
+    tr.row-locked { background: #f6fff9 !important; }
+    tr.row-locked td { color: #555; }
 
     /* ─── ACTION BUTTONS ── */
     .action-btn {
-        width: 34px;
-        height: 34px;
-        border-radius: 8px;
-        border: none;
-        outline: none;
-        background: #f8f9fa;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all .2s;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+        width:34px; height:34px; border-radius:8px;
+        border:none; outline:none; background:#f8f9fa;
+        display:inline-flex; align-items:center; justify-content:center;
+        cursor:pointer; transition:all .2s;
+        box-shadow:0 1px 3px rgba(0,0,0,.08);
     }
-
-    .action-btn:hover {
-        background: #e2e8f0;
-        transform: translateY(-2px);
-    }
-
-    .action-btn:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-    .action-btn i {
-        font-size: 13px;
-    }
+    .action-btn:hover { background:#e2e8f0; transform:translateY(-2px); }
+    .action-btn:focus { outline:none; box-shadow:none; }
+    .action-btn i { font-size:13px; }
 
     /* ─── FILTER BAR ── */
     .filter-bar {
@@ -341,127 +261,49 @@ Order Management
         gap: 10px;
         flex-wrap: wrap;
     }
-
     .filter-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 16px;
-        border-radius: 20px;
-        border: 1.5px solid #dee2e6;
-        background: #fff;
-        color: #555;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all .18s;
-        white-space: nowrap;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 7px 16px; border-radius: 20px; border: 1.5px solid #dee2e6;
+        background: #fff; color: #555; font-size: 12px; font-weight: 600;
+        cursor: pointer; transition: all .18s; white-space: nowrap;
+        box-shadow: 0 1px 2px rgba(0,0,0,.06);
     }
-
-    .filter-btn:hover {
-        border-color: #0d6efd;
-        color: #0d6efd;
-        box-shadow: 0 2px 5px rgba(13, 110, 253, .15);
-    }
-
-    .filter-btn.active-filter {
-        background: #0d6efd;
-        border-color: #0d6efd;
-        color: #fff;
-        box-shadow: 0 3px 8px rgba(13, 110, 253, .35);
-    }
-
-    .filter-btn.active-filter:hover {
-        background: #0b5ed7;
-    }
-
-    .filter-btn[data-filter="cancelled"].active-filter {
-        background: #dc3545;
-        border-color: #dc3545;
-        box-shadow: 0 3px 8px rgba(220, 53, 69, .35);
-    }
-
-    .filter-btn[data-filter="cancelled"].active-filter:hover {
-        background: #c82333;
-        border-color: #c82333;
-    }
-
-    .filter-btn[data-filter="cancelled"]:hover {
-        border-color: #dc3545;
-        color: #dc3545;
-    }
-
+    .filter-btn:hover { border-color: #0d6efd; color: #0d6efd; box-shadow: 0 2px 5px rgba(13,110,253,.15); }
+    .filter-btn.active-filter                              { background: #0d6efd; border-color: #0d6efd; color: #fff; box-shadow: 0 3px 8px rgba(13,110,253,.35); }
+    .filter-btn.active-filter:hover                        { background: #0b5ed7; }
+    .filter-btn[data-filter="cancelled"].active-filter     { background: #dc3545; border-color: #dc3545; box-shadow: 0 3px 8px rgba(220,53,69,.35); }
+    .filter-btn[data-filter="cancelled"].active-filter:hover { background: #c82333; border-color: #c82333; }
+    .filter-btn[data-filter="cancelled"]:hover             { border-color: #dc3545; color: #dc3545; }
     .filter-count {
-        background: rgba(0, 0, 0, .1);
-        border-radius: 10px;
-        padding: 1px 7px;
-        font-size: 11px;
-        font-weight: 700;
-        min-width: 20px;
-        text-align: center;
+        background: rgba(0,0,0,.1); border-radius: 10px;
+        padding: 1px 7px; font-size: 11px; font-weight: 700; min-width: 20px; text-align: center;
     }
-
-    .filter-btn.active-filter .filter-count {
-        background: rgba(255, 255, 255, .3);
-    }
+    .filter-btn.active-filter .filter-count { background: rgba(255,255,255,.3); }
 
     /* ─── PAYMENT PROOF ── */
     .payment-proof-img {
-        max-width: 100%;
-        max-height: 200px;
-        border: 1px solid #dee2e6;
-        border-radius: 6px;
-        margin-top: 8px;
-        cursor: pointer;
-        display: block;
+        max-width:100%; max-height:200px;
+        border:1px solid #dee2e6; border-radius:6px;
+        margin-top:8px; cursor:pointer; display:block;
     }
 
     /* ─── PRINT: fallback for Ctrl+P on the modal page ── */
     @media print {
-        body * {
-            visibility: hidden !important;
-        }
-
-        #invoiceContent,
-        #invoiceContent * {
-            visibility: visible !important;
-        }
-
+        body * { visibility: hidden !important; }
+        #invoiceContent, #invoiceContent * { visibility: visible !important; }
         #invoiceContent {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            padding: 0 !important;
-            margin: 0 !important;
-            box-shadow: none !important;
+            position: absolute; left: 0; top: 0; width: 100%;
+            padding: 0 !important; margin: 0 !important; box-shadow: none !important;
         }
-
-        .no-print,
-        .modal-header,
-        .modal-footer {
-            display: none !important;
-        }
-
-        .modal,
-        .modal-dialog,
-        .modal-content {
-            position: static !important;
-            border: 0 !important;
-            box-shadow: none !important;
-        }
-
-        * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
+        .no-print, .modal-header, .modal-footer { display: none !important; }
+        .modal, .modal-dialog, .modal-content { position: static !important; border: 0 !important; box-shadow: none !important; }
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     }
-</style>
+    </style>
 @endpush
 
 @push('js')
-<script>
+    <script>
     $(document).ready(function () {
 
         const CSRF     = '{{ csrf_token() }}';
@@ -816,5 +658,5 @@ Order Management
             try { w.focus(); w.print(); } catch (e) {}
         }, 700);
     }
-</script>
+    </script>
 @endpush
