@@ -109,7 +109,18 @@
                                             </td>
 
                                             {{-- Total --}}
-                                            <td class="font-weight-bold">৳ {{ number_format($order['total_amount'], 2) }}</td>
+                                            <td class="font-weight-bold">
+                                                <span class="order-total-{{ $order['id'] }}">৳ {{ number_format($order['total_amount'], 2) }}</span>
+                                                <div class="edit-mode d-none mt-2">
+                                                    <select class="form-control form-control-sm delivery-zone-select" data-id="{{ $order['id'] }}" style="font-size:11px;min-width:130px;">
+                                                        <option value="inside">Inside Dhaka (৳100)</option>
+                                                        <option value="outside">Outside Dhaka (৳150)</option>
+                                                    </select>
+                                                    <button type="button" class="btn btn-info btn-sm mt-1 delivery-zone-btn" data-id="{{ $order['id'] }}" style="font-size:11px;width:100%;">
+                                                        <i class="fas fa-truck mr-1"></i> Apply Zone
+                                                    </button>
+                                                </div>
+                                            </td>
 
                                             {{-- Payment Method --}}
                                             <td><span class="badge badge-light border">{{ $order['payment_method'] }}</span></td>
@@ -303,6 +314,7 @@
 @endpush
 
 @push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
     $(document).ready(function () {
 
@@ -566,14 +578,19 @@
                         '<small style="color:#555;">Authorized Signature</small>' +
                       '</div>' +
                     '</div>' +
-                    '<div style="text-align:center;margin-top:30px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:12px;color:#777;">' +
+                    '<div style="text-align:center;margin-top:18px;font-size:12px;color:#777;font-style:italic;">' +
+                      'This is an automatically generated invoice. Therefore, no signature is required.' +
+                    '</div>' +
+                    '<div style="text-align:center;margin-top:26px;padding-top:12px;border-top:1px solid #e5e7eb;font-size:12px;color:#777;">' +
                       'Design, Developed &amp; Managed by ' +
                       '<a href="https://versedsoft.com/" target="_blank" rel="noopener" style="color:#0d6efd;font-weight:600;text-decoration:none;">' +
-                      'Versedsoft &mdash; Your Complication, Our Solutions</a>' +
+                        'Versedsoft &mdash; Your Complication, Our Solutions' +
+                      '</a>' +
+                      '<div style="margin-top:4px;">+8801723821264 (Whatsapp)</div>' +
                     '</div>' +
-                    '<div style="text-align:center;margin-top:6px;font-size:12px;color:#777;">+8801723821264 (Whatsapp)</div>' +
                     '<div style="text-align:center;margin-top:20px;">' +
-                      '<button onclick="printInvoice()" class="btn btn-primary px-4 no-print"><i class="fas fa-print mr-2"></i> Print Invoice</button>' +
+                      '<button onclick="printInvoice()" class="btn btn-primary px-4 no-print mr-2"><i class="fas fa-print mr-2"></i> Print Invoice</button>' +
+                      '<button onclick="downloadInvoice()" class="btn btn-success px-4 no-print"><i class="fas fa-download mr-2"></i> Download</button>' +
                     '</div></div>'
                 );
             }).fail(function (xhr) {
@@ -658,5 +675,45 @@
             try { w.focus(); w.print(); } catch (e) {}
         }, 700);
     }
+
+    function downloadInvoice() {
+        var el = document.getElementById('invoiceContent');
+        if (!el) return;
+        var clone = el.cloneNode(true);
+        clone.querySelectorAll('.no-print').forEach(function (n) { n.remove(); });
+        html2pdf().set({
+            margin: 10,
+            filename: 'invoice.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: { mode: ['avoid-all'] }
+        }).from(clone).save();
+    }
+
+    /* ── Apply Delivery Zone (inline in order table edit row) ── */
+    $(document).ready(function () {
+        $(document).on('click', '.delivery-zone-btn', function () {
+            var id   = $(this).data('id');
+            var zone = $(this).closest('td').find('.delivery-zone-select').val();
+            var btn  = $(this);
+            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+            $.post(BASE_URL + '/' + id + '/delivery', { _token: CSRF, zone: zone })
+                .done(function (res) {
+                    if (!res.success) { Swal.fire('Error', 'Could not update delivery zone.', 'error'); return; }
+                    var fmt = { minimumFractionDigits: 2 };
+                    $('.order-total-' + id).text('৳ ' + parseFloat(res.total_amount).toLocaleString('en-BD', fmt));
+                    Swal.fire({
+                        icon: 'success', title: 'Zone updated!',
+                        html: 'Delivery: ৳' + parseFloat(res.shipping_amount).toLocaleString('en-BD', fmt) +
+                              ' &nbsp;|&nbsp; Total: ৳' + parseFloat(res.total_amount).toLocaleString('en-BD', fmt),
+                        timer: 2000, showConfirmButton: false
+                    });
+                })
+                .fail(function () { Swal.fire('Error', 'Failed to update delivery zone.', 'error'); })
+                .always(function () { btn.prop('disabled', false).html('<i class="fas fa-truck mr-1"></i> Apply Zone'); });
+        });
+    });
     </script>
 @endpush

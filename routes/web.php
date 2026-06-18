@@ -171,7 +171,7 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         [AdminOrderController::class, 'updateStatus']
     )->name('orders.update.status');
 
-
+    Route::post('/orders/{id}/delivery', [AdminOrderController::class, 'updateDelivery'])->name('orders.delivery');
 
     /*
     |--------------------------------------------------------------------------

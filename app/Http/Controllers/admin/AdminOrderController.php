@@ -198,6 +198,39 @@ class AdminOrderController extends Controller
     }
 
     /**
+     * Update delivery zone / charge
+     * POST /admin/orders/{id}/delivery
+     */
+    public function updateDelivery(Request $request, $id)
+    {
+        $request->validate(['zone' => 'required|in:inside,outside']);
+
+        $order = Order::find($id);
+        if (!$order) {
+            return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+        }
+
+        $subTotal      = $order->total_amount - $order->shipping_amount;
+        $freeThreshold = config('delivery.free_threshold');
+        $newCharge     = $subTotal > $freeThreshold
+            ? 0
+            : ($request->zone === 'inside' ? config('delivery.inside_dhaka') : config('delivery.outside_dhaka'));
+
+        $order->update([
+            'shipping_amount' => $newCharge,
+            'total_amount'    => $subTotal + $newCharge,
+        ]);
+
+        activityLog('Order', 'UPDATE', 'Delivery set (' . $request->zone . ')');
+
+        return response()->json([
+            'success'         => true,
+            'shipping_amount' => $newCharge,
+            'total_amount'    => $order->fresh()->total_amount,
+        ]);
+    }
+
+    /**
      * Payment gateway callback
      * POST /admin/orders/{id}/payment-callback
      */
