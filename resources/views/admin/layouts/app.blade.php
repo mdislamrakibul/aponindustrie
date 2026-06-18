@@ -109,7 +109,7 @@
   </script>
   @stack('scripts')
   @stack('js')
-
+  @include('partials.scroll-to-top')
 
 </body>
 
@@ -223,6 +223,7 @@
     }
   </style>
   @stack('styles')
+  @stack('css')
 
 </head>
 
@@ -912,7 +913,7 @@
     </aside> --}}
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="padding-top: 1rem;">
 
       @yield('content')
 

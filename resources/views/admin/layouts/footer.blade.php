@@ -11,7 +11,7 @@ flex-wrap">
 
                 Copyright &copy; 2026
 
-                <a href="#">Apon Industry</a>.
+                <a href="https://aponindustries.com/" target="_blank" rel="noopener">Apon Plastic Industries</a>.
 
             </strong>
 

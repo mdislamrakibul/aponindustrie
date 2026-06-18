@@ -1,4 +1,5 @@
-{{-- <!DOCTYPE html>
+{{--
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -57,6 +58,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html> --}}
 
 
@@ -69,7 +71,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Login</title>
+    <title>Login</title>
 
 
     <style>
@@ -220,6 +222,37 @@
             font-weight: bold;
             text-decoration: underline;
         }
+
+        .pwd-wrapper {
+            position: relative;
+        }
+
+        .pwd-wrapper input {
+            width: 100%;
+            padding-right: 60px;
+        }
+
+        #togglePwd {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            border-left: 2px solid var(--primary);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: var(--primary);
+            user-select: none;
+            background: transparent;
+        }
+
+        #togglePwd:hover {
+            background: #f0f0f0;
+        }
     </style>
 </head>
 
@@ -237,26 +270,26 @@
                 <label for="mobile_no">MOBILE NUMBER</label>
                 {{-- <input type="text" id="mobile_no" name="mobile_no" placeholder="01XXXXXXXXX"> --}}
                 <input type="text" id="mobile_no" name="mobile_no" class="form-control form-control-lg rounded-3"
-                                placeholder="Enter mobile number" value="{{ old('mobile_no') }}" required>
+                    placeholder="Enter mobile number" value="{{ old('mobile_no') }}" required>
             </div>
 
             <div class="input-group">
                 <label for="password">PASSWORD</label>
-                {{-- <input type="password" id="password" name="password" placeholder="••••••••"> --}}
-                <input type="password" id="password" name="password" class="form-control form-control-lg rounded-3"
-                                placeholder="Enter Password" required>
+                <div class="pwd-wrapper">
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    <span id="togglePwd"
+                        onclick="var p=document.getElementById('password');var on=p.type==='password';p.type=on?'text':'password';this.textContent=on?'HIDE':'SHOW';">SHOW</span>
+                </div>
             </div>
 
             <button type="submit">LOG IN</button>
         </form>
 
+        <div class="divider">OR</div>
 
-
-        <div class="divider">PLEASE, LOGIN TO START SESSION</div>
-
-        {{-- <div class="footer">
-            Don't have an account? <a href="#">Sign up</a>
-        </div> --}}
+        <div class="footer">
+            Don't have an account? <a href="{{ route('register') }}">Sign Up</a>
+        </div>
     </div>
 
 

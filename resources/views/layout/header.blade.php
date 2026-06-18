@@ -59,6 +59,129 @@
     .badge.sale {
         background: #3b3b3b !important;
     }
+
+    /* ── Account Dropdown ── */
+    .account-dropdown-wrapper {
+        position: relative;
+        list-style: none;
+    }
+
+    .account-dropdown-trigger {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        color: #253d4e;
+        font-size: 14px;
+        padding: 4px 0;
+        white-space: nowrap;
+    }
+
+    .account-dropdown-trigger:hover {
+        color: #3bb77e;
+    }
+
+    .account-name {
+        font-weight: 600;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .account-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        min-width: 220px;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        z-index: 9999;
+        overflow: hidden;
+    }
+
+    .account-dropdown-wrapper:hover .account-dropdown {
+        display: block;
+    }
+
+    .account-dropdown-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #eee;
+    }
+
+    .account-dropdown-header strong {
+        display: block;
+        font-size: 14px;
+        color: #253d4e;
+        font-weight: 700;
+    }
+
+    .account-dropdown-header small {
+        font-size: 12px;
+        color: #888;
+        text-transform: capitalize;
+    }
+
+    .account-dropdown-links {
+        list-style: none;
+        margin: 0;
+        padding: 8px 0;
+    }
+
+    .account-dropdown-links li a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        font-size: 13px;
+        color: #333;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+
+    .account-dropdown-links li a:hover {
+        background: #f0fdf8;
+        color: #3bb77e;
+    }
+
+    .account-dropdown-links li a i {
+        width: 16px;
+        color: #3bb77e;
+    }
+
+    .account-dropdown-footer {
+        padding: 12px 16px;
+        border-top: 1px solid #eee;
+    }
+
+    .account-dropdown-footer button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px;
+        background: #fff0f0;
+        border: 1px solid #ffcdd2;
+        border-radius: 6px;
+        color: #e53935;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .account-dropdown-footer button:hover {
+        background: #ffebee;
+    }
 </style>
 
 <header class="header-area header-style-1 header-height-2">
@@ -192,8 +315,9 @@
                 </div>
                 <div class="header-right">
                     <div class="search-style-1">
-                        <form action="#">
-                            <input type="text" placeholder="Search for items...">
+                        <form action="{{ route('search') }}" method="GET">
+                            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search for items...">
+                            <button type="submit" aria-label="Search"><i class="fi-rs-search"></i></button>
                         </form>
                     </div>
                     <div class="header-action-right">

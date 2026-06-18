@@ -18,5 +18,7 @@ class OrderAddress extends Model
         'email',
         'phone',
         'address_line1',
+        'district',
+        'thana',
     ];
 }

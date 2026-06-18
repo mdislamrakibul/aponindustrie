@@ -1,16 +1,21 @@
-@media (max-width:420px)
-{
-	.product-grid-4 .col-12{
-    width:50% !important;
-  }
+@media (max-width:420px) {
+    .product-grid-4 .col-12 {
+        width: 50% !important;
+    }
 }
 
 /* =====================================================
    Mobile Responsive Fixes
    ===================================================== */
 
-img { max-width: 100%; height: auto; }
-body { overflow-x: hidden; }
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+body {
+    overflow-x: hidden;
+}
 
 /* Profile page: reduce vertical padding on mobile */
 @media (max-width: 576px) {
@@ -25,10 +30,12 @@ body { overflow-x: hidden; }
     #orderModalBody div[style*="grid-template-columns"] {
         display: block !important;
     }
-    #orderModalBody div[style*="grid-template-columns"] > div {
+
+    #orderModalBody div[style*="grid-template-columns"]>div {
         margin-bottom: 12px;
     }
-    #orderModal > div {
+
+    #orderModal>div {
         margin: 10px;
         max-width: calc(100% - 20px);
     }
@@ -38,6 +45,7 @@ body { overflow-x: hidden; }
 .account-dropdown-wrapper {
     position: relative;
 }
+
 /* Bridge the 8px gap so hover doesn't break when mouse moves to dropdown */
 .account-dropdown-wrapper::after {
     content: '';
@@ -47,6 +55,7 @@ body { overflow-x: hidden; }
     right: 0;
     height: 12px;
 }
+
 .account-dropdown-trigger {
     display: inline-flex;
     align-items: center;
@@ -55,6 +64,7 @@ body { overflow-x: hidden; }
     color: inherit;
     text-decoration: none !important;
 }
+
 .account-name {
     font-weight: 600;
     max-width: 110px;
@@ -63,6 +73,7 @@ body { overflow-x: hidden; }
     white-space: nowrap;
     display: inline-block;
 }
+
 .account-dropdown {
     display: none;
     position: absolute;
@@ -72,13 +83,15 @@ body { overflow-x: hidden; }
     background: #fff;
     border: 1px solid #e8e8e8;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.13);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .13);
     z-index: 9999;
     overflow: hidden;
 }
+
 .account-dropdown-wrapper:hover .account-dropdown {
     display: block;
 }
+
 .account-dropdown-header {
     display: flex;
     align-items: center;
@@ -87,21 +100,25 @@ body { overflow-x: hidden; }
     background: #f8f9fa;
     border-bottom: 1px solid #eee;
 }
+
 .account-dropdown-header strong {
     display: block;
     font-size: 14px;
     color: #253D4E;
 }
+
 .account-dropdown-header small {
     font-size: 11px;
     color: #888;
     text-transform: capitalize;
 }
+
 .account-dropdown-links {
     list-style: none;
     padding: 6px 0;
     margin: 0;
 }
+
 .account-dropdown-links li a {
     display: flex;
     align-items: center;
@@ -112,14 +129,17 @@ body { overflow-x: hidden; }
     text-decoration: none;
     transition: background 0.15s, color 0.15s;
 }
+
 .account-dropdown-links li a:hover {
     background: #f4f6f9;
     color: #3BB77E;
 }
+
 .account-dropdown-footer {
     border-top: 1px solid #eee;
     padding: 8px 16px;
 }
+
 .account-dropdown-footer form button {
     background: none;
     border: none;
@@ -133,41 +153,23 @@ body { overflow-x: hidden; }
     align-items: center;
     gap: 9px;
 }
-.account-dropdown-footer form button:hover { color: #c0103a; }
 
-/* ── Side Banners: fill slider row height, split equally ── */
-.side-banner-col {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+.account-dropdown-footer form button:hover {
+    color: #c0103a;
 }
-.side-banner {
-    height: 215px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-}
-.side-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-}
-@media (max-width: 991px) {
-    .side-banner { height: 215px; flex: unset; }
-}
+
+/* Side banner styles now handled in Home.blade.php inline CSS */
 
 /* ── Hero Slider: 980×450 left-aligned with text overlay ── */
 .home-slider .hero-slider-1 {
     height: auto;
-    padding-bottom: 25px;
+    padding-bottom: 0;
 }
+
 .home-slider .dot-style-1.dot-style-1-position-1 ul {
-    bottom: 5px;
+    display: none;
 }
+
 .home-slider .slider-stage {
     position: relative;
     width: 100%;
@@ -177,9 +179,14 @@ body { overflow-x: hidden; }
     overflow: hidden;
     border-radius: 8px;
 }
+
 @supports not (aspect-ratio: 1/1) {
-    .home-slider .slider-stage { height: 0; padding-bottom: 45.918%; }
+    .home-slider .slider-stage {
+        height: 0;
+        padding-bottom: 45.918%;
+    }
 }
+
 .home-slider .slider-stage .slider-img {
     position: absolute;
     inset: 0;
@@ -189,18 +196,41 @@ body { overflow-x: hidden; }
     object-position: center;
     display: block;
 }
+
 .home-slider .slider-overlay {
     position: absolute;
-    top: 0; left: 0; height: 100%;
-    display: flex; flex-direction: column; justify-content: center;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 30px 40px;
     max-width: 55%;
-    background: linear-gradient(90deg, rgba(255,255,255,.85) 40%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, .85) 40%, rgba(255, 255, 255, 0) 100%);
 }
+
 .home-slider .slider-overlay h1,
 .home-slider .slider-overlay h2,
 .home-slider .slider-overlay h4,
-.home-slider .slider-overlay p { margin: 0 0 8px; }
+.home-slider .slider-overlay p {
+    margin: 0 0 8px;
+}
+
 @media (max-width: 991px) {
-    .home-slider .slider-overlay { max-width: 80%; padding: 18px 22px; }
+    .home-slider .slider-overlay {
+        max-width: 80%;
+        padding: 18px 22px;
+    }
+}
+
+/* Browse Categories hover dropdown
+   Theme hides with opacity:0 + visibility:hidden — match that approach */
+.main-categori-wrap {
+    position: relative;
+}
+
+.main-categori-wrap:hover .categori-dropdown-active-large {
+    opacity: 1 !important;
+    visibility: visible !important;
 }

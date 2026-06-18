@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\admin\AccountController;
-use App\Http\Controllers\admin\AdminOrderController;
-use App\Http\Controllers\admin\CustomerController;
-use App\Http\Controllers\admin\DashboardController;
-use App\Http\Controllers\admin\InventoryController;
-use App\Http\Controllers\admin\ProductManagementController;
-use App\Http\Controllers\admin\UserController;
-use App\Http\Controllers\admin\AdsManagementController;
+use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\ProductManagementController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdsManagementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -68,10 +68,11 @@ Route::get('/my-account', [CustomerProfileController::class, 'index'])
 Route::get('/my-account/order/{id}', [CustomerProfileController::class, 'orderSummary'])
     ->name('customer.order.summary');
 
-Route::get('/admin/management-login', function () {
+Route::get('/admin/management-login', [AuthController::class, 'showAdminLogin'])
+    ->name('admin.login');
 
-    return view('admin.auth.login');
-});
+Route::post('/admin/management-login', [AuthController::class, 'adminLogin'])
+    ->name('admin.login.post');
 
 // OTP//
 
@@ -121,12 +122,12 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get(
         '/customers',
-        [App\Http\Controllers\admin\CustomerController::class, 'index']
+        [App\Http\Controllers\Admin\CustomerController::class, 'index']
     )->name('customers.index');
 
     Route::get(
         '/customers/order-history/{id}',
-        [App\Http\Controllers\admin\CustomerController::class, 'orderHistory']
+        [App\Http\Controllers\Admin\CustomerController::class, 'orderHistory']
     )->name('customers.order.history');
 
     Route::get(
@@ -141,17 +142,17 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get(
         '/activity-logs',
-        [App\Http\Controllers\admin\ActivityLogController::class, 'index']
+        [App\Http\Controllers\Admin\ActivityLogController::class, 'index']
     )->name('activity.logs');
 
     Route::get(
         '/profile',
-        [App\Http\Controllers\admin\AdminProfileController::class, 'index']
+        [App\Http\Controllers\Admin\AdminProfileController::class, 'index']
     )->name('profile');
 
     Route::post(
         '/profile/update',
-        [App\Http\Controllers\admin\AdminProfileController::class, 'update']
+        [App\Http\Controllers\Admin\AdminProfileController::class, 'update']
     )->name('profile.update');
 
     Route::get('/orders/new-orders', [AdminOrderController::class, 'newOrders'])->name('orders.new');
@@ -170,7 +171,7 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         [AdminOrderController::class, 'updateStatus']
     )->name('orders.update.status');
 
-
+    Route::post('/orders/{id}/delivery', [AdminOrderController::class, 'updateDelivery'])->name('orders.delivery');
 
     /*
     |--------------------------------------------------------------------------
@@ -180,7 +181,7 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get(
         '/accounts/order-history',
-        [App\Http\Controllers\admin\AccountsManagementController::class, 'orderHistory']
+        [App\Http\Controllers\Admin\AccountsManagementController::class, 'orderHistory']
     )->name('accounts.order.history');
 
     /*
@@ -313,6 +314,8 @@ Route::post('/product-checkout/create', [CheckoutController::class, 'Product_Che
 Route::get('/product/order/success/{id}', [OrderController::class, 'Order_Success'])->name('Order_Success');
 
 // product/weekly-featured Url
+Route::get('/search', [StoreController::class, 'search'])->name('search');
+
 Route::get('/product/weekly-featured', [StoreController::class, 'Weekly_Featured'])->name('Weekly_Featured');
 
 // product/weekly-featured Url

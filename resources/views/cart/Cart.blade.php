@@ -112,8 +112,7 @@
                             </table>
                         </div>
                         <div class="cart-action text-end">
-                            <a class="btn  mr-10 mb-sm-15" style=" border: 1px solid red !important;
-                                background-color: red !important;" data-bs-toggle="modal" id="delete_pop_modal"
+                            <a class="btn mr-10 mb-sm-15" data-bs-toggle="modal" id="delete_pop_modal"
                                 data-bs-target="#delete_modal"><i class="fi-rs-trash mr-10"></i>
                                 Clear Cart
                             </a>
@@ -124,6 +123,26 @@
 
                     </div>
                     <div class="col-lg-4 col-md-12">
+                        @php
+                            $deliveryInside   = config('delivery.inside_dhaka');
+                            $deliveryOutside  = config('delivery.outside_dhaka');
+                            $freeThreshold    = config('delivery.free_threshold');
+                            $isFreeDelivery   = $subTotal >= $freeThreshold;
+                        @endphp
+
+                        {{-- Free delivery offer notification --}}
+                        @if($isFreeDelivery)
+                        <div style="background:#e6f7ec;color:#1a7f4b;border:1px solid #b7e4cb;border-radius:10px;padding:12px 16px;font-size:14px;margin-bottom:16px;">
+                            🎉 You have unlocked <strong>FREE delivery</strong> on this order!
+                        </div>
+                        @else
+                        @php $remaining = $freeThreshold - $subTotal; @endphp
+                        <div style="background:#fff8e6;color:#a86b00;border:1px solid #ffe08a;border-radius:10px;padding:12px 16px;font-size:14px;margin-bottom:16px;">
+                            Add <strong>৳{{ number_format($remaining, 2) }}</strong> more to get <strong>FREE delivery!</strong>
+                            <span style="display:block;margin-top:4px;font-size:12px;color:#c47f00;">Free delivery on orders above ৳{{ number_format($freeThreshold, 0) }}</span>
+                        </div>
+                        @endif
+
                         <div class="border p-md-4 p-10 border-radius cart-totals">
                             <div class="heading_s1 mb-3">
                                 <h4>Cart Totals</h4>
@@ -133,24 +152,35 @@
                                     <tbody>
                                         <tr>
                                             <td class="cart_total_label">Cart Subtotal</td>
-                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">
-                                                    ৳{{ number_format($subTotal,2) }}
-
-
-
-
-                                                </span></td>
+                                            <td class="cart_total_amount">
+                                                <span class="font-lg fw-900 text-brand">৳{{ number_format($subTotal, 2) }}</span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="cart_total_label">Shipping</td>
-                                            <td class="cart_total_amount"> <i class="ti-gift mr-5"></i> Free
-                                                Shipping</td>
+                                            <td class="cart_total_amount">
+                                                @if($isFreeDelivery)
+                                                    <i class="ti-gift mr-5" style="color:#3bb77e;"></i>
+                                                    <span style="color:#3bb77e;font-weight:600;">Free Shipping 🎉</span>
+                                                @else
+                                                    <span style="font-weight:600;">৳{{ $deliveryInside }} – ৳{{ $deliveryOutside }}</span>
+                                                    <br><small class="text-muted" style="font-size:11px;">Exact charge set at checkout</small>
+                                                @endif
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="cart_total_label">Total</td>
-                                            <td class="cart_total_amount"><strong><span
-                                                        class="font-xl fw-900 text-brand">৳{{ number_format($subTotal,2)
-                                                        }}</span></strong>
+                                            <td class="cart_total_amount">
+                                                <strong>
+                                                @if($isFreeDelivery)
+                                                    <span class="font-xl fw-900 text-brand">৳{{ number_format($subTotal, 2) }}</span>
+                                                @else
+                                                    <span class="font-xl fw-900 text-brand">
+                                                        ৳{{ number_format($subTotal + $deliveryInside, 2) }}
+                                                        – ৳{{ number_format($subTotal + $deliveryOutside, 2) }}
+                                                    </span>
+                                                @endif
+                                                </strong>
                                             </td>
                                         </tr>
                                     </tbody>

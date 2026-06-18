@@ -1,15 +1,14 @@
-@if(session('success'))
-    <div class="alert alert-success text-center">
-        {{ session('success') }}
-    </div>
-@endif
-
-@extends('layout.master')
+﻿@extends('layout.master')
 
 @section('title', 'E-Commerce')
 
-
 @section('content')
+
+    @if(session('success'))
+        <div class="alert alert-success text-center" style="margin: 10px 0;">
+            {{ session('success') }}
+        </div>
+    @endif
     <style>
         :root {
             --brand-color: #3BB77E;
@@ -34,7 +33,7 @@
             position: relative;
             overflow: hidden;
             transition: var(--transition-smooth);
-            max-width: 300px;
+            width: 100%;
         }
 
         .product-card:hover {
@@ -48,7 +47,15 @@
             position: relative;
             overflow: hidden;
             background: #f8f9fa;
-            height: 250px;
+            height: 220px;
+        }
+
+        .product-header .primary-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
         }
 
         .image-box img {
@@ -62,6 +69,9 @@
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             opacity: 0;
             transform: scale(1.1);
         }
@@ -222,8 +232,8 @@
         }
 
         /* .hot {
-                                        background: #fdc040;
-                                    } */
+                                                            background: #fdc040;
+                                                        } */
 
         .discount {
             background: #f74b81 !important;
@@ -259,21 +269,53 @@
             background: #3b3b3b;
         }
 
-        /* Side Banners */
+        /* ── Slider + Side Banner Row ── */
+        .slider-banner-row {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: stretch;
+            /* এটাই মূল trick: দুই column সমান height নেবে */
+        }
+
+        .slider-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .home-slider {
+            flex: 1;
+            /* slider section পুরো column fill করবে */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Side Banner Column ── */
+        .side-banner-col {
+            display: flex !important;
+            flex-direction: column;
+            padding-left: 12px !important;
+        }
+
         .side-banner-wrap {
             display: flex;
             flex-direction: column;
-            gap: 0;
+            flex: 1;
+            /* slider-এর height অনুযায়ী stretch হবে */
+            gap: 10px;
         }
 
         .side-banner {
             position: relative;
-            height: 215px;
+            flex: 1;
+            /* দুটো banner সমান অংশ নেবে */
             overflow: hidden;
             border-radius: 10px;
+            min-height: 140px;
         }
 
         .side-banner img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             display: block;
@@ -281,16 +323,33 @@
             object-position: center;
         }
 
-        /* Mobile: side banners sit side by side */
+        /* ── Tablet & Mobile ── */
         @media (max-width: 991px) {
+            .slider-banner-row {
+                flex-wrap: wrap;
+                /* mobile-এ column-এ যাবে */
+            }
+
+            .side-banner-col {
+                padding-left: 15px !important;
+                margin-top: 14px;
+            }
+
             .side-banner-wrap {
                 flex-direction: row;
                 gap: 12px;
-                margin-top: 16px;
             }
+
             .side-banner {
                 flex: 1;
-                height: 150px;
+                min-height: 150px;
+                max-height: 180px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .side-banner {
+                min-height: 120px;
             }
         }
     </style>
@@ -302,43 +361,44 @@
 
 
         <div class="container" style="padding-top: 25px;">
-            <div class="row">
-                <div class="col-lg-9 col-md-12">
+            <div class="row slider-banner-row">
+                <div class="col-lg-9 col-md-12 slider-col">
                     <section class="home-slider position-relative">
+                        <div class="hero-slider-1-arrow slider-arrow slider-arrow-2 carausel-6-columns-arrow"></div>
                         <div class="hero-slider-1 dot-style-1 dot-style-1-position-1">
 
                             @forelse($sliders as $slide)
-                            <div class="single-hero-slider single-animation-wrap">
-                                <div class="slider-stage">
-                                    <img class="slider-img"
-                                        src="{{ $slide->image_path ? asset($slide->image_path) : asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
-                                        alt="{{ $slide->slide_title ?? '' }}">
-                                    @if(!$slide->hide_text && ($slide->slide_top || $slide->slide_title || $slide->slide_highlight || $slide->slide_desc))
-                                    <div class="slider-overlay">
-                                        @if($slide->slide_top)
-                                            <h4>{{ $slide->slide_top }}</h4>
-                                        @endif
-                                        @if($slide->slide_title)
-                                            <h2 class="fw-900">{{ $slide->slide_title }}</h2>
-                                        @endif
-                                        @if($slide->slide_highlight)
-                                            <h1 class="fw-900 text-brand">{{ $slide->slide_highlight }}</h1>
-                                        @endif
-                                        @if($slide->slide_desc)
-                                            <p>{{ $slide->slide_desc }}</p>
+                                <div class="single-hero-slider single-animation-wrap">
+                                    <div class="slider-stage">
+                                        <img class="slider-img"
+                                            src="{{ $slide->image_path ? asset($slide->image_path) : asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
+                                            alt="{{ $slide->slide_title ?? '' }}">
+                                        @if(!$slide->hide_text && ($slide->slide_top || $slide->slide_title || $slide->slide_highlight || $slide->slide_desc))
+                                            <div class="slider-overlay">
+                                                @if($slide->slide_top)
+                                                    <h4>{{ $slide->slide_top }}</h4>
+                                                @endif
+                                                @if($slide->slide_title)
+                                                    <h2 class="fw-900">{{ $slide->slide_title }}</h2>
+                                                @endif
+                                                @if($slide->slide_highlight)
+                                                    <h1 class="fw-900 text-brand">{{ $slide->slide_highlight }}</h1>
+                                                @endif
+                                                @if($slide->slide_desc)
+                                                    <p>{{ $slide->slide_desc }}</p>
+                                                @endif
+                                            </div>
                                         @endif
                                     </div>
-                                    @endif
                                 </div>
-                            </div>
                             @empty
-                            <div class="single-hero-slider single-animation-wrap">
-                                <div class="slider-stage">
-                                    <img class="slider-img"
-                                        src="{{ asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
-                                        alt="Apon Plastic">
+                                <div class="single-hero-slider single-animation-wrap">
+                                    <div class="slider-stage">
+                                        <img class="slider-img"
+                                            src="{{ asset('assets/uploads/Main Slider Design/Main Slider Design-1-Apon Plastic.png') }}"
+                                            alt="Apon Plastic">
+                                    </div>
                                 </div>
-                            </div>
                             @endforelse
 
 
@@ -347,26 +407,26 @@
                     </section>
                 </div>
 
-                <div class="col-lg-3 col-md-12">
+                <div class="col-lg-3 col-md-12 side-banner-col">
                     <div class="side-banner-wrap">
-                    <div class="side-banner">
-                        <img src="{{ optional($banners->get('banner_1'))->image_path ? asset($banners->get('banner_1')->image_path) : asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
-                            alt="menu_banner1">
-                        {{-- <div class="banne_info">
-                            <h6>10% Off</h6>
-                            <h4>New Arrival</h4>
-                            <a href="#">Shop now</a>
-                        </div> --}}
-                    </div>
-                    <div class="side-banner">
-                        <img src="{{ optional($banners->get('banner_2'))->image_path ? asset($banners->get('banner_2')->image_path) : asset('assets/uploads/Right Banner/Right banner_Apon Plastic.png') }}"
-                            alt="menu_banner2">
-                        {{-- <div class="banne_info">
-                            <h6>15% Off</h6>
-                            <h4>Hot Deals</h4>
-                            <a href="#">Shop now</a>
-                        </div> --}}
-                    </div>
+                        <div class="side-banner">
+                            <img src="{{ optional($banners->get('banner_1'))->image_path ? asset($banners->get('banner_1')->image_path) : asset('assets/uploads/Right Banner/Pink and Blue Modern Aesthetic Fashion Facebook Cover.png') }}"
+                                alt="menu_banner1">
+                            {{-- <div class="banne_info">
+                                <h6>10% Off</h6>
+                                <h4>New Arrival</h4>
+                                <a href="#">Shop now</a>
+                            </div> --}}
+                        </div>
+                        <div class="side-banner">
+                            <img src="{{ optional($banners->get('banner_2'))->image_path ? asset($banners->get('banner_2')->image_path) : asset('assets/uploads/Right Banner/Right banner_Apon Plastic.png') }}"
+                                alt="menu_banner2">
+                            {{-- <div class="banne_info">
+                                <h6>15% Off</h6>
+                                <h4>Hot Deals</h4>
+                                <a href="#">Shop now</a>
+                            </div> --}}
+                        </div>
                     </div>{{-- .side-banner-wrap --}}
                 </div>
             </div>
@@ -883,7 +943,8 @@
         <section class="banner-2 section-padding pb-0">
             <div class="container">
                 <div class="banner-img banner-big wow fadeIn animated f-none">
-                    <img src="{{ optional($banners->get('banner_3'))->image_path ? asset($banners->get('banner_3')->image_path) : asset('assets/uploads/Large Adv/Large Adv_Apon Plastic-1.png') }}" alt="">
+                    <img src="{{ optional($banners->get('banner_3'))->image_path ? asset($banners->get('banner_3')->image_path) : asset('assets/uploads/Large Adv/Large Adv_Apon Plastic-1.png') }}"
+                        alt="">
                     {{-- <div class="banner-text d-md-block d-none">
                         <h4 class="mb-15 mt-40 text-brand">Repair Services</h4>
                         <h1 class="fw-600 mb-20">We're an Apple <br>Authorised Service Provider</h1>
@@ -920,13 +981,13 @@
                 /* width: 100%; */
                 height: 100%;
                 /* object-fit: cover;
-                display: block; */
+                                    display: block; */
             }
 
             .full-height-banner .banne_info {
                 position: absolute;
                 /* top: 30px;
-                left: 30px; */
+                                    left: 30px; */
                 z-index: 2;
             }
 

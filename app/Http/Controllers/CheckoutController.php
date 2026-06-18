@@ -36,14 +36,14 @@ class CheckoutController extends Controller
     public function Product_Checkout_Create(Request $request)
     {
         $request->validate([
-            'fname'           => 'required|string|max:255',
-            'lname'           => 'required|string|max:255',
-            'billing_address' => 'required',
+            'full_name'       => 'required|string|max:255',
+            'billing_address' => 'required|string',
+            'district'        => 'required|string|max:100',
             'phone'           => [
                 'required',
                 'regex:/^(?:\+88|88)?(01[3-9]\d{8})$/'
             ],
-            'email' => 'required|email',
+            'email' => 'nullable|email|max:255',
         ]);
 
         $paymentMethod = $request->input('payment_method_override', 'CASH');
@@ -70,6 +70,10 @@ class CheckoutController extends Controller
         try {
             // ── STEP 1: User resolve ──
 
+            $nameParts = explode(' ', trim($request->full_name), 2);
+            $fname     = $nameParts[0];
+            $lname     = $nameParts[1] ?? '';
+
             if (session('user_id')) {
                 $userId = session('user_id');
             } else {
@@ -80,8 +84,8 @@ class CheckoutController extends Controller
                     $userId = $existingUser->id;
                 } else {
                     $user = User::create([
-                        'first_name' => $request->fname,
-                        'last_name'  => $request->lname,
+                        'first_name' => $fname,
+                        'last_name'  => $lname,
                         'mobile_no'  => $phone,
                         'role'       => 'customer',
                         'status'     => 'active',
@@ -93,9 +97,13 @@ class CheckoutController extends Controller
 
             // ── STEP 2: Total calculate ──
 
-            $totalAmount = collect($cart)->sum(function ($item) {
-                return ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
-            });
+            $subTotal       = collect($cart)->sum(fn ($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
+            $freeThreshold  = config('delivery.free_threshold');
+            $isInsideDhaka  = $request->district === 'Dhaka';
+            $deliveryCharge = $subTotal > $freeThreshold
+                ? 0
+                : ($isInsideDhaka ? config('delivery.inside_dhaka') : config('delivery.outside_dhaka'));
+            $totalAmount    = $subTotal + $deliveryCharge;
 
             // ── STEP 3: Screenshot upload ──
 
@@ -110,6 +118,7 @@ class CheckoutController extends Controller
                 'user_id'            => $userId,
                 'order_number'       => 'ORD-' . strtoupper(uniqid()),
                 'total_amount'       => $totalAmount,
+                'shipping_amount'    => $deliveryCharge,
                 'payment_method'     => $paymentMethod,
                 'payment_status'     => 'PENDING',
                 'order_status'       => 'PENDING',
@@ -123,11 +132,13 @@ class CheckoutController extends Controller
             OrderAddress::create([
                 'order_id'      => $order->id,
                 'type'          => 'BILLING',
-                'first_name'    => $request->fname,
-                'last_name'     => $request->lname,
+                'first_name'    => $fname,
+                'last_name'     => $lname,
                 'email'         => $request->email,
                 'phone'         => $request->phone,
                 'address_line1' => $request->billing_address,
+                'district'      => $request->district,
+                'thana'         => $request->thana,
             ]);
 
             // ── STEP 6: Order items save + stock ──

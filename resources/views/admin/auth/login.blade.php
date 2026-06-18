@@ -106,6 +106,27 @@
             transform: translate(-2px, -2px);
         }
 
+        .pwd-wrapper { position: relative; }
+        .pwd-wrapper input { width: 100%; padding-right: 60px; }
+        #togglePwd {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            border-left: 2px solid var(--primary);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: var(--primary);
+            user-select: none;
+            background: transparent;
+        }
+        #togglePwd:hover { background: #f0f0f0; }
+
         .divider {
             display: flex;
             align-items: center;
@@ -165,7 +186,7 @@
     <div class="login-container">
         <h1>LOGIN</h1>
 
-        <form action="{{ route('login.post') }}" method="POST">
+        <form action="{{ route('admin.login.post') }}" method="POST">
             @csrf
 
             <div class="input-group">
@@ -175,7 +196,10 @@
 
             <div class="input-group">
                 <label for="password">PASSWORD</label>
-                <input type="password" id="password" name="password" placeholder="••••••••">
+                <div class="pwd-wrapper">
+                    <input type="password" id="password" name="password" placeholder="••••••••">
+                    <span id="togglePwd" onclick="var p=document.getElementById('password');var on=p.type==='password';p.type=on?'text':'password';this.textContent=on?'HIDE':'SHOW';">SHOW</span>
+                </div>
             </div>
 
             <button type="submit">LOG IN</button>
