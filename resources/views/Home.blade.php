@@ -440,45 +440,57 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated" style="background-color:#eaf6fb;">
-                            <img src="assets/imgs/theme/icons/feature-2.png" alt="Online Order">
+                        <div class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap">
+                                <img src="assets/imgs/theme/icons/feature-2.png" alt="Online Order">
+                            </span>
                             <h4>Online Order</h4>
-                            <p class="feat-sub">Order anytime, anywhere</p>
+                            <p>Order anytime, anywhere</p>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated" style="background-color:#fef6f2;">
-                            <img src="assets/imgs/theme/icons/feature-1.png" alt="Quick Shipping">
+                        <div class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap">
+                                <img src="assets/imgs/theme/icons/feature-1.png" alt="Quick Shipping">
+                            </span>
                             <h4>Quick Shipping</h4>
-                            <p class="feat-sub">Fast &amp; reliable delivery</p>
+                            <p>Fast &amp; reliable delivery</p>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated" style="background:#fffbd2;">
-                            <img src="assets/imgs/theme/icons/feature-3.png" alt="Save Money">
+                        <div class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap">
+                                <img src="assets/imgs/theme/icons/feature-3.png" alt="Save Money">
+                            </span>
                             <h4>Save Money</h4>
-                            <p class="feat-sub">Best prices guaranteed</p>
+                            <p>Best prices guaranteed</p>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated" style="background:#e4fae2;">
-                            <img src="assets/imgs/theme/icons/feature-4.png" alt="Promotions">
+                        <div class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap">
+                                <img src="assets/imgs/theme/icons/feature-4.png" alt="Promotions">
+                            </span>
                             <h4>Promotions</h4>
-                            <p class="feat-sub">Exclusive deals daily</p>
+                            <p>Exclusive deals daily</p>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated" style="background:#fffce0;">
-                            <img src="assets/imgs/theme/icons/feature-5.png" alt="Happy Sell">
+                        <div class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap">
+                                <img src="assets/imgs/theme/icons/feature-5.png" alt="Happy Sell">
+                            </span>
                             <h4>Happy Sell</h4>
-                            <p class="feat-sub">Trusted by thousands</p>
+                            <p>Trusted by thousands</p>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated" style="background:#d8f7d7;">
-                            <img src="assets/imgs/theme/icons/feature-6.png" alt="Online Support">
+                        <div class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap">
+                                <img src="assets/imgs/theme/icons/feature-6.png" alt="Online Support">
+                            </span>
                             <h4>Online Support</h4>
-                            <p class="feat-sub">24/7 customer care</p>
+                            <p>24/7 customer care</p>
                         </div>
                     </div>
                 </div>
@@ -556,7 +568,7 @@
 
                     <!--En tab one (Featured)-->
                     <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
-                        <div class="row product-grid-4">
+                        <div class="row product-grid-4 align-items-stretch">
 
                             @foreach ($featuredProducts as $prods)
                                                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-6">
@@ -683,7 +695,7 @@
 
                     <!--En tab two (Popular)-->
                     <div class="tab-pane fade" id="tab-two" role="tabpanel" aria-labelledby="tab-two">
-                        <div class="row product-grid-4">
+                        <div class="row product-grid-4 align-items-stretch">
 
 
                             @foreach ($popularProducts as $prods)
@@ -809,7 +821,7 @@
 
                     <!--En tab three (New added)-->
                     <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three">
-                        <div class="row product-grid-4">
+                        <div class="row product-grid-4 align-items-stretch">
 
 
                             @foreach ($newAddedProducts as $prods)

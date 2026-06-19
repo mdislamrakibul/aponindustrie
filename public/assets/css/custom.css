@@ -15,7 +15,13 @@ img {
 
 body {
     overflow-x: hidden;
+    background: #f7f8fa;
 }
+
+/* TASK 2 — hide patchy decorative shapes */
+.bg-square-left,
+.bg-square-right,
+.bg-square { display: none !important; }
 
 /* Profile page: reduce vertical padding on mobile */
 @media (max-width: 576px) {
@@ -236,30 +242,41 @@ body {
 }
 
 /* ══════════════════════════════════════════
-   Features Strip — clean equal-height cards
+   TASK 5 — Features Strip: polished icon-circle cards
    ══════════════════════════════════════════ */
 .featured .banner-features {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    text-align: center;
     gap: 8px;
-    padding: 22px 14px;
-    min-height: 140px;
-    border-radius: 14px;
-    border: 1px solid rgba(0,0,0,.04);
-    box-shadow: 0 4px 14px rgba(0,0,0,.05);
+    text-align: center;
+    padding: 24px 16px;
+    min-height: 150px;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.05);
+    box-shadow: 0 6px 18px rgba(0,0,0,.05);
     transition: transform .25s ease, box-shadow .25s ease;
     margin-bottom: 0;
 }
 .featured .banner-features:hover {
     transform: translateY(-6px);
-    box-shadow: 0 10px 22px rgba(0,0,0,.10);
+    box-shadow: 0 12px 26px rgba(0,0,0,.10);
+}
+.featured .banner-features .icon-wrap {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(59,183,126,.12);
+    margin-bottom: 4px;
+    flex-shrink: 0;
 }
 .featured .banner-features img {
-    width: 46px;
-    height: 46px;
+    width: 30px;
+    height: 30px;
     object-fit: contain;
 }
 .featured .banner-features h4 {
@@ -268,14 +285,186 @@ body {
     margin: 0;
     color: #253d4e;
 }
-.featured .banner-features .feat-sub {
-    font-size: 11px;
-    color: #8a8a8a;
+.featured .banner-features p {
+    font-size: 12px;
+    color: #7e8a97;
     margin: 0;
     line-height: 1.4;
 }
 @media (max-width: 991px) {
-    .featured .banner-features { min-height: 120px; }
+    .featured .banner-features { min-height: 130px; }
+}
+
+/* ══════════════════════════════════════════
+   TASK 3 — Header brand color + hierarchy
+   ══════════════════════════════════════════ */
+.header-top.header-top-ptb-1 {
+    background: #0d3b66 !important;
+}
+.header-top .header-info a,
+.header-top .header-info-right a,
+.header-top .header-info-right li,
+.header-top .marquee-content,
+.header-top .news-item {
+    color: rgba(255,255,255,.88) !important;
+}
+.header-top .header-info a:hover {
+    color: #ffd166 !important;
+}
+.header-top .account-dropdown-trigger {
+    color: rgba(255,255,255,.9) !important;
+}
+
+.header-bottom.header-bottom-bg-color {
+    background: #0d3b66 !important;
+    border-top: none;
+    box-shadow: 0 2px 12px rgba(13,59,102,.25);
+}
+/* nav links */
+.header-bottom .main-menu > nav > ul > li > a {
+    color: rgba(255,255,255,.88) !important;
+    font-weight: 600;
+    letter-spacing: .3px;
+}
+.header-bottom .main-menu > nav > ul > li > a:hover,
+.header-bottom .main-menu > nav > ul > li > a.active {
+    color: #ffd166 !important;
+}
+/* Browse Categories button */
+.header-bottom .categori-button-active {
+    color: rgba(255,255,255,.9) !important;
+    background: rgba(255,255,255,.08) !important;
+    border-radius: 6px;
+    padding: 6px 14px !important;
+    transition: background .2s;
+}
+.header-bottom .categori-button-active:hover {
+    background: rgba(255,255,255,.15) !important;
+}
+/* Keep logo legible */
+.header-bottom .logo img { filter: brightness(0) invert(1); }
+
+/* ══════════════════════════════════════════
+   TASK 1 — Equal-height product cards + 2-line name clamp
+   ══════════════════════════════════════════ */
+/* Make columns flex so cards stretch to full height */
+.product-grid-4 [class*="col-"] {
+    display: flex;
+}
+/* Card stretches to fill its column */
+.product-card {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
+/* Body (text area) takes all remaining space */
+.product-card .product-body {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+}
+/* Title: always 2 lines, no more, no less */
+.product-title {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin-bottom: 10px !important;
+    line-height: 1.35 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    line-clamp: 2 !important;
+    overflow: hidden !important;
+    min-height: 2.7em;           /* reserves 2 lines for 1-line names */
+}
+/* Price row + action pinned to bottom */
+.product-card .price-row {
+    margin-top: auto !important;
+}
+
+/* ══════════════════════════════════════════
+   TASK 6 — Design system: typography, buttons, price, headings
+   ══════════════════════════════════════════ */
+
+/* Section title scale */
+.section-title {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    letter-spacing: -.2px;
+}
+.section-title span {
+    color: #3bb77e;
+}
+
+/* Shared "Add to Cart" action button */
+.action-btn {
+    background: #3bb77e !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 18px !important;
+    transition: background .2s, transform .2s !important;
+    border: none !important;
+}
+.action-btn:hover {
+    background: #253d4e !important;
+    transform: scale(1.08) !important;
+    color: #fff !important;
+}
+
+/* Price block consistency */
+.price-now, .product-price > span:first-child {
+    font-weight: 800 !important;
+    color: #3bb77e !important;
+    font-size: 15px !important;
+}
+.price-old, .product-price .old-price {
+    font-size: 12px !important;
+    color: #b0b0b0 !important;
+    text-decoration: line-through !important;
+    margin-left: 5px !important;
+}
+
+/* Rating mini */
+.rating-mini {
+    font-size: 11px;
+    color: #ffc107;
+    font-weight: 600;
+}
+
+/* Category tag */
+.category-tag {
+    font-size: 11px !important;
+    color: #adb5bd !important;
+    text-transform: uppercase !important;
+    letter-spacing: .8px !important;
+    font-weight: 600 !important;
+}
+
+/* Discount badge pill */
+.badge.sale {
+    font-size: 10px !important;
+    padding: 3px 8px !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    background: #fd6282 !important;
+}
+.badge.hot   { background: #ff5a5f !important; border-radius: 12px !important; }
+.badge.new   { background: #3bb77e !important; border-radius: 12px !important; }
+.badge.best-seller { background: #fdc040 !important; border-radius: 12px !important; }
+
+/* Smooth page canvas — white sections */
+.product-tabs.section-padding { background: #fff; border-radius: 16px; }
+
+/* Mobile: ensure banner-features stacks 2 per row below sm */
+@media (max-width: 767px) {
+    .featured .banner-features { min-height: 120px; padding: 18px 10px; }
+}
+@media (max-width: 420px) {
+    .featured .banner-features { min-height: 110px; }
 }
 
 /* ══════════════════════════════════════════
