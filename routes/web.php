@@ -316,6 +316,8 @@ Route::get('/product/order/success/{id}', [OrderController::class, 'Order_Succes
 // product/weekly-featured Url
 Route::get('/search', [StoreController::class, 'search'])->name('search');
 
+Route::get('/shop', [StoreController::class, 'shop'])->name('shop');
+
 Route::get('/product/weekly-featured', [StoreController::class, 'Weekly_Featured'])->name('Weekly_Featured');
 
 // product/weekly-featured Url

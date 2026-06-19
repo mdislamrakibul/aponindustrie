@@ -43,6 +43,16 @@ class StoreController extends Controller
         return $newProducts;
     }
 
+    public function shop()
+    {
+        $products = Product::where('status', 'PUBLISHED')
+            ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
+            ->orderBy('name', 'asc')
+            ->paginate(20);
+
+        return view('product.shop', compact('products'));
+    }
+
     public function Weekly_Featured(Request $request)
     {
         $featuredProducts = Product::published([

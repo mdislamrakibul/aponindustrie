@@ -546,10 +546,16 @@
                     <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                         <nav>
                             <ul>
-                                <li><a class="active" href="{{ route('home.index') }}"> <span class="fa fa-home"></span>
-                                        Home </a>
+                                <li>
+                                    <a class="{{ Route::is('home.index') ? 'active' : '' }}" href="{{ route('home.index') }}">
+                                        <span class="fa fa-home"></span> Home
+                                    </a>
                                 </li>
-
+                                <li>
+                                    <a class="{{ Route::is('shop') ? 'active' : '' }}" href="{{ route('shop') }}">
+                                        <span class="fa fa-store"></span> Shop
+                                    </a>
+                                </li>
                             </ul>
                         </nav>
                     </div>

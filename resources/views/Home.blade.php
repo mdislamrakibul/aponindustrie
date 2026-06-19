@@ -439,40 +439,46 @@
         <section class="featured section-padding position-relative">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated hover-up" style="background-color: #eaf6fb;">
-                            <img src="assets/imgs/theme/icons/feature-2.png" alt="">
-                            <h4 class="bg-3">Online Order</h4>
+                    <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
+                        <div class="banner-features wow fadeIn animated" style="background-color:#eaf6fb;">
+                            <img src="assets/imgs/theme/icons/feature-2.png" alt="Online Order">
+                            <h4>Online Order</h4>
+                            <p class="feat-sub">Order anytime, anywhere</p>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated hover-up" style="background-color: #fef6f2;">
-                            <img src="assets/imgs/theme/icons/feature-1.png" alt="">
-                            <h4 class="bg-1">Quick Shipping</h4>
+                    <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
+                        <div class="banner-features wow fadeIn animated" style="background-color:#fef6f2;">
+                            <img src="assets/imgs/theme/icons/feature-1.png" alt="Quick Shipping">
+                            <h4>Quick Shipping</h4>
+                            <p class="feat-sub">Fast &amp; reliable delivery</p>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated hover-up" style="background: #fffbd2">
-                            <img src="assets/imgs/theme/icons/feature-3.png" alt="">
-                            <h4 class="bg-2">Save Money</h4>
+                    <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
+                        <div class="banner-features wow fadeIn animated" style="background:#fffbd2;">
+                            <img src="assets/imgs/theme/icons/feature-3.png" alt="Save Money">
+                            <h4>Save Money</h4>
+                            <p class="feat-sub">Best prices guaranteed</p>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated hover-up" style="background: #e4fae2 ">
-                            <img src="assets/imgs/theme/icons/feature-4.png" alt="">
-                            <h4 class="bg-4">Promotions</h4>
+                    <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
+                        <div class="banner-features wow fadeIn animated" style="background:#e4fae2;">
+                            <img src="assets/imgs/theme/icons/feature-4.png" alt="Promotions">
+                            <h4>Promotions</h4>
+                            <p class="feat-sub">Exclusive deals daily</p>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated hover-up" style="background: #fffce0;">
-                            <img src="assets/imgs/theme/icons/feature-5.png" alt="">
-                            <h4 class="bg-5">Happy Sell</h4>
+                    <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
+                        <div class="banner-features wow fadeIn animated" style="background:#fffce0;">
+                            <img src="assets/imgs/theme/icons/feature-5.png" alt="Happy Sell">
+                            <h4>Happy Sell</h4>
+                            <p class="feat-sub">Trusted by thousands</p>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated hover-up" style="background: #d8f7d7">
-                            <img src="assets/imgs/theme/icons/feature-6.png" alt="">
-                            <h4 class="bg-6">Online Support</h4>
+                    <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
+                        <div class="banner-features wow fadeIn animated" style="background:#d8f7d7;">
+                            <img src="assets/imgs/theme/icons/feature-6.png" alt="Online Support">
+                            <h4>Online Support</h4>
+                            <p class="feat-sub">24/7 customer care</p>
                         </div>
                     </div>
                 </div>
@@ -541,8 +547,7 @@
                                 added</button>
                         </li>
                     </ul>
-                    {{-- <a href="#" class="view-more d-none d-md-flex">View More<i
-                            class="fi-rs-angle-double-small-right"></i></a> --}}
+                    <a href="{{ route('shop') }}" class="view-all-link d-none d-md-flex">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
                 </div>
                 <!--End nav-tabs-->
                 <div class="tab-content wow fadeIn animated" id="myTabContent">
@@ -1019,7 +1024,10 @@
                     </div>
                     <div class="col-12 col-md-9">
                         {{-- 2nd section top part 1 --}}
-                        <h3 class="section-title style-1 mb-20"><span>New</span> Arrivals</h3>
+                        <div class="section-header-flex">
+                            <h3 class="section-title style-1 mb-0"><span>New</span> Arrivals</h3>
+                            <a href="{{ route('Top_New_Items') }}" class="view-all-link">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                        </div>
                         <div class="carausel-6-columns-cover position-relative">
                             <div class="carausel-6-columns carausel-arrow-center" id="carausel-6-1-columns-2">
 
@@ -1158,7 +1166,10 @@
         {{-- New Arrivals Categories --}}
         <section class="popular-categories section-padding mt-15 mb-25">
             <div class="container wow fadeIn animated">
-                <h3 class="section-title style-1 style-1 mb-20"><span>Most</span> Selling Product</h3>
+                <div class="section-header-flex">
+                    <h3 class="section-title style-1 mb-0"><span>Most</span> Selling Product</h3>
+                    <a href="{{ route('Top_Selling') }}" class="view-all-link">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                </div>
                 <div class="carausel-6-columns-cover position-relative">
                     <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-arrows">
                     </div>
@@ -1258,7 +1269,10 @@
         {{-- New Arrival Product --}}
         <section class="section-padding">
             <div class="container wow fadeIn animated">
-                <h3 class="section-title style-1 mb-20"><span>Most</span> Popular Product</h3>
+                <div class="section-header-flex">
+                    <h3 class="section-title style-1 mb-0"><span>Most</span> Popular Product</h3>
+                    <a href="{{ route('Top_Rated_Item') }}" class="view-all-link">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                </div>
                 <div class="carausel-6-columns-cover position-relative">
                     <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-2-arrows">
                     </div>
