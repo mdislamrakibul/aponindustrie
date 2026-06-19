@@ -43,12 +43,14 @@ class StoreController extends Controller
         return $newProducts;
     }
 
-    public function shop()
+    public function shop(Request $request)
     {
         $products = Product::where('status', 'PUBLISHED')
             ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
+            ->when($request->discount, fn($q) => $q->where('is_discounted', 1))
             ->orderBy('name', 'asc')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         return view('product.shop', compact('products'));
     }

@@ -11,18 +11,18 @@
     @endif
     <style>
         :root {
-            --brand-color: #3BB77E;
+            --brand-color: var(--brand-red);
             --hover-bg: #f2f3f8;
             --text-main: #253D4E;
             --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-            --primary: #3BB77E;
+            --primary: var(--brand-red);
             --secondary: #FDC040;
-            --danger: #fd6282;
+            --danger: var(--brand-red);
             --info: #67bcee;
             --text-dark: #253D4E;
             --text-muted: #7E7E7E;
-            --bg-light: #f7f8f9;
+            --bg-light: var(--brand-cream);
 
         }
 
@@ -440,58 +440,46 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated">
-                            <span class="icon-wrap">
-                                <img src="assets/imgs/theme/icons/feature-2.png" alt="Online Order">
-                            </span>
+                        <a href="{{ route('shop') }}" class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap"><i class="fa fa-shopping-bag"></i></span>
                             <h4>Online Order</h4>
                             <p>Order anytime, anywhere</p>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated">
-                            <span class="icon-wrap">
-                                <img src="assets/imgs/theme/icons/feature-1.png" alt="Quick Shipping">
-                            </span>
+                        <a href="{{ route('shop') }}" class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap"><i class="fa fa-truck"></i></span>
                             <h4>Quick Shipping</h4>
                             <p>Fast &amp; reliable delivery</p>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated">
-                            <span class="icon-wrap">
-                                <img src="assets/imgs/theme/icons/feature-3.png" alt="Save Money">
-                            </span>
+                        <a href="{{ route('shop', ['discount' => 1]) }}" class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap"><i class="fa fa-tags"></i></span>
                             <h4>Save Money</h4>
                             <p>Best prices guaranteed</p>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated">
-                            <span class="icon-wrap">
-                                <img src="assets/imgs/theme/icons/feature-4.png" alt="Promotions">
-                            </span>
+                        <a href="{{ route('shop', ['discount' => 1]) }}" class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap"><i class="fa fa-percent"></i></span>
                             <h4>Promotions</h4>
                             <p>Exclusive deals daily</p>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated">
-                            <span class="icon-wrap">
-                                <img src="assets/imgs/theme/icons/feature-5.png" alt="Happy Sell">
-                            </span>
+                        <a href="{{ route('shop') }}" class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap"><i class="fa fa-smile-o"></i></span>
                             <h4>Happy Sell</h4>
                             <p>Trusted by thousands</p>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <div class="banner-features wow fadeIn animated">
-                            <span class="icon-wrap">
-                                <img src="assets/imgs/theme/icons/feature-6.png" alt="Online Support">
-                            </span>
+                        <a href="https://wa.me/8801992977251?text={{ rawurlencode('Hello! I need support with my order.') }}" target="_blank" class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap"><i class="fa fa-headset"></i></span>
                             <h4>Online Support</h4>
                             <p>24/7 customer care</p>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1178,13 +1166,14 @@
         {{-- New Arrivals Categories --}}
         <section class="popular-categories section-padding mt-15 mb-25">
             <div class="container wow fadeIn animated">
-                <div class="section-header-flex">
+                <div class="section-head">
                     <h3 class="section-title style-1 mb-0"><span>Most</span> Selling Product</h3>
-                    <a href="{{ route('Top_Selling') }}" class="view-all-link">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                    <div class="head-actions">
+                        <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-arrows"></div>
+                        <a href="{{ route('Top_Selling') }}" class="view-all">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                    </div>
                 </div>
                 <div class="carausel-6-columns-cover position-relative">
-                    <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-arrows">
-                    </div>
                     <div class="carausel-6-columns" id="carausel-6-columns">
 
                         @foreach ($mostSellingProducts as $prod)
@@ -1281,13 +1270,14 @@
         {{-- New Arrival Product --}}
         <section class="section-padding">
             <div class="container wow fadeIn animated">
-                <div class="section-header-flex">
+                <div class="section-head">
                     <h3 class="section-title style-1 mb-0"><span>Most</span> Popular Product</h3>
-                    <a href="{{ route('Top_Rated_Item') }}" class="view-all-link">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                    <div class="head-actions">
+                        <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-2-arrows"></div>
+                        <a href="{{ route('Top_Rated_Item') }}" class="view-all">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                    </div>
                 </div>
                 <div class="carausel-6-columns-cover position-relative">
-                    <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-2-arrows">
-                    </div>
                     <div class="carausel-6-columns carausel-arrow-center" id="carausel-6-columns-2">
 
 

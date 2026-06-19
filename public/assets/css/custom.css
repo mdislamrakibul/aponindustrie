@@ -1,3 +1,13 @@
+/* ══════════════════════════════════════════
+   BRAND PALETTE — define once, use everywhere
+   ══════════════════════════════════════════ */
+:root {
+    --brand-navy:  #0d3b66;
+    --brand-red:   #c54836;
+    --brand-cream: #f6f8ed;
+    --card-bg:     #ffffff;
+}
+
 @media (max-width:420px) {
     .product-grid-4 .col-12 {
         width: 50% !important;
@@ -15,7 +25,8 @@ img {
 
 body {
     overflow-x: hidden;
-    background: #f7f8fa;
+    background: var(--brand-cream);
+    color: #253d4e;
 }
 
 /* TASK 2 — hide patchy decorative shapes */
@@ -52,7 +63,6 @@ body {
     position: relative;
 }
 
-/* Bridge the 8px gap so hover doesn't break when mouse moves to dropdown */
 .account-dropdown-wrapper::after {
     content: '';
     position: absolute;
@@ -138,7 +148,7 @@ body {
 
 .account-dropdown-links li a:hover {
     background: #f4f6f9;
-    color: #3BB77E;
+    color: var(--brand-red);
 }
 
 .account-dropdown-footer {
@@ -230,8 +240,7 @@ body {
     }
 }
 
-/* Browse Categories hover dropdown
-   Theme hides with opacity:0 + visibility:hidden — match that approach */
+/* Browse Categories hover dropdown */
 .main-categori-wrap {
     position: relative;
 }
@@ -242,7 +251,7 @@ body {
 }
 
 /* ══════════════════════════════════════════
-   TASK 5 — Features Strip: polished icon-circle cards
+   TASK 5 — Features Strip: FA icons + clickable links
    ══════════════════════════════════════════ */
 .featured .banner-features {
     display: flex;
@@ -250,40 +259,51 @@ body {
     align-items: center;
     gap: 8px;
     text-align: center;
-    padding: 24px 16px;
-    min-height: 150px;
+    padding: 24px 14px;
+    min-height: 160px;
     border-radius: 16px;
-    background: #fff;
+    background: var(--card-bg);
     border: 1px solid rgba(0,0,0,.05);
     box-shadow: 0 6px 18px rgba(0,0,0,.05);
     transition: transform .25s ease, box-shadow .25s ease;
-    margin-bottom: 0;
+    text-decoration: none !important;
+    cursor: pointer;
+    color: inherit;
 }
 .featured .banner-features:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 26px rgba(0,0,0,.10);
+    box-shadow: 0 12px 26px rgba(0,0,0,.12);
+    color: inherit;
+    text-decoration: none;
 }
 .featured .banner-features .icon-wrap {
-    width: 58px;
-    height: 58px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(59,183,126,.12);
+    background: rgba(13,59,102,.08);
     margin-bottom: 4px;
     flex-shrink: 0;
+    transition: background .25s;
 }
-.featured .banner-features img {
-    width: 30px;
-    height: 30px;
-    object-fit: contain;
+.featured .banner-features .icon-wrap i {
+    font-size: 24px;
+    color: var(--brand-navy);
+    transition: color .25s;
+}
+.featured .banner-features:hover .icon-wrap {
+    background: var(--brand-red);
+}
+.featured .banner-features:hover .icon-wrap i {
+    color: #fff;
 }
 .featured .banner-features h4 {
     font-size: 15px;
     font-weight: 700;
+    color: var(--brand-navy);
     margin: 0;
-    color: #253d4e;
 }
 .featured .banner-features p {
     font-size: 12px;
@@ -294,12 +314,18 @@ body {
 @media (max-width: 991px) {
     .featured .banner-features { min-height: 130px; }
 }
+@media (max-width: 767px) {
+    .featured .banner-features { min-height: 120px; padding: 18px 10px; }
+}
+@media (max-width: 420px) {
+    .featured .banner-features { min-height: 110px; }
+}
 
 /* ══════════════════════════════════════════
-   TASK 3 — Header brand color + hierarchy
+   TASK 1 (HEADER) — Brand color: navy header + nav
    ══════════════════════════════════════════ */
 .header-top.header-top-ptb-1 {
-    background: #0d3b66 !important;
+    background: var(--brand-navy) !important;
 }
 .header-top .header-info a,
 .header-top .header-info-right a,
@@ -316,11 +342,10 @@ body {
 }
 
 .header-bottom.header-bottom-bg-color {
-    background: #0d3b66 !important;
+    background: var(--brand-navy) !important;
     border-top: none;
     box-shadow: 0 2px 12px rgba(13,59,102,.25);
 }
-/* nav links */
 .header-bottom .main-menu > nav > ul > li > a {
     color: rgba(255,255,255,.88) !important;
     font-weight: 600;
@@ -330,7 +355,6 @@ body {
 .header-bottom .main-menu > nav > ul > li > a.active {
     color: #ffd166 !important;
 }
-/* Browse Categories button */
 .header-bottom .categori-button-active {
     color: rgba(255,255,255,.9) !important;
     background: rgba(255,255,255,.08) !important;
@@ -341,31 +365,31 @@ body {
 .header-bottom .categori-button-active:hover {
     background: rgba(255,255,255,.15) !important;
 }
-/* Keep logo legible */
 .header-bottom .logo img { filter: brightness(0) invert(1); }
 
 /* ══════════════════════════════════════════
-   TASK 1 — Equal-height product cards + 2-line name clamp
+   TASK 2 — Equal-height product cards + 2-line name clamp
    ══════════════════════════════════════════ */
-/* Make columns flex so cards stretch to full height */
 .product-grid-4 [class*="col-"] {
     display: flex;
 }
-/* Card stretches to fill its column */
 .product-card {
     display: flex !important;
     flex-direction: column !important;
     height: 100% !important;
+    background: var(--card-bg);
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.05);
+    box-shadow: 0 4px 14px rgba(0,0,0,.05);
+    overflow: hidden;
 }
-/* Body (text area) takes all remaining space */
 .product-card .product-body {
     display: flex !important;
     flex-direction: column !important;
     flex: 1 !important;
 }
-/* Title: always 2 lines, no more, no less */
 .product-title {
-    font-size: 16px !important;
+    font-size: 15px !important;
     font-weight: 700 !important;
     margin-bottom: 10px !important;
     line-height: 1.35 !important;
@@ -374,30 +398,99 @@ body {
     -webkit-box-orient: vertical !important;
     line-clamp: 2 !important;
     overflow: hidden !important;
-    min-height: 2.7em;           /* reserves 2 lines for 1-line names */
+    min-height: 2.7em;
 }
-/* Price row + action pinned to bottom */
 .product-card .price-row {
     margin-top: auto !important;
+}
+
+/* ══════════════════════════════════════════
+   TASK 3 — Vertical gap between product rows
+   ══════════════════════════════════════════ */
+.row.product-grid-4 {
+    row-gap: 20px;
+}
+
+/* ══════════════════════════════════════════
+   TASK 4 — Section heading: title left, (arrows + VIEW ALL) right
+   ══════════════════════════════════════════ */
+.section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+    flex-wrap: nowrap;
+}
+.section-head .section-title { margin: 0; }
+.section-head .head-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+/* Inline the Slick arrow container when inside heading row */
+.section-head .head-actions .slider-arrow {
+    position: static !important;
+    display: inline-flex !important;
+    gap: 4px;
+    align-items: center;
+}
+.section-head .head-actions .slider-arrow .slick-prev,
+.section-head .head-actions .slider-arrow .slick-next {
+    position: static !important;
+    transform: none !important;
+    width: 30px !important;
+    height: 30px !important;
+    top: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px !important;
+    background: rgba(13,59,102,.08) !important;
+    color: var(--brand-navy) !important;
+    border: 1px solid rgba(13,59,102,.12) !important;
+    transition: background .2s, color .2s;
+}
+.section-head .head-actions .slider-arrow .slick-prev:hover,
+.section-head .head-actions .slider-arrow .slick-next:hover {
+    background: var(--brand-red) !important;
+    color: #fff !important;
+    border-color: var(--brand-red) !important;
+}
+.section-head .head-actions .view-all {
+    color: var(--brand-red);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    letter-spacing: .3px;
+}
+.section-head .head-actions .view-all:hover {
+    color: var(--brand-navy);
 }
 
 /* ══════════════════════════════════════════
    TASK 6 — Design system: typography, buttons, price, headings
    ══════════════════════════════════════════ */
 
-/* Section title scale */
+/* Section title scale + navy */
 .section-title {
     font-size: 22px !important;
     font-weight: 700 !important;
     letter-spacing: -.2px;
+    color: var(--brand-navy);
 }
 .section-title span {
-    color: #3bb77e;
+    color: var(--brand-red);
 }
 
-/* Shared "Add to Cart" action button */
+/* Shared "Add to Cart" action button — brand red */
 .action-btn {
-    background: #3bb77e !important;
+    background: var(--brand-red) !important;
     color: #fff !important;
     border-radius: 10px !important;
     width: 40px !important;
@@ -410,15 +503,15 @@ body {
     border: none !important;
 }
 .action-btn:hover {
-    background: #253d4e !important;
+    background: var(--brand-navy) !important;
     transform: scale(1.08) !important;
     color: #fff !important;
 }
 
-/* Price block consistency */
+/* Price block — sale price red, old price struck */
 .price-now, .product-price > span:first-child {
     font-weight: 800 !important;
-    color: #3bb77e !important;
+    color: var(--brand-red) !important;
     font-size: 15px !important;
 }
 .price-old, .product-price .old-price {
@@ -444,31 +537,23 @@ body {
     font-weight: 600 !important;
 }
 
-/* Discount badge pill */
+/* Badges */
 .badge.sale {
     font-size: 10px !important;
     padding: 3px 8px !important;
     border-radius: 12px !important;
     font-weight: 700 !important;
-    background: #fd6282 !important;
+    background: var(--brand-red) !important;
 }
-.badge.hot   { background: #ff5a5f !important; border-radius: 12px !important; }
-.badge.new   { background: #3bb77e !important; border-radius: 12px !important; }
-.badge.best-seller { background: #fdc040 !important; border-radius: 12px !important; }
+.badge.hot       { background: var(--brand-red) !important; border-radius: 12px !important; }
+.badge.new       { background: var(--brand-navy) !important; border-radius: 12px !important; }
+.badge.best-seller { background: #fdc040 !important; border-radius: 12px !important; color: #253d4e !important; }
 
-/* Smooth page canvas — white sections */
-.product-tabs.section-padding { background: #fff; border-radius: 16px; }
-
-/* Mobile: ensure banner-features stacks 2 per row below sm */
-@media (max-width: 767px) {
-    .featured .banner-features { min-height: 120px; padding: 18px 10px; }
-}
-@media (max-width: 420px) {
-    .featured .banner-features { min-height: 110px; }
-}
+/* Section tab area on cream canvas */
+.product-tabs.section-padding { background: var(--card-bg); border-radius: 16px; }
 
 /* ══════════════════════════════════════════
-   Section Heading — accent + VIEW ALL link
+   Section Heading — section-header-flex + VIEW ALL
    ══════════════════════════════════════════ */
 .section-header-flex {
     display: flex;
@@ -484,7 +569,7 @@ body {
 .view-all-link {
     font-size: 13px;
     font-weight: 600;
-    color: #3bb77e;
+    color: var(--brand-red);
     text-decoration: none !important;
     letter-spacing: 0.3px;
     white-space: nowrap;
@@ -494,7 +579,7 @@ body {
     gap: 4px;
 }
 .view-all-link:hover {
-    color: #253d4e;
+    color: var(--brand-navy);
 }
 
 /* ══════════════════════════════════════════
@@ -502,15 +587,15 @@ body {
    ══════════════════════════════════════════ */
 .product-cart-wrap {
     border-radius: 12px !important;
-    border: 1px solid #f0f0f0;
-    background: #fff;
+    border: 1px solid rgba(0,0,0,.06);
+    background: var(--card-bg);
     overflow: hidden;
     transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
 .product-cart-wrap:hover {
     transform: translateY(-6px) !important;
     box-shadow: 0 12px 28px rgba(0,0,0,.10) !important;
-    border-color: #3bb77e !important;
+    border-color: var(--brand-red) !important;
 }
 .product-cart-wrap .product-content-wrap {
     padding: 10px 12px 14px;
@@ -523,12 +608,12 @@ body {
     margin-bottom: 5px;
 }
 .product-cart-wrap .product-content-wrap h2 a:hover {
-    color: #3bb77e;
+    color: var(--brand-red);
     text-decoration: none;
 }
 .product-cart-wrap .product-price > span:first-child {
     font-weight: 700;
-    color: #3bb77e;
+    color: var(--brand-red);
     font-size: 14px;
 }
 .product-cart-wrap .product-price .old-price {
@@ -553,15 +638,15 @@ body {
 .card-1 {
     border-radius: 10px;
     overflow: hidden;
-    background: #fff;
-    border: 1px solid #f0f0f0;
+    background: var(--card-bg);
+    border: 1px solid rgba(0,0,0,.06);
     transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     padding-bottom: 10px;
 }
 .card-1:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 24px rgba(0,0,0,.09);
-    border-color: #3bb77e;
+    border-color: var(--brand-red);
 }
 .card-1 h5 {
     font-size: 13px;
@@ -571,4 +656,4 @@ body {
     line-height: 1.4;
     color: #253d4e;
 }
-.card-1 h5 a:hover { color: #3bb77e; text-decoration: none; }
+.card-1 h5 a:hover { color: var(--brand-red); text-decoration: none; }

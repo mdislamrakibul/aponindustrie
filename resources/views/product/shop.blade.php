@@ -23,9 +23,20 @@
     <section class="mt-20 mb-50">
         <div class="container">
             <div class="section-header-flex mb-25">
-                <h3 class="section-title style-1 mb-0"><span>All</span> Products</h3>
+                <h3 class="section-title style-1 mb-0">
+                    @if(request('discount'))
+                        <span>Discounted</span> Products
+                    @else
+                        <span>All</span> Products
+                    @endif
+                </h3>
                 <span class="text-muted" style="font-size:13px;">
-                    {{ $products->total() }} products — A to Z
+                    {{ $products->total() }} products
+                    @if(request('discount'))
+                        &nbsp;·&nbsp;<a href="{{ route('shop') }}" style="color:var(--brand-red);font-weight:600;font-size:12px;">Show all</a>
+                    @else
+                        — A to Z
+                    @endif
                 </span>
             </div>
 
