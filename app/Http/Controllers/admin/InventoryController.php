@@ -133,16 +133,17 @@ class InventoryController extends Controller
         $product->save();
 
         ActivityLog::create([
-            'user_id' => session('user_id'),
-            'module'  => 'Inventory Management',
-            'action'  => 'STOCK UPDATE',
-            'item'    => $product->name,
-            'details' => 'Stock: '          . $product->stock_quantity .
-                        ' | Per Piece: ৳'  . $product->sale_price .
-                        ' | Min Order: '   . $product->minimum_order .
-                        ' | Package: ৳'    . $product->package_price .
-                        ' | Regular: ৳'    . $product->regular_price .
-                        ' | Tax: '         . $product->tax_percentage . '%',
+            'user_id'      => session('user_id'),
+            'performed_by' => session('user_name'),
+            'module'       => 'Inventory Management',
+            'action'       => 'STOCK UPDATE',
+            'item'         => $product->name,
+            'details'      => 'Stock: '          . $product->stock_quantity .
+                             ' | Per Piece: ৳'  . $product->sale_price .
+                             ' | Min Order: '   . $product->minimum_order .
+                             ' | Package: ৳'    . $product->package_price .
+                             ' | Regular: ৳'    . $product->regular_price .
+                             ' | Tax: '         . $product->tax_percentage . '%',
         ]);
 
         return redirect()

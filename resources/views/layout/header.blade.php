@@ -1,11 +1,11 @@
 <style>
     :root {
-        --brand-color: #3BB77E;
+        --brand-color: #c54836;
         --hover-bg: #f2f3f8;
         --text-main: #253D4E;
         --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-        --primary: #3BB77E;
+        --primary: #c54836;
         --secondary: #FDC040;
         --danger: #fd6282;
         --info: #67bcee;
@@ -37,7 +37,7 @@
     }
 
     .save {
-        background: #3bb77e !important;
+        background: #0d3b66 !important;
     }
 
     .badge.hot {
@@ -79,7 +79,7 @@
     }
 
     .account-dropdown-trigger:hover {
-        color: #3bb77e;
+        color: #0d3b66;
     }
 
     .account-name {
@@ -133,32 +133,39 @@
     .account-dropdown-links {
         list-style: none;
         margin: 0;
-        padding: 8px 0;
+        padding: 6px 0;
     }
 
+    /* ── base link reset ── */
     .account-dropdown-links li a {
         display: flex;
         align-items: center;
         gap: 10px;
         padding: 10px 16px;
         font-size: 13px;
-        color: #333;
-        text-decoration: none;
-        transition: background 0.2s;
+        font-weight: 500;
+        text-decoration: none !important;
+        transition: background 0.18s, color 0.18s;
+        border-radius: 0;
     }
-
-    .account-dropdown-links li a:hover {
-        background: #f0fdf8;
-        color: #3bb77e;
-    }
-
     .account-dropdown-links li a i {
-        width: 16px;
-        color: #3bb77e;
+        width: 17px;
+        text-align: center;
+        flex-shrink: 0;
+        font-size: 14px;
     }
 
+    /* ── All dropdown links — same navy color ── */
+    /* Two-class selector beats .header-top .header-info-right a { color:#fff !important } */
+    .account-dropdown .account-dropdown-links li a,
+    .account-dropdown .account-dropdown-links li a i { color: #0d3b66 !important; }
+
+    .account-dropdown .account-dropdown-links li a:hover,
+    .account-dropdown .account-dropdown-links li a:hover i { color: #f15412 !important; background: transparent; }
+
+    /* ── Logout button ── */
     .account-dropdown-footer {
-        padding: 12px 16px;
+        padding: 10px 16px;
         border-top: 1px solid #eee;
     }
 
@@ -166,22 +173,19 @@
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 8px;
-        background: #fff0f0;
-        border: 1px solid #ffcdd2;
-        border-radius: 6px;
-        color: #e53935;
+        gap: 9px;
+        padding: 8px 0;
+        background: none;
+        border: none;
         font-size: 13px;
         font-weight: 600;
+        color: #0d3b66;
         cursor: pointer;
-        transition: background 0.2s;
+        transition: color 0.18s;
     }
-
-    .account-dropdown-footer button:hover {
-        background: #ffebee;
-    }
+    .account-dropdown-footer button i { color: #0d3b66; font-size: 14px; }
+    .account-dropdown-footer button:hover,
+    .account-dropdown-footer button:hover i { color: #f15412; }
 </style>
 
 <header class="header-area header-style-1 header-height-2">
@@ -195,7 +199,7 @@
                             <li>
                                 <a title="Hotline: (+880)1330-473873" href="tel:+8801330473873"
                                     style="color: #ed4943 !important"><span
-                                        class="icon label-before fa fa-phone"></span>Hotline: (+880)1330-473873</a>
+                                        class="icon label-before fa fa-phone"></span> (+880)1330-473873</a>
 
                             </li>
                         </ul>
@@ -245,25 +249,25 @@
                                 </a>
                                 <div class="account-dropdown">
                                     <div class="account-dropdown-header">
-                                        <i class="fa fa-user-circle" style="font-size:30px;color:#3BB77E;flex-shrink:0;"></i>
+                                        <i class="fa fa-user-circle" style="font-size:30px;color:#0d3b66;flex-shrink:0;"></i>
                                         <div>
                                             <strong>{{ session('user_name') }}</strong>
                                             <small>{{ ucfirst(session('user_role', 'customer')) }}</small>
                                         </div>
                                     </div>
                                     <ul class="account-dropdown-links">
-                                        <li>
+                                        <li class="adl-account">
                                             <a href="{{ route('customer.profile') }}">
                                                 <i class="fa fa-user"></i> My Account
                                             </a>
                                         </li>
-                                        <li>
+                                        <li class="adl-orders">
                                             <a href="{{ route('customer.profile') }}#order-history">
                                                 <i class="fa fa-shopping-bag"></i> My Orders
                                             </a>
                                         </li>
                                         @if(in_array(session('user_role'), ['admin', 'vendor', 'accountant']))
-                                        <li>
+                                        <li class="adl-dashboard">
                                             <a href="{{ url('/admin/dashboard') }}">
                                                 <i class="fa fa-tachometer"></i> Dashboard
                                             </a>

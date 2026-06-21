@@ -671,16 +671,19 @@
             e.preventDefault();
             container.addClass("sidebar-visible");
             wrapper4.addClass("mobile-menu-active");
+            $(".categori-dropdown-active-small").slideDown(300);
         });
 
         endTrigger.on("click", function () {
             container.removeClass("sidebar-visible");
             wrapper4.removeClass("mobile-menu-active");
+            $(".categori-dropdown-active-small").slideUp(300);
         });
 
         $(".body-overlay-1").on("click", function () {
             container.removeClass("sidebar-visible");
             wrapper4.removeClass("mobile-menu-active");
+            $(".categori-dropdown-active-small").slideUp(300);
         });
     }
     mobileHeaderActive();

@@ -79,8 +79,8 @@
         }
 
         .news-item a {
-            color: #3bb77e;
-            /* Theme green for links */
+            color: #0d3b66;
+            /* Brand navy for links */
             font-weight: 600;
             text-decoration: underline;
         }
@@ -148,8 +148,8 @@
         }
 
         .menu-item:hover {
-            color: #3bb77e;
-            /* Theme green hover color */
+            color: #0d3b66;
+            /* Brand navy hover color */
         }
 
         /* --- Vertical Separators --- */

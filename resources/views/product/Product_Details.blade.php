@@ -82,8 +82,9 @@
                                             <li><strong class="mr-10">Share this:</strong></li>
                                             <li class="social-facebook"><a href="#"><img
                                                         src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
-                                            <li class="social-twitter"> <a href="#"><img
-                                                        src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a></li>
+                                            <li class="social-twitter"><a href="#" title="X">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="vertical-align:middle;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                            </a></li>
                                             <li class="social-instagram"><a href="#"><img
                                                         src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
                                             </li>
@@ -186,8 +187,6 @@
                                         </div>
                                         <div class="product_sort_info font-xs mb-30">
                                             <ul>
-                                                <li class=""><i class="fi-rs-crown mr-5"></i> 1 Year Brand Warranty</li>
-                                                <li class=""><i class="fi-rs-refresh mr-5"></i> 30 Day Return Policy</li>
                                                 <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available
                                                 </li>
                                             </ul>
@@ -246,16 +245,29 @@
                                     <!-- Detail Info -->
                                 </div>
                             </div>
+                            @php
+                                $aiRows = [];
+                                if ($product->additional_info_active && !empty($product->additional_info)) {
+                                    $decoded = json_decode($product->additional_info, true);
+                                    if (is_array($decoded)) {
+                                        $aiRows = array_values(array_filter($decoded, fn($r) =>
+                                            !empty(trim($r['label'] ?? '')) || !empty(trim($r['value'] ?? ''))
+                                        ));
+                                    }
+                                }
+                            @endphp
                             <div class="tab-style3">
                                 <ul class="nav nav-tabs text-uppercase">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="Description-tab" data-bs-toggle="tab"
                                             href="#Description">Description</a>
                                     </li>
+                                    @if(count($aiRows) > 0)
                                     <li class="nav-item">
                                         <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab"
                                             href="#Additional-info">Additional info</a>
                                     </li>
+                                    @endif
                                     <li class="nav-item">
                                         <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">Reviews
                                             ({{ count($product->reviews) }})</a>
@@ -288,94 +300,20 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="Additional-info">
-                                        <table class="font-md">
-                                            <tbody>
-                                                <tr class="stand-up">
-                                                    <th>Stand Up</th>
-                                                    <td>
-                                                        <p>35″L x 24″W x 37-45″H(front to back wheel)</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="folded-wo-wheels">
-                                                    <th>Folded (w/o wheels)</th>
-                                                    <td>
-                                                        <p>32.5″L x 18.5″W x 16.5″H</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="folded-w-wheels">
-                                                    <th>Folded (w/ wheels)</th>
-                                                    <td>
-                                                        <p>32.5″L x 24″W x 18.5″H</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="door-pass-through">
-                                                    <th>Door Pass Through</th>
-                                                    <td>
-                                                        <p>24</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="frame">
-                                                    <th>Frame</th>
-                                                    <td>
-                                                        <p>Aluminum</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="weight-wo-wheels">
-                                                    <th>Weight (w/o wheels)</th>
-                                                    <td>
-                                                        <p>20 LBS</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="weight-capacity">
-                                                    <th>Weight Capacity</th>
-                                                    <td>
-                                                        <p>60 LBS</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="width">
-                                                    <th>Width</th>
-                                                    <td>
-                                                        <p>24″</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="handle-height-ground-to-handle">
-                                                    <th>Handle height (ground to handle)</th>
-                                                    <td>
-                                                        <p>37-45″</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="wheels">
-                                                    <th>Wheels</th>
-                                                    <td>
-                                                        <p>12″ air / wide track slick tread</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="seat-back-height">
-                                                    <th>Seat back height</th>
-                                                    <td>
-                                                        <p>21.5″</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="head-room-inside-canopy">
-                                                    <th>Head room (inside canopy)</th>
-                                                    <td>
-                                                        <p>25″</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="pa_color">
-                                                    <th>Color</th>
-                                                    <td>
-                                                        <p>Black, Blue, Red, White</p>
-                                                    </td>
-                                                </tr>
-                                                <tr class="pa_size">
-                                                    <th>Size</th>
-                                                    <td>
-                                                        <p>M, S</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        @if(count($aiRows) > 0)
+                                            <table class="font-md">
+                                                <tbody>
+                                                    @foreach($aiRows as $row)
+                                                    <tr>
+                                                        <th>{{ $row['label'] ?? '' }}</th>
+                                                        <td><p>{{ $row['value'] ?? '' }}</p></td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        @else
+                                            <p class="text-muted py-3">No additional information available.</p>
+                                        @endif
                                     </div>
                                     <div class="tab-pane fade" id="Reviews">
                                         <!--Comments-->

@@ -157,6 +157,8 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::get('/orders/new-orders', [AdminOrderController::class, 'newOrders'])->name('orders.new');
     Route::get('/orders/new', [AdminOrderController::class, 'newOrdersPage'])->name('orders.new.page');
+    Route::get('/orders/product-search', [AdminOrderController::class, 'productSearch'])->name('orders.product.search');
+    Route::post('/orders/store-manual', [AdminOrderController::class, 'storeManual'])->name('orders.store.manual');
     Route::post('/orders/{id}/accept', [AdminOrderController::class, 'acceptOrder'])->name('orders.accept');
     Route::post('/orders/{id}/reject', [AdminOrderController::class, 'rejectOrder'])->name('orders.reject');
     Route::post('/orders/{id}/payment-callback', [AdminOrderController::class, 'paymentCallback'])->name('orders.payment.callback');

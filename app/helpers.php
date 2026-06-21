@@ -36,11 +36,12 @@ if (!function_exists('activityLog')) {
     function activityLog($module, $action, $item, $details = null)
     {
         ActivityLog::create([
-            'user_id' => session('user_id'),
-            'module'  => $module,
-            'action'  => $action,
-            'item'    => $item,
-            'details' => $details,
+            'user_id'      => session('user_id'),
+            'performed_by' => session('user_name'),
+            'module'       => $module,
+            'action'       => $action,
+            'item'         => $item,
+            'details'      => $details,
         ]);
     }
 }

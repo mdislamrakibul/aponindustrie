@@ -6,132 +6,143 @@ Admin Profile
 
 @section('content')
 
-
-<!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Dashboard</h1>
-            </div><!-- /.col -->
+                <h1 class="m-0">My Profile</h1>
+            </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item active">Profile</li>
                 </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
+            </div>
+        </div>
+    </div>
 </div>
-<!-- /.content-header -->
 
 <div class="container-fluid">
-    <div class="card shadow-sm mt-6">
-        <div class="card-header bg-white border-bottom d-flex align-items-center">
 
-            <div class="flex-grow-1">
-                <h3 class="card-title font-weight-bold mb-0">
-                    My Profile
-                </h3>
-            </div>
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+        </div>
+    @endif
 
+    @if($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+        </div>
+    @endif
 
-
+    <div class="card shadow-sm">
+        <div class="card-header bg-white border-bottom">
+            <h3 class="card-title font-weight-bold mb-0">Update Profile</h3>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-
                 <div class="row">
 
-
-                    <div class="col-md-6 text-center mb-4">
-
-                        <img id="profilePreview" src="{{ $user->profile_photo ?
-                        asset('storage/' . $user->profile_photo):
-                        asset('admin/dist/img/user2-160x160.jpg')
-                                    }}" class="img-circle elevation-2"
-                            style="  width:120px; height:120px; object-fit:cover; ">
+                    {{-- Profile Photo Preview --}}
+                    <div class="col-12 text-center mb-4">
+                        <img id="profilePreview"
+                             src="{{ $user->profile_photo
+                                ? asset('storage/' . $user->profile_photo)
+                                : asset('admin/dist/img/user2-160x160.jpg') }}"
+                             class="img-circle elevation-2"
+                             style="width:120px;height:120px;object-fit:cover;border:3px solid #dee2e6;">
+                        <div class="mt-2">
+                            <small class="text-muted">Click "Choose File" below to change photo</small>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>
-                            Profile Picture
-                        </label>
-                        <input type="file" id="profilePhotoInput" name="profile_photo" class="form-control"
-                            accept="image/*">
-                    </div>
+
+                    {{-- Profile Photo Upload --}}
                     <div class="col-md-6 mb-3">
-                        <label>First Name</label>
-                        <input type="text" name="first_name" class="form-control" value="{{ $user->first_name }}">
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label>Last Name</label>
-                        <input type="text" name="last_name" class="form-control" value="{{ $user->last_name }}">
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label>Mobile</label>
-                        <input type="text" name="mobile_no" class="form-control" value="{{ $user->mobile_no }}">
+                        <label class="font-weight-bold">Profile Picture</label>
+                        <input type="file"
+                               id="profilePhotoInput"
+                               name="profile_photo"
+                               class="form-control @error('profile_photo') is-invalid @enderror"
+                               accept="image/jpeg,image/jpg,image/png,image/webp">
+                        @error('profile_photo')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="text-muted">JPG, PNG or WEBP — max 2 MB</small>
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control" value="{{ $user->email }}">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label>Role</label>
+                        <label class="font-weight-bold">Role</label>
                         <input type="text" class="form-control" value="{{ strtoupper($user->role) }}" readonly>
                     </div>
 
+                    {{-- Name --}}
                     <div class="col-md-6 mb-3">
-                        <label>Status</label>
+                        <label class="font-weight-bold">First Name <span class="text-danger">*</span></label>
+                        <input type="text" name="first_name" class="form-control @error('first_name') is-invalid @enderror"
+                               value="{{ old('first_name', $user->first_name) }}">
+                        @error('first_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
+                               value="{{ old('last_name', $user->last_name) }}">
+                        @error('last_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold">Mobile <span class="text-danger">*</span></label>
+                        <input type="text" name="mobile_no" class="form-control @error('mobile_no') is-invalid @enderror"
+                               value="{{ old('mobile_no', $user->mobile_no) }}">
+                        @error('mobile_no')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold">Email</label>
+                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                               value="{{ old('email', $user->email) }}"
+                               placeholder="admin@example.com">
+                        @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold">Status</label>
                         <input type="text" class="form-control" value="{{ ucfirst($user->status) }}" readonly>
                     </div>
 
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    Update Profile
+                <hr>
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="fas fa-save mr-1"></i> Update Profile
                 </button>
-
             </form>
         </div>
     </div>
 </div>
 
 @endsection
+
 @push('js')
-
 <script>
-    $(document).ready(function () {
-
-            $('#profilePhotoInput').on('change', function () {
-
-                let file = this.files[0];
-
-                if (file) {
-
-                    let reader = new FileReader();
-
-                    reader.onload = function (e) {
-
-                        $('#profilePreview').attr(
-                            'src',
-                            e.target.result
-                        );
-
-                    }
-
-                    reader.readAsDataURL(file);
-
-                }
-
-            });
-
-        });
-
+    $('#profilePhotoInput').on('change', function () {
+        var file = this.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#profilePreview').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 </script>
-
 @endpush

@@ -1,5 +1,5 @@
 <button id="scrollToTopBtn" aria-label="Scroll to top" title="Back to top">
-    <i class="fas fa-arrow-up"></i>
+    <i class="fa fa-arrow-up"></i>
 </button>
 
 <style>
@@ -7,19 +7,19 @@
         position: fixed;
         right: 20px;
         bottom: 90px;
-        width: 46px;
-        height: 46px;
+        width: 48px;
+        height: 48px;
         border: none;
         border-radius: 50%;
-        background: #0d6efd;
+        background: var(--brand-navy, #0d3b66);
         color: #fff;
         font-size: 18px;
         cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+        box-shadow: 0 4px 16px rgba(13, 59, 102, .35);
         opacity: 0;
         visibility: hidden;
-        transform: translateY(10px);
-        transition: opacity .25s ease, transform .25s ease, visibility .25s;
+        transform: translateY(12px);
+        transition: opacity .25s ease, transform .25s ease, visibility .25s, background .2s;
         z-index: 9999;
         display: flex;
         align-items: center;
@@ -30,7 +30,11 @@
         visibility: visible;
         transform: translateY(0);
     }
-    #scrollToTopBtn:hover { background: #0b5ed7; }
+    #scrollToTopBtn:hover {
+        background: var(--brand-red, #c54836);
+        box-shadow: 0 6px 20px rgba(197, 72, 54, .40);
+        transform: translateY(-2px);
+    }
     @media (max-width: 576px) {
         #scrollToTopBtn { right: 14px; bottom: 80px; width: 42px; height: 42px; font-size: 16px; }
     }

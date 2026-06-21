@@ -71,21 +71,12 @@ class UserController extends Controller
             ]);
 
             ActivityLog::create([
-
-                'user_id' => session('user_id'),
-
-                'module' => 'User Management',
-
-                'item' => $validated['first_name'],
-
-                'action' => 'CREATE',
-
-                'details' =>
-                'Created user: '
-                    . $validated['first_name']
-                    . ' (' . $validated['role'] . ')',
-
-
+                'user_id'      => session('user_id'),
+                'performed_by' => session('user_name'),
+                'module'       => 'User Management',
+                'item'         => $validated['first_name'],
+                'action'       => 'CREATE',
+                'details'      => 'Created user: ' . $validated['first_name'] . ' (' . $validated['role'] . ')',
             ]);
 
             return redirect()
@@ -173,23 +164,12 @@ class UserController extends Controller
         if (count($changes) > 0) {
 
             ActivityLog::create([
-
-                'user_id' => session('user_id'),
-
-                'module' => 'User Management',
-
-                'item' => $newUser->first_name,
-
-                'action' => 'UPDATE',
-
-                'details' =>
-                'Updated user: '
-                    . $newUser->first_name
-                    . ' | Changes: '
-                    . implode(', ', $changes),
-
-
-
+                'user_id'      => session('user_id'),
+                'performed_by' => session('user_name'),
+                'module'       => 'User Management',
+                'item'         => $newUser->first_name,
+                'action'       => 'UPDATE',
+                'details'      => 'Updated user: ' . $newUser->first_name . ' | Changes: ' . implode(', ', $changes),
             ]);
         }
 
@@ -231,20 +211,12 @@ class UserController extends Controller
             ]);
 
         ActivityLog::create([
-
-            'user_id' => session('user_id'),
-
-            'module' => 'User Management',
-
-            'item' => $user->first_name,
-
-            'action' => 'STATUS CHANGE',
-
-            'details' =>
-            'User status changed from '
-                . $user->status
-                . ' to '
-                . $newStatus,
+            'user_id'      => session('user_id'),
+            'performed_by' => session('user_name'),
+            'module'       => 'User Management',
+            'item'         => $user->first_name,
+            'action'       => 'STATUS CHANGE',
+            'details'      => 'User status changed from ' . $user->status . ' to ' . $newStatus,
         ]);
 
         return response()->json([

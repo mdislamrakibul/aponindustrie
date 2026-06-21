@@ -87,6 +87,10 @@ class ProductManagementController extends Controller
             'category_id' => 'required',
             'short_description' => 'required|string|max:500',
             'description' => 'required|string|max:5000',
+            'additional_info_rows'          => 'nullable|array',
+            'additional_info_rows.*.label'  => 'nullable|string|max:255',
+            'additional_info_rows.*.value'  => 'nullable|string|max:1000',
+            'additional_info_active'        => 'nullable|boolean',
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -121,6 +125,9 @@ class ProductManagementController extends Controller
 
         $product->short_description = $request->short_description;
 
+        $product->additional_info        = self::encodeAdditionalInfo($request->input('additional_info_rows', []));
+        $product->additional_info_active = $request->boolean('additional_info_active');
+
         $product->sku = $request->sku;
 
         //$product->barcode = $request->barcode;
@@ -149,17 +156,12 @@ class ProductManagementController extends Controller
 
         $product->save();
         ActivityLog::create([
-
-            'user_id' => session('user_id'),
-
-            'module' => 'Product Management',
-
-            'action' => 'CREATE',
-
-            'item' => $product->name,
-
-            'details' => 'New product created',
-
+            'user_id'      => session('user_id'),
+            'performed_by' => session('user_name'),
+            'module'       => 'Product Management',
+            'action'       => 'CREATE',
+            'item'         => $product->name,
+            'details'      => 'New product created',
         ]);
 
         // IMAGE UPLOAD
@@ -257,6 +259,10 @@ class ProductManagementController extends Controller
             'category_id' => 'required',
             'short_description' => 'required',
             'description' => 'required',
+            'additional_info_rows'         => 'nullable|array',
+            'additional_info_rows.*.label' => 'nullable|string|max:255',
+            'additional_info_rows.*.value' => 'nullable|string|max:1000',
+            'additional_info_active'       => 'nullable|boolean',
             'status' => 'required',
             'image'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -271,6 +277,9 @@ class ProductManagementController extends Controller
         $product->description = $request->description;
 
         $product->short_description = $request->short_description;
+
+        $product->additional_info        = self::encodeAdditionalInfo($request->input('additional_info_rows', []));
+        $product->additional_info_active = $request->boolean('additional_info_active');
 
         $product->sku = $request->sku;
 
@@ -306,17 +315,12 @@ class ProductManagementController extends Controller
 
         $product->save();
         ActivityLog::create([
-
-            'user_id' => session('user_id'),
-
-            'module' => 'Product Management',
-
-            'action' => 'UPDATE',
-
-            'item' => $product->name,
-
-            'details' => 'Product information updated',
-
+            'user_id'      => session('user_id'),
+            'performed_by' => session('user_name'),
+            'module'       => 'Product Management',
+            'action'       => 'UPDATE',
+            'item'         => $product->name,
+            'details'      => 'Product information updated',
         ]);
 
 
@@ -362,17 +366,12 @@ class ProductManagementController extends Controller
                 ]
             );
             ActivityLog::create([
-
-                'user_id' => session('user_id'),
-
-                'module' => 'Product Management',
-
-                'action' => 'IMAGE UPDATE',
-
-                'item' => $product->name,
-
-                'details' => 'Updated product image',
-
+                'user_id'      => session('user_id'),
+                'performed_by' => session('user_name'),
+                'module'       => 'Product Management',
+                'action'       => 'IMAGE UPDATE',
+                'item'         => $product->name,
+                'details'      => 'Updated product image',
             ]);
         }
 
@@ -421,6 +420,14 @@ class ProductManagementController extends Controller
             ->back()
             ->with('success', 'Product updated successfully');
     }
+    private static function encodeAdditionalInfo(array $rows): ?string
+    {
+        $filtered = array_values(array_filter($rows, function ($r) {
+            return !empty(trim($r['label'] ?? '')) || !empty(trim($r['value'] ?? ''));
+        }));
+        return !empty($filtered) ? json_encode($filtered) : null;
+    }
+
     public function toggleStatus($id)
     {
         $product = Product::findOrFail($id);
@@ -432,17 +439,12 @@ class ProductManagementController extends Controller
 
         $product->save();
         ActivityLog::create([
-
-            'user_id' => session('user_id'),
-
-            'module' => 'Product Management',
-
-            'action' => 'STATUS UPDATE',
-
-            'item' => $product->name,
-
-            'details' => 'Changed status to ' . $product->status,
-
+            'user_id'      => session('user_id'),
+            'performed_by' => session('user_name'),
+            'module'       => 'Product Management',
+            'action'       => 'STATUS UPDATE',
+            'item'         => $product->name,
+            'details'      => 'Changed status to ' . $product->status,
         ]);
 
         return redirect()

@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Login;
 use App\Models\Order;
+use App\Models\User;
 
 class CustomerProfileController extends Controller
 {
     /**
-     * Resolve the Login record for the current session regardless of login flow:
-     *   Customer (/login)       → session('user_id') = tbl_info_login.id → Login::find()
-     *   Admin (/admin/login)    → session('user_id') = tbl_info_user.id  → Login::where('user_id')
+     * session('user_id') is now always tbl_info_user.id (fixed in AuthController@login).
+     * Resolve the Login record via the login_id column stored in tbl_info_user.
      */
     private function resolveLogin(): ?Login
     {
@@ -19,8 +19,22 @@ class CustomerProfileController extends Controller
             return null;
         }
 
-        return Login::find($sid)                           // customer: session = login id
-            ?? Login::where('user_id', $sid)->first();     // admin: session = user id
+        // Primary: look up the User record, then follow login_id to tbl_info_login
+        $userRecord = User::find($sid);
+        if ($userRecord && $userRecord->login_id) {
+            $login = Login::find($userRecord->login_id);
+            if ($login) {
+                return $login;
+            }
+        }
+
+        // Fallback: match by mobile number in case login_id is not set
+        $mobile = session('user_mobile');
+        if ($mobile) {
+            return Login::where('phone', $mobile)->first();
+        }
+
+        return null;
     }
 
     public function index()
@@ -31,13 +45,15 @@ class CustomerProfileController extends Controller
             return redirect()->route('login')->with('error', 'Please log in to view your account.');
         }
 
-        // Orders may be stored under either the login id (customers) or the
-        // user id (admins), so we check both to cover both login flows.
-        $sid = session('user_id');
+        // session('user_id') = tbl_info_user.id (current); old orders may still
+        // carry the former tbl_info_login.id — include both to cover migrated data.
+        $sid     = session('user_id');
+        $loginId = $login->id;
+
         $orders = Order::with(['order_items.product', 'order_address'])
-            ->where(function ($q) use ($login, $sid) {
-                $q->where('user_id', $login->id)
-                  ->orWhere('user_id', $sid);
+            ->where(function ($q) use ($sid, $loginId) {
+                $q->where('user_id', $sid)
+                  ->orWhere('user_id', $loginId);
             })
             ->latest()
             ->get();
@@ -53,12 +69,14 @@ class CustomerProfileController extends Controller
             return response()->json(['success' => false, 'message' => 'Unauthenticated'], 401);
         }
 
-        $sid   = session('user_id');
+        $sid     = session('user_id');
+        $loginId = $login->id;
+
         $order = Order::with(['order_items.product', 'order_address'])
             ->where('id', $id)
-            ->where(function ($q) use ($login, $sid) {
-                $q->where('user_id', $login->id)
-                  ->orWhere('user_id', $sid);
+            ->where(function ($q) use ($sid, $loginId) {
+                $q->where('user_id', $sid)
+                  ->orWhere('user_id', $loginId);
             })
             ->first();
 

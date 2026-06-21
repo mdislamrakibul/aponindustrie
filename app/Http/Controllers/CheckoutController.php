@@ -28,7 +28,7 @@ class CheckoutController extends Controller
         });
 
         return view('checkout.Checkout', [
-            'cart_info' => session()->get('cart'),
+            'cart_info' => session()->get('cart', []),
             'subTotal'  => $subtotal,
         ]);
     }

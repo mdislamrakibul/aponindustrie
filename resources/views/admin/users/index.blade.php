@@ -3,6 +3,21 @@
 @section('title', 'User Management')
 
 @section('content')
+<style>
+    .dash-card { background:#fff; border-radius:14px; box-shadow:0 2px 14px rgba(13,59,102,.09); border:none; padding:22px 20px; display:flex; align-items:center; gap:18px; transition:transform .2s,box-shadow .2s; height:100%; }
+    .dash-card:hover { transform:translateY(-4px); box-shadow:0 8px 28px rgba(13,59,102,.16); }
+    .dash-icon { width:58px; height:58px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:#fff; flex-shrink:0; }
+    .dash-icon.navy  { background:linear-gradient(135deg,#0d3b66,#1a5276); }
+    .dash-icon.red   { background:linear-gradient(135deg,#c54836,#e05a44); }
+    .dash-icon.amber { background:linear-gradient(135deg,#d97706,#f59e0b); }
+    .dash-num { font-size:2rem; font-weight:800; color:#0d3b66; line-height:1; }
+    .dash-lbl { font-size:0.8rem; color:#6b7280; margin-top:4px; text-transform:uppercase; letter-spacing:.5px; }
+    .dash-icon.blue { background: linear-gradient(135deg, #0d3b66, #1d6fa4); }
+    .dash-card:has(.dash-icon.navy)  { background: linear-gradient(135deg, #e8f0f8, #dce8f4); }
+    .dash-card:has(.dash-icon.blue)  { background: linear-gradient(135deg, #ddeefa, #d0e8f8); }
+    .dash-card:has(.dash-icon.red)   { background: linear-gradient(135deg, #fce8e6, #fbd8d5); }
+    .dash-card:has(.dash-icon.amber) { background: linear-gradient(135deg, #fef3dc, #fdecd0); }
+</style>
 
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -46,92 +61,43 @@
 
                         </div>
                         {{-- USER DASHBOARD CARDS --}}
-                        <div class="row mb-4">
-
-                            {{-- TOTAL USERS --}}
-                            <div class="col-lg-3 col-6">
-
-                                <div class="small-box bg-info">
-
-                                    <div class="inner">
-
-                                        <h3>{{ $totalUsers }}</h3>
-
-                                        <p>Total Users</p>
-
+                        <div class="row mb-4 mt-3 px-2">
+                            <div class="col-lg-3 col-6 mb-3">
+                                <div class="dash-card">
+                                    <div class="dash-icon navy"><i class="fas fa-users"></i></div>
+                                    <div>
+                                        <div class="dash-num">{{ $totalUsers }}</div>
+                                        <div class="dash-lbl">Total Users</div>
                                     </div>
-
-                                    <div class="icon">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-
                                 </div>
-
                             </div>
-
-                            {{-- ACTIVE USERS --}}
-                            <div class="col-lg-3 col-6">
-
-                                <div class="small-box bg-success">
-
-                                    <div class="inner">
-
-                                        <h3>{{ $activeUsers }}</h3>
-
-                                        <p>Active Users</p>
-
+                            <div class="col-lg-3 col-6 mb-3">
+                                <div class="dash-card">
+                                    <div class="dash-icon blue"><i class="fas fa-user-check"></i></div>
+                                    <div>
+                                        <div class="dash-num">{{ $activeUsers }}</div>
+                                        <div class="dash-lbl">Active Users</div>
                                     </div>
-
-                                    <div class="icon">
-                                        <i class="fas fa-user-check"></i>
-                                    </div>
-
                                 </div>
-
                             </div>
-
-                            {{-- INACTIVE USERS --}}
-                            <div class="col-lg-3 col-6">
-
-                                <div class="small-box bg-danger">
-
-                                    <div class="inner">
-
-                                        <h3>{{ $inactiveUsers }}</h3>
-
-                                        <p>Inactive Users</p>
-
+                            <div class="col-lg-3 col-6 mb-3">
+                                <div class="dash-card">
+                                    <div class="dash-icon red"><i class="fas fa-user-times"></i></div>
+                                    <div>
+                                        <div class="dash-num">{{ $inactiveUsers }}</div>
+                                        <div class="dash-lbl">Inactive Users</div>
                                     </div>
-
-                                    <div class="icon">
-                                        <i class="fas fa-user-times"></i>
-                                    </div>
-
                                 </div>
-
                             </div>
-
-                            {{-- CUSTOMERS --}}
-                            <div class="col-lg-3 col-6">
-
-                                <div class="small-box bg-warning">
-
-                                    <div class="inner">
-
-                                        <h3>{{ $customerUsers }}</h3>
-
-                                        <p>Customers</p>
-
+                            <div class="col-lg-3 col-6 mb-3">
+                                <div class="dash-card">
+                                    <div class="dash-icon amber"><i class="fas fa-user-tag"></i></div>
+                                    <div>
+                                        <div class="dash-num">{{ $customerUsers }}</div>
+                                        <div class="dash-lbl">Customers</div>
                                     </div>
-
-                                    <div class="icon">
-                                        <i class="fas fa-user-tag"></i>
-                                    </div>
-
                                 </div>
-
                             </div>
-
                         </div>
 
                         {{-- INLINE CREATE FORM --}}

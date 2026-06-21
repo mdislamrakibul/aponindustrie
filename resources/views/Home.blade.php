@@ -232,8 +232,8 @@
         }
 
         /* .hot {
-                                                            background: #fdc040;
-                                                        } */
+                                                                background: #fdc040;
+                                                            } */
 
         .discount {
             background: #f74b81 !important;
@@ -246,7 +246,7 @@
         }
 
         .save {
-            background: #3bb77e !important;
+            background: #0d3b66 !important;
         }
 
         .badge.hot {
@@ -443,7 +443,7 @@
                         <a href="{{ route('shop') }}" class="banner-features wow fadeIn animated">
                             <span class="icon-wrap"><i class="fa fa-shopping-bag"></i></span>
                             <h4>Online Order</h4>
-                            <p>Order anytime, anywhere</p>
+                            <p>Order anytime</p>
                         </a>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
@@ -475,8 +475,9 @@
                         </a>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6 mb-3 mb-lg-0">
-                        <a href="https://wa.me/8801992977251?text={{ rawurlencode('Hello! I need support with my order.') }}" target="_blank" class="banner-features wow fadeIn animated">
-                            <span class="icon-wrap"><i class="fa fa-headset"></i></span>
+                        <a href="https://wa.me/8801992977251?text={{ rawurlencode('Hello! I need support with my order.') }}"
+                            target="_blank" class="banner-features wow fadeIn animated">
+                            <span class="icon-wrap"><i class="fi-rs-headset"></i></span>
                             <h4>Online Support</h4>
                             <p>24/7 customer care</p>
                         </a>
@@ -547,7 +548,8 @@
                                 added</button>
                         </li>
                     </ul>
-                    <a href="{{ route('shop') }}" class="view-all-link d-none d-md-flex">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                    <a href="{{ route('shop') }}" class="view-all-link d-none d-md-flex">VIEW ALL <i
+                            class="fi-rs-arrow-right"></i></a>
                 </div>
                 <!--End nav-tabs-->
                 <div class="tab-content wow fadeIn animated" id="myTabContent">
@@ -654,19 +656,15 @@
                                                                         <span class="price-old">৳{{ $prods['regular_price'] }}</span>
                                                                     </div>
 
-                                                                    <div class="product-action-1 show">
-                                                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="{{ route(
+                                                                </div>
+                                                                <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route(
                                     'Product_Cart_Add',
                                     [
                                         'product_name' => $prods['name'],
                                         'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eR67Hyabjda0wIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                         'product_id' => $prods['id']
                                     ]
-                                ) }}">
-
-                                                                            <i class="fi-rs-shopping-bag-add"></i></a>
-                                                                    </div>
-                                                                </div>
+                                ) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                             </div>
                                                         </div>
 
@@ -782,19 +780,15 @@
                                                                         <span class="price-old">৳{{ $prods['regular_price'] }}</span>
                                                                     </div>
 
-                                                                    <div class="product-action-1 show">
-                                                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="{{ route(
+                                                                </div>
+                                                                <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route(
                                     'Product_Cart_Add',
                                     [
                                         'product_name' => $prods['name'],
                                         'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eR67Hyabjda0wIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                         'product_id' => $prods['id']
                                     ]
-                                ) }}">
-
-                                                                            <i class="fi-rs-shopping-bag-add"></i></a>
-                                                                    </div>
-                                                                </div>
+                                ) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                             </div>
                                                         </div>
 
@@ -908,19 +902,15 @@
                                                                         <span class="price-old">৳{{ $prods['regular_price'] }}</span>
                                                                     </div>
 
-                                                                    <div class="product-action-1 show">
-                                                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="{{ route(
+                                                                </div>
+                                                                <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route(
                                     'Product_Cart_Add',
                                     [
                                         'product_name' => $prods['name'],
                                         'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eR67Hyabjda0wIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                         'product_id' => $prods['id']
                                     ]
-                                ) }}">
-
-                                                                            <i class="fi-rs-shopping-bag-add"></i></a>
-                                                                    </div>
-                                                                </div>
+                                ) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                             </div>
                                                         </div>
 
@@ -986,13 +976,13 @@
                 /* width: 100%; */
                 height: 100%;
                 /* object-fit: cover;
-                                    display: block; */
+                                        display: block; */
             }
 
             .full-height-banner .banne_info {
                 position: absolute;
                 /* top: 30px;
-                                    left: 30px; */
+                                        left: 30px; */
                 z-index: 2;
             }
 
@@ -1026,7 +1016,8 @@
                         {{-- 2nd section top part 1 --}}
                         <div class="section-header-flex">
                             <h3 class="section-title style-1 mb-0"><span>New</span> Arrivals</h3>
-                            <a href="{{ route('Top_New_Items') }}" class="view-all-link">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                            <a href="{{ route('Top_New_Items') }}" class="view-all-link">VIEW ALL <i
+                                    class="fi-rs-arrow-right"></i></a>
                         </div>
                         <div class="carausel-6-columns-cover position-relative">
                             <div class="carausel-6-columns carausel-arrow-center" id="carausel-6-1-columns-2">
@@ -1169,7 +1160,6 @@
                 <div class="section-head">
                     <h3 class="section-title style-1 mb-0"><span>Most</span> Selling Product</h3>
                     <div class="head-actions">
-                        <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-arrows"></div>
                         <a href="{{ route('Top_Selling') }}" class="view-all">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
                     </div>
                 </div>
@@ -1273,8 +1263,8 @@
                 <div class="section-head">
                     <h3 class="section-title style-1 mb-0"><span>Most</span> Popular Product</h3>
                     <div class="head-actions">
-                        <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-2-arrows"></div>
-                        <a href="{{ route('Top_Rated_Item') }}" class="view-all">VIEW ALL <i class="fi-rs-arrow-right"></i></a>
+                        <a href="{{ route('Top_Rated_Item') }}" class="view-all">VIEW ALL <i
+                                class="fi-rs-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="carausel-6-columns-cover position-relative">

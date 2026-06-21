@@ -52,7 +52,9 @@ class StoreController extends Controller
             ->paginate(20)
             ->withQueryString();
 
-        return view('product.shop', compact('products'));
+        $newProduct = collect($this->newProductsQuery())->shuffle()->take(5);
+
+        return view('product.shop', compact('products', 'newProduct'));
     }
 
     public function Weekly_Featured(Request $request)

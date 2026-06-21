@@ -52,30 +52,111 @@
         }
 
         /* PRIMARY */
-
         .quantity-card-primary .quantity-icon {
-            background: linear-gradient(135deg,
-                    #3b82f6,
-                    #2563eb);
-
+            background: linear-gradient(135deg, #0d3b66, #1a5276);
         }
 
         /* SUCCESS */
-
         .quantity-card-success .quantity-icon {
-            background: linear-gradient(135deg,
-                    #10b981,
-                    #059669);
-            box-shadow: 1px 1px 1px 1px #059669;
+            background: linear-gradient(135deg, #0d3b66, #1d6fa4);
         }
 
         /* WARNING */
-
         .quantity-card-warning .quantity-icon {
-            background: linear-gradient(135deg,
-                    #f59e0b,
-                    #d97706);
-            box-shadow: 1px 1px 1px 1px #d97706;
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+        }
+
+        .quantity-content h3 {
+            color: #0d3b66;
+        }
+
+        .dash-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 14px rgba(13, 59, 102, .09);
+            border: none;
+            padding: 22px 20px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: transform .2s, box-shadow .2s;
+            height: 100%;
+        }
+
+        .dash-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 28px rgba(13, 59, 102, .16);
+        }
+
+        .dash-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .dash-icon.navy {
+            background: linear-gradient(135deg, #0d3b66, #1a5276);
+        }
+
+        .dash-icon.red {
+            background: linear-gradient(135deg, #c54836, #e05a44);
+        }
+
+        .dash-icon.amber {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+        }
+
+        .dash-num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0d3b66;
+            line-height: 1;
+        }
+
+        .dash-lbl {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .dash-icon.blue {
+            background: linear-gradient(135deg, #0d3b66, #1d6fa4);
+        }
+
+        .dash-card:has(.dash-icon.navy) {
+            background: linear-gradient(135deg, #e8f0f8, #dce8f4);
+        }
+
+        .dash-card:has(.dash-icon.blue) {
+            background: linear-gradient(135deg, #ddeefa, #d0e8f8);
+        }
+
+        .dash-card:has(.dash-icon.red) {
+            background: linear-gradient(135deg, #fce8e6, #fbd8d5);
+        }
+
+        .dash-card:has(.dash-icon.amber) {
+            background: linear-gradient(135deg, #fef3dc, #fdecd0);
+        }
+
+        .quantity-card-primary {
+            background: linear-gradient(135deg, #e8f0f8, #dce8f4);
+        }
+
+        .quantity-card-success {
+            background: linear-gradient(135deg, #ddeefa, #d0e8f8);
+        }
+
+        .quantity-card-warning {
+            background: linear-gradient(135deg, #fef3dc, #fdecd0);
         }
     </style>
 
@@ -116,79 +197,39 @@
 
                 <div class="card-body">
                     <div class="row">
-
-                        {{-- TOTAL PRODUCTS --}}
-                        <div class="col-lg-3 col-6">
-
-                            <div class="small-box bg-info">
-
-                                <div class="inner">
-
-                                    <h3>{{ $totalProducts }}</h3>
-
-                                    <p>Total Inventory Products</p>
-
+                        <div class="col-lg-3 col-6 mb-3">
+                            <div class="dash-card">
+                                <div class="dash-icon navy"><i class="fas fa-boxes"></i></div>
+                                <div>
+                                    <div class="dash-num">{{ $totalProducts }}</div>
+                                    <div class="dash-lbl">Total Products</div>
                                 </div>
-
-                                <div class="icon">
-                                    <i class="fas fa-boxes"></i>
-                                </div>
-
                             </div>
-
                         </div>
-
-                        {{-- IN STOCK --}}
-                        <div class="col-lg-3 col-6">
-
-                            <div class="small-box bg-success">
-
-                                <div class="inner">
-
-                                    <h3>{{ $inStockProducts }}</h3>
-
-                                    <p>In Stock</p>
-
+                        <div class="col-lg-3 col-6 mb-3">
+                            <div class="dash-card">
+                                <div class="dash-icon blue"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <div class="dash-num">{{ $inStockProducts }}</div>
+                                    <div class="dash-lbl">In Stock</div>
                                 </div>
-
-                                <div class="icon">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
-
                             </div>
-
                         </div>
-
-                        {{-- LOW STOCK --}}
-                        <div class="col-lg-3 col-6">
-
-                            <div class="small-box bg-warning">
-
-                                <div class="inner">
-
-                                    <h3>{{ $lowStockProducts }}</h3>
-
-                                    <p>Low Stock</p>
-
+                        <div class="col-lg-3 col-6 mb-3">
+                            <div class="dash-card">
+                                <div class="dash-icon amber"><i class="fas fa-exclamation-triangle"></i></div>
+                                <div>
+                                    <div class="dash-num">{{ $lowStockProducts }}</div>
+                                    <div class="dash-lbl">Low Stock</div>
                                 </div>
-
-                                <div class="icon">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </div>
-
                             </div>
-
                         </div>
-
-                        {{-- OUT OF STOCK --}}
-                        <div class="col-lg-3 col-6">
-                            <div class="small-box bg-danger">
-                                <div class="inner">
-                                    <h3>{{ $outOfStockProducts }}</h3>
-                                    <p>Out Of Stock</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-times-circle"></i>
+                        <div class="col-lg-3 col-6 mb-3">
+                            <div class="dash-card">
+                                <div class="dash-icon red"><i class="fas fa-times-circle"></i></div>
+                                <div>
+                                    <div class="dash-num">{{ $outOfStockProducts }}</div>
+                                    <div class="dash-lbl">Out of Stock</div>
                                 </div>
                             </div>
                         </div>
@@ -207,7 +248,7 @@
                         {{-- TOTAL QUANTITY --}}
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="quantity-card quantity-card-primary"
-                                style="box-shadow: 1px 1px 1px 1px #2563eb !important ">
+                                style="box-shadow: 1px 1px 1px 1px #0d3b66 !important">
                                 <div class="quantity-icon">
                                     <i class="fas fa-cubes"></i>
                                 </div>
@@ -216,7 +257,7 @@
                                         {{ $totalStockQuantity ?? 0 }}
                                     </h3>
                                     <p>
-                                        Total Stock Quantity
+                                        Total Stock QTY
                                     </p>
                                 </div>
                             </div>
@@ -227,7 +268,7 @@
                         <div class="col-lg-4 col-md-6 mb-4">
 
                             <div class="quantity-card quantity-card-success"
-                                style="box-shadow: 1px 1px 1px 1px #059669 !important ">
+                                style="box-shadow: 1px 1px 1px 1px #1d6fa4 !important">
 
                                 <div class="quantity-icon">
                                     <i class="fas fa-layer-group"></i>
@@ -240,7 +281,7 @@
                                     </h3>
 
                                     <p>
-                                        Available Stock Quantity
+                                        Available Stock QTY
                                     </p>
 
                                 </div>
@@ -253,7 +294,7 @@
                         <div class="col-lg-4 col-md-6 mb-4">
 
                             <div class="quantity-card quantity-card-warning"
-                                style="box-shadow: 1px 1px 1px 1px #d97706 !important ">
+                                style="box-shadow: 1px 1px 1px 1px #d97706 !important">
 
                                 <div class="quantity-icon">
                                     <i class="fas fa-exclamation"></i>
@@ -266,7 +307,7 @@
                                     </h3>
 
                                     <p>
-                                        Low Stock Quantity
+                                        Low Stock QTY
                                     </p>
 
                                 </div>
@@ -336,7 +377,7 @@
                             <div class="col-md-2 mb-3">
                                 <label class="font-weight-semibold">
                                     Add Stock
-                                    <small class="text-muted">(Add new stock)</small>
+                                    <small class="text-muted">(Add stock)</small>
                                 </label>
                                 <input type="number" id="stock_quantity" name="stock_quantity" class="form-control" min="0"
                                     placeholder="0 ">
@@ -438,13 +479,13 @@
                             <div class="col-md-3 mb-3">
                                 <label class="font-weight-semibold">Live Summary</label>
                                 <div style="
-                                                                                    background:#f8fafc;
-                                                                                    border:1px solid #e2e8f0;
-                                                                                    border-radius:8px;
-                                                                                    padding:10px 14px;
-                                                                                    font-size:13px;
-                                                                                    line-height:24px;
-                                                                                ">
+                                                                                            background:#f8fafc;
+                                                                                            border:1px solid #e2e8f0;
+                                                                                            border-radius:8px;
+                                                                                            padding:10px 14px;
+                                                                                            font-size:13px;
+                                                                                            line-height:24px;
+                                                                                        ">
                                     <div class="d-flex justify-content-between">
                                         <span class="text-muted">Package Price</span>
                                         <strong id="s_package">—</strong>

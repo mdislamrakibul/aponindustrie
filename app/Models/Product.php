@@ -13,7 +13,8 @@ class Product extends Model
     use HasFactory;
     protected $table = 'tbl_products';
     protected $casts = [
-        'publish_date' => 'datetime',
+        'publish_date'           => 'datetime',
+        'additional_info_active' => 'boolean',
     ];
     protected $fillable = [
 
@@ -25,6 +26,9 @@ class Product extends Model
 
         'description',
         'short_description',
+
+        'additional_info',
+        'additional_info_active',
 
         'sku',
         'barcode',

@@ -45,11 +45,18 @@ class AuthController extends Controller
             // UPDATE LAST LOGIN
             $user->last_login_at = now();
             $user->save();
+
+            // Resolve the tbl_info_user.id so session('user_id') is consistent
+            // with the adminLogin flow (both must store tbl_info_user.id).
+            // tbl_info_user has a login_id column linking back to tbl_info_login.
+            $userRecord = User::where('login_id', $user->id)->first()
+                ?? User::where('mobile_no', $user->phone)->first();
+
             session([
-                'user_id' => $user->id,
-                'user_name' => trim($user->first_name . ' ' . $user->last_name),
+                'user_id'     => $userRecord ? $userRecord->id : $user->id,
+                'user_name'   => trim($user->first_name . ' ' . $user->last_name),
                 'user_mobile' => $user->phone,
-                'user_role' => $user->role,
+                'user_role'   => $user->role,
             ]);
 
             $request->session()->regenerate();

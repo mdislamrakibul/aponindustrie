@@ -76,7 +76,7 @@
                                     </td>
 
                                     <td>
-                                        {{ $log->user->first_name ?? 'Unknown' }}
+                                        {{ $log->performed_by ?? 'Unknown Admin' }}
                                     </td>
 
                                     <td>

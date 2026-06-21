@@ -13,7 +13,7 @@
             {{-- LEFT: Profile Card --}}
             <div class="col-12 col-md-4 col-lg-3 mb-4">
                 <div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08);">
-                    <div style="background: linear-gradient(135deg, #3BB77E, #2a9d60); padding: 28px 20px; text-align: center;">
+                    <div style="background: linear-gradient(135deg, #0d3b66, #1a5276); padding: 28px 20px; text-align: center;">
                         <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">
                             <i class="fa fa-user" style="font-size: 30px; color: #fff;"></i>
                         </div>
@@ -35,7 +35,7 @@
                             <tr style="border-top: 1px solid #f0f0f0;">
                                 <td style="padding: 7px 0; color: #888;">Status</td>
                                 <td style="padding: 7px 0;">
-                                    <span style="color: {{ ($login->status ?? 'active') === 'active' ? '#3BB77E' : '#dc3545' }}; font-weight: 600; text-transform: capitalize;">
+                                    <span style="color: {{ ($login->status ?? 'active') === 'active' ? '#0d3b66' : '#dc3545' }}; font-weight: 600; text-transform: capitalize;">
                                         {{ $login->status ?? 'Active' }}
                                     </span>
                                 </td>
@@ -94,7 +94,7 @@
                                 @endphp
                                 <tr style="border-top: 1px solid #f0f0f0;">
                                     <td style="padding: 14px 16px; white-space: nowrap;">
-                                        <strong style="color: #3BB77E;">{{ $order->order_number }}</strong>
+                                        <strong style="color: #0d3b66;">{{ $order->order_number }}</strong>
                                     </td>
                                     <td style="padding: 14px 16px; color: #555; white-space: nowrap;">
                                         {{ $order->created_at->format('d M Y') }}
@@ -114,7 +114,7 @@
                                     </td>
                                     <td style="padding: 14px 16px; text-align: center;">
                                         <button onclick="viewOrder({{ $order->id }})"
-                                            style="background: #3BB77E; color: #fff; border: none; border-radius: 6px; padding: 5px 14px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                                            style="background: #0d3b66; color: #fff; border: none; border-radius: 6px; padding: 5px 14px; font-size: 12px; font-weight: 600; cursor: pointer;">
                                             View
                                         </button>
                                     </td>
@@ -141,14 +141,14 @@
 <div id="orderModal"
      style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.55); z-index: 9999; overflow-y: auto; padding: 30px 15px;">
     <div style="max-width: 700px; margin: 0 auto; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.3);">
-        <div style="background: linear-gradient(135deg, #3BB77E, #2a9d60); color: #fff; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="background: linear-gradient(135deg, #0d3b66, #1a5276); color: #fff; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between;">
             <span style="font-size: 15px; font-weight: 700;"><i class="fa fa-file-text-o" style="margin-right: 8px;"></i>Order Summary</span>
             <button onclick="closeModal()"
                     style="background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; line-height: 1; padding: 0;">&times;</button>
         </div>
         <div id="orderModalBody" style="padding: 24px;">
             <div style="text-align: center; padding: 40px;">
-                <i class="fa fa-spinner fa-spin" style="font-size: 32px; color: #3BB77E;"></i>
+                <i class="fa fa-spinner fa-spin" style="font-size: 32px; color: #0d3b66;"></i>
             </div>
         </div>
     </div>
@@ -159,7 +159,7 @@ function viewOrder(id) {
     var modal = document.getElementById('orderModal');
     var body  = document.getElementById('orderModalBody');
     modal.style.display = 'block';
-    body.innerHTML = '<div style="text-align:center;padding:40px;"><i class="fa fa-spinner fa-spin" style="font-size:32px;color:#3BB77E;"></i><p style="margin-top:12px;color:#999;font-size:13px;">Loading…</p></div>';
+    body.innerHTML = '<div style="text-align:center;padding:40px;"><i class="fa fa-spinner fa-spin" style="font-size:32px;color:#0d3b66;"></i><p style="margin-top:12px;color:#999;font-size:13px;">Loading…</p></div>';
 
     fetch('/my-account/order/' + id, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(function(r) { return r.json(); })
@@ -205,15 +205,15 @@ function viewOrder(id) {
 
             body.innerHTML =
                 '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">'
-                    + '<div style="background:#f8fffe;border:1px solid #d1fae5;border-radius:8px;padding:14px;">'
-                        + '<div style="font-size:10px;font-weight:700;color:#3BB77E;margin-bottom:10px;text-transform:uppercase;letter-spacing:.8px;">Ship To</div>'
+                    + '<div style="background:#f0f4f8;border:1px solid #c8d8e8;border-radius:8px;padding:14px;">'
+                        + '<div style="font-size:10px;font-weight:700;color:#0d3b66;margin-bottom:10px;text-transform:uppercase;letter-spacing:.8px;">Ship To</div>'
                         + '<div style="font-weight:600;font-size:14px;">' + name + '</div>'
                         + '<div style="color:#666;font-size:12px;margin-top:2px;">' + (addr.phone || '') + '</div>'
                         + '<div style="color:#666;font-size:12px;margin-top:2px;">' + (addr.address_line1 || '') + '</div>'
                         + '<div style="color:#666;font-size:12px;margin-top:2px;">' + (addr.email || '') + '</div>'
                     + '</div>'
-                    + '<div style="background:#f8fffe;border:1px solid #d1fae5;border-radius:8px;padding:14px;">'
-                        + '<div style="font-size:10px;font-weight:700;color:#3BB77E;margin-bottom:10px;text-transform:uppercase;letter-spacing:.8px;">Order Info</div>'
+                    + '<div style="background:#f0f4f8;border:1px solid #c8d8e8;border-radius:8px;padding:14px;">'
+                        + '<div style="font-size:10px;font-weight:700;color:#0d3b66;margin-bottom:10px;text-transform:uppercase;letter-spacing:.8px;">Order Info</div>'
                         + '<div style="font-size:13px;margin-bottom:5px;"><strong>Order #:</strong> ' + o.order_number + '</div>'
                         + '<div style="font-size:13px;margin-bottom:5px;"><strong>Payment:</strong> ' + (o.payment_method || 'N/A') + '</div>'
                         + '<div style="font-size:13px;margin-bottom:5px;"><strong>Status:</strong> <span style="background:' + sc.bg + ';color:' + sc.text + ';padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;">' + o.order_status + '</span></div>'
@@ -221,10 +221,10 @@ function viewOrder(id) {
                     + '</div>'
                 + '</div>'
                 + '<table style="width:100%;border-collapse:collapse;margin-bottom:6px;">'
-                    + '<thead><tr style="background:#3BB77E;color:#fff;">'
-                        + '<th style="padding:10px 12px;text-align:left;border:1px solid #3BB77E;">Product</th>'
-                        + '<th style="padding:10px 12px;text-align:center;border:1px solid #3BB77E;width:70px;">Qty</th>'
-                        + '<th style="padding:10px 12px;text-align:right;border:1px solid #3BB77E;width:110px;white-space:nowrap;">Amount</th>'
+                    + '<thead><tr style="background:#0d3b66;color:#fff;">'
+                        + '<th style="padding:10px 12px;text-align:left;border:1px solid #0d3b66;">Product</th>'
+                        + '<th style="padding:10px 12px;text-align:center;border:1px solid #0d3b66;width:70px;">Qty</th>'
+                        + '<th style="padding:10px 12px;text-align:right;border:1px solid #0d3b66;width:110px;white-space:nowrap;">Amount</th>'
                     + '</tr></thead>'
                     + '<tbody>' + rows + '</tbody>'
                     + '<tfoot>'
@@ -232,8 +232,8 @@ function viewOrder(id) {
                             + '<td style="padding:9px 12px;text-align:right;border:1px solid #e5e7eb;background:#f9fafb;white-space:nowrap;">৳' + subtotal.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>'
                         + '<tr><td colspan="2" style="padding:9px 12px;text-align:right;border:1px solid #e5e7eb;background:#f9fafb;color:#555;">Shipping</td>'
                             + '<td style="padding:9px 12px;text-align:right;border:1px solid #e5e7eb;background:#f9fafb;white-space:nowrap;">৳' + ship.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>'
-                        + '<tr><td colspan="2" style="padding:10px 12px;text-align:right;border:1px solid #2a9d60;background:#3BB77E;color:#fff;font-weight:700;">NET PAYABLE</td>'
-                            + '<td style="padding:10px 12px;text-align:right;border:1px solid #2a9d60;background:#3BB77E;color:#fff;font-weight:700;white-space:nowrap;">৳' + grand.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>'
+                        + '<tr><td colspan="2" style="padding:10px 12px;text-align:right;border:1px solid #0d3b66;background:#0d3b66;color:#fff;font-weight:700;">NET PAYABLE</td>'
+                            + '<td style="padding:10px 12px;text-align:right;border:1px solid #0d3b66;background:#0d3b66;color:#fff;font-weight:700;white-space:nowrap;">৳' + grand.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>'
                     + '</tfoot>'
                 + '</table>';
         })

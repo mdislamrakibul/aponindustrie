@@ -4,7 +4,12 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderAddress;
+use App\Models\OrderItems;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminOrderController extends Controller
 {
@@ -39,28 +44,32 @@ class AdminOrderController extends Controller
             $product             = $item->product;
             $minOrder            = ($product->minimum_order ?? 1) ?: 1;
             $item->package_price = (float) $item->price;
-            $item->qty_sets      = (int) round($item->quantity / $minOrder);
+            $item->qty_sets      = $minOrder > 0 ? (int) round($item->quantity / $minOrder) : (int) $item->quantity;
             $item->min_order     = $minOrder;
             $item->line_total    = $item->package_price * $item->qty_sets;
-
             $item->regular_price = (float) ($product->regular_price ?? 0);
+
+            $type  = strtoupper($product->discount_type ?? 'NONE');
+            $value = (float) ($product->discount_value ?? 0);
             $discount = 0;
-            if ($product) {
-                if (($product->discount_type ?? null) === 'percentage') {
-                    $discount = $item->regular_price * ((float) ($product->discount_value ?? 0) / 100);
-                } elseif (($product->discount_type ?? null) === 'fixed') {
-                    $discount = (float) ($product->discount_value ?? 0);
-                } else {
-                    $discount = max(0, $item->regular_price - $item->package_price);
-                }
+            if ($type === 'PERCENTAGE') {
+                $discount = $item->package_price * ($value / 100);
+            } elseif ($type === 'FLAT') {
+                $discount = $value;
             }
             $item->discount_amount = round($discount, 2);
+
+            $item->tax_percentage = (float) ($product->tax_percentage ?? 0);
+            $lineDiscount         = $item->discount_amount * $item->qty_sets;
+            $taxableBase          = max(0, $item->line_total - $lineDiscount);
+            $item->vat_amount     = round($taxableBase * $item->tax_percentage / 100, 2);
 
             return $item;
         });
 
-        $order->accepted_by_name = $order->acceptedBy
-            ? trim(($order->acceptedBy->first_name ?? '') . ' ' . ($order->acceptedBy->last_name ?? ''))
+        $acceptedByUser = $order->acceptedBy;
+        $order->accepted_by_name = ($acceptedByUser && in_array(strtolower($acceptedByUser->role ?? ''), ['admin', 'vendor']))
+            ? trim(($acceptedByUser->first_name ?? '') . ' ' . ($acceptedByUser->last_name ?? ''))
             : null;
 
         return response()->json(['success' => true, 'order' => $order]);
@@ -203,25 +212,31 @@ class AdminOrderController extends Controller
      */
     public function updateDelivery(Request $request, $id)
     {
-        $request->validate(['zone' => 'required|in:inside,outside']);
+        $request->validate([
+            'zone' => 'required|in:dhaka_city,outside_dhaka_city,outside_dhaka_district,free',
+        ]);
 
         $order = Order::find($id);
         if (!$order) {
             return response()->json(['success' => false, 'message' => 'Order not found'], 404);
         }
 
-        $subTotal      = $order->total_amount - $order->shipping_amount;
-        $freeThreshold = config('delivery.free_threshold');
-        $newCharge     = $subTotal > $freeThreshold
-            ? 0
-            : ($request->zone === 'inside' ? config('delivery.inside_dhaka') : config('delivery.outside_dhaka'));
+        $zoneCharges = [
+            'dhaka_city'             => (int) config('delivery.dhaka_city', 75),
+            'outside_dhaka_city'     => (int) config('delivery.outside_dhaka_city', 110),
+            'outside_dhaka_district' => (int) config('delivery.outside_dhaka_district', 135),
+            'free'                   => 0,
+        ];
+
+        $subTotal  = $order->total_amount - $order->shipping_amount;
+        $newCharge = $zoneCharges[$request->zone];
 
         $order->update([
             'shipping_amount' => $newCharge,
             'total_amount'    => $subTotal + $newCharge,
         ]);
 
-        activityLog('Order', 'UPDATE', 'Delivery set (' . $request->zone . ')');
+        activityLog('Order', 'UPDATE', 'Delivery zone set (' . $request->zone . ') — ৳' . $newCharge);
 
         return response()->json([
             'success'         => true,
@@ -273,5 +288,146 @@ class AdminOrderController extends Controller
             'order_status'   => $order->order_status,
             'transaction_id' => $order->transaction_id,
         ]);
+    }
+
+    /**
+     * Product search for the Add Order modal
+     * GET /admin/orders/product-search?q=...
+     */
+    public function productSearch(Request $request)
+    {
+        $q = trim($request->input('q', ''));
+
+        $products = Product::where('status', 'PUBLISHED')
+            ->where(function ($query) use ($q) {
+                $query->where('name', 'LIKE', '%' . $q . '%')
+                      ->orWhere('sku', 'LIKE', '%' . $q . '%');
+            })
+            ->select('id', 'name', 'sku', 'package_price', 'minimum_order', 'stock_quantity')
+            ->orderBy('name')
+            ->limit(10)
+            ->get();
+
+        return response()->json(['success' => true, 'products' => $products]);
+    }
+
+    /**
+     * Place a manual order on behalf of a customer
+     * POST /admin/orders/store-manual
+     */
+    public function storeManual(Request $request)
+    {
+        $request->validate([
+            'name'               => 'required|string|max:255',
+            'phone'              => 'required|string|max:20',
+            'email'              => 'nullable|email|max:255',
+            'address'            => 'nullable|string|max:500',
+            'district'           => 'required|string|max:100',
+            'thana'              => 'nullable|string|max:100',
+            'items'              => 'required|array|min:1',
+            'items.*.product_id' => 'required|integer|exists:tbl_products,id',
+            'items.*.qty'        => 'required|integer|min:1',
+            'payment_method'     => 'required|in:Cash,Cash on Delivery,Online,Bkash',
+            'payment_status'     => 'required|in:PAID,PENDING',
+            'order_status'       => 'required|in:PROCESSING,COMPLETED,DELIVERED,PENDING',
+            'delivery_zone'      => 'required|in:pickup,inside,outside',
+            'notes'              => 'nullable|string|max:1000',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $phone     = preg_replace('/^(\+88|88)/', '', $request->phone);
+            $nameParts = explode(' ', trim($request->name), 2);
+            $fname     = $nameParts[0];
+            $lname     = $nameParts[1] ?? '';
+
+            $existingUser = User::where('mobile_no', $phone)->first();
+            if ($existingUser) {
+                $userId = $existingUser->id;
+            } else {
+                $newUser = User::create([
+                    'first_name' => $fname,
+                    'last_name'  => $lname,
+                    'mobile_no'  => $phone,
+                    'email'      => $request->email,
+                    'role'       => 'customer',
+                    'status'     => 'active',
+                ]);
+                $userId = $newUser->id;
+            }
+
+            // Server-side total computation
+            $subtotal  = 0;
+            $itemsData = [];
+            foreach ($request->items as $item) {
+                $product   = Product::findOrFail($item['product_id']);
+                $qty       = (int) $item['qty'];
+                $qtyUnits  = ($product->minimum_order ?? 1) * $qty;
+                $lineTotal = $product->package_price * $qty;
+                $subtotal += $lineTotal;
+                $itemsData[] = compact('product', 'qty', 'qtyUnits', 'lineTotal');
+            }
+
+            $zone          = $request->delivery_zone;
+            $freeThreshold = config('delivery.free_threshold');
+            if ($zone === 'pickup') {
+                $delivery = 0;
+            } else {
+                $delivery = $subtotal > $freeThreshold
+                    ? 0
+                    : ($zone === 'inside' ? config('delivery.inside_dhaka') : config('delivery.outside_dhaka'));
+            }
+            $total = $subtotal + $delivery;
+
+            $order = Order::create([
+                'user_id'         => $userId,
+                'order_number'    => 'ORD-' . strtoupper(uniqid()),
+                'total_amount'    => $total,
+                'shipping_amount' => $delivery,
+                'payment_method'  => $request->payment_method,
+                'payment_status'  => $request->payment_status,
+                'order_status'    => $request->order_status,
+                'transaction_id'  => 'TRX-' . strtoupper(uniqid()),
+                'notes'           => $request->notes,
+                'accepted_by'     => session('user_id'),
+            ]);
+
+            OrderAddress::create([
+                'order_id'      => $order->id,
+                'type'          => 'BILLING',
+                'first_name'    => $fname,
+                'last_name'     => $lname,
+                'email'         => $request->email,
+                'phone'         => $request->phone,
+                'address_line1' => $request->address,
+                'district'      => $request->district,
+                'thana'         => $request->thana,
+            ]);
+
+            foreach ($itemsData as $d) {
+                OrderItems::create([
+                    'order_id'   => $order->id,
+                    'product_id' => $d['product']->id,
+                    'quantity'   => $d['qtyUnits'],
+                    'price'      => $d['product']->package_price,
+                    'total'      => $d['lineTotal'],
+                ]);
+                Product::where('id', $d['product']->id)->decrement('stock_quantity', $d['qtyUnits']);
+            }
+
+            DB::commit();
+
+            activityLog('Order Management', 'MANUAL ORDER', $order->order_number, 'Manual order placed by admin');
+
+            return response()->json([
+                'success'      => true,
+                'message'      => 'Order placed successfully!',
+                'order_number' => $order->order_number,
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 }

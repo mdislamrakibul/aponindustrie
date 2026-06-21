@@ -28,7 +28,7 @@
                         <div class="card border-0 shadow-sm mb-25" style="border-radius:12px;">
                             <div class="card-body p-4">
                                 <h5 class="mb-20" style="font-weight:700;">
-                                    <i class="fas fa-shopping-cart mr-2" style="color:#3bb77e;"></i>Order Review
+                                    <i class="fas fa-shopping-cart mr-2" style="color:#0d3b66;"></i>Order Review
                                 </h5>
                                 <div class="table-responsive">
                                     <table class="table table-borderless" id="cartReviewTable" style="font-size:14px;">
@@ -70,7 +70,7 @@
                                                 </td>
                                                 <td class="text-right" style="vertical-align:middle;">
                                                     <span class="row-total" data-id="{{ $productId }}"
-                                                          style="font-weight:600;color:#3bb77e;">
+                                                          style="font-weight:600;color:#c54836;">
                                                         ৳{{ number_format($cart['price'] * $cart['quantity'], 2) }}
                                                     </span>
                                                 </td>
@@ -93,7 +93,7 @@
                         <div class="card border-0 shadow-sm mb-25" style="border-radius:12px;">
                             <div class="card-body p-4">
                                 <h5 class="mb-20" style="font-weight:700;">
-                                    <i class="fas fa-map-marker-alt mr-2" style="color:#3bb77e;"></i>Shipping Address
+                                    <i class="fas fa-map-marker-alt mr-2" style="color:#0d3b66;"></i>Shipping Address
                                 </h5>
 
                                 <div class="form-group">
@@ -162,7 +162,7 @@
                         <div class="card border-0 shadow-sm mb-25" style="border-radius:12px;">
                             <div class="card-body p-4">
                                 <h5 class="mb-15" style="font-weight:700;">
-                                    <i class="fas fa-file-invoice mr-2" style="color:#3bb77e;"></i>Billing Address
+                                    <i class="fas fa-file-invoice mr-2" style="color:#0d3b66;"></i>Billing Address
                                 </h5>
                                 <div class="custome-checkbox mb-0">
                                     <input class="form-check-input" type="checkbox" id="sameAsShipping" checked>
@@ -196,7 +196,7 @@
                         <div class="card border-0 shadow-sm mb-25" style="border-radius:12px;">
                             <div class="card-body p-4">
                                 <h5 class="mb-20" style="font-weight:700;">
-                                    <i class="fas fa-credit-card mr-2" style="color:#3bb77e;"></i>Payment Method
+                                    <i class="fas fa-credit-card mr-2" style="color:#0d3b66;"></i>Payment Method
                                 </h5>
 
                                 <div class="payment_option">
@@ -319,7 +319,7 @@
                         <div class="card border-0 shadow-sm mb-25" style="border-radius:12px;">
                             <div class="card-body p-4">
                                 <h5 class="mb-20" style="font-weight:700;">
-                                    <i class="fas fa-receipt mr-2" style="color:#3bb77e;"></i>Order Summary
+                                    <i class="fas fa-receipt mr-2" style="color:#0d3b66;"></i>Order Summary
                                 </h5>
 
                                 <div id="freeDeliveryOffer"
@@ -342,7 +342,7 @@
                                     <tr>
                                         <td style="color:#555;padding:6px 0;">Delivery Charge</td>
                                         <td class="text-right" style="padding:6px 0;">
-                                            <span id="deliveryCostCell" style="color:#3bb77e;font-weight:600;">
+                                            <span id="deliveryCostCell" style="color:#c54836;font-weight:600;">
                                                 <em style="color:#aaa;">Select district…</em>
                                             </span>
                                         </td>
@@ -351,7 +351,7 @@
                                         <td style="font-weight:700;font-size:15px;padding-top:10px;">Total</td>
                                         <td class="text-right" style="padding-top:10px;">
                                             <span id="grandTotalCell"
-                                                  style="font-weight:800;font-size:18px;color:#3bb77e;">
+                                                  style="font-weight:800;font-size:18px;color:#c54836;">
                                                 ৳{{ number_format($subTotal, 2) }}
                                             </span>
                                         </td>
@@ -373,7 +373,7 @@
                                 <div class="custome-checkbox mt-15 mb-20">
                                     <input class="form-check-input" type="checkbox" id="termsCheck" required>
                                     <label class="form-check-label" for="termsCheck">
-                                        <span>I agree to the <a href="#" style="color:#3bb77e;">Terms &amp; Conditions</a></span>
+                                        <span>I agree to the <a href="#" style="color:#0d3b66;">Terms &amp; Conditions</a></span>
                                     </label>
                                 </div>
 
@@ -399,7 +399,7 @@
     .card { transition: box-shadow .2s ease; }
 
     /* ── Qty stepper ── */
-    .qty-btn:hover { background: #f0faf5 !important; border-color: #3bb77e !important; }
+    .qty-btn:hover { background: #f0f4f8 !important; border-color: #0d3b66 !important; }
     .qty-input::-webkit-outer-spin-button,
     .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; }
     .qty-input { -moz-appearance: textfield; }
@@ -425,12 +425,12 @@
         user-select: none;
     }
     .pay-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
-    .pay-card:hover { border-color: #3bb77e; box-shadow: 0 2px 8px rgba(59,183,126,.15); }
-    .pay-card.is-selected { border-color: #3bb77e; background: #f2fbf6; box-shadow: 0 3px 12px rgba(59,183,126,.22); }
+    .pay-card:hover { border-color: #0d3b66; box-shadow: 0 2px 8px rgba(13,59,102,.15); }
+    .pay-card.is-selected { border-color: #0d3b66; background: #f0f4f8; box-shadow: 0 3px 12px rgba(13,59,102,.22); }
     .pay-card__icon { width: 40px; height: 40px; }
     .pay-card__icon svg { width: 40px; height: 40px; }
     .pay-card__name { font-size: 12px; font-weight: 600; color: #444; text-align: center; }
-    .pay-card__check { display: none; position: absolute; top: 5px; right: 7px; font-size: 14px; color: #3bb77e; }
+    .pay-card__check { display: none; position: absolute; top: 5px; right: 7px; font-size: 14px; color: #c54836; }
     .pay-card.is-selected .pay-card__check { display: block; }
 
     /* ── Select2: match Bootstrap form-control height ── */
@@ -489,7 +489,7 @@ $(document).ready(function () {
         var charge = sub > free ? 0 : (isInsideDhaka ? inside : outside);
 
         if (charge === 0) {
-            $('#deliveryCostCell').html('<em style="color:#3bb77e;font-weight:600;">Free Shipping 🎉</em>');
+            $('#deliveryCostCell').html('<em style="color:#0d3b66;font-weight:600;">Free Shipping 🎉</em>');
         } else {
             $('#deliveryCostCell').text('৳' + charge.toFixed(2));
         }

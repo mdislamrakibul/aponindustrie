@@ -4,7 +4,7 @@
 :root {
     --brand-navy:  #0d3b66;
     --brand-red:   #c54836;
-    --brand-cream: #f6f8ed;
+    --brand-cream: #f0f4f8;
     --card-bg:     #ffffff;
 }
 
@@ -135,22 +135,32 @@ body {
     margin: 0;
 }
 
+/* base — overridden by per-item classes below */
 .account-dropdown-links li a {
     display: flex;
     align-items: center;
     gap: 9px;
     padding: 9px 16px;
     font-size: 13px;
-    color: #333;
+    font-weight: 500;
     text-decoration: none;
     transition: background 0.15s, color 0.15s;
 }
-
-.account-dropdown-links li a:hover {
-    background: #f4f6f9;
-    color: var(--brand-red);
+.account-dropdown-links li a i {
+    width: 17px;
+    text-align: center;
+    flex-shrink: 0;
 }
 
+/* All dropdown links — navy default, orange hover */
+/* Two-class selector beats .header-top .header-info-right a { color:#fff !important } */
+.account-dropdown .account-dropdown-links li a,
+.account-dropdown .account-dropdown-links li a i { color: #0d3b66 !important; }
+
+.account-dropdown .account-dropdown-links li a:hover,
+.account-dropdown .account-dropdown-links li a:hover i { color: #f15412 !important; }
+
+/* Logout */
 .account-dropdown-footer {
     border-top: 1px solid #eee;
     padding: 8px 16px;
@@ -161,18 +171,18 @@ body {
     border: none;
     padding: 6px 0;
     width: 100%;
-    text-align: left;
     font-size: 13px;
-    color: #fd6282;
+    font-weight: 600;
+    color: #0d3b66;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 9px;
 }
+.account-dropdown-footer form button i { color: #0d3b66; }
 
-.account-dropdown-footer form button:hover {
-    color: #c0103a;
-}
+.account-dropdown-footer form button:hover,
+.account-dropdown-footer form button:hover i { color: #f15412; }
 
 /* Side banner styles now handled in Home.blade.php inline CSS */
 
@@ -657,3 +667,168 @@ body {
     color: #253d4e;
 }
 .card-1 h5 a:hover { color: var(--brand-red); text-decoration: none; }
+
+/* ══════════════════════════════════════════
+   EQUAL-HEIGHT CARDS — all product showcase sections
+   ══════════════════════════════════════════ */
+
+/* Slick carousel: force track + slides to stretch equally */
+.carausel-6-columns .slick-track {
+    display: flex !important;
+    align-items: stretch !important;
+}
+.carausel-6-columns .slick-slide {
+    display: flex !important;
+    flex-direction: column;
+    height: auto !important;
+}
+.carausel-6-columns .slick-slide > div {
+    display: flex !important;
+    flex: 1;
+    width: 100%;
+}
+
+/* New Arrivals + Most Popular carousel cards */
+.carausel-6-columns .product-cart-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+.carausel-6-columns .product-cart-wrap .product-content-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+}
+.carausel-6-columns .product-cart-wrap .product-content-wrap h2 {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    line-clamp: 2 !important;
+    overflow: hidden !important;
+    min-height: 2.6em !important;
+    line-height: 1.3 !important;
+    margin-bottom: 6px !important;
+}
+.carausel-6-columns .product-cart-wrap .product-content-wrap .product-price {
+    margin-top: auto !important;
+    padding-top: 4px;
+}
+
+/* Most Selling carousel — card-1 fixed image area + title clamp */
+.carausel-6-columns .card-1 {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+}
+.carausel-6-columns .card-1 figure {
+    flex-shrink: 0;
+    height: 160px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    background: #f8f9fa;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+.carausel-6-columns .card-1 figure a {
+    display: block !important;
+    width: 100%;
+    height: 100%;
+}
+.carausel-6-columns .card-1 figure a .default-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transition: transform 0.3s ease;
+}
+.carausel-6-columns .card-1:hover figure a .default-img {
+    transform: scale(1.06);
+}
+.carausel-6-columns .card-1 h5 {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    line-clamp: 2 !important;
+    overflow: hidden !important;
+    min-height: 2.4em !important;
+    line-height: 1.3 !important;
+    flex-shrink: 0;
+}
+
+/* Shop + other store pages grid — product-cart-wrap equal height */
+.product-grid-4 [class*="col-"],
+.product-grid-3 [class*="col-"] {
+    display: flex;
+}
+.product-grid-4 .product-cart-wrap,
+.product-grid-3 .product-cart-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
+.product-grid-4 .product-cart-wrap .product-content-wrap,
+.product-grid-3 .product-cart-wrap .product-content-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+}
+.product-grid-4 .product-cart-wrap .product-content-wrap h2,
+.product-grid-3 .product-cart-wrap .product-content-wrap h2 {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    line-clamp: 2 !important;
+    overflow: hidden !important;
+    min-height: 2.6em !important;
+    line-height: 1.3 !important;
+    margin-bottom: 6px !important;
+}
+.product-grid-4 .product-cart-wrap .product-content-wrap .product-price {
+    margin-top: auto !important;
+}
+.product-grid-4 .product-cart-wrap .product-content-wrap .product-action-1 {
+    margin-top: 8px;
+}
+/* product-grid-3 price-row (wraps price + cart button together) */
+.product-grid-3 .product-cart-wrap .product-content-wrap .price-row {
+    margin-top: auto !important;
+}
+
+/* Full-width Add To Cart button */
+.btn-add-to-cart-full {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    padding: 9px 14px;
+    margin-top: 10px;
+    background: #fff;
+    color: #F97316;
+    border: 1.5px solid #F97316;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+    line-height: 1.4;
+}
+.btn-add-to-cart-full:hover,
+.btn-add-to-cart-full:focus {
+    background: #F97316;
+    color: #fff;
+    text-decoration: none;
+}
+.btn-add-to-cart-full i {
+    font-size: 15px;
+}
+
+/* Hide Slick nav arrows on Most Selling + Most Popular home carousels */
+#carausel-6-columns .slick-prev,
+#carausel-6-columns .slick-next,
+#carausel-6-columns-2 .slick-prev,
+#carausel-6-columns-2 .slick-next {
+    display: none !important;
+}

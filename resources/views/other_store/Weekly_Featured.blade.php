@@ -8,7 +8,7 @@
         .product-cart-wrap:hover {
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
             transform: translateY(-8px) !important;
-            border: 1px solid #3BB77E !important;
+            border: 1px solid #c54836 !important;
         }
     </style>
     <!--main area-->
@@ -218,17 +218,15 @@
                                                                         <span class="old-price">৳{{$prod['regular_price']}}</span>
                                                                     </div>
 
-                                                                    <div class="product-action-1 show">
-                                                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="{{ route(
+                                                                </div>
+                                                                <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route(
                                     'Product_Cart_Add',
                                     [
                                         'product_name' => $prod['name'],
                                         'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eR67Hyabjda0wIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                         'product_id' => $prod['id']
                                     ]
-                                ) }}"><i class="fi-rs-shopping-bag-add"></i></a>
-                                                                    </div>
-                                                                </div>
+                                ) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                             </div>
                                                         </div>
                                                     </div>

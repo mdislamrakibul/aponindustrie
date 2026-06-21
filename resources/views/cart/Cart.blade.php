@@ -160,8 +160,8 @@
                                             <td class="cart_total_label">Shipping</td>
                                             <td class="cart_total_amount">
                                                 @if($isFreeDelivery)
-                                                    <i class="ti-gift mr-5" style="color:#3bb77e;"></i>
-                                                    <span style="color:#3bb77e;font-weight:600;">Free Shipping 🎉</span>
+                                                    <i class="ti-gift mr-5" style="color:#0d3b66;"></i>
+                                                    <span style="color:#0d3b66;font-weight:600;">Free Shipping 🎉</span>
                                                 @else
                                                     <span style="font-weight:600;">৳{{ $deliveryInside }} – ৳{{ $deliveryOutside }}</span>
                                                     <br><small class="text-muted" style="font-size:11px;">Exact charge set at checkout</small>
