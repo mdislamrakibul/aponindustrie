@@ -92,8 +92,9 @@ class ProductManagementController extends Controller
             'additional_info_rows.*.value'  => 'nullable|string|max:1000',
             'additional_info_active'        => 'nullable|boolean',
             'status' => 'required',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'  => 'required|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'image2' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'regular_price' => 'nullable|numeric',
             'sale_price' => 'nullable|numeric',
             'stock_quantity' => 'nullable|integer',
@@ -176,7 +177,7 @@ class ProductManagementController extends Controller
             // CREATE FOLDER IF NOT EXISTS
             if (!file_exists($destinationPath)) {
 
-                mkdir($destinationPath, 0777, true);
+                mkdir($destinationPath, 0755, true);
             }
 
             // MOVE IMAGE
@@ -212,7 +213,11 @@ class ProductManagementController extends Controller
             $image2     = $request->file('image2');
             $imageName2 = time() . '_' . uniqid() . '.' . $image2->extension();
 
-            $image2->move(public_path('uploads/products/'), $imageName2);
+            $dir2 = public_path('uploads/products/');
+            if (!file_exists($dir2)) {
+                mkdir($dir2, 0755, true);
+            }
+            $image2->move($dir2, $imageName2);
 
             Media::create([
                 'title'      => $product->name,
@@ -231,7 +236,12 @@ class ProductManagementController extends Controller
         if ($request->hasFile('image3')) {
             $image3     = $request->file('image3');
             $imageName3 = time() . '_' . uniqid() . '.' . $image3->extension();
-            $image3->move(public_path('uploads/products/'), $imageName3);
+
+            $dir3 = public_path('uploads/products/');
+            if (!file_exists($dir3)) {
+                mkdir($dir3, 0755, true);
+            }
+            $image3->move($dir3, $imageName3);
             Media::create([
                 'title'      => $product->name,
                 'model_id'   => $product->id,
@@ -264,8 +274,9 @@ class ProductManagementController extends Controller
             'additional_info_rows.*.value' => 'nullable|string|max:1000',
             'additional_info_active'       => 'nullable|boolean',
             'status' => 'required',
-            'image'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'image2' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
         ]);
 
         $product->name = $request->name;
@@ -336,32 +347,23 @@ class ProductManagementController extends Controller
 
             if (!file_exists($destinationPath)) {
 
-                mkdir($destinationPath, 0777, true);
+                mkdir($destinationPath, 0755, true);
             }
 
             $image->move($destinationPath, $imageName);
 
             Media::updateOrCreate(
-
                 [
                     'model_id' => $product->id,
-                ],
-
-                [
-                    'title' => $product->name,
-
-                    'image_name' => $imageName,
-
-                    'file_path' => 'uploads/products/',
-
-                    'file_type' => 'image',
-
-                    'image_type' => 'PRODUCT',
-
                     'position' => 1,
-
-                    'is_active' => 1,
-
+                ],
+                [
+                    'title'       => $product->name,
+                    'image_name'  => $imageName,
+                    'file_path'   => 'uploads/products/',
+                    'file_type'   => 'image',
+                    'image_type'  => 'PRODUCT',
+                    'is_active'   => 1,
                     'device_type' => 'ALL',
                 ]
             );
@@ -381,7 +383,11 @@ class ProductManagementController extends Controller
             $image2     = $request->file('image2');
             $imageName2 = time() . '_' . uniqid() . '.' . $image2->extension();
 
-            $image2->move(public_path('uploads/products/'), $imageName2);
+            $dir2 = public_path('uploads/products/');
+            if (!file_exists($dir2)) {
+                mkdir($dir2, 0755, true);
+            }
+            $image2->move($dir2, $imageName2);
 
             Media::updateOrCreate(
                 ['model_id' => $product->id, 'position' => 2],
@@ -401,7 +407,12 @@ class ProductManagementController extends Controller
         if ($request->hasFile('image3')) {
             $image3     = $request->file('image3');
             $imageName3 = time() . '_' . uniqid() . '.' . $image3->extension();
-            $image3->move(public_path('uploads/products/'), $imageName3);
+
+            $dir3 = public_path('uploads/products/');
+            if (!file_exists($dir3)) {
+                mkdir($dir3, 0755, true);
+            }
+            $image3->move($dir3, $imageName3);
             Media::updateOrCreate(
                 ['model_id' => $product->id, 'position' => 3],
                 [

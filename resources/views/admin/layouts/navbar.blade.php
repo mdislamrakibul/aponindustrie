@@ -124,20 +124,10 @@
         <div class="user-panel d-flex">
           <div class="image">
             <img src="{{
-
-  $currentUser &&
-  $currentUser->profile_photo
-
-  ? asset(
-    'storage/' .
-    $currentUser->profile_photo
-  )
-
-  : asset(
-    'admin/dist/img/user2-160x160.jpg'
-  )
-
-            }}" class="img-circle elevation-2" alt="User Image">
+  $currentUser && $currentUser->profile_photo
+    ? asset($currentUser->profile_photo)
+    : asset('admin/dist/img/user2-160x160.jpg')
+}}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
             <a href="#" class="d-block text-white">

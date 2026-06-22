@@ -316,8 +316,8 @@
                     proofHtml += '<div><strong>TXN Ref:</strong> <small class="text-muted">' + (o.transaction_id || 'N/A') + '</small></div>';
                     if (o.payment_screenshot) {
                         proofHtml += '<div class="mt-2"><strong>Screenshot:</strong><br>' +
-                            '<a href="/storage/' + o.payment_screenshot + '" target="_blank">' +
-                            '<img src="/storage/' + o.payment_screenshot + '" class="payment-proof-img" alt="Payment Screenshot">' +
+                            '<a href="/' + o.payment_screenshot + '" target="_blank">' +
+                            '<img src="/' + o.payment_screenshot + '" class="payment-proof-img" alt="Payment Screenshot">' +
                             '</a></div>';
                     }
                     proofHtml += '</div>';

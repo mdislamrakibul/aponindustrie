@@ -10,8 +10,8 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 
 class CheckoutController extends Controller
 {
@@ -109,8 +109,14 @@ class CheckoutController extends Controller
 
             $screenshotPath = null;
             if ($isOnline && $request->hasFile('payment_screenshot')) {
-                $screenshotPath = $request->file('payment_screenshot')
-                    ->store('payment-screenshots', 'public');
+                $dir = public_path('uploads/payment-screenshots');
+                if (!File::isDirectory($dir)) {
+                    File::makeDirectory($dir, 0775, true);
+                }
+                $file     = $request->file('payment_screenshot');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move($dir, $filename);
+                $screenshotPath = 'uploads/payment-screenshots/' . $filename;
             }
 
             // ── STEP 4: Order save ──

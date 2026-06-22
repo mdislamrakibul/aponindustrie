@@ -5,7 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminProfileController extends Controller
 {
@@ -79,34 +79,20 @@ class AdminProfileController extends Controller
             'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
         if ($request->hasFile('profile_photo')) {
-            if (
-                $user->profile_photo &&
-                Storage::disk('public')->exists(
-                    $user->profile_photo
-                )
-            ) {
-
-                Storage::disk('public')->delete(
-                    $user->profile_photo
-                );
+            $dir = public_path('uploads/profile-photos');
+            if (!File::isDirectory($dir)) {
+                File::makeDirectory($dir, 0775, true);
             }
 
-            $file = $request->file('profile_photo');
+            if ($user->profile_photo && File::exists(public_path($user->profile_photo))) {
+                File::delete(public_path($user->profile_photo));
+            }
 
-            $filename =
-                time() .
-                '_' .
-                $file->getClientOriginalName();
+            $file     = $request->file('profile_photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move($dir, $filename);
 
-            $file->storeAs(
-                'profile-photos',
-                $filename,
-                'public'
-            );
-
-            $profilePhoto =
-                'profile-photos/' .
-                $filename;
+            $profilePhoto = 'uploads/profile-photos/' . $filename;
         }
 
         $user->update([

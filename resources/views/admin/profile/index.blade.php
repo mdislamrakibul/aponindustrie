@@ -56,7 +56,7 @@ Admin Profile
                     <div class="col-12 text-center mb-4">
                         <img id="profilePreview"
                              src="{{ $user->profile_photo
-                                ? asset('storage/' . $user->profile_photo)
+                                ? asset($user->profile_photo)
                                 : asset('admin/dist/img/user2-160x160.jpg') }}"
                              class="img-circle elevation-2"
                              style="width:120px;height:120px;object-fit:cover;border:3px solid #dee2e6;">
