@@ -27,7 +27,7 @@ class AdsManagementController extends Controller
 
         $file     = $request->file('image');
         $fileName = time() . '_' . uniqid() . '.' . $file->extension();
-        $file->move(public_path('uploads/ads/'), $fileName);
+        $file->move(upload_root('uploads/ads'), $fileName);
 
         $maxSort = Banner::where('type', 'SLIDER')->max('sort_order') ?? 0;
 
@@ -58,7 +58,7 @@ class AdsManagementController extends Controller
 
         // Delete old file only if it was an admin-uploaded file
         if ($banner->image_path && str_starts_with($banner->image_path, 'uploads/ads/')) {
-            $oldPath = public_path($banner->image_path);
+            $oldPath = upload_root($banner->image_path);
             if (File::exists($oldPath)) {
                 File::delete($oldPath);
             }
@@ -68,7 +68,7 @@ class AdsManagementController extends Controller
 
         $file     = $request->file('image');
         $fileName = time() . '_' . uniqid() . '.' . $file->extension();
-        $file->move(public_path('uploads/ads/'), $fileName);
+        $file->move(upload_root('uploads/ads'), $fileName);
 
         $banner->update(['image_path' => 'uploads/ads/' . $fileName]);
 
@@ -96,7 +96,7 @@ class AdsManagementController extends Controller
         }
 
         if ($banner->image_path && str_starts_with($banner->image_path, 'uploads/ads/')) {
-            $path = public_path($banner->image_path);
+            $path = upload_root($banner->image_path);
             if (File::exists($path)) {
                 File::delete($path);
             }
@@ -127,7 +127,7 @@ class AdsManagementController extends Controller
 
     private function ensureUploadDir(): void
     {
-        $dir = public_path('uploads/ads/');
+        $dir = upload_root('uploads/ads');
         if (!is_dir($dir)) {
             mkdir($dir, 0755, true);
         }

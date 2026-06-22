@@ -31,6 +31,17 @@ if (!function_exists('banner')) {
     }
 }
 
+if (!function_exists('upload_root')) {
+    /** Absolute path inside the real web root; falls back to public_path() in CLI/local. */
+    function upload_root(string $sub = ''): string {
+        $root = !empty($_SERVER['DOCUMENT_ROOT'])
+            ? rtrim($_SERVER['DOCUMENT_ROOT'], '/')
+            : rtrim(public_path(), '/');
+        $sub = ltrim($sub, '/');
+        return $sub === '' ? $root : $root . '/' . $sub;
+    }
+}
+
 if (!function_exists('activityLog')) {
 
     function activityLog($module, $action, $item, $details = null)

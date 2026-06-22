@@ -172,7 +172,7 @@ class ProductManagementController extends Controller
 
             $imageName = time() . '_' . uniqid() . '.' . $image->extension();
 
-            $destinationPath = public_path('uploads/products/');
+            $destinationPath = upload_root('uploads/products');
 
             // CREATE FOLDER IF NOT EXISTS
             if (!file_exists($destinationPath)) {
@@ -213,7 +213,7 @@ class ProductManagementController extends Controller
             $image2     = $request->file('image2');
             $imageName2 = time() . '_' . uniqid() . '.' . $image2->extension();
 
-            $dir2 = public_path('uploads/products/');
+            $dir2 = upload_root('uploads/products');
             if (!file_exists($dir2)) {
                 mkdir($dir2, 0755, true);
             }
@@ -237,7 +237,7 @@ class ProductManagementController extends Controller
             $image3     = $request->file('image3');
             $imageName3 = time() . '_' . uniqid() . '.' . $image3->extension();
 
-            $dir3 = public_path('uploads/products/');
+            $dir3 = upload_root('uploads/products');
             if (!file_exists($dir3)) {
                 mkdir($dir3, 0755, true);
             }
@@ -343,7 +343,7 @@ class ProductManagementController extends Controller
 
             $imageName = time() . '_' . uniqid() . '.' . $image->extension();
 
-            $destinationPath = public_path('uploads/products/');
+            $destinationPath = upload_root('uploads/products');
 
             if (!file_exists($destinationPath)) {
 
@@ -383,7 +383,7 @@ class ProductManagementController extends Controller
             $image2     = $request->file('image2');
             $imageName2 = time() . '_' . uniqid() . '.' . $image2->extension();
 
-            $dir2 = public_path('uploads/products/');
+            $dir2 = upload_root('uploads/products');
             if (!file_exists($dir2)) {
                 mkdir($dir2, 0755, true);
             }
@@ -408,7 +408,7 @@ class ProductManagementController extends Controller
             $image3     = $request->file('image3');
             $imageName3 = time() . '_' . uniqid() . '.' . $image3->extension();
 
-            $dir3 = public_path('uploads/products/');
+            $dir3 = upload_root('uploads/products');
             if (!file_exists($dir3)) {
                 mkdir($dir3, 0755, true);
             }

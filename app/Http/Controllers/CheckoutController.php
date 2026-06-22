@@ -109,7 +109,7 @@ class CheckoutController extends Controller
 
             $screenshotPath = null;
             if ($isOnline && $request->hasFile('payment_screenshot')) {
-                $dir = public_path('uploads/payment-screenshots');
+                $dir = upload_root('uploads/payment-screenshots');
                 if (!File::isDirectory($dir)) {
                     File::makeDirectory($dir, 0775, true);
                 }

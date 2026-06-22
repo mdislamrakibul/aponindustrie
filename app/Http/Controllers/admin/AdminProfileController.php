@@ -79,13 +79,13 @@ class AdminProfileController extends Controller
             'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
         if ($request->hasFile('profile_photo')) {
-            $dir = public_path('uploads/profile-photos');
+            $dir = upload_root('uploads/profile-photos');
             if (!File::isDirectory($dir)) {
                 File::makeDirectory($dir, 0775, true);
             }
 
-            if ($user->profile_photo && File::exists(public_path($user->profile_photo))) {
-                File::delete(public_path($user->profile_photo));
+            if ($user->profile_photo && File::exists(upload_root($user->profile_photo))) {
+                File::delete(upload_root($user->profile_photo));
             }
 
             $file     = $request->file('profile_photo');
