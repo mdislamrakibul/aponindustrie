@@ -285,11 +285,7 @@
             <button type="submit">LOG IN</button>
         </form>
 
-        <div class="divider">OR</div>
-
-        <div class="footer">
-            Don't have an account? <a href="{{ route('register') }}">Sign Up</a>
-        </div>
+         <div class="divider">PLEASE, LOGIN TO START SESSION</div>
     </div>
 
 
