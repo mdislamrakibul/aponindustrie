@@ -375,7 +375,34 @@ body {
 .header-bottom .categori-button-active:hover {
     background: rgba(255,255,255,.15) !important;
 }
+/* Desktop dark header: invert logo to white */
 .header-bottom .logo img { filter: brightness(0) invert(1); }
+
+/* Mobile: no background, clip white right portion, show only APON dark area */
+@media (max-width: 991px) {
+    .header-bottom .logo.logo-width-1 {
+        background: transparent !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        line-height: 0;
+    }
+    /* overflow:hidden clips the right 42% white area of logo.png */
+    .header-bottom .logo.logo-width-1 a {
+        display: block !important;
+        width: 105px;
+        overflow: hidden;
+        line-height: 0;
+    }
+    /* Render 180px wide — 105/180 = 58% shows exactly the APON dark-navy portion */
+    .header-bottom .logo img {
+        filter: none !important;
+        width: 180px !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        display: block;
+        height: auto !important;
+    }
+}
 
 /* ══════════════════════════════════════════
    TASK 2 — Equal-height product cards + 2-line name clamp
