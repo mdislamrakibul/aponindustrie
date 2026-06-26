@@ -9,15 +9,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tbl_products', function (Blueprint $table) {
-            $table->longText('additional_info')->nullable()->after('description');
-            $table->boolean('additional_info_active')->default(false)->after('additional_info');
+            if (!Schema::hasColumn('tbl_products', 'additional_info')) {
+                $table->longText('additional_info')->nullable()->after('description');
+            }
+            if (!Schema::hasColumn('tbl_products', 'additional_info_active')) {
+                $table->boolean('additional_info_active')->default(false)->after('additional_info');
+            }
         });
     }
 
     public function down(): void
     {
         Schema::table('tbl_products', function (Blueprint $table) {
-            $table->dropColumn(['additional_info', 'additional_info_active']);
+            if (Schema::hasColumn('tbl_products', 'additional_info')) {
+                $table->dropColumn('additional_info');
+            }
+            if (Schema::hasColumn('tbl_products', 'additional_info_active')) {
+                $table->dropColumn('additional_info_active');
+            }
         });
     }
 };
