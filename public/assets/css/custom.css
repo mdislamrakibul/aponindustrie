@@ -859,3 +859,50 @@ body {
 #carausel-6-columns-2 .slick-next {
     display: none !important;
 }
+
+/* ══════════════════════════════════════════
+   MOBILE UI FIXES
+   ══════════════════════════════════════════ */
+
+/* Slider overlay: scale text down on small phones */
+@media (max-width: 576px) {
+    .home-slider .slider-overlay {
+        max-width: 92%;
+        padding: 10px 12px;
+    }
+    .home-slider .slider-overlay h4 { font-size: 11px !important; margin-bottom: 3px !important; }
+    .home-slider .slider-overlay h2 { font-size: 15px !important; margin-bottom: 3px !important; }
+    .home-slider .slider-overlay h1 { font-size: 17px !important; margin-bottom: 3px !important; }
+    .home-slider .slider-overlay p  { font-size: 10px !important; margin-bottom: 0  !important; line-height: 1.4 !important; }
+}
+
+/* Product cards: image height, padding, font sizes for 2-column mobile grid */
+@media (max-width: 576px) {
+    .product-header          { height: 150px !important; }
+    .product-body            { padding: 10px 12px !important; }
+    .quick-add-btn           { width: 36px !important; height: 36px !important; border-radius: 9px !important; }
+    .price-now               { font-size: 14px !important; }
+    .price-old               { font-size: 11px !important; }
+    .product-title           { font-size: 13px !important; min-height: unset !important; }
+}
+
+/* Add To Cart button: prevent text overflow on very small screens */
+@media (max-width: 400px) {
+    .btn-add-to-cart-full {
+        font-size: 11px !important;
+        padding: 7px 8px !important;
+        gap: 4px !important;
+    }
+}
+
+/* Side actions (Quick View / Wishlist / Compare): hover-only — useless on touch */
+@media (max-width: 991px) {
+    .side-actions { display: none !important; }
+}
+
+/* Section head: allow wrapping on narrow screens */
+@media (max-width: 576px) {
+    .section-head                         { flex-wrap: wrap; gap: 8px; }
+    .section-title                        { font-size: 17px !important; }
+    .section-header-flex .section-title   { font-size: 17px !important; }
+}
