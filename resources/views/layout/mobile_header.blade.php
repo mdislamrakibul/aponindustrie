@@ -97,6 +97,8 @@
                     <ul class="mobile-menu">
                         <li class="menu-item-has-children"><span class="menu-expand"></span><a
                                 href="{{ route('home.index') }}">Home</a></li>
+                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                href="{{ route('shop') }}">Shop</a></li>
                         {{-- <li class="menu-item-has-children"><span class="menu-expand"></span><a
                                 href="shop.html">shop</a></li>
                         <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Our
@@ -196,7 +198,7 @@
                 <h5 class="mb-15 text-grey-4">Follow Us</h5>
                 <a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-facebook.svg') }}" alt=""></a>
                 <a href="#" title="X" style="display:inline-flex;align-items:center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="#333033"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
                 <a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-instagram.svg') }}" alt=""></a>
                 <a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-pinterest.svg') }}" alt=""></a>

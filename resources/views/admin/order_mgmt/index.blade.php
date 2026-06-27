@@ -313,7 +313,7 @@
                                             <input type="text" id="ao_thana" class="form-control form-control-sm" placeholder="Thana / Upazila">
                                         </div>
                                         <div class="col-sm-6 mb-2">
-                                            <label class="small font-weight-bold mb-1">District <span class="text-danger">*</span></label>
+                                            <label class="small font-weight-bold mb-1">District <span class="text-muted fw-normal">(optional)</span></label>
                                             <select id="ao_district" class="form-control form-control-sm">
                                                 <option value="">— Select District —</option>
                                                 @foreach($bdDistricts as $d)
@@ -383,9 +383,10 @@
                                         <label class="small font-weight-bold mb-1">Order Status <span class="text-danger">*</span></label>
                                         <select id="ao_order_status" class="form-control form-control-sm">
                                             <option value="PROCESSING" selected>PROCESSING</option>
-                                            <option value="COMPLETED">COMPLETED</option>
-                                            <option value="DELIVERED">DELIVERED</option>
                                             <option value="PENDING">PENDING</option>
+                                            <option value="SHIPPED">SHIPPED</option>
+                                            <option value="DELIVERED">DELIVERED</option>
+                                            <option value="CANCELLED">CANCELLED</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1288,7 +1289,6 @@
 
             if (!name)  { Swal.fire('Missing', 'Customer name is required.', 'warning'); return; }
             if (!phone) { Swal.fire('Missing', 'Phone number is required.', 'warning'); return; }
-            if (!dist)  { Swal.fire('Missing', 'District is required.', 'warning'); return; }
             if (Object.keys(aoItems).length === 0) { Swal.fire('Missing', 'Add at least one product.', 'warning'); return; }
 
             var items = Object.keys(aoItems).map(function (pid) {

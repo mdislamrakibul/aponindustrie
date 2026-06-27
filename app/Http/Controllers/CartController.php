@@ -72,7 +72,9 @@ class CartController extends Controller
     {
 
 
-        $product = Product::findOrFail($request->product_id);
+        $product = Product::with(['media' => function ($q) {
+            $q->where('image_type', 'PRODUCT')->orderBy('position')->select('id','title','file_path','image_type','position','model_id','image_name');
+        }])->findOrFail($request->product_id);
 
         // 1. Retrieve the current cart from session, or an empty array if it doesn't exist
         $cart = session()->get('cart', []);
@@ -83,7 +85,7 @@ class CartController extends Controller
         } else {
             // 3. If not, add the product details to the array
             $cart[$request->product_id] = [
-                'product' => $product,
+                'product' => $product->toArray(),
                 "name" => $product->name,
                 "quantity" => 1,
                 "minimum_order" => $product->minimum_order,

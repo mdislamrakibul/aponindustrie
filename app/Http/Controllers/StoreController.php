@@ -19,28 +19,17 @@ class StoreController extends Controller
 
     private function newProductsQuery(): array
     {
-        $newProducts = [];
-        $items = Product::published([
+        return Product::published([
             'id', 'name', 'category_id', 'sale_price',
             'regular_price', 'discount_type', 'discount_value',
             'product_type', 'is_discounted',
         ])
         ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
         ->withAvg(['reviews' => fn($q) => $q->where('status', 'approved')], 'rating')
-        ->inRandomOrder()
+        ->latest()
+        ->take(5)
         ->get()
         ->toArray();
-
-        foreach ($items as $value) {
-            if (isset($value['product_type']) && in_array('NEW',
-                is_string($value['product_type'])
-                    ? json_decode($value['product_type'], true)
-                    : $value['product_type']
-            )) {
-                $newProducts[] = $value;
-            }
-        }
-        return $newProducts;
     }
 
     public function shop(Request $request)

@@ -196,7 +196,7 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('/ads/{id}/update', [AdsManagementController::class, 'update'])->name('ads.update');
     Route::post('/ads/{id}/toggle', [AdsManagementController::class, 'toggle'])->name('ads.toggle');
     Route::delete('/ads/{id}', [AdsManagementController::class, 'destroy'])->name('ads.destroy');
-    Route::post('/ads/{id}/remove-text', [AdsManagementController::class, 'removeText'])->name('ads.remove-text');
+    Route::post('/ads/{id}/text', [AdsManagementController::class, 'updateText'])->name('ads.update-text');
 });
 
 
@@ -217,11 +217,6 @@ Route::middleware(['role:admin'])
     | PRODUCT MANAGEMENT
     |--------------------------------------------------------------------------
     */
-
-        Route::get(
-            '/products',
-            [ProductManagementController::class, 'index']
-        )->name('products.index');
 
         Route::post(
             '/products/store',
@@ -302,7 +297,7 @@ Route::get('/product-by-category', [FrontProductController::class, 'Product_by_c
     ->name('Product_By_Category');
 
 // Cart Url
-Route::get('/product-cart/add', [CartController::class, 'Product_Cart_Add'])->name('Product_Cart_Add');
+Route::get('/product-cart/add', [CartController::class, 'Product_Cart_ADD'])->name('Product_Cart_Add');
 Route::get('/product-cart', [CartController::class, 'Product_Cart'])->name('Product_Cart');
 Route::get('/product-cart/remove/all', [CartController::class, 'Product_Cart_Remove'])->name('Product_Cart_Remove');
 Route::get('/product-cart/remove/single/{id}', [CartController::class, 'Product_Cart_Remove_Single'])->name('Product_Cart_Remove_Single');

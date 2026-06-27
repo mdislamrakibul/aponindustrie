@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'E-Commerce')
+@section('title', 'About Us — Apon-Industries')
 
 
 @section('content')
@@ -54,75 +54,67 @@
 
                 </div>
             </div>
-            <div class="row align-items-center">
-                <div class="col-md-6 col-lg-4">
-                    <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
-                        <div class="hero-card-icon icon-left-2 hover-up ">
-                            <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted"
-                                src="{{ asset('assets/uploads/About Us/Anisuz ZamanChairman.png') }}"
-                                alt="">
+            <div class="row">
 
-                            {{-- <img class="animated slider-1-1"
-                                src="{{ asset('assets/uploads/Main Slider Design/Main Slider Design-2-Apon Plastic.png') }}"
-                                alt=""> --}}
+                {{-- Chairman --}}
+                <div class="col-md-6 col-lg-4 mb-30">
+                    <div class="wow fadeIn animated hover-up h-100" style="background:#fff;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.07);padding:24px;">
+                        <div class="d-flex align-items-center mb-15">
+                            <img src="{{ asset('assets/uploads/About Us/Anisuz ZamanChairman.png') }}"
+                                 alt="Anisuz Zaman"
+                                 style="width:150px;height:150px;object-fit:cover;border-radius:10px;flex-shrink:0;">
+                            <div style="padding-left:16px;">
+                                <h5 class="mb-2 fw-500" style="color:#253d4e;">Anisuz Zaman</h5>
+                                <p class="font-sm mb-0" style="color:#f15412;font-weight:600;">Chairman</p>
+                            </div>
                         </div>
-                        <div class="pl-30">
-                            <h5 class="mb-5 fw-500">
-                                Anisuz Zaman
-                            </h5>
-                            <p class="font-sm text-grey-5">Chairman</p>
-                            <p class="text-grey-3" style="text-align: justify">With over 39 years of experience, our
-                                Chairman is a seasoned
-                                leader in the industry, known for his expertise and dedication. His pivotal
-                                role in establishing Apon Plastic's reputation for excellence speaks volumes
-                                about his commitment to quality and innovation.
-                            </p>
-                        </div>
+                        <p class="text-grey-3 mb-0" style="text-align:justify;font-size:14px;line-height:1.7;">
+                            With over 39 years of experience, our Chairman is a seasoned leader in the industry,
+                            known for his expertise and dedication. His pivotal role in establishing Apon Plastic's
+                            reputation for excellence speaks volumes about his commitment to quality and innovation.
+                        </p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
-                        <div class="hero-card-icon icon-left-2 hover-up ">
-                            <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted"
-                                src="{{ asset('assets/uploads/About Us/Paul ZamanManaging Director.png') }}"
-                                alt="">
+
+                {{-- Managing Director --}}
+                <div class="col-md-6 col-lg-4 mb-30">
+                    <div class="wow fadeIn animated hover-up h-100" style="background:#fff;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.07);padding:24px;">
+                        <div class="d-flex align-items-center mb-15">
+                            <img src="{{ asset('assets/uploads/About Us/Paul ZamanManaging Director.png') }}"
+                                 alt="Paul Zaman"
+                                 style="width:150px;height:150px;object-fit:cover;border-radius:10px;flex-shrink:0;">
+                            <div style="padding-left:16px;">
+                                <h5 class="mb-2 fw-500" style="color:#253d4e;">Paul Zaman</h5>
+                                <p class="font-sm mb-0" style="color:#f15412;font-weight:600;">Managing Director</p>
+                            </div>
                         </div>
-                        <div class="pl-30">
-                            <h5 class="mb-5 fw-500">
-                                Paul Zaman
-                            </h5>
-                            <p class="font-sm text-grey-5">Managing Director</p>
-                            <p class="text-grey-3" style="text-align: justify">Our Managing Director, the son of our
-                                esteemed Chairman,
-                                brings a fresh perspective and dedication to our company. Having learned
-                                the intricacies of injection molding and plastics directly from the Chairman,
-                                coupled with the completion of RJG courses, he's equipped with a solid
-                                foundation.
-                            </p>
-                        </div>
+                        <p class="text-grey-3 mb-0" style="text-align:justify;font-size:14px;line-height:1.7;">
+                            Our Managing Director, the son of our esteemed Chairman, brings a fresh perspective
+                            and dedication to our company. Having learned the intricacies of injection molding
+                            and plastics directly from the Chairman, coupled with the completion of RJG courses,
+                            he's equipped with a solid foundation.
+                        </p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
-                        <div class="hero-card-icon icon-left-2 hover-up ">
-                            <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted"
-                                src="{{ asset('assets/uploads/About Us/Maruf HassanSales and Marketing Manager.png') }}"
-                                alt="">
-                        </div>
-                        <div class="pl-30">
-                            <h5 class="mb-5 fw-500">
-                                Maruf Hassan
 
-                            </h5>
-                            <p class="font-sm text-grey-5">Sales and Marketing Manager</p>
-                            <p class="text-grey-3" style="text-align: justify">Mr. Maruf Hassan's expertise has been
-                                pivotal in driving
-                                our growth and development here in Bangladesh. With over 7 years of specialized
-                                experience in Sales and
-                                a total of 10 years immersed in the plastic sector, Mr. Maruf brings a wealth of
-                                industry knowledge to
-                                our team.</p>
+                {{-- Sales & Marketing Manager --}}
+                <div class="col-md-6 col-lg-4 mb-30">
+                    <div class="wow fadeIn animated hover-up h-100" style="background:#fff;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.07);padding:24px;">
+                        <div class="d-flex align-items-center mb-15">
+                            <img src="{{ asset('assets/uploads/About Us/Maruf HassanSales and Marketing Manager.png') }}"
+                                 alt="Maruf Hassan"
+                                 style="width:150px;height:150px;object-fit:cover;border-radius:10px;flex-shrink:0;">
+                            <div style="padding-left:16px;">
+                                <h5 class="mb-2 fw-500" style="color:#253d4e;">Maruf Hassan</h5>
+                                <p class="font-sm mb-0" style="color:#f15412;font-weight:600;">Sales and Marketing Manager</p>
+                            </div>
                         </div>
+                        <p class="text-grey-3 mb-0" style="text-align:justify;font-size:14px;line-height:1.7;">
+                            Mr. Maruf Hassan's expertise has been pivotal in driving our growth and development
+                            here in Bangladesh. With over 7 years of specialized experience in Sales and a total
+                            of 10 years immersed in the plastic sector, Mr. Maruf brings a wealth of industry
+                            knowledge to our team.
+                        </p>
                     </div>
                 </div>
 

@@ -1,14 +1,20 @@
+<style>
+    .wrap-footer-content .wrap-function-info .fc-info-item,
+    .wrap-footer-content .wrap-function-info .fc-info-item:first-child {
+        border-color: transparent !important;
+    }
+</style>
 <footer id="footer">
     <div class="wrap-footer-content footer-style-1">
 
-        <div class="wrap-function-info" style="background: #f15412 !important">
+        <div class="wrap-function-info" style="background: #0d3b66 !important">
             <div class="container">
                 <ul>
                     <li class="fc-info-item">
                         <i class="fa fa-truck" aria-hidden="true"></i>
                         <div class="wrap-left-info">
                             <h4 class="fc-name">Free Shipping</h4>
-                            <p class="fc-desc">Free On Oder Over ৳99</p>
+                            <p class="fc-desc">Free On Oder Over ৳999</p>
                         </div>
 
                     </li>
@@ -16,7 +22,7 @@
                         <i class="fa fa-recycle" aria-hidden="true"></i>
                         <div class="wrap-left-info">
                             <h4 class="fc-name">Guarantee</h4>
-                            <p class="fc-desc">30 Days Money Back</p>
+                            <p class="fc-desc">Food Grade Plastic</p>
                         </div>
 
                     </li>
@@ -105,9 +111,12 @@
                                 <div class="item-content">
                                     <div class="wrap-vertical-nav">
                                         <ul>
-                                            <li class="menu-item"><a href="{{ route('about_us.index') }}" class="link-term">About Us</a></li>
-                                            <li class="menu-item"><a href="{{ route('Privacy_Policy.index') }}" class="link-term">Privacy Policy</a></li>
-                                            <li class="menu-item"><a href="{{ route('Terms_And_Conditions.index') }}" class="link-term">Terms & Conditions </a>
+                                            <li class="menu-item"><a href="{{ route('about_us.index') }}"
+                                                    class="link-term">About Us</a></li>
+                                            <li class="menu-item"><a href="{{ route('Privacy_Policy.index') }}"
+                                                    class="link-term">Privacy Policy</a></li>
+                                            <li class="menu-item"><a href="{{ route('Terms_And_Conditions.index') }}"
+                                                    class="link-term">Terms & Conditions </a>
                                             </li>
                                             <li class="menu-item"><a href="#" class="link-term">Return Policy</a></li>
                                         </ul>
@@ -119,10 +128,12 @@
                                 <div class="item-content">
                                     <div class="wrap-vertical-nav">
                                         <ul>
-                                            <li class="menu-item"><a href="{{ route('Our_Service.index') }}" class="link-term">Our Service</a>
+                                            <li class="menu-item"><a href="{{ route('Our_Service.index') }}"
+                                                    class="link-term">Our Service</a>
                                             </li>
                                             <li class="menu-item"><a href="#" class="link-term">Return Policy</a></li>
-                                            <li class="menu-item"><a href="{{ route('FAQ.index') }}" class="link-term">FAQ</a></li>
+                                            <li class="menu-item"><a href="{{ route('FAQ.index') }}"
+                                                    class="link-term">FAQ</a></li>
                                             <li class="menu-item"><a href="#" class="link-term">Contact Us</a></li>
 
                                         </ul>
@@ -273,12 +284,14 @@
         <div class="coppy-right-box">
             <div class="container">
                 <div class="coppy-right-item item-left">
-                    <p class="coppy-right-text">Copyright ©️ 2026. <a href="https://aponindustries.com/" target="_blank" rel="noopener" style="color:inherit;">Apon Plastic Industries</a>.</p>
+                    <p class="coppy-right-text">Copyright ©️ 2026. <a href="https://aponindustries.com/" target="_blank"
+                            rel="noopener" style="color:inherit;">Apon Plastic Industries</a>.</p>
                 </div>
                 <div class="coppy-right-item item-right">
                     <div class="wrap-nav horizontal-nav">
                         <p class="coppy-right-text">Design &amp; Developed by
-                            <a href="https://versedsoft.com/" target="_blank" rel="noopener">Versedsoft</a></p>
+                            <a href="https://versedsoft.com/" target="_blank" rel="noopener">Versedsoft</a>
+                        </p>
 
                         {{-- <ul>
                             <li class="menu-item"><a href="about-us.html" class="link-term">About us</a></li>

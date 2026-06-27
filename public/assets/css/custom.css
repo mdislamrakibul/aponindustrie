@@ -1,4 +1,30 @@
 /* ══════════════════════════════════════════
+   FOUC PREVENTION — hide extra items before slick initializes
+   ══════════════════════════════════════════ */
+
+/* Hero slider: show only first slide before slick is ready */
+.hero-slider-1:not(.slick-initialized) .hero-slider-item:not(:first-child) {
+    display: none !important;
+}
+
+/* Product image slider on details page */
+.product-image-slider:not(.slick-initialized) figure:not(:first-child) {
+    display: none !important;
+}
+.slider-nav-thumbnails:not(.slick-initialized) div:not(:first-child) {
+    display: none !important;
+}
+
+/* Home carousels: show only first card before slick is ready */
+.carausel-6-columns:not(.slick-initialized) > div:not(:first-child),
+.carausel-6-columns:not(.slick-initialized) > .product-cart-wrap:not(:first-child) {
+    display: none !important;
+}
+.carausel-4-columns:not(.slick-initialized) > div:not(:first-child) {
+    display: none !important;
+}
+
+/* ══════════════════════════════════════════
    BRAND PALETTE — define once, use everywhere
    ══════════════════════════════════════════ */
 :root {
@@ -578,13 +604,13 @@ body {
 .badge.sale {
     font-size: 10px !important;
     padding: 3px 8px !important;
-    border-radius: 12px !important;
+    border-radius: 6px !important;
     font-weight: 700 !important;
-    background: var(--brand-red) !important;
+    background: #ff5a5f !important;
 }
-.badge.hot       { background: var(--brand-red) !important; border-radius: 12px !important; }
-.badge.new       { background: var(--brand-navy) !important; border-radius: 12px !important; }
-.badge.best-seller { background: #fdc040 !important; border-radius: 12px !important; color: #253d4e !important; }
+.badge.hot        { background: #ff5a5f !important; border-radius: 6px !important; }
+.badge.new        { background: var(--brand-navy) !important; border-radius: 6px !important; }
+.badge.best-seller{ background: #fdc040 !important; border-radius: 6px !important; color: #253d4e !important; }
 
 /* Section tab area on cream canvas */
 .product-tabs.section-padding { background: var(--card-bg); border-radius: 16px; }
@@ -630,9 +656,9 @@ body {
     transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
 .product-cart-wrap:hover {
-    transform: translateY(-6px) !important;
-    box-shadow: 0 12px 28px rgba(0,0,0,.10) !important;
-    border-color: var(--brand-red) !important;
+    transform: translateY(-8px) !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.10) !important;
+    border: 1px solid var(--brand-red) !important;
 }
 .product-cart-wrap .product-content-wrap {
     padding: 10px 12px 14px;
@@ -852,6 +878,53 @@ body {
     font-size: 15px;
 }
 
+/* ══════════════════════════════════════════
+   HOVER FIXES — touch vs mouse
+   @media (hover: none)  → touch-only devices (phones/tablets)
+   @media (hover: hover) → mouse/desktop devices
+   Desktop hover is completely unaffected by these rules.
+   ══════════════════════════════════════════ */
+
+/* On touch devices: neutralise hover transforms so cards don't jump on tap */
+@media (hover: none) {
+    /* Remove card-lift transforms — translateY stays 0 on touch */
+    .product-cart-wrap:hover,
+    .product-card:hover,
+    .card-1:hover,
+    .featured .banner-features:hover {
+        transform: none !important;
+    }
+
+    /* Home page cards — no secondary-img swap + no primary-img scale on tap */
+    .product-card:hover .secondary-img  { opacity: 0 !important; transform: scale(1.1) !important; }
+    .product-card:hover .primary-img    { transform: none !important; }
+
+    /* Store-page / carousel cards — no hover-img appearing on tap */
+    .product-img-zoom:hover .hover-img  { opacity: 0 !important; visibility: hidden !important; }
+    .product-img-zoom:hover .default-img { opacity: 1 !important; visibility: visible !important; }
+
+    /* Replace hover with a subtle scale-down :active state (feels responsive on touch) */
+    .product-cart-wrap:active  { transform: scale(0.97) !important; transition: transform 0.1s ease !important; }
+    .product-card:active       { transform: scale(0.97) !important; transition: transform 0.1s ease !important; }
+}
+
+/* Related products carousel — left-align cards and text */
+#carausel-6-columns-2 .slick-track {
+    justify-content: flex-start !important;
+}
+#carausel-6-columns-2 .product-cart-wrap .product-content-wrap {
+    text-align: left !important;
+    align-items: flex-start !important;
+}
+#carausel-6-columns-2 .product-cart-wrap .product-content-wrap h2,
+#carausel-6-columns-2 .product-cart-wrap .product-content-wrap h2 a {
+    text-align: left !important;
+}
+#carausel-6-columns-2 .product-cart-wrap .product-content-wrap > div {
+    text-align: left !important;
+    justify-content: flex-start !important;
+}
+
 /* Hide Slick nav arrows on Most Selling + Most Popular home carousels */
 #carausel-6-columns .slick-prev,
 #carausel-6-columns .slick-next,
@@ -900,9 +973,123 @@ body {
     .side-actions { display: none !important; }
 }
 
+/* product-grid-3 (Top New Items / Top Selling / Top Rated / etc.) on mobile:
+   Remove equal-height forcing so the Add To Cart button is never clipped.
+   On desktop, equal-height still applies (rules above this breakpoint win). */
+@media (max-width: 991px) {
+    .product-grid-3 [class*="col-"]                                    { display: block; }
+    .product-grid-3 .product-cart-wrap                                  { height: auto !important; overflow: visible !important; }
+    .product-grid-3 .product-cart-wrap .product-content-wrap            { flex: none !important; }
+    .product-grid-3 .product-cart-wrap .product-content-wrap .price-row { margin-top: 6px !important; }
+}
+
+/* product-grid-4 (Shop / search / category pages) on mobile:
+   Same fix — remove height forcing + overflow so Add To Cart is never clipped. */
+@media (max-width: 991px) {
+    .product-grid-4 [class*="col-"]                                           { display: block; }
+    .product-grid-4 .product-cart-wrap                                         { height: auto !important; overflow: visible !important; }
+    .product-grid-4 .product-cart-wrap .product-content-wrap                   { flex: none !important; }
+    .product-grid-4 .product-cart-wrap .product-content-wrap .product-price    { margin-top: 6px !important; }
+}
+
 /* Section head: allow wrapping on narrow screens */
 @media (max-width: 576px) {
     .section-head                         { flex-wrap: wrap; gap: 8px; }
     .section-title                        { font-size: 17px !important; }
     .section-header-flex .section-title   { font-size: 17px !important; }
+}
+
+/* Footer feature bar — navy bg (#0d3b66), white text & subtle white border */
+.wrap-footer-content .wrap-function-info .fc-info-item {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+.wrap-footer-content .wrap-function-info .fc-info-item:first-child {
+    border-left-color: rgba(255, 255, 255, 0.2) !important;
+}
+.wrap-footer-content .wrap-function-info .fc-info-item .wrap-left-info .fc-desc {
+    color: #ffffff !important;
+}
+
+/* ══════════════════════════════════════════
+   SHARE DROPDOWN — product card hover actions
+   ══════════════════════════════════════════ */
+.share-trigger {
+    position: relative;
+}
+.share-dropdown {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.18);
+    padding: 6px 0;
+    min-width: 170px;
+    border: 1px solid #eee;
+}
+.share-dropdown.open {
+    display: block;
+}
+.share-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #253d4e;
+    text-decoration: none;
+    transition: background 0.15s;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.share-dropdown a:hover {
+    background: #f5f7fa;
+    color: #0d3b66;
+}
+.share-dropdown a i,
+.share-dropdown a svg {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.share-dropdown .sd-whatsapp i  { color: #25d366; }
+.share-dropdown .sd-facebook i  { color: #1877f2; }
+.share-dropdown .sd-messenger i { color: #0084ff; }
+.share-dropdown .sd-copy i      { color: #6c757d; }
+.share-dropdown .sd-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 4px 0;
+}
+
+/* Add to Cart button — navy hover */
+.btn-add-to-cart-full:hover,
+.btn-add-to-cart-full:focus {
+    background-color: #0d3b66 !important;
+    border-color:     #0d3b66 !important;
+    color: #fff !important;
+}
+
+/* Share toast notification */
+#shareToast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: #253d4e;
+    color: #fff;
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 999999;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(0,0,0,.2);
+}
+#shareToast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }

@@ -230,24 +230,28 @@
                                                         {{-- STATUS TOGGLE --}}
                                                         <form action="{{ route('admin.products.toggle-status', $product->id) }}"
                                                             method="POST">
-
                                                             @csrf
                                                             @method('PATCH')
+                                                            @if($product->status == 'PUBLISHED')
+                                                                <button type="submit" class="action-btn border-0" title="Deactivate" data-toggle="tooltip">
+                                                                    <i class="fas fa-eye-slash" style="color:#e67e22;"></i>
+                                                                </button>
+                                                            @else
+                                                                <button type="submit" class="action-btn border-0" title="Publish" data-toggle="tooltip">
+                                                                    <i class="fas fa-check-circle" style="color:#27ae60;"></i>
+                                                                </button>
+                                                            @endif
+                                                        </form>
 
-                                                            <button type="submit" class="action-btn border-0">
-
-                                                                @if($product->status == 'PUBLISHED')
-
-                                                                    <i class="fas fa-trash" style="color: maroon;"></i>
-
-                                                                @else
-
-                                                                    <i class="fas fa-undo" style="color: green;"></i>
-
-                                                                @endif
-
+                                                        {{-- DELETE --}}
+                                                        <form action="{{ route('admin.products.delete', $product->id) }}"
+                                                            method="POST"
+                                                            onsubmit="return confirm('Delete \'{{ addslashes($product->name) }}\'? This cannot be undone.')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="action-btn border-0" title="Delete" data-toggle="tooltip">
+                                                                <i class="fas fa-trash-alt" style="color:#e74c3c;"></i>
                                                             </button>
-
                                                         </form>
 
                                                     </div>

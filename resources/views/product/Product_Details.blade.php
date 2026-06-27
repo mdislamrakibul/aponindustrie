@@ -77,39 +77,62 @@
                                         </div>
                                     </div>
                                     <!-- End Gallery -->
+                                    @php
+                                        $productUrl = route('Product_Details', [
+                                            'product_name'     => $product->name,
+                                            'category_name'    => $product->category->name,
+                                            'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                            'category_id'      => $product->category->id,
+                                            'product_id'       => $product->id,
+                                        ]);
+                                        $shareUrl    = urlencode($productUrl);
+                                        $shareTitle  = urlencode($product->name);
+                                        $fbShareUrl  = 'https://www.facebook.com/sharer/sharer.php?u=' . $shareUrl;
+                                        $twShareUrl  = 'https://twitter.com/intent/tweet?url=' . $shareUrl . '&text=' . $shareTitle;
+                                        $pinShareUrl = 'https://pinterest.com/pin/create/button/?url=' . $shareUrl . '&description=' . $shareTitle;
+                                    @endphp
                                     <div class="social-icons single-share">
                                         <ul class="text-grey-5 d-inline-block">
                                             <li><strong class="mr-10">Share this:</strong></li>
-                                            <li class="social-facebook"><a href="#"><img
-                                                        src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
-                                            <li class="social-twitter"><a href="#" title="X">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="vertical-align:middle;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                                            </a></li>
-                                            <li class="social-instagram"><a href="#"><img
-                                                        src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                            <li class="social-facebook">
+                                                <a href="{{ $fbShareUrl }}" target="_blank" rel="noopener noreferrer" title="Share on Facebook">
+                                                    <img src="{{ asset('assets/imgs/theme/icons/icon-facebook.svg') }}" alt="Facebook">
+                                                </a>
                                             </li>
-                                            <li class="social-linkedin"><a href="#"><img
-                                                        src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                            <li class="social-twitter">
+                                                <a href="{{ $twShareUrl }}" target="_blank" rel="noopener noreferrer" title="Share on X (Twitter)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="vertical-align:middle;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                                </a>
+                                            </li>
+                                            <li class="social-instagram">
+                                                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram">
+                                                    <img src="{{ asset('assets/imgs/theme/icons/icon-instagram.svg') }}" alt="Instagram">
+                                                </a>
+                                            </li>
+                                            <li class="social-linkedin">
+                                                <a href="{{ $pinShareUrl }}" target="_blank" rel="noopener noreferrer" title="Share on Pinterest">
+                                                    <img src="{{ asset('assets/imgs/theme/icons/icon-pinterest.svg') }}" alt="Pinterest">
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info">
-                                        <h2 class="title-detail">{{ $product->name }}</h2>
+                                        <h2 class="title-detail" style="color: #222;">{{ $product->name }}</h2>
                                         <div class="product-detail-rating">
 
                                             @if($product->brand)
                                                                                 <div class="pro-details-brand">
-                                                                                    <span style="font-weight: bolder;"> Brands: <span style="color: #f15412;">{{
+                                                                                    <span style="font-weight: bolder; color: #222;"> Brands: <span style="color: #222;">{{
                                                 $product->brand->name }}</span></span>
                                                                                 </div>
                                             @endif
 
                                             @if($product->category)
                                                                                 <div class="pro-details-brand">
-                                                                                    <span style="font-weight: bolder;"> Category: <span
-                                                                                            style="color: #f15412;">{{
+                                                                                    <span style="font-weight: bolder; color: #222;"> Category: <span
+                                                                                            style="color: #222;">{{
                                                 $product->category->name }}</span></span>
                                                                                 </div>
                                             @endif
@@ -132,7 +155,7 @@
                                                         @endif
                                                     @endfor
                                                 </div>
-                                                <div style="color:#f15412; font-weight: bold; font-size: 15px;">
+                                                <div style="color:#222; font-weight: bold; font-size: 15px;">
                                                     ({{number_format($rating, 1)}})
                                                 </div>
 
@@ -140,11 +163,11 @@
                                                 <span class="font-small ml-5 text-muted" style="font-weight: bolder;">
 
                                                     @if ($product->reviews)
-                                                        <span style="color: #f15412;">{{ count($product->reviews) }} {{
+                                                        <span style="color: #222;">{{ count($product->reviews) }} {{
                                                         count($product->reviews) > 9 ? "Reviews" :
                                                         "Review" }}</span>
                                                     @else
-                                                        <span style="color: #f15412;">0 Review</span>
+                                                        <span style="color: #222;">0 Review</span>
                                                     @endif
 
                                                 </span>
@@ -153,20 +176,22 @@
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
                                                 <ins>
-                                                    <span class="text-brand">
+                                                    <span class="text-brand" style="color: #222 !important;">
                                                         Price ৳{{ $product->package_price }} (Package Price)
                                                     </span>
                                                 </ins>
-                                                {{-- <ins><span class="old-price font-md ml-15">৳{{ $product->regular_price
-                                                        }}</span></ins> --}}
+                                                @if($product->regular_price && $product->regular_price != $product->package_price)
+                                                    <br>
+                                                    <span style="text-decoration: line-through; color: #999; font-size: 15px; font-weight: 500;">
+                                                        ৳{{ $product->regular_price }}
+                                                    </span>
+                                                @endif
 
                                                 @if($product->is_discounted)
-                                                    <span class="save-price  font-md color3 ml-15" style="font-weight: bold">
+                                                    <span class="save-price font-md color3 ml-15" style="font-weight: bold">
                                                         @if($product->discount_type == 'PERCENTAGE')
-                                                            {{-- Show percentage (e.g., 20% Off) --}}
                                                             {{ number_format($product->discount_value, 0) }}% Off
                                                         @elseif($product->discount_type == 'FLAT')
-                                                            {{-- Show flat amount (e.g., $50 Off) --}}
                                                             ৳{{ number_format($product->discount_value, 0) }} Off
                                                         @endif
                                                     </span>
@@ -225,21 +250,19 @@
 
                                             </div>
                                         </div>
-                                        <ul class="product-meta font-xs color-grey mt-50" style="font-weight: bold">
-                                            <li class="mb-5">SKU: <a href="#">{{ $product->sku }}</a></li>
+                                        <ul class="product-meta font-xs mt-50" style="font-weight: bold; color: #222;">
+                                            <li class="mb-5">SKU: <a href="#" style="color: #222;">{{ $product->sku }}</a></li>
                                             @php $productTags = is_string($product->tags) ? json_decode($product->tags, true) : null; @endphp
                                             @if(!empty($productTags))
                                                 <li class="mb-5">Tags:
-
-                                                    <a href="#" rel="tag">{{ implode(', ', $productTags) }}</a>
-
+                                                    <a href="#" rel="tag" style="color: #222;">{{ implode(', ', $productTags) }}</a>
                                                 </li>
                                             @endif
 
-                                            <li>Availability:<span class="in-stock text-success ml-5">
-                                                    <span class="font-weight: bold">{{ $product->stock_quantity }}</span>
-                                                    Items In
-                                                    Stock</span></li>
+                                            <li>Availability: <span style="color: #222; font-weight: bold;">
+                                                    {{ $product->stock_quantity }} Items In Stock
+                                                </span>
+                                            </li>
                                         </ul>
                                     </div>
                                     <!-- Detail Info -->
@@ -505,87 +528,82 @@
                                     <h3 class="section-title style-1 mb-30">Related products</h3>
                                 </div>
                                 <div class="col-12">
-                                    <div class="carausel-6-columns-cover position-relative">
-                                        <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow"
-                                            id="carausel-6-columns-2-arrows">
+                                    <div class="row">
+                                        @foreach ($relatedProducts as $prod)
+                                        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                                            <div class="product-cart-wrap small hover-up h-100">
+                                                <div class="product-img-action-wrap">
+                                                    <div class="product-img product-img-zoom">
+                                                        <a href="{{ route('Product_Details', [
+                                                            'product_name'    => $prod['name'],
+                                                            'category_name'   => $prod['category']['name'],
+                                                            'auth_expired_key'=> 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                                            'category_id'     => $prod['category']['id'],
+                                                            'product_id'      => $prod['id'],
+                                                        ]) }}">
+                                                            @foreach ($prod['media'] as $media)
+                                                                @if ($media['position'] == 1)
+                                                                    <img class="default-img"
+                                                                         src="{{ asset($media['file_path'] . $media['image_name']) }}"
+                                                                         alt="{{ $media['image_name'] }}">
+                                                                @else
+                                                                    <img class="hover-img"
+                                                                         src="{{ asset($media['file_path'] . $media['image_name']) }}"
+                                                                         alt="{{ $media['image_name'] }}">
+                                                                @endif
+                                                            @endforeach
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                                        @php
+                                                            $prodTypes = is_string($prod['product_type'])
+                                                                ? json_decode($prod['product_type'], true)
+                                                                : ($prod['product_type'] ?? []);
+                                                        @endphp
+                                                        @if(in_array('HOTSALEITEMS', $prodTypes ?? []))
+                                                            <span class="badge hot">Hot</span>
+                                                        @elseif(in_array('TOPSELLING', $prodTypes ?? []))
+                                                            <span class="badge best-seller">Best Seller</span>
+                                                        @elseif(in_array('TOPNEWITEMS', $prodTypes ?? []))
+                                                            <span class="badge new">New</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="product-content-wrap" style="text-align: left;">
+                                                    <h2>
+                                                        <a href="{{ route('Product_Details', [
+                                                            'product_name'    => $prod['name'],
+                                                            'category_name'   => $prod['category']['name'],
+                                                            'auth_expired_key'=> 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                                            'category_id'     => $prod['category']['id'],
+                                                            'product_id'      => $prod['id'],
+                                                        ]) }}">{{ $prod['name'] }}</a>
+                                                    </h2>
+                                                    @php $rating = $prod['reviews_avg_rating'] ?? 0; @endphp
+                                                    <div style="display:flex; gap:6px; align-items:center;">
+                                                        <div>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                @if ($i <= $rating)
+                                                                    <i class="fa fa-star" style="color:#f15412;"></i>
+                                                                @elseif (($i - 0.5) <= $rating)
+                                                                    <i class="fa fa-star-half-empty" style="color:#f15412;"></i>
+                                                                @else
+                                                                    <i class="fa fa-star-o" style="color:#f15412;"></i>
+                                                                @endif
+                                                            @endfor
+                                                        </div>
+                                                        <div style="color:#f15412; font-weight:bold; font-size:13px;">
+                                                            ({{ number_format($rating, 1) }})
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-price" style="text-align:left;">
+                                                        <span>৳{{ $prod['sale_price'] }}</span>
+                                                        <span class="old-price">৳{{ $prod['regular_price'] }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="carausel-6-columns carausel-arrow-center" id="carausel-6-columns-2">
-                                            @foreach ($relatedProducts as $prod)
-                                                                                    <div class="product-cart-wrap small hover-up">
-                                                                                        <div class="product-img-action-wrap">
-                                                                                            <div class="product-img product-img-zoom">
-
-                                                                                                <a href="{{ route(
-                                                    'Product_Details',
-                                                    [
-                                                        'category_name' => $category_name,
-                                                        'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
-                                                        'product_id' => $product->id,
-                                                        'category_id' => $product->category->id
-                                                    ]
-                                                ) }}">
-                                                                                                    @foreach ($prod['media'] as $media)
-                                                                                                        @if ($media['position'] == 1)
-                                                                                                            <img class="default-img"
-                                                                                                                src="{{ asset($media['file_path'] . $media['image_name'])}}"
-                                                                                                                alt={{ $media['image_name'] }}>
-                                                                                                        @elseif($media['position'] == 1)
-                                                                                                            <img class="hover-img"
-                                                                                                                src="{{ asset($media['file_path'] . $media['image_name'])}}"
-                                                                                                                alt={{ $media['image_name'] }}>
-                                                                                                        @endif
-
-                                                                                                    @endforeach
-
-                                                                                                </a>
-                                                                                            </div>
-
-                                                                                            <div
-                                                                                                class="badge product-badges product-badges-position product-badges-mrg">
-                                                                                                <span class="hot">Hot</span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="product-content-wrap">
-                                                                                            <h2><a href="{{ route('Product_Details', [
-                                                    'product_name' => $prod['name'],
-                                                    'category_name' => $prod['category']['name'],
-                                                    'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
-                                                    'category_id' => $prod['category']['id'],
-                                                    'product_id' => $prod['id']
-                                                ]) }}">{{
-                                                    $prod['name'] }}</a></h2>
-                                                                                            @php
-                                                                                                // Example: $rating = 4.5;
-                                                                                                $rating = $prod['reviews_avg_rating'] ?? 0;
-                                                                                            @endphp
-
-                                                                                            <div style="display: flex; gap: 8px;">
-
-                                                                                                <div>
-                                                                                                    @for ($i = 1; $i <= 5; $i++) @if ($i <= $rating) {{-- Full Star
-                                                                                                            --}} <i class="fa fa-star" style="color: #f15412;"></i>
-                                                                                                        @elseif (($i - 0.5) <= $rating) {{-- Half Star --}} <i
-                                                                                                                class="fa fa-star-half-empty" style="color: #f15412;">
-                                                                                                            </i>
-                                                                                                        @else
-                                                                                                            {{-- Empty Star --}}
-                                                                                                            <i class="fa fa-star-o" style="color: #f15412;"></i>
-                                                                                                        @endif
-                                                                                                    @endfor
-                                                                                                </div>
-                                                                                                <div style="color:#f15412; font-weight: bold; font-size: 15px;">
-                                                                                                    ({{number_format($prod['reviews_avg_rating'], 1)}})
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="product-price">
-                                                                                                <span>৳{{ $product->sale_price}}</span>
-                                                                                                <span class="old-price">৳{{ $product->regular_price}}</span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--End product-cart-wrap-2-->
-                                            @endforeach
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -620,7 +638,7 @@
                                     'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                     'category_id' => $item['category']['id'],
                                     'product_id' => $item['id']
-                                ]) }}">{{
+                                ]) }}" style="color: #222;">{{
                                     $item['name'] }}</a></h5>
                                                             <p class="price mb-0 mt-5">৳{{ $item['sale_price'] }}</p>
                                                             @php

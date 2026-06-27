@@ -82,34 +82,33 @@ class ProductManagementController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'sku' => 'required|string|unique:tbl_products,sku',
-            'category_id' => 'required',
-            'short_description' => 'required|string|max:500',
-            'description' => 'required|string|max:5000',
+            'name'                          => 'required|string|max:255',
+            'sku'                           => 'required|string|unique:tbl_products,sku',
+            'category_id'                   => 'required',
+            'short_description'             => 'nullable|string|max:500',
+            'description'                   => 'nullable|string|max:5000',
             'additional_info_rows'          => 'nullable|array',
             'additional_info_rows.*.label'  => 'nullable|string|max:255',
             'additional_info_rows.*.value'  => 'nullable|string|max:1000',
             'additional_info_active'        => 'nullable|boolean',
-            'status' => 'required',
-            'image'  => 'required|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'image2' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'regular_price' => 'nullable|numeric',
-            'sale_price' => 'nullable|numeric',
-            'stock_quantity' => 'nullable|integer',
-            'minimum_order' => 'nullable|integer',
+            'status'                        => 'nullable|in:PUBLISHED,INACTIVE,PENDING',
+            'image'                         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'image2'                        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'image3'                        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'regular_price'                 => 'nullable|numeric',
+            'sale_price'                    => 'nullable|numeric',
+            'stock_quantity'                => 'nullable|integer',
+            'minimum_order'                 => 'nullable|integer',
         ], [
-            'name.required' => 'Product name is required',
-            'sku.required' => 'SKU is required',
-            'sku.unique' => 'This SKU already exists',
-            'category_id.required' => 'Please select category',
-            'image.required' => 'Product image is required',
-            'short_description.max'
-            => 'Short description maximum 300 characters',
-
-            'description.max'
-            => 'Full description maximum 3000 characters',
+            'name.required'         => 'Product Name is required.',
+            'sku.required'          => 'SKU is required.',
+            'sku.unique'            => 'This SKU already exists. Please use a unique SKU.',
+            'category_id.required'  => 'Please select a Category.',
+            'image.image'           => 'The uploaded file must be a valid image.',
+            'image.mimes'           => 'Image must be JPG, JPEG, PNG or WEBP format.',
+            'image.max'             => 'Image size must not exceed 4MB.',
+            'short_description.max' => 'Short description cannot exceed 500 characters.',
+            'description.max'       => 'Full description cannot exceed 5000 characters.',
         ]);
 
         $product = new Product();
@@ -141,7 +140,7 @@ class ProductManagementController extends Controller
 
         $product->minimum_order = $request->minimum_order ?? 1;
 
-        $product->status = $request->status;
+        $product->status = $request->status ?? 'PENDING';
 
         $product->tags = $request->tags;
 
@@ -267,13 +266,13 @@ class ProductManagementController extends Controller
             'name' => 'required|string|max:255',
             'sku' => 'required|unique:tbl_products,sku,' . $product->id,
             'category_id' => 'required',
-            'short_description' => 'required',
-            'description' => 'required',
+            'short_description' => 'nullable|string|max:500',
+            'description' => 'nullable|string|max:5000',
             'additional_info_rows'         => 'nullable|array',
             'additional_info_rows.*.label' => 'nullable|string|max:255',
             'additional_info_rows.*.value' => 'nullable|string|max:1000',
             'additional_info_active'       => 'nullable|boolean',
-            'status' => 'required',
+            'status' => 'nullable|in:PUBLISHED,INACTIVE,PENDING',
             'image'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'image2' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
@@ -304,7 +303,7 @@ class ProductManagementController extends Controller
 
         $product->minimum_order = $request->minimum_order;
 
-        $product->status = $request->status;
+        $product->status = $request->status ?? $product->status;
 
         $product->tags = $request->tags;
 
@@ -461,5 +460,33 @@ class ProductManagementController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Product status updated successfully');
+    }
+
+    public function destroy(int $id)
+    {
+        $product = Product::with('media')->findOrFail($id);
+
+        foreach ($product->media as $media) {
+            $path = upload_root($media->file_path . $media->image_name);
+            if (file_exists($path)) {
+                @unlink($path);
+            }
+            $media->delete();
+        }
+
+        ActivityLog::create([
+            'user_id'      => session('user_id'),
+            'performed_by' => session('user_name'),
+            'module'       => 'Product Management',
+            'action'       => 'DELETE',
+            'item'         => $product->name,
+            'details'      => 'Product deleted: ' . $product->name . ' (SKU: ' . $product->sku . ')',
+        ]);
+
+        $product->delete();
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Product "' . $product->name . '" deleted successfully.');
     }
 }

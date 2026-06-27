@@ -32,33 +32,14 @@
         margin-bottom: 4px;
     }
 
-    .hot {
-        background: #ff5a5f !important;
-    }
+    .hot  { background: #ff5a5f !important; }
+    .save { background: #0d3b66 !important; }
 
-    .save {
-        background: #0d3b66 !important;
-    }
-
-    .badge.hot {
-        background: var(--danger);
-    }
-
-    .badge.trending {
-        background: var(--info);
-    }
-
-    .badge.best-seller {
-        background: var(--secondary);
-    }
-
-    .badge.new {
-        background: var(--primary);
-    }
-
-    .badge.sale {
-        background: #3b3b3b !important;
-    }
+    .badge.hot        { background: #ff5a5f !important; }
+    .badge.sale       { background: #ff5a5f !important; }
+    .badge.new        { background: var(--primary)   !important; }
+    .badge.best-seller{ background: var(--secondary) !important; }
+    .badge.trending   { background: var(--info)      !important; }
 
     /* ── Account Dropdown ── */
     .account-dropdown-wrapper {
@@ -499,8 +480,8 @@
                 </div>
                 <div class="header-nav d-none d-lg-flex">
                     <div class="main-categori-wrap d-none d-lg-block">
-                        <a class="categori-button-active" href="#">
-                            <span class="fi-rs-menu-burger"></span> Browse Categories
+                        <a class="categori-button-active" href="#" style="color: #fff !important;">
+                            <span class="fi-rs-menu-burger" style="color: #fff !important;"></span> Browse Categories
                         </a>
                         <div class="categori-dropdown-wrap categori-dropdown-active-large">
 
@@ -574,7 +555,7 @@
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="{{ route('Product_Cart') }}">
-                                <img alt="Surfside Media" src="assets/imgs/theme/icons/icon-cart.svg">
+                                <img alt="Surfside Media" src="{{ asset('assets/imgs/theme/icons/icon-cart.svg') }}">
                                 <span class="pro-count white">
                                     @if(session('cart') && count(session('cart')) > 0)
                                     {{ count(session('cart')) }}

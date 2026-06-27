@@ -18,8 +18,6 @@ class ProductController extends Controller
      */
     public function Product_by_category(Request $request)
     {
-        $newProducts = [];
-        // dd($request->all());
         $products_by_category = Product::query()
             ->with([
                 'media' => function ($q) {
@@ -33,51 +31,23 @@ class ProductController extends Controller
             ->get()
             ->toArray();
 
-        // dd($products_by_category);
-        // ->latest()
-        // ->paginate(48);
-
-        // dd($products_by_category);
-        $products = Product::published([
-            'id',
-            'name',
-            'category_id',
-            'sale_price',
-            'regular_price',
-            'discount_type',
-            'discount_value',
-            'product_type',
-            'is_discounted',
+        $newProducts = Product::published([
+            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'discount_type', 'discount_value', 'product_type', 'is_discounted',
         ])
             ->with(['category:id,name,slug', 'media:id,title,file_path,image_type,position,model_id,image_name'])
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            // ->inStock()
-            ->inRandomOrder()
-            // ->limit(8)
+            ->latest()
+            ->take(7)
             ->get()
             ->toArray();
 
-
-        foreach ($products as $item => $value) {
-            if (isset($value['product_type']) && in_array('NEW', is_string($value['product_type'])
-                ? json_decode($value['product_type'], true)
-                : $value['product_type'])) {
-                $newProducts[] = $value;
-            }
-        }
-
-
-        // dd([
-        //     'products' => $products,
-        //     'category_name' => $request->category_name,
-        //     'sub_category_name' => $request->sub_category_name,
-        // ]);
         return view('product.Product_By_Category', [
             'products' => $products_by_category,
             'category_name' => $request->category_name,
-            'newProduct' => collect($newProducts)->shuffle()->take(7),
+            'newProduct' => collect($newProducts),
             'sub_category_name' => $request->sub_category_name,
             'total_item' => count($products_by_category),
         ]);
@@ -90,8 +60,6 @@ class ProductController extends Controller
      */
     public function Product_Details(Request $request)
     {
-
-        $newProducts = [];
 
         $product = Product::query()
             ->with(['media', 'category', 'brand', 'reviews'])
@@ -109,39 +77,18 @@ class ProductController extends Controller
         // dd($product->reviews[0]['user']);
 
 
-        $products = Product::published([
-            'id',
-            'name',
-            'category_id',
-            'sale_price',
-            'regular_price',
-            'discount_type',
-            'discount_value',
-            'product_type',
-            'is_discounted',
-
+        $newProducts = Product::published([
+            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'discount_type', 'discount_value', 'product_type', 'is_discounted',
         ])
             ->with(['category:id,name,slug', 'media:id,title,file_path,image_type,position,model_id,image_name'])
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            // ->inStock()
-            ->inRandomOrder()
-            // ->limit(8)
+            ->latest()
+            ->take(7)
             ->get()
             ->toArray();
-
-
-        foreach ($products as $item => $value) {
-            if (isset($value['product_type']) && in_array('NEW', is_string($value['product_type'])
-                ? json_decode($value['product_type'], true)
-                : $value['product_type'])) {
-                $newProducts[] = $value;
-            }
-        }
-
-
-
 
         $relatedProducts = Product::query()
             ->with(['media', 'category'])
@@ -185,7 +132,7 @@ class ProductController extends Controller
         return view('product.Product_Details', [
             'product' => $product,
             'relatedProducts' => $relatedProducts,
-            'newProduct' => collect($newProducts)->shuffle()->take(7),
+            'newProduct' => collect($newProducts),
             'category_name' => $category->name,
             'sub_category_name' => $category->parent ? $category->parent->name : null,
             'ratingCounts' => $ratingCounts,

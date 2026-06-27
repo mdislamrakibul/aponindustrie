@@ -27,6 +27,21 @@
         @method('PUT')
     @endif
 
+    {{-- Professional error summary --}}
+    @if($errors->any())
+    <div class="mx-4 mt-3 alert alert-danger border-0 rounded-3 shadow-sm" role="alert">
+        <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-exclamation-circle me-2 fs-5"></i>
+            <strong>Please fix the following errors before saving:</strong>
+        </div>
+        <ul class="mb-0 ps-3" style="font-size:13.5px;">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <div class="modal-body bg-light" style="max-height:75vh; overflow-y:auto;">
 
         <div class="row g-4">
@@ -46,7 +61,7 @@
                         <div class="mb-4">
 
                             <label class="form-label fw-semibold">
-                                Product Name
+                                Product Name <span class="text-danger">*</span>
                             </label>
 
                             <input type="text" name="name" class="form-control rounded-3" placeholder="Product Name"
@@ -66,7 +81,7 @@
                             <div class="col-md-6 mb-4">
 
                                 <label class="form-label fw-semibold">
-                                    SKU (Stock Keeping Unit)
+                                    SKU (Stock Keeping Unit) <span class="text-danger">*</span>
                                 </label>
 
                                 <input type="text" name="sku" class="form-control rounded-3"
@@ -89,7 +104,7 @@
                         <div class="mb-4">
                             <label class="form-label fw-semibold">
                                 Short Description
-                                <span class="text-muted fw-normal" style="font-size:13px;">(Max 500 characters)</span>
+                                <span class="text-muted fw-normal" style="font-size:13px;">(optional, max 500 characters)</span>
                             </label>
 
                             @php $shortId = 'short_description_' . ($isEdit ? 'edit' : 'create'); @endphp
@@ -115,7 +130,7 @@
                         {{-- FULL DESCRIPTION --}}
                         <div class="mb-4">
                             <label class="form-label fw-semibold">
-                                Full Description
+                                Full Description <span class="text-muted fw-normal" style="font-size:13px;">(optional)</span>
                                 <span class="text-muted fw-normal" style="font-size:13px;">(Max 5000 characters)</span>
                             </label>
 
@@ -382,7 +397,7 @@
                         <div class="mb-4">
 
                             <label class="form-label fw-semibold">
-                                Category
+                                Category <span class="text-danger">*</span>
                             </label>
                             <select name="category_id" class="form-select rounded-3">
 

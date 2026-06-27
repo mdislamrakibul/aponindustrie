@@ -3,13 +3,6 @@
 @section('title', 'Shop — All Products')
 
 @section('content')
-<style>
-    .product-cart-wrap:hover {
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
-        transform: translateY(-8px) !important;
-        border: 1px solid #c54836 !important;
-    }
-</style>
 <main class="main">
     <div class="page-header breadcrumb-wrap">
         <div class="container">

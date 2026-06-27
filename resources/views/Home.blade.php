@@ -1,6 +1,6 @@
 ﻿@extends('layout.master')
 
-@section('title', 'E-Commerce')
+@section('title', 'Apon-Industries')
 
 @section('content')
 
@@ -212,62 +212,30 @@
         }
 
         /* Badges */
-
-        /* Badges */
         .badges {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 8px;
+            left: 8px;
             z-index: 10;
         }
 
         .badge {
-            padding: 2px 5px;
-            ;
-            border-radius: 20px 0 20px 0;
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
             color: #fff;
-            font-size: 11px;
-            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .3px;
             margin-bottom: 4px;
+            line-height: 1.4;
         }
 
-        /* .hot {
-                                                                background: #fdc040;
-                                                            } */
-
-        .discount {
-            background: #f74b81 !important;
-        }
-
-
-
-        .hot {
-            background: #ff5a5f !important;
-        }
-
-        .save {
-            background: #0d3b66 !important;
-        }
-
-        .badge.hot {
-            background: var(--danger);
-        }
-
-        .badge.trending {
-            background: var(--info);
-        }
-
-        .badge.best-seller {
-            background: var(--secondary);
-        }
-
-        .badge.new {
-            background: var(--primary);
-        }
-
-        .badge.sale {
-            background: #3b3b3b;
-        }
+        .badge.hot        { background: #ff5a5f !important; }
+        .badge.sale       { background: #ff5a5f !important; }
+        .badge.new        { background: var(--brand-navy) !important; }
+        .badge.best-seller{ background: #fdc040 !important; color: #253d4e !important; }
+        .badge.trending   { background: #67bcee !important; }
 
         /* ── Slider + Side Banner Row ── */
         .slider-banner-row {
@@ -590,7 +558,7 @@
                                                                                 {{ number_format($prods['discount_value'], 0) }}% Off
                                                                             @elseif($prods['discount_type'] == 'FLAT')
                                                                                 {{-- Show flat amount (e.g., $50 Off) --}}
-                                                                                ${{ number_format($prods['discount_value'], 0) }} Off
+                                                                                ৳{{ number_format($prods['discount_value'], 0) }} Off
                                                                             @endif
                                                                         </span>
                                                                     @endif
@@ -630,8 +598,11 @@
                                                                             class="fi-rs-eye"></i></button>
                                                                     <button class="tool-btn" data-tooltip="Wishlist"><i
                                                                             class="fi-rs-heart"></i></button>
-                                                                    <button class="tool-btn" data-tooltip="Compare"><i
-                                                                            class="fi-rs-shuffle"></i></button>
+                                                                    <button class="tool-btn share-trigger" data-tooltip="Share"
+                                                                        data-share-url="{{ route('Product_Details', ['product_name' => $prods['name'], 'category_name' => $prods['category']['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'category_id' => $prods['category']['id'], 'product_id' => $prods['id']]) }}"
+                                                                        data-share-title="{{ $prods['name'] }}">
+                                                                        <i class="fi-rs-shuffle"></i>
+                                                                    </button>
                                                                 </div>
                                                             </div>
 
@@ -714,7 +685,7 @@
                                                                                 {{ number_format($prods['discount_value'], 0) }}% Off
                                                                             @elseif($prods['discount_type'] == 'FLAT')
                                                                                 {{-- Show flat amount (e.g., $50 Off) --}}
-                                                                                ${{ number_format($prods['discount_value'], 0) }} Off
+                                                                                ৳{{ number_format($prods['discount_value'], 0) }} Off
                                                                             @endif
                                                                         </span>
                                                                     @endif
@@ -754,8 +725,11 @@
                                                                             class="fi-rs-eye"></i></button>
                                                                     <button class="tool-btn" data-tooltip="Wishlist"><i
                                                                             class="fi-rs-heart"></i></button>
-                                                                    <button class="tool-btn" data-tooltip="Compare"><i
-                                                                            class="fi-rs-shuffle"></i></button>
+                                                                    <button class="tool-btn share-trigger" data-tooltip="Share"
+                                                                        data-share-url="{{ route('Product_Details', ['product_name' => $prods['name'], 'category_name' => $prods['category']['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'category_id' => $prods['category']['id'], 'product_id' => $prods['id']]) }}"
+                                                                        data-share-title="{{ $prods['name'] }}">
+                                                                        <i class="fi-rs-shuffle"></i>
+                                                                    </button>
                                                                 </div>
                                                             </div>
 
@@ -836,7 +810,7 @@
                                                                                 {{ number_format($prods['discount_value'], 0) }}% Off
                                                                             @elseif($prods['discount_type'] == 'FLAT')
                                                                                 {{-- Show flat amount (e.g., $50 Off) --}}
-                                                                                ${{ number_format($prods['discount_value'], 0) }} Off
+                                                                                ৳{{ number_format($prods['discount_value'], 0) }} Off
                                                                             @endif
                                                                         </span>
                                                                     @endif
@@ -876,8 +850,11 @@
                                                                             class="fi-rs-eye"></i></button>
                                                                     <button class="tool-btn" data-tooltip="Wishlist"><i
                                                                             class="fi-rs-heart"></i></button>
-                                                                    <button class="tool-btn" data-tooltip="Compare"><i
-                                                                            class="fi-rs-shuffle"></i></button>
+                                                                    <button class="tool-btn share-trigger" data-tooltip="Share"
+                                                                        data-share-url="{{ route('Product_Details', ['product_name' => $prods['name'], 'category_name' => $prods['category']['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'category_id' => $prods['category']['id'], 'product_id' => $prods['id']]) }}"
+                                                                        data-share-title="{{ $prods['name'] }}">
+                                                                        <i class="fi-rs-shuffle"></i>
+                                                                    </button>
                                                                 </div>
                                                             </div>
 
@@ -1328,7 +1305,7 @@
                                                         <div>
                                                             @for ($i = 1; $i <= 5; $i++) @if ($i <= $rating) {{-- Full Star --}} <i
                                                                     class="fa fa-star" style="color: #f15412;"></i>
-                                                                @elseif (($i - 0.5) <= $rating) {{-- Half Star --}} <i class="fa fa-star-half-empty"
+                                                                @elseif ($i - 0.5 <= $rating) {{-- Half Star --}} <i class="fa fa-star-half-empty"
                                                                     style="color: #f15412;"></i>
                                                                 @else
                                                                     {{-- Empty Star --}}
@@ -1397,4 +1374,123 @@
         </section> --}}
 
     </main>
+
+    {{-- Share Dropdown (single instance, repositioned via JS) --}}
+    <div id="shareDropdown" class="share-dropdown">
+        <a class="sd-whatsapp" id="sdWhatsApp" href="#" target="_blank" rel="noopener">
+            <i class="fa fa-whatsapp"></i> WhatsApp
+        </a>
+        <a class="sd-facebook" id="sdFacebook" href="#" target="_blank" rel="noopener">
+            <i class="fa fa-facebook"></i> Facebook
+        </a>
+        <a class="sd-messenger" id="sdMessenger" href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#0084ff" style="flex-shrink:0;"><path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.627 0 12-4.975 12-11.111C24 4.975 18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8.1l3.131 3.26L19.752 8.1l-6.561 6.863z"/></svg> Messenger
+        </a>
+        <div class="sd-divider"></div>
+        <a class="sd-copy" id="sdCopyLink" href="#">
+            <i class="fi-rs-link"></i> Copy Link
+        </a>
+    </div>
+    <div id="shareToast"></div>
+
+@endsection
+
+@section('custom_script')
+    <script>
+    (function () {
+        var dropdown = document.getElementById('shareDropdown');
+        var currentUrl = '';
+        var hideTimer  = null;
+
+        // Show on button mouseenter
+        document.addEventListener('mouseover', function (e) {
+            var btn = e.target.closest('.share-trigger');
+            if (!btn) return;
+
+            clearTimeout(hideTimer);
+
+            currentUrl = btn.getAttribute('data-share-url') || window.location.href;
+            var shareTitle   = btn.getAttribute('data-share-title') || document.title;
+            var encodedUrl   = encodeURIComponent(currentUrl);
+            var encodedTitle = encodeURIComponent(shareTitle);
+
+            document.getElementById('sdWhatsApp').href = 'https://api.whatsapp.com/send?text=' + encodedTitle + '%0A' + encodedUrl;
+            document.getElementById('sdFacebook').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl;
+
+            document.getElementById('sdMessenger').onclick = function (ev) {
+                ev.preventDefault();
+                copyText(currentUrl);
+                window.open('https://www.messenger.com/', '_blank');
+                showToast('Link copied! Paste it in Messenger.');
+                closeDropdown();
+            };
+
+            document.getElementById('sdCopyLink').onclick = function (ev) {
+                ev.preventDefault();
+                copyText(currentUrl);
+                showToast('Link copied!');
+                closeDropdown();
+            };
+
+            // Position (fixed = viewport coords, no pageYOffset)
+            var rect = btn.getBoundingClientRect();
+            var ddW  = 175;
+            var ddH  = 195;
+
+            var left = rect.right - ddW;
+            if (left < 8) left = 8;
+            if (left + ddW > window.innerWidth - 8) left = window.innerWidth - ddW - 8;
+
+            var top = rect.bottom + 4;
+            if (top + ddH > window.innerHeight - 10) top = rect.top - ddH - 4;
+            if (top < 8) top = 8;
+
+            dropdown.style.top  = top  + 'px';
+            dropdown.style.left = left + 'px';
+            dropdown.classList.add('open');
+        });
+
+        // Hide when mouse leaves button OR dropdown (with small delay to allow crossing the gap)
+        document.addEventListener('mouseout', function (e) {
+            var fromBtn      = e.target.closest('.share-trigger');
+            var fromDropdown = e.target.closest('#shareDropdown');
+            if (!fromBtn && !fromDropdown) return;
+
+            hideTimer = setTimeout(closeDropdown, 150);
+        });
+
+        dropdown.addEventListener('mouseover', function () {
+            clearTimeout(hideTimer);
+        });
+
+        function closeDropdown() {
+            dropdown.classList.remove('open');
+        }
+
+        function copyText(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(function () { fallbackCopy(text); });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch(e) {}
+            document.body.removeChild(ta);
+        }
+
+        function showToast(msg) {
+            var t = document.getElementById('shareToast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(function () { t.classList.remove('show'); }, 2500);
+        }
+    })();
+    </script>
 @endsection

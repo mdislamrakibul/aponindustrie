@@ -205,15 +205,248 @@
         </section>
     </main>
 
-    <style>
-        @media print {
+    {{-- ═══════════════════════════════════════════════
+         PRINT-ONLY INVOICE
+         Hidden on screen, shown only when printing
+    ═══════════════════════════════════════════════ --}}
+    @php
+        $addr    = $order->order_address;
+        $subTotal = $order->order_items->sum('total');
+        $grandTotal = $subTotal + $order->shipping_amount + ($order->tax_amount ?? 0);
+    @endphp
 
-            header,
-            footer,
-            nav,
-            .breadcrumb-wrap,
-            div[style*="justify-content:center"] {
-                display: none !important;
+    <div id="invoice-print">
+
+        {{-- Header --}}
+        <div class="inv-header">
+            <div class="inv-logo-block">
+                <img src="{{ asset('assets/imgs/logo/logo.png') }}" alt="Apon Plastic Industries" class="inv-logo">
+            </div>
+            <div class="inv-company-info">
+                <div class="inv-company-name">Apon Plastic Industries</div>
+                <div class="inv-company-sub">Narayanganj, Bangladesh</div>
+                <div class="inv-company-sub">Phone: +880 1330-473873</div>
+                <div class="inv-company-sub">Email: info@aponindustries.com</div>
+                <div class="inv-company-sub">Web: aponindustries.com</div>
+            </div>
+            <div class="inv-meta-block">
+                <div class="inv-badge">INVOICE</div>
+                <table class="inv-meta-table">
+                    <tr><td>Invoice No</td><td><strong>#{{ $order->order_number }}</strong></td></tr>
+                    <tr><td>Date</td><td>{{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</td></tr>
+                    <tr><td>Payment</td><td>{{ $order->payment_method }}</td></tr>
+                    <tr><td>Status</td><td>{{ $order->payment_status }}</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="inv-divider"></div>
+
+        {{-- Bill To --}}
+        @if($addr)
+        <div class="inv-bill-section">
+            <div class="inv-bill-to">
+                <div class="inv-section-title">Bill To</div>
+                <div class="inv-bill-name">{{ $addr->first_name }} {{ $addr->last_name }}</div>
+                @if($addr->phone) <div class="inv-bill-line">{{ $addr->phone }}</div> @endif
+                @if($addr->email) <div class="inv-bill-line">{{ $addr->email }}</div> @endif
+                @if($addr->address_line1) <div class="inv-bill-line">{{ $addr->address_line1 }}</div> @endif
+                @if(isset($addr->district) && $addr->district) <div class="inv-bill-line">{{ $addr->district }}</div> @endif
+            </div>
+            <div class="inv-order-status-block">
+                <div class="inv-section-title">Order Status</div>
+                <div class="inv-status-pill">{{ $order->order_status }}</div>
+                @if($order->transaction_id)
+                    <div class="inv-bill-line" style="margin-top:6px;font-size:11px;color:#666;">Txn: {{ $order->transaction_id }}</div>
+                @endif
+            </div>
+        </div>
+        @endif
+
+        {{-- Items Table --}}
+        <table class="inv-table">
+            <thead>
+                <tr>
+                    <th class="inv-th" style="width:5%;text-align:center;">#</th>
+                    <th class="inv-th">Product</th>
+                    <th class="inv-th" style="width:10%;text-align:center;">SKU</th>
+                    <th class="inv-th" style="width:12%;text-align:center;">Unit Price</th>
+                    <th class="inv-th" style="width:8%;text-align:center;">Qty</th>
+                    <th class="inv-th" style="width:13%;text-align:right;">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($order->order_items as $i => $item)
+                @php
+                    $minOrder  = $item->product->minimum_order ?? 1;
+                    $unitPrice = $minOrder > 0 ? $item->price / $minOrder : $item->price;
+                @endphp
+                <tr class="{{ $loop->even ? 'inv-row-alt' : '' }}">
+                    <td class="inv-td" style="text-align:center;color:#888;">{{ $i + 1 }}</td>
+                    <td class="inv-td"><strong>{{ $item->product->name ?? 'Product' }}</strong></td>
+                    <td class="inv-td" style="text-align:center;font-size:11px;color:#666;">{{ $item->product->sku ?? '-' }}</td>
+                    <td class="inv-td" style="text-align:center;">৳{{ number_format($unitPrice, 2) }}</td>
+                    <td class="inv-td" style="text-align:center;">{{ $item->quantity }}</td>
+                    <td class="inv-td" style="text-align:right;font-weight:600;">৳{{ number_format($item->total, 2) }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        {{-- Totals --}}
+        <div class="inv-totals-wrap">
+            <table class="inv-totals-table">
+                <tr>
+                    <td class="inv-total-label">Sub Total</td>
+                    <td class="inv-total-value">৳{{ number_format($subTotal, 2) }}</td>
+                </tr>
+                <tr>
+                    <td class="inv-total-label">Shipping</td>
+                    <td class="inv-total-value">{{ $order->shipping_amount > 0 ? '৳'.number_format($order->shipping_amount,2) : 'Free' }}</td>
+                </tr>
+                @if(($order->tax_amount ?? 0) > 0)
+                <tr>
+                    <td class="inv-total-label">Tax</td>
+                    <td class="inv-total-value">৳{{ number_format($order->tax_amount, 2) }}</td>
+                </tr>
+                @endif
+                <tr class="inv-grand-row">
+                    <td class="inv-total-label">Net Payable</td>
+                    <td class="inv-total-value">৳{{ number_format($grandTotal, 2) }}</td>
+                </tr>
+            </table>
+        </div>
+
+        {{-- Footer --}}
+        <div class="inv-footer">
+            <p>Thank you for shopping with <strong>Apon Plastic Industries</strong>!</p>
+            <p style="color:#888;font-size:11px;font-style:italic;">This is a software generated invoice. Therefore, no signature is required.</p>
+            <div class="inv-credit">
+                Design, Developed &amp; Managed by
+                <a href="https://versedsoft.com/" target="_blank" rel="noopener">Versedsoft &mdash; Your Complication, Our Solutions</a>
+                <div>+8801723821264 (WhatsApp)</div>
+            </div>
+        </div>
+
+    </div>{{-- #invoice-print --}}
+
+    <style>
+        /* ── Screen: hide invoice ── */
+        #invoice-print { display: none; }
+
+        /* ── Print: hide page, show only invoice ── */
+        @media print {
+            body > *                     { display: none !important; }
+            #invoice-print               { display: block !important; }
+
+            /* Invoice layout */
+            #invoice-print {
+                font-family: 'Arial', sans-serif;
+                font-size: 13px;
+                color: #1a1a1a;
+                padding: 24px 32px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            /* Header */
+            .inv-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 18px;
+            }
+            .inv-logo { height: 60px; object-fit: contain; }
+            .inv-company-name { font-size: 16px; font-weight: 700; color: #0d3b66; }
+            .inv-company-sub  { font-size: 11px; color: #555; margin-top: 2px; }
+            .inv-meta-block   { text-align: right; }
+            .inv-badge {
+                display: inline-block;
+                background: #0d3b66;
+                color: #fff;
+                font-size: 18px;
+                font-weight: 700;
+                letter-spacing: 3px;
+                padding: 4px 16px;
+                border-radius: 4px;
+                margin-bottom: 8px;
+            }
+            .inv-meta-table td { padding: 2px 6px; font-size: 12px; }
+            .inv-meta-table td:first-child { color: #666; }
+            .inv-meta-table td:last-child  { text-align: right; }
+
+            /* Divider */
+            .inv-divider {
+                border: none;
+                border-top: 2px solid #0d3b66;
+                margin: 12px 0;
+            }
+
+            /* Bill To */
+            .inv-bill-section {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 16px;
+            }
+            .inv-section-title { font-size: 11px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 5px; }
+            .inv-bill-name     { font-size: 14px; font-weight: 700; color: #0d3b66; }
+            .inv-bill-line     { font-size: 12px; color: #444; margin-top: 2px; }
+            .inv-status-pill {
+                display: inline-block;
+                background: #e8f4fd;
+                color: #0d3b66;
+                padding: 3px 12px;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 700;
+            }
+
+            /* Table */
+            .inv-table { width: 100%; border-collapse: collapse; margin-bottom: 0; }
+            .inv-th {
+                background: #0d3b66;
+                color: #fff;
+                padding: 8px 10px;
+                font-size: 12px;
+                font-weight: 600;
+                text-align: left;
+            }
+            .inv-td        { padding: 8px 10px; font-size: 12px; border-bottom: 1px solid #eee; }
+            .inv-row-alt td { background: #f8fafc; }
+
+            /* Totals */
+            .inv-totals-wrap  { display: flex; justify-content: flex-end; margin-top: 8px; }
+            .inv-totals-table { border-collapse: collapse; min-width: 220px; }
+            .inv-total-label  { padding: 5px 12px; font-size: 13px; color: #555; }
+            .inv-total-value  { padding: 5px 12px; font-size: 13px; text-align: right; font-weight: 600; }
+            .inv-grand-row td {
+                border-top: 2px solid #0d3b66;
+                padding-top: 8px;
+                font-size: 15px;
+                font-weight: 700;
+                color: #0d3b66;
+            }
+
+            /* Footer */
+            .inv-footer {
+                margin-top: 24px;
+                text-align: center;
+                border-top: 1px solid #ddd;
+                padding-top: 12px;
+                font-size: 12px;
+                color: #444;
+            }
+            .inv-credit {
+                margin-top: 14px;
+                padding-top: 10px;
+                border-top: 1px solid #e5e7eb;
+                font-size: 11px;
+                color: #777;
+            }
+            .inv-credit a {
+                color: #0d6efd;
+                font-weight: 600;
+                text-decoration: none;
             }
         }
     </style>

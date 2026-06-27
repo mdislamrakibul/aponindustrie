@@ -80,10 +80,14 @@
                             <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                                 <div class="card border h-100">
                                     {{-- Preview --}}
-                                    <div style="height:160px;overflow:hidden;border-radius:4px 4px 0 0;background:#eee;">
-                                        <img src="{{ asset($slider->image_path) }}"
+                                    <div style="height:160px;overflow:hidden;border-radius:4px 4px 0 0;background:#eee;position:relative;">
+                                        <img id="ads-preview-{{ $slider->id }}"
+                                             src="{{ asset($slider->image_path) }}"
                                              alt="{{ $slider->label }}"
-                                             style="width:100%;height:160px;object-fit:cover;display:block;">
+                                             style="width:100%;height:160px;object-fit:cover;display:block;transition:opacity .2s;">
+                                        <div id="ads-overlay-{{ $slider->id }}" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.45);color:#fff;font-size:12px;font-weight:600;align-items:center;justify-content:center;">
+                                            <i class="fas fa-image mr-1"></i> New image selected
+                                        </div>
                                     </div>
                                     <div class="card-body p-3">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -109,10 +113,11 @@
                                             <div class="input-group input-group-sm">
                                                 <input type="file" name="image"
                                                        accept="image/jpg,image/jpeg,image/png,image/webp"
-                                                       class="form-control form-control-sm" required>
+                                                       class="form-control form-control-sm" required
+                                                       onchange="adsPreview(this,'{{ $slider->id }}')">
                                                 <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-sync-alt"></i>
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary" title="Update Image" data-toggle="tooltip" data-placement="top">
+                                                        <i class="fas fa-sync-alt"></i> Update
                                                     </button>
                                                 </div>
                                             </div>
@@ -180,10 +185,14 @@
                             <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
                                 <div class="card border h-100">
                                     {{-- Preview --}}
-                                    <div style="height:160px;overflow:hidden;border-radius:4px 4px 0 0;background:#eee;">
-                                        <img src="{{ asset($banner->image_path) }}"
+                                    <div style="height:160px;overflow:hidden;border-radius:4px 4px 0 0;background:#eee;position:relative;">
+                                        <img id="ads-preview-{{ $banner->id }}"
+                                             src="{{ asset($banner->image_path) }}"
                                              alt="{{ $banner->label }}"
-                                             style="width:100%;height:160px;object-fit:cover;display:block;">
+                                             style="width:100%;height:160px;object-fit:cover;display:block;transition:opacity .2s;">
+                                        <div id="ads-overlay-{{ $banner->id }}" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.45);color:#fff;font-size:12px;font-weight:600;align-items:center;justify-content:center;">
+                                            <i class="fas fa-image mr-1"></i> New image selected
+                                        </div>
                                     </div>
                                     <div class="card-body p-3">
                                         <div class="font-weight-bold mb-1">{{ $banner->label }}</div>
@@ -201,10 +210,11 @@
                                             <div class="input-group input-group-sm">
                                                 <input type="file" name="image"
                                                        accept="image/jpg,image/jpeg,image/png,image/webp"
-                                                       class="form-control form-control-sm" required>
+                                                       class="form-control form-control-sm" required
+                                                       onchange="adsPreview(this,'{{ $banner->id }}')">
                                                 <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-sync-alt"></i>
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary" title="Update Image" data-toggle="tooltip" data-placement="top">
+                                                        <i class="fas fa-sync-alt"></i> Update
                                                     </button>
                                                 </div>
                                             </div>
@@ -302,6 +312,25 @@
         document.getElementById('modalSlideDesc').value      = desc      || '';
         document.getElementById('modalHideText').checked     = !!hideText;
         $('#slideTextModal').modal('show');
+    }
+    </script>
+
+    <script>
+    function adsPreview(input, id) {
+        if (!input.files || !input.files[0]) return;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var img     = document.getElementById('ads-preview-' + id);
+            var overlay = document.getElementById('ads-overlay-' + id);
+            if (img) {
+                img.src = e.target.result;
+                img.style.opacity = '1';
+            }
+            if (overlay) {
+                overlay.style.display = 'flex';
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
     }
     </script>
 
