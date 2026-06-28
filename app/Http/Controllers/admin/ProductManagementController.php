@@ -351,21 +351,34 @@ class ProductManagementController extends Controller
 
             $image->move($destinationPath, $imageName);
 
-            Media::updateOrCreate(
-                [
-                    'model_id' => $product->id,
-                    'position' => 1,
-                ],
-                [
+            // Find the same row the form shows as "Main Image" (first by position asc, then id asc).
+            // Some products have position=0 rows from original uploads; updateOrCreate(['position'=>1])
+            // would miss those and create a duplicate row, making the new image appear in the wrong slot.
+            $mainMedia = Media::where('model_id', $product->id)
+                ->where('image_type', 'PRODUCT')
+                ->orderBy('position')
+                ->orderBy('id')
+                ->first();
+
+            if ($mainMedia) {
+                $mainMedia->update([
+                    'title'      => $product->name,
+                    'image_name' => $imageName,
+                    'file_path'  => 'uploads/products/',
+                ]);
+            } else {
+                Media::create([
                     'title'       => $product->name,
-                    'image_name'  => $imageName,
+                    'model_id'    => $product->id,
                     'file_path'   => 'uploads/products/',
+                    'image_name'  => $imageName,
                     'file_type'   => 'image',
                     'image_type'  => 'PRODUCT',
+                    'position'    => 1,
                     'is_active'   => 1,
                     'device_type' => 'ALL',
-                ]
-            );
+                ]);
+            }
             ActivityLog::create([
                 'user_id'      => session('user_id'),
                 'performed_by' => session('user_name'),
