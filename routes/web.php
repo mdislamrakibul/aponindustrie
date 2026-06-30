@@ -261,7 +261,7 @@ Route::middleware(['role:admin'])
     });
 
 // inventory-management
-Route::prefix('admin/inventory')->group(function () {
+Route::middleware(['role:admin'])->prefix('admin/inventory')->group(function () {
 
     Route::get(
         '/list',

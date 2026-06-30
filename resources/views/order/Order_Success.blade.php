@@ -278,13 +278,13 @@
             <tbody>
                 @foreach($order->order_items as $i => $item)
                 @php
-                    $minOrder  = $item->product->minimum_order ?? 1;
+                    $minOrder  = $item->product?->minimum_order ?? 1;
                     $unitPrice = $minOrder > 0 ? $item->price / $minOrder : $item->price;
                 @endphp
                 <tr class="{{ $loop->even ? 'inv-row-alt' : '' }}">
                     <td class="inv-td" style="text-align:center;color:#888;">{{ $i + 1 }}</td>
-                    <td class="inv-td"><strong>{{ $item->product->name ?? 'Product' }}</strong></td>
-                    <td class="inv-td" style="text-align:center;font-size:11px;color:#666;">{{ $item->product->sku ?? '-' }}</td>
+                    <td class="inv-td"><strong>{{ $item->product?->name ?? 'Product' }}</strong></td>
+                    <td class="inv-td" style="text-align:center;font-size:11px;color:#666;">{{ $item->product?->sku ?? '-' }}</td>
                     <td class="inv-td" style="text-align:center;">৳{{ number_format($unitPrice, 2) }}</td>
                     <td class="inv-td" style="text-align:center;">{{ $item->quantity }}</td>
                     <td class="inv-td" style="text-align:right;font-weight:600;">৳{{ number_format($item->total, 2) }}</td>
@@ -336,7 +336,7 @@
 
         /* ── Print: hide page, show only invoice ── */
         @media print {
-            body > *                     { display: none !important; }
+            body > *:not(#invoice-print) { display: none !important; }
             #invoice-print               { display: block !important; }
 
             /* Invoice layout */

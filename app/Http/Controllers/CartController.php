@@ -73,7 +73,7 @@ class CartController extends Controller
 
 
         $product = Product::with(['media' => function ($q) {
-            $q->where('image_type', 'PRODUCT')->orderBy('position')->select('id','title','file_path','image_type','position','model_id','image_name');
+            $q->where('image_type', 'PRODUCT')->orderBy('position')->limit(1)->select('id','title','file_path','image_type','position','model_id','image_name');
         }])->findOrFail($request->product_id);
 
         // 1. Retrieve the current cart from session, or an empty array if it doesn't exist
@@ -96,7 +96,7 @@ class CartController extends Controller
         // 4. Save the updated array back to the session
         session()->put('cart', $cart);
 
-        return redirect()->route('Product_Cart');
+        return back()->with('success', 'Product added to cart!');
     }
 
     /**

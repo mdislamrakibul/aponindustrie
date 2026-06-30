@@ -187,7 +187,7 @@
                     @endif
                 </div>
                 <div class="single-mobile-header-info">
-                    <a href="{{ url('/register') }}">Sign Up</a>
+                    {{-- <a href="{{ url('/register') }}">Sign Up</a> --}}
 
                 </div>
                 <div class="single-mobile-header-info">

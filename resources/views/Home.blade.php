@@ -1052,6 +1052,7 @@
                                                                         <span>৳ {{ $prod['sale_price'] }} </span>
                                                                         <span class="old-price">৳ {{ $prod['regular_price'] }}</span>
                                                                     </div>
+                                                                    <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                                 </div>
                                                             </div>
                                 @endforeach
@@ -1118,6 +1119,7 @@
                                                                         <span>৳ {{ $prod['sale_price'] }} </span>
                                                                         <span class="old-price">৳ {{ $prod['regular_price'] }}</span>
                                                                     </div>
+                                                                    <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                                 </div>
                                                             </div>
                                 @endforeach
@@ -1171,6 +1173,11 @@
                                 'product_id' => $prod['id']
                             ]) }}">{{
                                 $prod['name'] }}</a></h5>
+                                                <div class="product-price mt-1">
+                                                    <span>৳ {{ $prod['sale_price'] }}</span>
+                                                    <span class="old-price">৳ {{ $prod['regular_price'] }}</span>
+                                                </div>
+                                                <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                             </div>
                         @endforeach
 
@@ -1321,6 +1328,7 @@
                                                         <span>৳ {{ $prod['sale_price'] }} </span>
                                                         <span class="old-price">৳ {{ $prod['regular_price'] }}</span>
                                                     </div>
+                                                    <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                 </div>
                                             </div>
                                             <!--End product-cart-wrap-2-->

@@ -401,8 +401,27 @@ body {
 .header-bottom .categori-button-active:hover {
     background: rgba(255,255,255,.15) !important;
 }
-/* Desktop dark header: invert logo to white */
-.header-bottom .logo img { filter: brightness(0) invert(1); }
+/* Desktop logo (header-middle)
+   Logo PNG has white space on right — clip container to blue-only portion,
+   same technique as mobile. img wider than <a> so white part is hidden. */
+.header-middle .logo.logo-width-1 a {
+    display: inline-block;
+    width: 110px;
+    overflow: hidden;
+    border-radius: 8px;
+    line-height: 0;
+    vertical-align: bottom;
+}
+.header-middle .logo.logo-width-1 a img {
+    display: block;
+    width: 185px !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+}
+
+/* Desktop dark nav bar logo — invert to white + rounded */
+.header-bottom .logo img { filter: brightness(0) invert(1); border-radius: 8px; }
 
 /* Mobile: no background, clip white right portion, show only APON dark area */
 @media (max-width: 991px) {
@@ -412,11 +431,13 @@ body {
         padding: 0 !important;
         line-height: 0;
     }
-    /* overflow:hidden clips the right 42% white area of logo.png */
+    /* overflow:hidden clips the right 42% white area of logo.png —
+       border-radius here ensures the clip follows the rounded corners */
     .header-bottom .logo.logo-width-1 a {
         display: block !important;
         width: 105px;
         overflow: hidden;
+        border-radius: 8px;
         line-height: 0;
     }
     /* Render 180px wide — 105/180 = 58% shows exactly the APON dark-navy portion */
@@ -427,6 +448,7 @@ body {
         max-width: none !important;
         display: block;
         height: auto !important;
+        border-radius: 8px;
     }
 }
 
@@ -867,6 +889,7 @@ body {
     text-decoration: none;
     transition: background 0.2s ease, color 0.2s ease;
     line-height: 1.4;
+    white-space: nowrap;
 }
 .btn-add-to-cart-full:hover,
 .btn-add-to-cart-full:focus {
@@ -965,6 +988,7 @@ body {
         font-size: 11px !important;
         padding: 7px 8px !important;
         gap: 4px !important;
+        white-space: nowrap !important;
     }
 }
 
@@ -1092,4 +1116,47 @@ body {
 #shareToast.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+}
+
+/* Mobile burger icon + cart icon fixes */
+@media (max-width: 991px) {
+    /* Hide featured-menu on mobile — it has no responsive class and breaks layout */
+    .featured-menu {
+        display: none !important;
+    }
+
+    /* Ensure cart dropdown cannot intercept touches when hidden */
+    .cart-dropdown-wrap {
+        pointer-events: none !important;
+    }
+    .cart-dropdown-wrap.show,
+    .header-action-icon-2:hover .cart-dropdown-wrap {
+        pointer-events: auto !important;
+    }
+
+    /* Burger icon — keep original 24x20 size, just remove touch delay */
+    .burger-icon {
+        touch-action: manipulation;
+        cursor: pointer;
+    }
+    /* Extend tap area without changing visual size */
+    .burger-icon::after {
+        content: '';
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        bottom: -10px;
+        left: -10px;
+    }
+
+    /* Cart icon SVG — white on navy header */
+    .header-action-icon-2 .mini-cart-icon img {
+        filter: brightness(0) invert(1);
+    }
+
+    /* Cart item count badge */
+    .header-action-icon-2 .mini-cart-icon .pro-count {
+        background-color: #f15412 !important;
+        color: #fff !important;
+    }
 }

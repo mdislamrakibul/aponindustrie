@@ -11,6 +11,7 @@ use App\Models\Media;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ActivityLog;
+use Illuminate\Support\Facades\DB;
 
 class ProductManagementController extends Controller
 {
@@ -478,28 +479,31 @@ class ProductManagementController extends Controller
     public function destroy(int $id)
     {
         $product = Product::with('media')->findOrFail($id);
+        $productName = $product->name;
 
-        foreach ($product->media as $media) {
-            $path = upload_root($media->file_path . $media->image_name);
-            if (file_exists($path)) {
-                @unlink($path);
+        DB::transaction(function () use ($product) {
+            foreach ($product->media as $media) {
+                $path = upload_root($media->file_path . $media->image_name);
+                if (file_exists($path)) {
+                    @unlink($path);
+                }
+                $media->delete();
             }
-            $media->delete();
-        }
 
-        ActivityLog::create([
-            'user_id'      => session('user_id'),
-            'performed_by' => session('user_name'),
-            'module'       => 'Product Management',
-            'action'       => 'DELETE',
-            'item'         => $product->name,
-            'details'      => 'Product deleted: ' . $product->name . ' (SKU: ' . $product->sku . ')',
-        ]);
+            ActivityLog::create([
+                'user_id'      => session('user_id'),
+                'performed_by' => session('user_name'),
+                'module'       => 'Product Management',
+                'action'       => 'DELETE',
+                'item'         => $product->name,
+                'details'      => 'Product deleted: ' . $product->name . ' (SKU: ' . $product->sku . ')',
+            ]);
 
-        $product->delete();
+            $product->delete();
+        });
 
         return redirect()
             ->route('admin.products.index')
-            ->with('success', 'Product "' . $product->name . '" deleted successfully.');
+            ->with('success', 'Product "' . $productName . '" deleted successfully.');
     }
 }

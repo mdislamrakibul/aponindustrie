@@ -246,7 +246,7 @@
                                                         {{-- DELETE --}}
                                                         <form action="{{ route('admin.products.delete', $product->id) }}"
                                                             method="POST"
-                                                            onsubmit="return confirm('Delete \'{{ addslashes($product->name) }}\'? This cannot be undone.')">
+                                                            onsubmit="return confirm({{ json_encode('Delete "' . $product->name . '"? This cannot be undone.') }})">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="action-btn border-0" title="Delete" data-toggle="tooltip">
