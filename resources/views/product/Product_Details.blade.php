@@ -670,8 +670,7 @@
 
                         </div>
 
-
-
+                        @include('partials.promo-banner')
 
                     </div>
                 </div>

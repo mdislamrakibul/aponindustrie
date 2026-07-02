@@ -92,14 +92,12 @@ class ProductController extends Controller
 
         $relatedProducts = Product::query()
             ->with(['media', 'category'])
-            // Pass sub_category_id or category_id from the URL
             ->GetProductByLevelOrCategory($request->category_id, null)
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            // ->inStock()
             ->inRandomOrder()
-
+            ->take(6)
             ->get()
             ->toArray();
 
