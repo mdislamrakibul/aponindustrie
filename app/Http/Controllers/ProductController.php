@@ -39,7 +39,6 @@ class ProductController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->whereJsonContains('product_type', 'NEW')
             ->latest()
             ->take(7)
             ->get()
@@ -86,7 +85,6 @@ class ProductController extends Controller
             ->withAvg(['reviews' => function ($q) {
                 $q->where('status', 'approved');
             }], 'rating')
-            ->whereJsonContains('product_type', 'NEW')
             ->latest()
             ->take(7)
             ->get()

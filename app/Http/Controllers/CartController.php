@@ -38,9 +38,8 @@ class CartController extends Controller
             'is_discounted',
         ])
             ->with(['category:id,name,slug', 'media:id,title,file_path,image_type,position,model_id,image_name'])
-            ->productType("NEW")
-            ->inStock()
-            ->inRandomOrder()
+            ->latest()
+            ->take(7)
             ->get()
             ->toArray();
 

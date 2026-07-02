@@ -26,7 +26,6 @@ class StoreController extends Controller
         ])
         ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
         ->withAvg(['reviews' => fn($q) => $q->where('status', 'approved')], 'rating')
-        ->whereJsonContains('product_type', 'NEW')
         ->latest()
         ->take(5)
         ->get()
