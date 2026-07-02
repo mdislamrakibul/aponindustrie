@@ -751,6 +751,7 @@ body {
 .carausel-6-columns .slick-track {
     display: flex !important;
     align-items: stretch !important;
+    justify-content: flex-start !important;
 }
 .carausel-6-columns .slick-slide {
     display: flex !important;

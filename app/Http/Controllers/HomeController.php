@@ -68,6 +68,28 @@ class HomeController extends Controller
             }
         }
 
+        // Pad tagged sections to 8 using recent published products when fewer than 8 tagged
+        $allProductIds = collect($products)->pluck('id')->all();
+        $pad = function (array $tagged, int $limit = 8) use ($products): array {
+            if (count($tagged) >= $limit) {
+                return $tagged;
+            }
+            $usedIds = array_column($tagged, 'id');
+            foreach ($products as $p) {
+                if (count($tagged) >= $limit) break;
+                if (!in_array($p['id'], $usedIds)) {
+                    $tagged[] = $p;
+                    $usedIds[] = $p['id'];
+                }
+            }
+            return $tagged;
+        };
+
+        $featuredProducts    = $pad($featuredProducts);
+        $popularProducts     = $pad($popularProducts);
+        $mostSellingProducts = $pad($mostSellingProducts);
+        $mostPopularProducts = $pad($mostPopularProducts);
+
         // Most recently added products — ordered by created_at desc
         $newAddedProducts = Product::published([
             'id', 'name', 'category_id', 'sale_price', 'regular_price',
