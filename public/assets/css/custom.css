@@ -1121,6 +1121,14 @@ body {
 
 /* Mobile burger icon + cart icon fixes */
 @media (max-width: 991px) {
+    /* Reorder: logo/burger row first, featured-menu strip below it */
+    header.header-area {
+        display: flex;
+        flex-direction: column;
+    }
+    header.header-area .header-bottom  { order: 1; }
+    header.header-area .featured-menu  { order: 2; }
+
     /* Featured-menu — horizontal scroll strip on mobile */
     .featured-menu {
         display: block !important;
