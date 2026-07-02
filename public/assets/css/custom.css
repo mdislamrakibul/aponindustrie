@@ -1121,9 +1121,54 @@ body {
 
 /* Mobile burger icon + cart icon fixes */
 @media (max-width: 991px) {
-    /* Hide featured-menu on mobile — it has no responsive class and breaks layout */
+    /* Featured-menu — horizontal scroll strip on mobile */
     .featured-menu {
-        display: none !important;
+        display: block !important;
+        background: var(--brand-navy);
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+    .featured-menu::-webkit-scrollbar { display: none; }
+    .featured-menu .menu-container {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        min-width: max-content;
+        padding: 0 4px;
+    }
+    .featured-menu .menu-item {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 5px;
+        padding: 9px 12px;
+        white-space: nowrap;
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        color: rgba(255,255,255,0.85) !important;
+        text-decoration: none !important;
+        border-right: 1px solid rgba(255,255,255,0.11);
+        transition: background .15s, color .15s;
+    }
+    .featured-menu .menu-item:last-child { border-right: none; }
+    .featured-menu .menu-item:hover,
+    .featured-menu .menu-item:active,
+    .featured-menu .menu-item.force_active {
+        background: rgba(255,255,255,0.10);
+        color: #fff !important;
+    }
+    .featured-menu .menu-item .badge {
+        font-size: 8.5px !important;
+        padding: 2px 5px !important;
+        border-radius: 4px !important;
+        background: var(--brand-red) !important;
+        color: #fff !important;
+        font-weight: 700 !important;
+        line-height: 1.3;
+        vertical-align: middle;
     }
 
     /* Ensure cart dropdown cannot intercept touches when hidden */
