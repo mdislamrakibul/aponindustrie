@@ -378,29 +378,29 @@
                                     @if (session('cart') && count(session('cart')) > 0)
                                     <ul>
                                         @foreach ( session('cart') as $cart)
+                                        @php $prod = $cart['product'] ?? null; $cat = $prod['category'] ?? null; @endphp
+                                        @if ($prod)
                                         <li>
                                             <div class="shopping-cart-img">
-
-                                                    @foreach ($cart['product']['media'] as $media)
-                                                    @if ($media['position'] == 1)
-                                                    <img src="{{ asset( $media['file_path']. $media['image_name'])}}"
-                                                        alt={{ $media['image_name'] }}>
+                                                    @foreach (($prod['media'] ?? []) as $media)
+                                                    @if (($media['position'] ?? null) == 1)
+                                                    <img src="{{ asset(($media['file_path'] ?? '') . ($media['image_name'] ?? ''))}}"
+                                                        alt="{{ $media['image_name'] ?? '' }}">
                                                     @endif
                                                     @endforeach
-
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4>
-                                                    <a
-                                                        href="{{ route('Product_Details', ['product_name' => $cart['product']['name'],'category_name' => $cart['product']['category']['name'],'auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
-                                                            'category_id' => $cart['product']['category']['id'],'product_id'=>$cart['product']['id'] ]) }}">{{
-                                                        $cart['product']['name'] }}
-                                                    </a>
+                                                    @if ($cat)
+                                                    <a href="{{ route('Product_Details', ['product_name' => $prod['name'] ?? '','category_name' => $cat['name'] ?? '','auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg','category_id' => $cat['id'] ?? 0,'product_id' => $prod['id'] ?? 0]) }}">{{ $prod['name'] ?? '' }}</a>
+                                                    @else
+                                                    {{ $prod['name'] ?? '' }}
+                                                    @endif
                                                 </h4>
-                                                <h4>৳{{ number_format($cart['price'],2) }}</h4>
+                                                <h4>৳{{ number_format($cart['price'] ?? 0, 2) }}</h4>
                                             </div>
-
                                         </li>
+                                        @endif
                                         @endforeach
 
 
@@ -568,23 +568,22 @@
                                 @if (session('cart') && count(session('cart')) > 0)
                                 <ul>
                                     @foreach ( session('cart') as $cart)
+                                    @php $prod = $cart['product'] ?? null; @endphp
+                                    @if ($prod)
                                     <li>
                                         <div class="shopping-cart-img">
-
-
-                                            @foreach ($cart['product']['media'] as $media)
-                                            @if ($media['position'] == 1)
-                                            <img src="{{ asset( $media['file_path']. $media['image_name'])}}" alt={{
-                                                $media['image_name'] }}>
+                                            @foreach (($prod['media'] ?? []) as $media)
+                                            @if (($media['position'] ?? null) == 1)
+                                            <img src="{{ asset(($media['file_path'] ?? '') . ($media['image_name'] ?? ''))}}" alt="{{ $media['image_name'] ?? '' }}">
                                             @endif
                                             @endforeach
-
                                         </div>
                                         <div class="shopping-cart-title">
-                                            <h4>{{ $cart['product']['name'] }}</h4>
-                                            <h4>৳{{ number_format($cart['price'],2) }}</h4>
+                                            <h4>{{ $prod['name'] ?? '' }}</h4>
+                                            <h4>৳{{ number_format($cart['price'] ?? 0, 2) }}</h4>
                                         </div>
                                     </li>
+                                    @endif
                                     @endforeach
 
 

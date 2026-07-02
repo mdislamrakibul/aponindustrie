@@ -16,8 +16,10 @@ class HomeController extends Controller
     public function Index()
     {
 
-        $featuredProducts = [];
-        $popularProducts = [];
+        $featuredProducts    = [];
+        $popularProducts     = [];
+        $mostSellingProducts = [];
+        $mostPopularProducts = [];
 
         $products = Product::published([
             'id',
@@ -28,6 +30,7 @@ class HomeController extends Controller
             'discount_type',
             'discount_value',
             'product_type',
+            'product_adv_type',
             'is_discounted'
         ])
             ->with([
@@ -45,22 +48,30 @@ class HomeController extends Controller
             ->get()
             ->toArray();
 
-        foreach ($products as $item => $value) {
-            $types = is_string($value['product_type'] ?? null)
-                ? (json_decode($value['product_type'], true) ?? [])
-                : ($value['product_type'] ?? []);
-            if (in_array('FEATURED', (array) $types)) {
+        foreach ($products as $value) {
+            $advTypes = is_string($value['product_adv_type'] ?? null)
+                ? (json_decode($value['product_adv_type'], true) ?? [])
+                : ($value['product_adv_type'] ?? []);
+            $advTypes = (array) $advTypes;
+
+            if (in_array('WEEKLYFEATURED', $advTypes)) {
                 $featuredProducts[] = $value;
             }
-            if (in_array('POPULAR', (array) $types)) {
+            if (in_array('HOTSALEITEMS', $advTypes)) {
                 $popularProducts[] = $value;
+            }
+            if (in_array('TOPSELLING', $advTypes)) {
+                $mostSellingProducts[] = $value;
+            }
+            if (in_array('TOPRATEDITEMS', $advTypes)) {
+                $mostPopularProducts[] = $value;
             }
         }
 
         // Most recently added products — ordered by created_at desc
         $newAddedProducts = Product::published([
             'id', 'name', 'category_id', 'sale_price', 'regular_price',
-            'discount_type', 'discount_value', 'product_type', 'is_discounted',
+            'discount_type', 'discount_value', 'product_type', 'product_adv_type', 'is_discounted',
         ])
             ->with([
                 'category:id,name,slug',
@@ -101,8 +112,8 @@ class HomeController extends Controller
             'newAddedProducts'    => collect($newAddedProducts)->take(8),
             'newArrivals1stRow'   => collect($newAddedProducts),
             'newArrivals2ndRow'   => collect($newAddedProducts),
-            'mostSellingProducts' => collect($popularProducts)->shuffle(),
-            'mostPopularProducts' => collect($popularProducts)->shuffle(),
+            'mostSellingProducts' => collect($mostSellingProducts)->shuffle(),
+            'mostPopularProducts' => collect($mostPopularProducts)->shuffle(),
             'sliders'             => $sliders,
             'banners'             => $banners,
         ]);
