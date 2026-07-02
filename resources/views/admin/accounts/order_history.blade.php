@@ -101,15 +101,15 @@
             </div>
 
             {{-- ── SUMMARY CARDS ── --}}
-            <div class="row mb-4">
+            <div class="row mb-4 align-items-stretch">
 
                 {{-- Total Sale --}}
-                <div class="col-lg-3 col-md-6 mb-3">
-                    <div style="display:flex;align-items:center;gap:16px;
+                <div class="col-lg-3 col-md-6 mb-3 d-flex">
+                    <div style="display:flex;align-items:center;gap:16px;width:100%;
                                 background:linear-gradient(135deg,#1e40af,#2563eb);
                                 border-radius:12px;padding:22px 20px;color:#fff;
                                 box-shadow:0 4px 15px rgba(37,99,235,0.35);">
-                        <div style="font-size:2.2rem;opacity:.85;">
+                        <div style="font-size:2.2rem;opacity:.85;flex-shrink:0;">
                             <i class="fas fa-shopping-bag"></i>
                         </div>
                         <div>
@@ -123,12 +123,12 @@
                 </div>
 
                 {{-- Cancelled --}}
-                <div class="col-lg-3 col-md-6 mb-3">
-                    <div style="display:flex;align-items:center;gap:16px;
+                <div class="col-lg-3 col-md-6 mb-3 d-flex">
+                    <div style="display:flex;align-items:center;gap:16px;width:100%;
                                 background:linear-gradient(135deg,#7f1d1d,#dc2626);
                                 border-radius:12px;padding:22px 20px;color:#fff;
                                 box-shadow:0 4px 15px rgba(220,38,38,0.35);">
-                        <div style="font-size:2.2rem;opacity:.85;">
+                        <div style="font-size:2.2rem;opacity:.85;flex-shrink:0;">
                             <i class="fas fa-times-circle"></i>
                         </div>
                         <div>
@@ -142,31 +142,31 @@
                 </div>
 
                 {{-- Profit --}}
-                <div class="col-lg-3 col-md-6 mb-3">
-                    <div style="display:flex;align-items:center;gap:16px;
+                <div class="col-lg-3 col-md-6 mb-3 d-flex">
+                    <div style="display:flex;align-items:center;gap:16px;width:100%;
                                 background:linear-gradient(135deg,#064e3b,#059669);
                                 border-radius:12px;padding:22px 20px;color:#fff;
                                 box-shadow:0 4px 15px rgba(5,150,105,0.35);">
-                        <div style="font-size:2.2rem;opacity:.85;">
+                        <div style="font-size:2.2rem;opacity:.85;flex-shrink:0;">
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div>
                             <h3 style="margin:0;font-size:1.6rem;font-weight:700;">
-                                ৳ {{ number_format($profit, 2) }}
+                                ৳ {{ number_format($totalProfit, 2) }}
                             </h3>
                             <p style="margin:0;font-size:.85rem;opacity:.9;">Total Profit</p>
-                            <small style="opacity:.8;">Sale price − Purchase price</small>
+                            <small style="opacity:.8;">Package price − Purchase price</small>
                         </div>
                     </div>
                 </div>
 
                 {{-- Loss --}}
-                <div class="col-lg-3 col-md-6 mb-3">
-                    <div style="display:flex;align-items:center;gap:16px;
+                <div class="col-lg-3 col-md-6 mb-3 d-flex">
+                    <div style="display:flex;align-items:center;gap:16px;width:100%;
                                 background:linear-gradient(135deg,#78350f,#d97706);
                                 border-radius:12px;padding:22px 20px;color:#fff;
                                 box-shadow:0 4px 15px rgba(217,119,6,0.35);">
-                        <div style="font-size:2.2rem;opacity:.85;">
+                        <div style="font-size:2.2rem;opacity:.85;flex-shrink:0;">
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
                         <div>
@@ -210,22 +210,8 @@
                             <tbody>
                                 @forelse($orders as $order)
                                     @php
-                                        // Per-row profit calculation
-                                        // quantity = total units; price = per-package price; purchase_price = per-package cost
-                                        // packages sold = quantity / minimum_order
-                                        $rowProfit = 0;
-                                        if ($order->order_status === 'DELIVERED') {
-                                            foreach ($order->order_items as $item) {
-                                                $purchasePrice = $item->product->purchase_price ?? 0;
-                                                $packagePrice  = $item->product->package_price ?? $item->price;
-                                                $minOrder      = $item->product->minimum_order ?? 1;
-                                                $packages      = $minOrder > 0 ? $item->quantity / $minOrder : $item->quantity;
-                                                $rowProfit    += ($packagePrice - $purchasePrice) * $packages;
-                                            }
-                                        }
-
-                                        // Per-row loss
-                                        $rowLoss = $order->order_status === 'CANCELLED'
+                                        $rowProfit = $profitByOrder->get($order->id, 0);
+                                        $rowLoss   = $order->order_status === 'CANCELLED'
                                             ? $order->shipping_amount
                                             : 0;
                                     @endphp

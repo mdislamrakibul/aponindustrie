@@ -166,13 +166,11 @@
                                                                     @endif
 
                                                                     {{-- Discount Badge Logic --}}
-                                                                    @if($prod['is_discounted'] !== 0)
+                                                                    @if(!empty($prod['is_discounted']) && in_array($prod['discount_type'] ?? '', ['PERCENTAGE','FLAT']) && ($prod['discount_value'] ?? 0) > 0)
                                                                         <span class="badge sale">
                                                                             @if($prod['discount_type'] == 'PERCENTAGE')
-                                                                                {{-- Show percentage (e.g., 20% Off) --}}
                                                                                 {{ number_format($prod['discount_value'], 0) }}% Off
                                                                             @elseif($prod['discount_type'] == 'FLAT')
-                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
                                                                                 ৳{{ number_format($prod['discount_value'], 0) }} Off
                                                                             @endif
                                                                         </span>

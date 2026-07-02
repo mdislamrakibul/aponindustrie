@@ -25,6 +25,7 @@ class Order extends Model
         'payment_screenshot',
         'notes',
         'accepted_by',
+        'source',
     ];
 
     /**

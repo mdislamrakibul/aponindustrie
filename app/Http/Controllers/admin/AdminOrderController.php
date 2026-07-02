@@ -390,6 +390,7 @@ class AdminOrderController extends Controller
                 'transaction_id'  => 'TRX-' . strtoupper(uniqid()),
                 'notes'           => $request->notes,
                 'accepted_by'     => session('user_id'),
+                'source'          => 'pos',
             ]);
 
             OrderAddress::create([

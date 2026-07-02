@@ -9,6 +9,12 @@
 <script src="{{ asset('assets/js/plugins/select2.min.js')}}"></script>
 <script src="{{ asset('assets/js/plugins/jquery.theia.sticky.js')}}"></script>
 <script src="{{ asset('assets/js/plugins/jquery.elevatezoom.js')}}"></script>
+<script src="{{ asset('assets/js/plugins/waypoints.js')}}"></script>
+<script src="{{ asset('assets/js/plugins/counterup.js')}}"></script>
+<script src="{{ asset('assets/js/plugins/images-loaded.js')}}"></script>
+<script src="{{ asset('assets/js/plugins/isotope.js')}}"></script>
+<script src="{{ asset('assets/js/plugins/jquery.countdown.min.js')}}"></script>
+<script src="{{ asset('assets/js/plugins/jquery.vticker-min.js')}}"></script>
 <!-- Template  JS -->
 <script src="{{ asset('assets/js/main.js')}}"></script>
 <script src="{{ asset('assets/js/shop.js')}}"></script>

@@ -62,25 +62,42 @@ class AccountsManagementController extends Controller
         // ── Loss = sum of shipping_amount of cancelled orders ──
         $loss = $cancelledOrders->sum('shipping_amount');
 
-        // ── Profit = (item.price - product.purchase_price) × quantity
-        //            for DELIVERED orders only ──
+        // ── Profit per order — delivered only ──
+        // Formula: package_price × packages − discount − purchase_price × packages
+        // packages = quantity ÷ minimum_order  (all prices are per-package)
         $deliveredOrderIds = (clone $baseQuery())
             ->where('order_status', 'DELIVERED')
             ->pluck('id');
 
-        $profitItems = OrderItems::with('product')
+        $profitByOrder = OrderItems::with('product')
             ->whereIn('order_id', $deliveredOrderIds)
-            ->get();
+            ->get()
+            ->groupBy('order_id')
+            ->map(function ($items) {
+                return $items->sum(function ($item) {
+                    $prod = $item->product;
+                    if (!$prod) { return 0; }   // deleted product → no contribution
 
-        // quantity = total units; price = per-package price at order time; purchase_price = per-package cost
-        // packages sold = quantity / minimum_order
-        $profit = $profitItems->sum(function ($item) {
-            $purchasePrice = $item->product->purchase_price ?? 0;
-            $packagePrice  = $item->product->package_price ?? $item->price;
-            $minOrder      = $item->product->minimum_order ?? 1;
-            $packages      = $minOrder > 0 ? $item->quantity / $minOrder : $item->quantity;
-            return ($packagePrice - $purchasePrice) * $packages;
-        });
+                    $packagePrice  = (float) ($prod->package_price  ?? 0);
+                    $purchasePrice = (float) ($prod->purchase_price ?? 0);
+                    $minOrder      = max(1, (int) ($prod->minimum_order ?? 1));
+                    $packages      = $item->quantity / $minOrder;
+
+                    $revenue     = $packagePrice * $packages;
+                    $discountAmt = 0;
+                    if ($prod->is_discounted) {
+                        $dValue = (float) ($prod->discount_value ?? 0);
+                        if ($prod->discount_type === 'PERCENTAGE') {
+                            $discountAmt = $revenue * ($dValue / 100);
+                        } elseif ($prod->discount_type === 'FLAT') {
+                            $discountAmt = $dValue * $packages;
+                        }
+                    }
+                    return $revenue - $discountAmt - ($purchasePrice * $packages);
+                });
+            });
+
+        $totalProfit = $profitByOrder->sum();
 
         // ── Other stats ──
         $totalOrders    = (clone $baseQuery())->count();
@@ -99,7 +116,8 @@ class AccountsManagementController extends Controller
             'totalSale',
             'cancelledCount',
             'loss',
-            'profit',
+            'profitByOrder',
+            'totalProfit',
             'totalOrders',
             'deliveredCount',
             'products',

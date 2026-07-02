@@ -630,6 +630,7 @@ body {
     font-weight: 700 !important;
     background: #ff5a5f !important;
 }
+.badge.sale:empty { display: none !important; }
 .badge.hot        { background: #ff5a5f !important; border-radius: 6px !important; }
 .badge.new        { background: var(--brand-navy) !important; border-radius: 6px !important; }
 .badge.best-seller{ background: #fdc040 !important; border-radius: 6px !important; color: #253d4e !important; }

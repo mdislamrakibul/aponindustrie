@@ -47,6 +47,7 @@
                             $activeCount    = collect($orders)->filter(fn($o) => !in_array($o['order_status'], ['DELIVERED','CANCELLED']))->count();
                             $completeCount  = collect($orders)->filter(fn($o) => $o['order_status'] === 'DELIVERED' && $o['payment_status'] === 'PAID')->count();
                             $cancelledCount = collect($orders)->filter(fn($o) => $o['order_status'] === 'CANCELLED')->count();
+                            $posCount       = collect($orders)->filter(fn($o) => ($o['source'] ?? 'online') === 'pos')->count();
                         @endphp
                         <div class="filter-bar">
                             <button type="button" class="filter-btn active-filter" data-filter="all">
@@ -60,6 +61,9 @@
                             </button>
                             <button type="button" class="filter-btn" data-filter="cancelled">
                                 Cancelled <span class="filter-count">{{ $cancelledCount }}</span>
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="pos">
+                                <i class="fas fa-store" style="font-size:11px;"></i> Physical Sales <span class="filter-count">{{ $posCount }}</span>
                             </button>
                             <div class="d-flex" style="margin-left:auto;gap:6px;">
                                 <a href="{{ route('admin.orders.new.page') }}" class="btn btn-sm btn-outline-warning">
@@ -95,6 +99,7 @@
                                         <tr id="order-row-{{ $order['id'] }}"
                                             data-os="{{ $order['order_status'] }}"
                                             data-ps="{{ $order['payment_status'] }}"
+                                            data-source="{{ $order['source'] ?? 'online' }}"
                                             class="{{ $isLocked ? 'row-locked' : '' }}">
 
                                             {{-- Order Number --}}
@@ -505,6 +510,9 @@
     .filter-btn[data-filter="cancelled"].active-filter     { background: #dc3545; border-color: #dc3545; box-shadow: 0 3px 8px rgba(220,53,69,.35); }
     .filter-btn[data-filter="cancelled"].active-filter:hover { background: #c82333; border-color: #c82333; }
     .filter-btn[data-filter="cancelled"]:hover             { border-color: #dc3545; color: #dc3545; }
+    .filter-btn[data-filter="pos"].active-filter           { background: #6f42c1; border-color: #6f42c1; box-shadow: 0 3px 8px rgba(111,66,193,.35); }
+    .filter-btn[data-filter="pos"].active-filter:hover     { background: #5a32a3; border-color: #5a32a3; }
+    .filter-btn[data-filter="pos"]:hover                   { border-color: #6f42c1; color: #6f42c1; }
     .filter-count {
         background: rgba(0,0,0,.1); border-radius: 10px;
         padding: 1px 7px; font-size: 11px; font-weight: 700; min-width: 20px; text-align: center;
@@ -575,6 +583,7 @@
             if (currentFilter === 'complete')   return os === 'DELIVERED' && ps === 'PAID';
             if (currentFilter === 'active')     return os !== 'DELIVERED' && os !== 'CANCELLED';
             if (currentFilter === 'cancelled')  return os === 'CANCELLED';
+            if (currentFilter === 'pos')        return $(node).data('source') === 'pos';
             return true;
         });
 

@@ -259,21 +259,23 @@
 
     /*------ Timer Countdown ----*/
 
-    $("[data-countdown]").each(function () {
-        var $this = $(this),
-            finalDate = $(this).data("countdown");
-        $this.countdown(finalDate, function (event) {
-            $(this).html(
-                event.strftime(
-                    "" +
-                    '<span class="countdown-section"><span class="countdown-amount hover-up">%d</span><span class="countdown-period"> days </span></span>' +
-                    '<span class="countdown-section"><span class="countdown-amount hover-up">%H</span><span class="countdown-period"> hours </span></span>' +
-                    '<span class="countdown-section"><span class="countdown-amount hover-up">%M</span><span class="countdown-period"> mins </span></span>' +
-                    '<span class="countdown-section"><span class="countdown-amount hover-up">%S</span><span class="countdown-period"> sec </span></span>'
-                )
-            );
+    if ($.fn.countdown && $("[data-countdown]").length) {
+        $("[data-countdown]").each(function () {
+            var $this = $(this),
+                finalDate = $(this).data("countdown");
+            $this.countdown(finalDate, function (event) {
+                $(this).html(
+                    event.strftime(
+                        "" +
+                        '<span class="countdown-section"><span class="countdown-amount hover-up">%d</span><span class="countdown-period"> days </span></span>' +
+                        '<span class="countdown-section"><span class="countdown-amount hover-up">%H</span><span class="countdown-period"> hours </span></span>' +
+                        '<span class="countdown-section"><span class="countdown-amount hover-up">%M</span><span class="countdown-period"> mins </span></span>' +
+                        '<span class="countdown-section"><span class="countdown-amount hover-up">%S</span><span class="countdown-period"> sec </span></span>'
+                    )
+                );
+            });
         });
-    });
+    }
 
     /*------ Product slider active 1 ----*/
     $(".product-slider-active-1").slick({
@@ -621,24 +623,23 @@
     }
 
     /*---- CounterUp ----*/
-    $(".count").counterUp({
-        delay: 10,
-        time: 2000,
-    });
+    if ($.fn.counterUp) {
+        $(".count").counterUp({ delay: 10, time: 2000 });
+    }
 
     // Isotope active
-    $(".grid").imagesLoaded(function () {
-        // init Isotope
-        var $grid = $(".grid").isotope({
-            itemSelector: ".grid-item",
-            percentPosition: true,
-            layoutMode: "masonry",
-            masonry: {
-                // use outer width of grid-sizer for columnWidth
-                columnWidth: ".grid-item",
-            },
+    if ($.fn.imagesLoaded && $.fn.isotope && $(".grid").length) {
+        $(".grid").imagesLoaded(function () {
+            var $grid = $(".grid").isotope({
+                itemSelector: ".grid-item",
+                percentPosition: true,
+                layoutMode: "masonry",
+                masonry: {
+                    columnWidth: ".grid-item",
+                },
+            });
         });
-    });
+    }
 
     /*====== SidebarSearch ======*/
     function sidebarSearch() {
@@ -774,11 +775,13 @@
     });
 
     /*--- VSticker ----*/
-    $("#news-flash").vTicker({
-        speed: 500,
-        pause: 3000,
-        animation: "fade",
-        mousePause: false,
-        showItems: 1,
-    });
+    if ($.fn.vTicker && $("#news-flash").length) {
+        $("#news-flash").vTicker({
+            speed: 500,
+            pause: 3000,
+            animation: "fade",
+            mousePause: false,
+            showItems: 1,
+        });
+    }
 })(jQuery);

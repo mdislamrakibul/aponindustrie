@@ -551,13 +551,11 @@
                                                                     @endif
 
                                                                     {{-- Discount Badge Logic --}}
-                                                                    @if($prods['is_discounted'])
+                                                                    @if(!empty($prods['is_discounted']) && in_array($prods['discount_type'] ?? '', ['PERCENTAGE','FLAT']) && ($prods['discount_value'] ?? 0) > 0)
                                                                         <span class="badge sale">
                                                                             @if($prods['discount_type'] == 'PERCENTAGE')
-                                                                                {{-- Show percentage (e.g., 20% Off) --}}
                                                                                 {{ number_format($prods['discount_value'], 0) }}% Off
                                                                             @elseif($prods['discount_type'] == 'FLAT')
-                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
                                                                                 ৳{{ number_format($prods['discount_value'], 0) }} Off
                                                                             @endif
                                                                         </span>
@@ -678,13 +676,11 @@
                                                                     @endif
 
                                                                     {{-- Discount Badge Logic --}}
-                                                                    @if($prods['is_discounted'])
+                                                                    @if(!empty($prods['is_discounted']) && in_array($prods['discount_type'] ?? '', ['PERCENTAGE','FLAT']) && ($prods['discount_value'] ?? 0) > 0)
                                                                         <span class="badge sale">
                                                                             @if($prods['discount_type'] == 'PERCENTAGE')
-                                                                                {{-- Show percentage (e.g., 20% Off) --}}
                                                                                 {{ number_format($prods['discount_value'], 0) }}% Off
                                                                             @elseif($prods['discount_type'] == 'FLAT')
-                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
                                                                                 ৳{{ number_format($prods['discount_value'], 0) }} Off
                                                                             @endif
                                                                         </span>
@@ -803,13 +799,11 @@
                                                                     @endif
 
                                                                     {{-- Discount Badge Logic --}}
-                                                                    @if($prods['is_discounted'])
+                                                                    @if(!empty($prods['is_discounted']) && in_array($prods['discount_type'] ?? '', ['PERCENTAGE','FLAT']) && ($prods['discount_value'] ?? 0) > 0)
                                                                         <span class="badge sale">
                                                                             @if($prods['discount_type'] == 'PERCENTAGE')
-                                                                                {{-- Show percentage (e.g., 20% Off) --}}
                                                                                 {{ number_format($prods['discount_value'], 0) }}% Off
                                                                             @elseif($prods['discount_type'] == 'FLAT')
-                                                                                {{-- Show flat amount (e.g., $50 Off) --}}
                                                                                 ৳{{ number_format($prods['discount_value'], 0) }} Off
                                                                             @endif
                                                                         </span>
@@ -1011,19 +1005,19 @@
                                         'category_id' => $prod['category']['id'],
                                         'product_id' => $prod['id']
                                     ]) }}">
-                                                                            @foreach ($prod['media'] as $media)
-                                                                                @if ($media['position'] == 1)
-                                                                                                                <img class="default-img"
-                                                                                                                    src="{{ asset($media['file_path'] . $media['image_name'])}}" alt={{
-                                                                                    $media['image_name'] }}>
-                                                                                @else
-
-                                                                                                                <img class="hover-img"
-                                                                                                                    src="{{ asset($media['file_path'] . $media['image_name'])}}" alt={{
-                                                                                    $media['image_name'] }}>
+                                                                            @php
+                                                                                $mediaCol = collect($prod['media'] ?? []);
+                                                                                $img1 = $mediaCol->firstWhere('position', 1);
+                                                                                $img2 = $mediaCol->firstWhere('position', 2);
+                                                                            @endphp
+                                                                            @if ($img2)
+                                                                                <img class="default-img" src="{{ asset($img2['file_path'] . $img2['image_name']) }}" alt="{{ $img2['image_name'] }}">
+                                                                                @if ($img1)
+                                                                                    <img class="hover-img" src="{{ asset($img1['file_path'] . $img1['image_name']) }}" alt="{{ $img1['image_name'] }}">
                                                                                 @endif
-
-                                                                            @endforeach
+                                                                            @elseif ($img1)
+                                                                                <img class="default-img" src="{{ asset($img1['file_path'] . $img1['image_name']) }}" alt="{{ $img1['image_name'] }}">
+                                                                            @endif
                                                                         </a>
                                                                     </div>
                                                                     {{-- <div class="product-action-1">
@@ -1078,19 +1072,19 @@
                                         'category_id' => $prod['category']['id'],
                                         'product_id' => $prod['id']
                                     ]) }}">
-                                                                            @foreach ($prod['media'] as $media)
-                                                                                @if ($media['position'] == 1)
-                                                                                                                <img class="default-img"
-                                                                                                                    src="{{ asset($media['file_path'] . $media['image_name'])}}" alt={{
-                                                                                    $media['image_name'] }}>
-                                                                                @else
-
-                                                                                                                <img class="hover-img"
-                                                                                                                    src="{{ asset($media['file_path'] . $media['image_name'])}}" alt={{
-                                                                                    $media['image_name'] }}>
+                                                                            @php
+                                                                                $mediaCol = collect($prod['media'] ?? []);
+                                                                                $img1 = $mediaCol->firstWhere('position', 1);
+                                                                                $img2 = $mediaCol->firstWhere('position', 2);
+                                                                            @endphp
+                                                                            @if ($img2)
+                                                                                <img class="default-img" src="{{ asset($img2['file_path'] . $img2['image_name']) }}" alt="{{ $img2['image_name'] }}">
+                                                                                @if ($img1)
+                                                                                    <img class="hover-img" src="{{ asset($img1['file_path'] . $img1['image_name']) }}" alt="{{ $img1['image_name'] }}">
                                                                                 @endif
-
-                                                                            @endforeach
+                                                                            @elseif ($img1)
+                                                                                <img class="default-img" src="{{ asset($img1['file_path'] . $img1['image_name']) }}" alt="{{ $img1['image_name'] }}">
+                                                                            @endif
                                                                         </a>
                                                                     </div>
                                                                     {{-- <div class="product-action-1">
@@ -1266,18 +1260,19 @@
                                 'category_id' => $prod['category']['id'],
                                 'product_id' => $prod['id']
                             ]) }}">
-                                                            @foreach ($prod['media'] as $media)
-                                                                @if ($media['position'] == 1)
-                                                                                        <img class="default-img"
-                                                                                            src="{{ asset($media['file_path'] . $media['image_name'])}}" alt={{
-                                                                    $media['image_name'] }}>
-                                                                @else
-
-                                                                    <img class="hover-img" src="{{ asset($media['file_path'] . $media['image_name'])}}"
-                                                                        alt={{ $media['image_name'] }}>
+                                                            @php
+                                                                $mediaCol = collect($prod['media'] ?? []);
+                                                                $img1 = $mediaCol->firstWhere('position', 1);
+                                                                $img2 = $mediaCol->firstWhere('position', 2);
+                                                            @endphp
+                                                            @if ($img2)
+                                                                <img class="default-img" src="{{ asset($img2['file_path'] . $img2['image_name']) }}" alt="{{ $img2['image_name'] }}">
+                                                                @if ($img1)
+                                                                    <img class="hover-img" src="{{ asset($img1['file_path'] . $img1['image_name']) }}" alt="{{ $img1['image_name'] }}">
                                                                 @endif
-
-                                                            @endforeach
+                                                            @elseif ($img1)
+                                                                <img class="default-img" src="{{ asset($img1['file_path'] . $img1['image_name']) }}" alt="{{ $img1['image_name'] }}">
+                                                            @endif
                                                         </a>
                                                     </div>
                                                     {{-- <div class="product-action-1">
