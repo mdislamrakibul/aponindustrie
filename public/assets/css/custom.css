@@ -903,6 +903,69 @@ body {
     font-size: 15px;
 }
 
+/* Quantity stepper (replaces Add To Cart button once item is in cart) */
+.apon-cart-stepper {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    height: 38px;
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1.5px solid #F97316;
+}
+.apon-cart-stepper__btn {
+    flex: 0 0 36px;
+    min-width: 36px;
+    background: #F97316;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.apon-cart-stepper__btn:hover:not(:disabled),
+.apon-cart-stepper__btn:focus:not(:disabled) {
+    background: #e05d00;
+}
+.apon-cart-stepper__btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.apon-cart-stepper__qty {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #253D4E;
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 28px;
+}
+.apon-cart-stepper.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+@media (max-width: 400px) {
+    .apon-cart-stepper {
+        height: 34px;
+    }
+    .apon-cart-stepper__btn {
+        flex-basis: 32px;
+        min-width: 32px;
+        font-size: 14px;
+    }
+    .apon-cart-stepper__qty {
+        font-size: 12px;
+    }
+}
+
 /* ══════════════════════════════════════════
    HOVER FIXES — touch vs mouse
    @media (hover: none)  → touch-only devices (phones/tablets)

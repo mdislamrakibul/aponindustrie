@@ -19,6 +19,7 @@
 <script src="{{ asset('assets/js/main.js')}}"></script>
 <script src="{{ asset('assets/js/shop.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('assets/js/cart-ajax.js')}}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const marquee = document.getElementById('newsMarquee');

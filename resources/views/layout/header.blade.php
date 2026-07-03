@@ -354,6 +354,14 @@
                             }
                         </style>
 
+                        <script>
+                            window.__cartQuantities = @json(collect(session('cart', []))->map(fn($item) => (int) ($item['quantity'] ?? 0)));
+                            window.__cartRoutes = {
+                                add: "{{ route('Product_Cart_Add') }}",
+                                updateTemplate: "{{ route('Product_Cart_update_Single', ['id' => 'ID_PLACEHOLDER', 'quantity' => 'QTY_PLACEHOLDER']) }}",
+                                removeTemplate: "{{ route('Product_Cart_Remove_Single', ['id' => 'ID_PLACEHOLDER']) }}",
+                            };
+                        </script>
 
                         <div class="header-action-2 wrap-icon right-section">
 
@@ -361,12 +369,11 @@
                                 <a href="{{ route('Product_Cart') }}" class="link-direction">
                                     <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                                     <div class="left-info">
-                                        <span class="index">
-                                            @if(session('cart') && count(session('cart')) > 0)
+                                        <span class="index"><span id="cart-count-desktop">@if(session('cart') && count(session('cart')) > 0)
                                             {{ count(session('cart')) }}
                                             @else
                                             0
-                                            @endif item</span>
+                                            @endif</span> item</span>
                                         <span class="title">CART</span>
                                     </div>
 
@@ -407,7 +414,7 @@
                                     </ul>
                                     <div class="shopping-cart-footer">
                                         <div class="shopping-cart-total">
-                                            <h4>Total <span>৳
+                                            <h4>Total <span>৳<span id="cart-subtotal-desktop">
                                                     @php
                                                     $subtotal = collect(session('cart'))->sum(function ($item) {
                                                     return $item['price'] * $item['quantity'];
@@ -415,7 +422,7 @@
 
                                                     @endphp
                                                     {{ number_format($subtotal,2) }}
-                                                </span></h4>
+                                                </span></span></h4>
                                         </div>
                                         <div class="shopping-cart-button">
                                             <a href="{{ route('Product_Cart') }}" class="outline">View cart</a>
@@ -556,7 +563,7 @@
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="{{ route('Product_Cart') }}">
                                 <img alt="Surfside Media" src="{{ asset('assets/imgs/theme/icons/icon-cart.svg') }}">
-                                <span class="pro-count white">
+                                <span class="pro-count white" id="cart-count-mobile">
                                     @if(session('cart') && count(session('cart')) > 0)
                                     {{ count(session('cart')) }}
                                     @else
@@ -590,7 +597,7 @@
                                 </ul>
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>Total <span>৳
+                                        <h4>Total <span>৳<span id="cart-subtotal-mobile">
                                                 @php
                                                 $subtotal = collect(session('cart'))->sum(function ($item) {
                                                 return $item['price'] * $item['quantity'];
@@ -598,7 +605,7 @@
 
                                                 @endphp
                                                 {{ number_format($subtotal,2) }}
-                                            </span></h4>
+                                            </span></span></h4>
                                     </div>
                                     <div class="shopping-cart-button">
                                         <a href="{{ route('Product_Cart') }}" class="outline">View cart</a>
