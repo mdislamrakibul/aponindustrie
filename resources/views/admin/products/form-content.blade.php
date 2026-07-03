@@ -225,77 +225,29 @@
 
 
                 <div class="card border-0 shadow-sm rounded-4 mt-4">
-
                     <div class="card-body p-4">
-
-                        <h5 class="fw-bold mb-4">
+                        <h5 class="fw-bold mb-2">
                             Pricing & Inventory
                         </h5>
-
-                        <div class="row">
-
-                            <div class="col-md-4 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Regular Price
-                                </label>
-
-                                <input type="number" name="regular_price" class="form-control rounded-3"
-                                    value="{{ $isEdit ? $product->regular_price : '' }}">
-                                @error('regular_price')
-                                    <div class="text-danger small mt-1">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class="col-md-4 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Per Product Price
-                                </label>
-
-                                <input type="number" name="sale_price" class="form-control rounded-3"
-                                    value="{{ $isEdit ? $product->sale_price : '' }}">
-                                @error('sale_price')
-                                    <div class="text-danger small mt-1">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Stock Quantity
-                                </label>
-
-                                <input type="number" name="stock_quantity" class="form-control rounded-3"
-                                    value="{{ $isEdit ? $product->stock_quantity : '' }}">
-                                @error('stock_quantity')
-                                    <div class="text-danger small mt-1">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class="col-md-4 mb-4">
-
-                                <label class="form-label fw-semibold">
-                                    Minimum Order
-                                </label>
-
-                                <input type="number" name="minimum_order" class="form-control rounded-3"
-                                    value="{{ $isEdit ? $product->minimum_order : 1 }}">
-                                @error('minimum_order')
-                                    <div class="text-danger small mt-1">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                        </div>
-
+                        @if($isEdit)
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Current price: <strong>{{ number_format($product->sale_price, 2) }}</strong> per piece
+                                &middot; Package price: <strong>{{ number_format($product->package_price, 2) }}</strong>
+                                &middot; Stock: <strong>{{ $product->stock_quantity }}</strong>
+                                &middot; Min. order: <strong>{{ $product->minimum_order }}</strong>.
+                                Editable from
+                                <a href="{{ route('inventory.list') }}">Inventory Management</a>.
+                            </p>
+                        @else
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Price and stock are set from
+                                <a href="{{ route('inventory.list') }}">Inventory Management</a>
+                                after the product is created.
+                            </p>
+                        @endif
                     </div>
-
                 </div>
 
             </div>

@@ -133,13 +133,20 @@ class ProductManagementController extends Controller
 
         //$product->barcode = $request->barcode;
 
-        $product->regular_price = $request->regular_price ?? 0;
-
         $product->sale_price = $request->sale_price ?? 0;
 
         $product->stock_quantity = $request->stock_quantity ?? 0;
 
-        $product->minimum_order = $request->minimum_order ?? 1;
+        $product->minimum_order = max(1, (int) ($request->minimum_order ?? 1));
+
+        // Keep package_price in sync with Inventory Management's formula
+        // (package_price = sale_price × minimum_order), so a product created
+        // here is never left with the stale DB default.
+        $product->package_price = round($product->sale_price * $product->minimum_order);
+
+        $product->regular_price = $request->filled('regular_price')
+            ? $request->regular_price
+            : $product->package_price;
 
         $product->status = $request->status ?? 'PENDING';
 
@@ -296,13 +303,25 @@ class ProductManagementController extends Controller
 
         //$product->barcode = $request->barcode;
 
-        $product->regular_price = $request->regular_price;
+        // Pricing/stock now live only on the Inventory Management screen, so
+        // the Edit Product form no longer submits these fields. Only touch
+        // them if a caller actually sends one (keeps Inventory's data intact
+        // instead of resetting regular_price back to package_price on every
+        // unrelated edit), and keep package_price in sync with Inventory's
+        // exact formula (package_price = sale_price × minimum_order) when we do.
+        if ($request->hasAny(['sale_price', 'stock_quantity', 'minimum_order', 'regular_price'])) {
+            $product->sale_price = $request->sale_price ?? $product->sale_price;
 
-        $product->sale_price = $request->sale_price;
+            $product->stock_quantity = $request->stock_quantity ?? $product->stock_quantity;
 
-        $product->stock_quantity = $request->stock_quantity;
+            $product->minimum_order = max(1, (int) ($request->minimum_order ?? $product->minimum_order));
 
-        $product->minimum_order = $request->minimum_order;
+            $product->package_price = round($product->sale_price * $product->minimum_order);
+
+            $product->regular_price = $request->filled('regular_price')
+                ? $request->regular_price
+                : $product->package_price;
+        }
 
         $product->status = $request->status ?? $product->status;
 

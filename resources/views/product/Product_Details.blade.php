@@ -622,14 +622,15 @@
                             @foreach ($newProduct as $item)
                                                     <div class="single-post clearfix">
                                                         <div class="image">
-                                                            @foreach ($item['media'] as $media)
-                                                                @if ($media['position'] == 1)
-                                                                                    <img src="{{ asset($media['file_path'] . $media['image_name'])}}" alt={{
-                                                                    $media['image_name'] }}>
+                                                            @php
+                                                                $newProdMediaCol = collect($item['media'] ?? []);
+                                                                $newProdImg = $newProdMediaCol->firstWhere('position', 2) ?? $newProdMediaCol->firstWhere('position', 1);
+                                                            @endphp
+                                                            @if ($newProdImg)
+                                                                <img src="{{ asset($newProdImg['file_path'] . $newProdImg['image_name'])}}" alt={{
+                                                                    $newProdImg['image_name'] }}>
 
-                                                                @endif
-
-                                                            @endforeach
+                                                            @endif
                                                         </div>
                                                         <div class="content pt-10">
                                                             <h5><a href="{{ route('Product_Details', [
