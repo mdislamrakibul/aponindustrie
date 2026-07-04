@@ -319,7 +319,7 @@ class AdminOrderController extends Controller
     {
         $request->validate([
             'name'               => 'required|string|max:255',
-            'phone'              => 'required|string|max:20',
+            'phone'              => ['required', 'regex:/^(?:\+88|88)?(01[3-9]\d{8})$/'],
             'email'              => 'nullable|email|max:255',
             'address'            => 'nullable|string|max:500',
             'district'           => 'nullable|string|max:100',
@@ -332,6 +332,8 @@ class AdminOrderController extends Controller
             'order_status'       => 'required|in:PENDING,PROCESSING,SHIPPED,DELIVERED,CANCELLED',
             'delivery_zone'      => 'required|in:pickup,inside,outside',
             'notes'              => 'nullable|string|max:1000',
+        ], [
+            'phone.regex' => 'Enter a valid Bangladeshi mobile number, e.g. 01888888881.',
         ]);
 
         DB::beginTransaction();

@@ -72,11 +72,13 @@ class AdminProfileController extends Controller
         $request->validate([
             'first_name' => 'required',
             'last_name'  => 'required',
-            'mobile_no'  => 'required',
+            'mobile_no'  => ['required', 'regex:/^(01)[3-9]\d{8}$/'],
             'email'      => 'nullable|email',
 
             'profile_photo' =>
             'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'mobile_no.regex' => 'Enter a valid 11-digit mobile number, ',
         ]);
         if ($request->hasFile('profile_photo')) {
             $dir = upload_root('uploads/profile-photos');

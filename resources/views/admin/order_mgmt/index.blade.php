@@ -1347,7 +1347,11 @@
             })
             .fail(function (xhr) {
                 var msg = 'Server error.';
-                try { var j = JSON.parse(xhr.responseText); msg = j.message || msg; } catch (e) {}
+                try {
+                    var j = JSON.parse(xhr.responseText);
+                    var firstFieldError = j.errors && Object.values(j.errors)[0] && Object.values(j.errors)[0][0];
+                    msg = firstFieldError || j.message || msg;
+                } catch (e) {}
                 Swal.fire('Error', msg, 'error');
             })
             .always(function () {

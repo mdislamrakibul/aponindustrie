@@ -47,7 +47,7 @@ Admin Profile
             <h3 class="card-title font-weight-bold mb-0">Update Profile</h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
+            <form id="profileForm" action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row">
@@ -101,9 +101,16 @@ Admin Profile
 
                     <div class="col-md-6 mb-3">
                         <label class="font-weight-bold">Mobile <span class="text-danger">*</span></label>
-                        <input type="text" name="mobile_no" class="form-control @error('mobile_no') is-invalid @enderror"
-                               value="{{ old('mobile_no', $user->mobile_no) }}">
-                        @error('mobile_no')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">+880</span>
+                            </div>
+                            <input type="text" id="mobile_no_input" name="mobile_no" inputmode="numeric" maxlength="12"
+                                   class="form-control @error('mobile_no') is-invalid @enderror"
+                                   value="{{ old('mobile_no', $user->mobile_no) }}"
+                                   placeholder="01888888881">
+                            @error('mobile_no')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
@@ -144,5 +151,34 @@ Admin Profile
             reader.readAsDataURL(file);
         }
     });
+
+    // Mobile: show as 01888-888881 while typing (dash inserted after the 5th
+    // digit, purely for readability) — the dash is stripped again right
+    // before submit, so the server always receives the plain 11-digit
+    // 01XXXXXXXXX format it validates against.
+    (function () {
+        var mobileInput = document.getElementById('mobile_no_input');
+        var form = document.getElementById('profileForm');
+        if (!mobileInput || !form) return;
+
+        function formatMobile(digits) {
+            digits = digits.slice(0, 11);
+            return digits.length > 5
+                ? digits.slice(0, 5) + '-' + digits.slice(5)
+                : digits;
+        }
+
+        mobileInput.addEventListener('input', function () {
+            var digits = mobileInput.value.replace(/\D/g, '');
+            mobileInput.value = formatMobile(digits);
+        });
+
+        // Format the initial value (e.g. when editing an existing profile)
+        mobileInput.value = formatMobile(mobileInput.value.replace(/\D/g, ''));
+
+        form.addEventListener('submit', function () {
+            mobileInput.value = mobileInput.value.replace(/\D/g, '');
+        });
+    })();
 </script>
 @endpush
