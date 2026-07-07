@@ -291,19 +291,79 @@
 
 
 
-    <div class="header-middle header-middle-ptb-1 d-none d-lg-block" style="padding: 10px 0 0 0 !important">
+    <div class="header-middle header-middle-ptb-1 d-none d-lg-block" style="padding: 15px 0 !important">
         <div class="container">
             <div class="header-wrap">
                 <div class="logo logo-width-1">
                     <a href="{{ route('home.index') }}"><img src="{{ asset('assets/imgs/logo/logo.png') }}"
                             alt="logo"></a>
                 </div>
+                <div class="header-middle-nav d-none d-lg-flex">
+                    <a href="{{ route('Weekly_Featured') }}"
+                        class="hm-menu-item {{ Route::is('Weekly_Featured') ? 'force_active' : '' }}">
+                        WEEKLY FEATURED <span class="hm-badge">HOT</span>
+                    </a>
+                    <a href="{{ route('Hot_Sale_Item') }}"
+                        class="hm-menu-item {{ Route::is('Hot_Sale_Item') ? 'force_active' : '' }}">
+                        HOT SALE ITEMS <span class="hm-badge">HOT</span>
+                    </a>
+                    <a href="{{ route('Top_New_Items') }}"
+                        class="hm-menu-item {{ Route::is('Top_New_Items') ? 'force_active' : '' }}">
+                        TOP NEW ITEMS <span class="hm-badge">HOT</span>
+                    </a>
+                    <a href="{{ route('Top_Selling') }}"
+                        class="hm-menu-item {{ Route::is('Top_Selling') ? 'force_active' : '' }}">
+                        TOP SELLING <span class="hm-badge">HOT</span>
+                    </a>
+                    <a href="{{ route('Top_Rated_Item') }}"
+                        class="hm-menu-item {{ Route::is('Top_Rated_Item') ? 'force_active' : '' }}">
+                        TOP RATED ITEMS <span class="hm-badge">HOT</span>
+                    </a>
+                </div>
                 <div class="header-right">
-                    <div class="search-style-1">
-                        <form action="{{ route('search') }}" method="GET">
-                            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search for items...">
-                            <button type="submit" aria-label="Search"><i class="fi-rs-search"></i></button>
-                        </form>
+                    <div class="header-search-popup">
+                        <button type="button" class="header-search-toggle" id="headerSearchToggle" aria-label="Open search">
+                            <i class="fi-rs-search"></i>
+                        </button>
+                        <div class="header-search-panel" id="headerSearchPanel">
+                            <form action="{{ route('search') }}" method="GET">
+                                <input type="text" name="q" value="{{ request('q') }}" placeholder="Search for items..." autocomplete="off">
+                                <button type="submit" aria-label="Search"><i class="fi-rs-search"></i></button>
+                            </form>
+                        </div>
+                        <script>
+                            (function () {
+                                var toggle = document.getElementById('headerSearchToggle');
+                                var panel = document.getElementById('headerSearchPanel');
+                                if (!toggle || !panel) return;
+
+                                function openPanel() {
+                                    panel.classList.add('is-open');
+                                    toggle.classList.add('is-active');
+                                    var input = panel.querySelector('input[name="q"]');
+                                    if (input) input.focus();
+                                }
+                                function closePanel() {
+                                    panel.classList.remove('is-open');
+                                    toggle.classList.remove('is-active');
+                                }
+
+                                toggle.addEventListener('click', function (e) {
+                                    e.stopPropagation();
+                                    if (panel.classList.contains('is-open')) {
+                                        closePanel();
+                                    } else {
+                                        openPanel();
+                                    }
+                                });
+                                document.addEventListener('click', function (e) {
+                                    if (!panel.contains(e.target) && e.target !== toggle) closePanel();
+                                });
+                                document.addEventListener('keydown', function (e) {
+                                    if (e.key === 'Escape') closePanel();
+                                });
+                            })();
+                        </script>
                     </div>
                     <div class="header-action-right">
 
@@ -314,17 +374,19 @@
                                 float: left;
                             }
 
+                            .wrap-icon-section .link-direction {
+                                display: flex;
+                                align-items: center;
+                            }
+
                             .wrap-icon-section .left-info {
                                 display: block;
-                                float: left;
                             }
 
                             .wrap-icon-section .link-direction>i {
-                                display: block;
-                                float: left;
                                 font-size: 25px;
                                 color: #aaa;
-                                margin: 7px 8px 0 0;
+                                margin: 0 8px 0 0;
                             }
 
                             .wrap-icon-section .index {
@@ -454,7 +516,7 @@
 
 
 
-    <nav class="featured-menu">
+    <nav class="featured-menu d-lg-none">
         <div class="menu-container">
             <a href="{{ route('Weekly_Featured') }}"
                 class="{{ Route::is('Weekly_Featured') ? 'force_active menu-item' : 'menu-item' }}">

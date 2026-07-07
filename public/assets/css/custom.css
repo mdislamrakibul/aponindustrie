@@ -406,7 +406,7 @@ body {
    same technique as mobile. img wider than <a> so white part is hidden. */
 .header-middle .logo.logo-width-1 a {
     display: inline-block;
-    width: 110px;
+    width: 145px;
     overflow: hidden;
     border-radius: 8px;
     line-height: 0;
@@ -414,7 +414,7 @@ body {
 }
 .header-middle .logo.logo-width-1 a img {
     display: block;
-    width: 185px !important;
+    width: 244px !important;
     min-width: 0 !important;
     max-width: none !important;
     height: auto !important;
@@ -422,6 +422,124 @@ body {
 
 /* Desktop dark nav bar logo — invert to white + rounded */
 .header-bottom .logo img { filter: brightness(0) invert(1); border-radius: 8px; }
+
+/* Desktop: featured-menu links merged inline with logo/search/cart
+   (mobile keeps its own separate strip below the logo/burger row — untouched) */
+.header-middle-nav {
+    align-items: center;
+    gap: 10px;
+    margin: 0 14px 0 8px;
+    flex-shrink: 0;
+    transform: translateX(-15px);
+}
+.header-middle-nav .hm-menu-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    color: #253D4E;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+}
+.header-middle-nav .hm-menu-item:hover,
+.header-middle-nav .hm-menu-item.force_active {
+    color: #f15412;
+    text-decoration: none;
+}
+.header-middle-nav .hm-badge {
+    font-size: 8.5px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    background: #ff5a5f;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+@media (max-width: 1199px) {
+    .header-middle-nav { gap: 8px; margin: 0 10px 0 6px; }
+    .header-middle-nav .hm-menu-item { font-size: 10.5px; }
+    .header-middle-nav .hm-menu-item .hm-badge { display: none; }
+}
+
+/* Desktop: search collapses to an icon button that opens a popup panel,
+   so it no longer needs a fixed-width slot in the row */
+.header-search-popup {
+    position: relative;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+.header-search-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: #f5f5f5;
+    color: #f15412;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.header-search-toggle:hover,
+.header-search-toggle.is-active {
+    background: #f0f0f0;
+}
+.header-search-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 320px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    padding: 14px;
+    z-index: 999;
+}
+.header-search-panel.is-open {
+    display: block;
+}
+.header-search-panel form {
+    position: relative;
+}
+.header-search-panel form input {
+    width: 100%;
+    height: 44px;
+    font-size: 14px;
+    color: #1a1a1a;
+    border-radius: 22px;
+    padding: 3px 46px 3px 18px;
+    border: 1px solid #eee;
+    background-color: #f5f5f5;
+}
+.header-search-panel form input:focus {
+    border-color: #f15412;
+    background-color: #fff;
+    outline: none;
+}
+.header-search-panel form button {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #f15412;
+    font-size: 17px;
+    height: 36px;
+    width: 36px;
+}
+/* Override the global button[type="submit"]:hover solid-orange-fill rule
+   (main.css) — it was hiding this icon (orange-on-orange) on hover */
+.header-search-panel form button:hover {
+    background: transparent !important;
+    color: #d9480f;
+}
 
 /* Mobile: no background, clip white right portion, show only APON dark area */
 @media (max-width: 991px) {
