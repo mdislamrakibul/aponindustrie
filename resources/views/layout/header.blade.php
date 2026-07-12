@@ -247,9 +247,9 @@
                                                 <i class="fa fa-shopping-bag"></i> My Orders
                                             </a>
                                         </li>
-                                        @if(in_array(session('user_role'), ['admin', 'vendor', 'accountant']))
+                                        @if(in_array(session('user_role'), ['admin', 'vendor', 'cashier']))
                                         <li class="adl-dashboard">
-                                            <a href="{{ url('/admin/dashboard') }}">
+                                            <a href="{{ session('user_role') === 'cashier' ? route('admin.orders.new.page') : url('/admin/dashboard') }}">
                                                 <i class="fa fa-tachometer"></i> Dashboard
                                             </a>
                                         </li>
@@ -620,7 +620,117 @@
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
+                            <div class="header-search-popup">
+                                <button type="button" class="header-search-toggle" id="headerSearchToggleMobile" aria-label="Open search">
+                                    <i class="fi-rs-search"></i>
+                                </button>
+                                <div class="header-search-panel" id="headerSearchPanelMobile">
+                                    <form action="{{ route('search') }}" method="GET" autocomplete="off">
+                                        <input type="text" name="q" id="headerSearchInputMobile" value="{{ request('q') }}" placeholder="Search for items..." autocomplete="off">
+                                        <button type="submit" aria-label="Search"><i class="fi-rs-search"></i></button>
+                                    </form>
+                                    <div class="header-search-suggestions" id="headerSearchSuggestionsMobile"></div>
+                                </div>
+                                <script>
+                                    (function () {
+                                        var toggle = document.getElementById('headerSearchToggleMobile');
+                                        var panel = document.getElementById('headerSearchPanelMobile');
+                                        var input = document.getElementById('headerSearchInputMobile');
+                                        var results = document.getElementById('headerSearchSuggestionsMobile');
+                                        var header = document.querySelector('.header-bottom');
+                                        if (!toggle || !panel || !input || !results) return;
 
+                                        var debounceTimer = null;
+                                        var currentRequest = null;
+                                        var SUGGEST_URL = '{{ route('search.suggest') }}';
+
+                                        function escapeHtml(str) {
+                                            var div = document.createElement('div');
+                                            div.textContent = str;
+                                            return div.innerHTML;
+                                        }
+
+                                        function renderResults(products) {
+                                            if (!products.length) {
+                                                results.innerHTML = '<div class="hs-empty">No products found</div>';
+                                                return;
+                                            }
+                                            results.innerHTML = products.map(function (p) {
+                                                return '<a class="hs-item" href="' + p.url + '">' +
+                                                    '<img src="' + p.thumbnail + '" alt="">' +
+                                                    '<span class="hs-name">' + escapeHtml(p.name) + '</span>' +
+                                                    '<span class="hs-price">৳' + p.price + '</span>' +
+                                                    '</a>';
+                                            }).join('');
+                                        }
+
+                                        function fetchSuggestions(q) {
+                                            if (currentRequest) currentRequest.abort();
+                                            var controller = new AbortController();
+                                            currentRequest = controller;
+
+                                            results.innerHTML = '<div class="hs-loading">Searching...</div>';
+
+                                            fetch(SUGGEST_URL + '?q=' + encodeURIComponent(q), { signal: controller.signal })
+                                                .then(function (res) { return res.json(); })
+                                                .then(function (data) {
+                                                    renderResults(data.products || []);
+                                                })
+                                                .catch(function (err) {
+                                                    if (err.name !== 'AbortError') results.innerHTML = '';
+                                                });
+                                        }
+
+                                        function openPanel() {
+                                            if (header) {
+                                                panel.style.top = header.getBoundingClientRect().bottom + 'px';
+                                            }
+                                            panel.classList.add('is-open');
+                                            toggle.classList.add('is-active');
+                                            input.focus({ preventScroll: true });
+                                        }
+                                        function closePanel() {
+                                            panel.classList.remove('is-open');
+                                            toggle.classList.remove('is-active');
+                                        }
+
+                                        toggle.addEventListener('click', function (e) {
+                                            e.stopPropagation();
+                                            if (panel.classList.contains('is-open')) {
+                                                closePanel();
+                                            } else {
+                                                openPanel();
+                                            }
+                                        });
+                                        panel.addEventListener('click', function (e) {
+                                            e.stopPropagation();
+                                        });
+                                        document.addEventListener('click', function (e) {
+                                            if (!panel.contains(e.target) && e.target !== toggle) closePanel();
+                                        });
+                                        document.addEventListener('keydown', function (e) {
+                                            if (e.key === 'Escape') closePanel();
+                                        });
+                                        window.addEventListener('resize', function () {
+                                            if (panel.classList.contains('is-open') && header) {
+                                                panel.style.top = header.getBoundingClientRect().bottom + 'px';
+                                            }
+                                        });
+
+                                        input.addEventListener('input', function () {
+                                            var q = input.value.trim();
+                                            clearTimeout(debounceTimer);
+                                            if (q.length < 2) {
+                                                results.innerHTML = '';
+                                                return;
+                                            }
+                                            debounceTimer = setTimeout(function () {
+                                                fetchSuggestions(q);
+                                            }, 300);
+                                        });
+                                    })();
+                                </script>
+                            </div>
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="{{ route('Product_Cart') }}">

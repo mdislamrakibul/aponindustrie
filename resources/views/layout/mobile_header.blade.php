@@ -158,10 +158,11 @@
 
                         @if(
                                 session('user_role') == 'admin' ||
-                                session('user_role') == 'vendor'
+                                session('user_role') == 'vendor' ||
+                                session('user_role') == 'cashier'
                             )
 
-                            <a href="{{ url('/admin/dashboard') }}">
+                            <a href="{{ session('user_role') === 'cashier' ? route('admin.orders.new.page') : url('/admin/dashboard') }}">
                                 Dashboard
                             </a>
 

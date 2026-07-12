@@ -68,14 +68,8 @@
                                         </a>
                                     </div>
                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                        @if(!empty($prod->is_discounted) && in_array($prod->discount_type ?? '', ['PERCENTAGE','FLAT']) && ($prod->discount_value ?? 0) > 0)
-                                            <span class="badge sale">
-                                                @if($prod->discount_type === 'PERCENTAGE')
-                                                    {{ number_format($prod->discount_value, 0) }}% Off
-                                                @else
-                                                    ৳{{ number_format($prod->discount_value, 0) }} Off
-                                                @endif
-                                            </span>
+                                        @if($prod->is_discounted)
+                                            <span class="badge sale">{{ number_format($prod->total_discount_percent, 0) }}% Off</span>
                                         @endif
                                     </div>
                                 </div>

@@ -16,6 +16,15 @@ class Product extends Model
         'publish_date'           => 'datetime',
         'additional_info_active' => 'boolean',
     ];
+
+    // total_discount_percent has no backing column — Eloquent only includes
+    // accessor-only ("virtual") attributes like this in toArray()/toJson()
+    // if they're appended here. is_discounted has a real column but is
+    // overridden by an accessor below, so it serializes correctly on its
+    // own and doesn't need to be listed.
+    protected $appends = [
+        'total_discount_percent',
+    ];
     protected $fillable = [
 
         'name',
@@ -121,6 +130,59 @@ class Product extends Model
     public function getOnSaleAttribute()
     {
         return $this->sale_price > 0 && $this->sale_price < $this->regular_price;
+    }
+
+    // Discount already implied by package_price being below regular_price, as a %
+    public function getBaseDiscountPercentAttribute()
+    {
+        $regular = (float) $this->regular_price;
+        $package = (float) $this->package_price;
+
+        if ($regular <= 0 || $package <= 0 || $package >= $regular) {
+            return 0.0;
+        }
+
+        return round((($regular - $package) / $regular) * 100, 2);
+    }
+
+    // Extra discount configured via discount_type/discount_value, as a %
+    // (FLAT amounts are converted to a % of regular_price so they can be
+    // combined with the base discount below)
+    public function getExtraDiscountPercentAttribute()
+    {
+        $value = (float) $this->discount_value;
+        $type  = $this->discount_type;
+
+        if ($value <= 0 || !in_array($type, ['PERCENTAGE', 'FLAT'])) {
+            return 0.0;
+        }
+
+        if ($type === 'PERCENTAGE') {
+            return round($value, 2);
+        }
+
+        $regular = (float) $this->regular_price;
+        return $regular > 0 ? round(($value / $regular) * 100, 2) : 0.0;
+    }
+
+    // Combined discount % — base (price difference) + extra (manual
+    // discount_type/discount_value) — this is what the storefront offer
+    // badge shows
+    public function getTotalDiscountPercentAttribute()
+    {
+        $total = $this->base_discount_percent + $this->extra_discount_percent;
+
+        // Sanity cap so stacked discounts can never show a silly >95% badge
+        return $total > 95 ? 95.0 : round($total, 2);
+    }
+
+    // Whether the product has any discount at all — drives whether the
+    // offer badge shows on the storefront. Overrides the raw is_discounted
+    // DB column (which is never written by any controller) with a value
+    // computed live from the actual prices/discount fields.
+    public function getIsDiscountedAttribute()
+    {
+        return $this->total_discount_percent > 0;
     }
 
 

@@ -21,7 +21,7 @@ class StoreController extends Controller
     {
         return Product::published([
             'id', 'name', 'category_id', 'sale_price',
-            'regular_price', 'discount_type', 'discount_value',
+            'regular_price', 'package_price', 'discount_type', 'discount_value',
             'product_type', 'is_discounted',
         ])
         ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
@@ -49,7 +49,7 @@ class StoreController extends Controller
     public function Weekly_Featured(Request $request)
     {
         $featuredProducts = Product::published([
-            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'id', 'name', 'category_id', 'sale_price', 'regular_price', 'package_price',
             'discount_type', 'discount_value', 'product_type', 'is_discounted',
         ])
         ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
@@ -69,7 +69,7 @@ class StoreController extends Controller
     public function Hot_Sale_Item(Request $request)
     {
         $featuredProducts = Product::published([
-            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'id', 'name', 'category_id', 'sale_price', 'regular_price', 'package_price',
             'discount_type', 'discount_value', 'product_type', 'is_discounted',
         ])
         ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
@@ -89,7 +89,7 @@ class StoreController extends Controller
     public function Top_New_Items(Request $request)
     {
         $featuredProducts = Product::published([
-            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'id', 'name', 'category_id', 'sale_price', 'regular_price', 'package_price',
             'discount_type', 'discount_value', 'product_type', 'is_discounted',
         ])
         ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
@@ -109,7 +109,7 @@ class StoreController extends Controller
     public function Top_Selling(Request $request)
     {
         $featuredProducts = Product::published([
-            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'id', 'name', 'category_id', 'sale_price', 'regular_price', 'package_price',
             'discount_type', 'discount_value', 'product_type', 'is_discounted',
         ])
         ->with(['category:id,name,slug', 'media' => $this->mediaQuery(), 'reviews'])
@@ -129,7 +129,7 @@ class StoreController extends Controller
     public function Top_Rated_Item(Request $request)
     {
         $featuredProducts = Product::published([
-            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'id', 'name', 'category_id', 'sale_price', 'regular_price', 'package_price',
             'discount_type', 'discount_value', 'product_type', 'is_discounted',
         ])
         ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
@@ -144,6 +144,49 @@ class StoreController extends Controller
             'total_item'       => count($featuredProducts),
             'newProduct'       => collect($this->newProductsQuery())->shuffle()->take(5),
         ]);
+    }
+
+    public function searchSuggestions(Request $request)
+    {
+        $q = trim($request->get('q', ''));
+
+        if ($q === '') {
+            return response()->json(['success' => true, 'products' => []]);
+        }
+
+        $products = Product::query()
+            ->where('status', 'PUBLISHED')
+            ->where(function ($w) use ($q) {
+                $w->where('name', 'like', "%{$q}%")
+                  ->orWhere('sku', 'like', "%{$q}%")
+                  ->orWhere('short_description', 'like', "%{$q}%");
+            })
+            ->with(['category:id,name', 'media' => $this->mediaQuery()])
+            ->select('id', 'name', 'category_id', 'sale_price', 'regular_price')
+            ->latest()
+            ->take(8)
+            ->get()
+            ->map(function ($prod) {
+                $thumb = $prod->media->firstWhere('position', 1) ?? $prod->media->first();
+
+                return [
+                    'id'        => $prod->id,
+                    'name'      => $prod->name,
+                    'thumbnail' => $thumb
+                        ? asset($thumb->file_path . $thumb->image_name)
+                        : asset('assets/imgs/shop/product-placeholder.png'),
+                    'price'     => number_format($prod->sale_price, 2),
+                    'url'       => route('Product_Details', [
+                        'product_name'     => $prod->name,
+                        'category_name'    => optional($prod->category)->name,
+                        'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                        'category_id'      => optional($prod->category)->id,
+                        'product_id'       => $prod->id,
+                    ]),
+                ];
+            });
+
+        return response()->json(['success' => true, 'products' => $products]);
     }
 
     public function search(Request $request)

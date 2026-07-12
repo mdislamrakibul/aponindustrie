@@ -32,7 +32,7 @@ class ProductController extends Controller
             ->toArray();
 
         $newProducts = Product::published([
-            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'id', 'name', 'category_id', 'sale_price', 'regular_price', 'package_price',
             'discount_type', 'discount_value', 'product_type', 'is_discounted',
         ])
             ->with(['category:id,name,slug', 'media:id,title,file_path,image_type,position,model_id,image_name'])
@@ -78,7 +78,7 @@ class ProductController extends Controller
 
 
         $newProducts = Product::published([
-            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'id', 'name', 'category_id', 'sale_price', 'regular_price', 'package_price',
             'discount_type', 'discount_value', 'product_type', 'is_discounted',
         ])
             ->with(['category:id,name,slug', 'media:id,title,file_path,image_type,position,model_id,image_name'])

@@ -135,6 +135,66 @@ Admin Profile
             </form>
         </div>
     </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-header bg-white border-bottom">
+            <h3 class="card-title font-weight-bold mb-0">Change Password</h3>
+        </div>
+        <div class="card-body">
+
+            @if(session('password_success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('password_success') }}
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            @endif
+
+            @if($errors->password->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <ul class="mb-0">
+                        @foreach($errors->password->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            @endif
+
+            <form action="{{ route('admin.profile.password.update') }}" method="POST">
+                @csrf
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="font-weight-bold">Current Password <span class="text-danger">*</span></label>
+                        <input type="password" name="current_password"
+                               class="form-control @error('current_password', 'password') is-invalid @enderror"
+                               autocomplete="current-password">
+                        @error('current_password', 'password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="font-weight-bold">New Password <span class="text-danger">*</span></label>
+                        <input type="password" name="new_password"
+                               class="form-control @error('new_password', 'password') is-invalid @enderror"
+                               autocomplete="new-password">
+                        @error('new_password', 'password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="font-weight-bold">Confirm New Password <span class="text-danger">*</span></label>
+                        <input type="password" name="new_password_confirmation"
+                               class="form-control"
+                               autocomplete="new-password">
+                    </div>
+                </div>
+
+                <hr>
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="fas fa-key mr-1"></i> Change Password
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
 
 @endsection

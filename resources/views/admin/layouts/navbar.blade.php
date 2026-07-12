@@ -88,34 +88,54 @@
       <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
       </div>
       </li>
+    @endif
 
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+    {{-- Notifications Dropdown Menu — admin only (e.g. cashier password changes) --}}
+    @if(session('user_role') === 'admin')
+      @php
+        $adminNotifications = \App\Models\Notification::where('target_role', 'admin')->latest()->take(10)->get();
+        $unreadNotificationCount = $adminNotifications->where('is_read', false)->count();
+      @endphp
+      <li class="nav-item dropdown" id="notificationBellItem">
+        <a class="nav-link" data-toggle="dropdown" href="#" id="notificationBellToggle">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          @if($unreadNotificationCount > 0)
+            <span class="badge badge-warning navbar-badge">{{ $unreadNotificationCount }}</span>
+          @endif
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          <span class="dropdown-item dropdown-header">Notifications</span>
+          @forelse($adminNotifications as $note)
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item {{ $note->is_read ? '' : 'font-weight-bold' }}" style="white-space: normal;">
+              <i class="fas fa-key mr-2"></i>{{ $note->title }}
+              <p class="text-sm text-muted mb-0">{{ $note->message }}</p>
+              <span class="text-muted text-sm">{{ $note->created_at->diffForHumans() }}</span>
+            </div>
+          @empty
+            <div class="dropdown-divider"></div>
+            <span class="dropdown-item text-muted">No notifications</span>
+          @endforelse
         </div>
       </li>
+      <script>
+        (function () {
+          var toggle = document.getElementById('notificationBellToggle');
+          if (!toggle) return;
+          toggle.addEventListener('click', function () {
+            fetch('{{ route('admin.notifications.read-all') }}', {
+              method: 'POST',
+              headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+              },
+            }).then(function () {
+              var badge = document.querySelector('#notificationBellItem .navbar-badge');
+              if (badge) badge.remove();
+            });
+          }, { once: true });
+        })();
+      </script>
     @endif
 
 

@@ -68,7 +68,7 @@ class AdminOrderController extends Controller
         });
 
         $acceptedByUser = $order->acceptedBy;
-        $order->accepted_by_name = ($acceptedByUser && in_array(strtolower($acceptedByUser->role ?? ''), ['admin', 'vendor']))
+        $order->accepted_by_name = ($acceptedByUser && in_array(strtolower($acceptedByUser->role ?? ''), ['admin', 'vendor', 'cashier']))
             ? trim(($acceptedByUser->first_name ?? '') . ' ' . ($acceptedByUser->last_name ?? ''))
             : null;
 

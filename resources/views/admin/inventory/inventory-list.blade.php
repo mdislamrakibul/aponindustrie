@@ -410,7 +410,7 @@
                                         <span class="input-group-text">৳</span>
                                     </div>
                                     <input type="number" step="0.01" id="regular_price" name="regular_price"
-                                        class="form-control" placeholder="0.00">
+                                        class="form-control" placeholder="0.00" oninput="updateSummary()">
                                 </div>
                             </div>
 
@@ -500,10 +500,24 @@
                                     </div>
                                     <hr class="my-1">
                                     <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Already Discount (Regular vs Package Price)</span>
+                                        <strong id="s_base_pct" class="text-danger">—</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Extra Discount</span>
+                                        <strong id="s_extra_pct" class="text-danger">—</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span style="font-weight:700;">Total Offer Badge</span>
+                                        <strong id="s_total_pct" class="text-success">—</strong>
+                                    </div>
+                                    <hr class="my-1">
+                                    <div class="d-flex justify-content-between">
                                         <span style="color:#1a365d; font-weight:700;">Final Price</span>
                                         <strong id="s_final" style="color:#1a365d;">—</strong>
                                     </div>
                                 </div>
+                                <small class="text-muted">"Total Offer Badge" is what customers will see on the product card.</small>
                             </div>
 
                         </div>
@@ -684,6 +698,7 @@
             const taxPct = parseFloat(document.getElementById('tax_percentage').value) || 0;
             const discVal = parseFloat(document.getElementById('discount_value').value) || 0;
             const discType = document.getElementById('discount_type').value;
+            const regularPrice = parseFloat(document.getElementById('regular_price').value) || 0;
 
             const pkg = perPrice * minOrder;
             const taxAmt = (pkg * taxPct) / 100;
@@ -698,6 +713,29 @@
             document.getElementById('s_tax').textContent = taxPct > 0 ? '+৳ ' + taxAmt.toFixed(2) : '—';
             document.getElementById('s_discount').textContent = discAmt > 0 ? '-৳ ' + discAmt.toFixed(2) : '—';
             document.getElementById('s_final').textContent = '৳ ' + final.toFixed(2);
+
+            // ── Discount % preview — mirrors Product::getBaseDiscountPercentAttribute /
+            // getExtraDiscountPercentAttribute / getTotalDiscountPercentAttribute in
+            // app/Models/Product.php, so what admin previews here matches what the
+            // storefront offer badge will actually show after saving.
+            let basePct = 0;
+            if (regularPrice > 0 && pkg > 0 && pkg < regularPrice) {
+                basePct = ((regularPrice - pkg) / regularPrice) * 100;
+            }
+
+            let extraPct = 0;
+            if (discVal > 0 && (discType === 'PERCENTAGE' || discType === 'FLAT')) {
+                extraPct = discType === 'PERCENTAGE'
+                    ? discVal
+                    : (regularPrice > 0 ? (discVal / regularPrice) * 100 : 0);
+            }
+
+            let totalPct = basePct + extraPct;
+            if (totalPct > 95) totalPct = 95;
+
+            document.getElementById('s_base_pct').textContent = basePct > 0 ? basePct.toFixed(2) + '%' : '—';
+            document.getElementById('s_extra_pct').textContent = extraPct > 0 ? extraPct.toFixed(2) + '%' : '—';
+            document.getElementById('s_total_pct').textContent = totalPct > 0 ? totalPct.toFixed(2) + '% Off' : 'No Offer';
         }
     </script>
 @endpush

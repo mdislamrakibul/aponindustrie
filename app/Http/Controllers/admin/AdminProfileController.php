@@ -5,7 +5,10 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Login;
+use App\Models\Notification;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class AdminProfileController extends Controller
 {
@@ -26,7 +29,7 @@ class AdminProfileController extends Controller
 
         // Primary path: session id matches tbl_info_user.id directly
         $user = User::find($sid);
-        if ($user && in_array(strtolower($user->role ?? ''), ['admin', 'vendor'])) {
+        if ($user && in_array(strtolower($user->role ?? ''), ['admin', 'vendor', 'cashier'])) {
             return $user;
         }
 
@@ -35,7 +38,7 @@ class AdminProfileController extends Controller
         $mobile = session('user_mobile');
         if ($mobile) {
             $user = User::where('mobile_no', $mobile)->first();
-            if ($user && in_array(strtolower($user->role ?? ''), ['admin', 'vendor'])) {
+            if ($user && in_array(strtolower($user->role ?? ''), ['admin', 'vendor', 'cashier'])) {
                 return $user;
             }
         }
@@ -115,5 +118,59 @@ class AdminProfileController extends Controller
             'success',
             'Profile Updated Successfully'
         );
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = $this->resolveUser();
+
+        if (!$user) {
+            return redirect('/admin/management-login')
+                ->with('error', 'Session expired. Please log in again.');
+        }
+
+        $request->validateWithBag('password', [
+            'current_password' => 'required',
+            'new_password'      => 'required|min:6|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()
+                ->withErrors(['current_password' => 'Current password is incorrect.'], 'password');
+        }
+
+        $user->update([
+            'password' => $request->new_password,
+        ]);
+
+        // The storefront /login route authenticates against tbl_info_login
+        // (Login model), a separate table from tbl_info_user — keep both in
+        // sync so the new password works from either login entry point.
+        $login = $user->login_id
+            ? Login::find($user->login_id)
+            : Login::where('phone', $user->mobile_no)->first();
+
+        if ($login) {
+            $login->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+        }
+
+        // Alert admin whenever a non-admin admin-panel account (cashier,
+        // vendor) changes its own password, since these are shared/managed
+        // accounts an admin should be aware of.
+        if (strtolower($user->role) !== 'admin') {
+            $name = trim($user->first_name . ' ' . $user->last_name);
+
+            Notification::create([
+                'title'                 => ucfirst($user->role) . ' changed their password',
+                'message'               => $name . ' (' . $user->mobile_no . ') changed their account password.',
+                'target_role'           => 'admin',
+                'triggered_by_user_id'  => $user->id,
+                'triggered_by_name'     => $name,
+            ]);
+        }
+
+        return back()->with('password_success', 'Password Changed Successfully');
     }
 }

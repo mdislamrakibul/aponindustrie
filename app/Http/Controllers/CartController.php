@@ -32,6 +32,7 @@ class CartController extends Controller
             'category_id',
             'sale_price',
             'regular_price',
+            'package_price',
             'discount_type',
             'discount_value',
             'product_type',

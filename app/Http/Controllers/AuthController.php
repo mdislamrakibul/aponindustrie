@@ -66,6 +66,10 @@ class AuthController extends Controller
                 return redirect('/admin/dashboard')
                     ->with('success', 'Login Successful');
             }
+            if ($user->role === 'cashier') {
+                return redirect()->route('admin.orders.new.page')
+                    ->with('success', 'Login Successful');
+            }
             return redirect('/')
                 ->with('success', 'Login Successful');
         }
@@ -139,8 +143,8 @@ class AuthController extends Controller
             return back()->with('error', 'The phone number or password you entered is incorrect.');
         }
 
-        // ONLY ADMIN + VENDOR ALLOWED
-        if (!in_array(strtolower($user->role), ['admin', 'vendor'])) {
+        // ONLY ADMIN + VENDOR + CASHIER ALLOWED
+        if (!in_array(strtolower($user->role), ['admin', 'vendor', 'cashier'])) {
             return back()->with('error', 'Unauthorized access');
         }
 
@@ -155,6 +159,13 @@ class AuthController extends Controller
 
         // Security
         $request->session()->regenerate();
+
+        // Cashier has no dashboard access — send them straight to their
+        // one working landing page (Order Management / "New Orders").
+        if (strtolower($user->role) === 'cashier') {
+            return redirect()->route('admin.orders.new.page')
+                ->with('success', 'Admin login successful');
+        }
 
         return redirect('/admin/dashboard')
             ->with('success', 'Admin login successful');

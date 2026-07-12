@@ -189,11 +189,7 @@
 
                                                 @if($product->is_discounted)
                                                     <span class="save-price font-md color3 ml-15" style="font-weight: bold">
-                                                        @if($product->discount_type == 'PERCENTAGE')
-                                                            {{ number_format($product->discount_value, 0) }}% Off
-                                                        @elseif($product->discount_type == 'FLAT')
-                                                            ৳{{ number_format($product->discount_value, 0) }} Off
-                                                        @endif
+                                                        {{ number_format($product->total_discount_percent, 0) }}% Off
                                                     </span>
                                                 @endif
 

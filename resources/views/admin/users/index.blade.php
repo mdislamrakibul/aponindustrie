@@ -165,7 +165,7 @@
                                             <option value="customer">Customer</option>
                                             <option value="vendor">Vendor</option>
                                             <option value="admin">Admin</option>
-                                            <option value="accountant">Accountant</option>
+                                            <option value="cashier">Cashier</option>
                                         </select>
                                     </div>
 
@@ -194,7 +194,7 @@
                                         <option value="">All Roles</option>
                                         <option value="vendor">Vendor</option>
                                         <option value="admin">Admin</option>
-                                        <option value="accountant">Accountant</option>
+                                        <option value="cashier">Cashier</option>
                                         <option value="customer">Customer</option>
                                     </select>
                                 </div>
@@ -282,8 +282,8 @@
                                                             Admin
                                                         </option>
 
-                                                        <option value="accountant" {{ $user->role == 'accountant' ? 'selected' : '' }}>
-                                                            Accountant
+                                                        <option value="cashier" {{ $user->role == 'cashier' ? 'selected' : '' }}>
+                                                            Cashier
                                                         </option>
                                                     </select>
 

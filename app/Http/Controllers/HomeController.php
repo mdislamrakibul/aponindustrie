@@ -27,6 +27,7 @@ class HomeController extends Controller
             'category_id',
             'sale_price',
             'regular_price',
+            'package_price',
             'discount_type',
             'discount_value',
             'product_type',
@@ -92,7 +93,7 @@ class HomeController extends Controller
 
         // Most recently added products — ordered by created_at desc
         $newAddedProducts = Product::published([
-            'id', 'name', 'category_id', 'sale_price', 'regular_price',
+            'id', 'name', 'category_id', 'sale_price', 'regular_price', 'package_price',
             'discount_type', 'discount_value', 'product_type', 'product_adv_type', 'is_discounted',
         ])
             ->with([

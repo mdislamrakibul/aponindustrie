@@ -541,6 +541,102 @@ body {
     color: #d9480f;
 }
 
+/* Mobile: the theme's own .header-action-2 / .header-action-icon-2 flex
+   rules ship commented-out in main.css, so the action icons (search, cart,
+   burger) fall back to block layout and stack in a column. Force them back
+   into a row here. */
+@media (max-width: 991px) {
+    .header-action-right.d-block.d-lg-none .header-action-2 {
+        display: flex !important;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 14px;
+    }
+    .header-action-right.d-block.d-lg-none .header-action-icon-2 {
+        display: flex !important;
+        align-items: center;
+        padding: 0;
+    }
+
+    /* Search icon: match the plain white cart/burger icons instead of the
+       desktop's floating orange-on-white circle */
+    .header-action-icon-2 .header-search-popup {
+        margin-right: 0;
+    }
+    .header-action-icon-2 .header-search-toggle {
+        width: auto;
+        height: auto;
+        background: transparent;
+        border-radius: 0;
+        color: #fff;
+        font-size: 22px;
+    }
+    .header-action-icon-2 .header-search-toggle:hover,
+    .header-action-icon-2 .header-search-toggle.is-active {
+        background: transparent;
+        color: #fff;
+    }
+    /* The panel used position:absolute anchored to the icon, but the icon
+       sits at the far right edge of a narrow flex row — the panel's
+       computed left edge landed off-screen (negative x), and focusing the
+       input inside it made the browser auto-scroll the sticky header out
+       of view. Use position:fixed, pinned under the header by JS (which
+       measures the actual header height), full-width with side margins. */
+    .header-action-icon-2 .header-search-panel {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        top: 60px;
+        width: auto;
+        max-width: none;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+    }
+
+    .header-search-suggestions {
+        margin-top: 10px;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+    .header-search-suggestions .hs-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 4px;
+        text-decoration: none;
+        color: #1a1a1a;
+        border-top: 1px solid #f0f0f0;
+    }
+    .header-search-suggestions .hs-item:first-child {
+        border-top: none;
+    }
+    .header-search-suggestions .hs-item img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 6px;
+        flex-shrink: 0;
+        background: #f5f5f5;
+    }
+    .header-search-suggestions .hs-item .hs-name {
+        font-size: 13px;
+        line-height: 1.3;
+        flex: 1;
+    }
+    .header-search-suggestions .hs-item .hs-price {
+        font-size: 13px;
+        font-weight: 600;
+        color: #f15412;
+        white-space: nowrap;
+    }
+    .header-search-suggestions .hs-empty,
+    .header-search-suggestions .hs-loading {
+        padding: 10px 4px;
+        font-size: 13px;
+        color: #888;
+    }
+}
+
 /* Mobile: no background, clip white right portion, show only APON dark area */
 @media (max-width: 991px) {
     .header-bottom .logo.logo-width-1 {

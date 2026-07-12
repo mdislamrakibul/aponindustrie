@@ -373,7 +373,7 @@
                                 <div class="custome-checkbox mt-15 mb-20">
                                     <input class="form-check-input" type="checkbox" id="termsCheck" required>
                                     <label class="form-check-label" for="termsCheck">
-                                        <span>I agree to the <a href="#" style="color:#0d3b66;">Terms &amp; Conditions</a></span>
+                                        <span>I agree to the <a href="{{ route('Terms_And_Conditions.index') }}" target="_blank" style="color:#0d3b66;" onclick="event.stopPropagation();">Terms &amp; Conditions</a></span>
                                     </label>
                                 </div>
 

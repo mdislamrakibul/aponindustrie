@@ -145,6 +145,29 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         [App\Http\Controllers\admin\ActivityLogController::class, 'index']
     )->name('activity.logs');
 
+    Route::post(
+        '/notifications/read-all',
+        [App\Http\Controllers\admin\NotificationController::class, 'markAllRead']
+    )->name('notifications.read-all');
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADS MANAGEMENT
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/ads', [AdsManagementController::class, 'index'])->name('ads.index');
+    Route::post('/ads', [AdsManagementController::class, 'store'])->name('ads.store');
+    Route::post('/ads/{id}/update', [AdsManagementController::class, 'update'])->name('ads.update');
+    Route::post('/ads/{id}/toggle', [AdsManagementController::class, 'toggle'])->name('ads.toggle');
+    Route::delete('/ads/{id}', [AdsManagementController::class, 'destroy'])->name('ads.destroy');
+    Route::post('/ads/{id}/text', [AdsManagementController::class, 'updateText'])->name('ads.update-text');
+});
+
+// Shared between admin and cashier: own profile, Order Management ("sales"),
+// and the Accounts Management order-history view. Everything else in the
+// admin panel stays admin-only (see the role:admin group above/below).
+Route::middleware(['role:admin,cashier'])->prefix('admin')->name('admin.')->group(function () {
+
     Route::get(
         '/profile',
         [App\Http\Controllers\admin\AdminProfileController::class, 'index']
@@ -155,6 +178,11 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         [App\Http\Controllers\admin\AdminProfileController::class, 'update']
     )->name('profile.update');
 
+    Route::post(
+        '/profile/password',
+        [App\Http\Controllers\admin\AdminProfileController::class, 'updatePassword']
+    )->name('profile.password.update');
+
     Route::get('/orders/new-orders', [AdminOrderController::class, 'newOrders'])->name('orders.new');
     Route::get('/orders/new', [AdminOrderController::class, 'newOrdersPage'])->name('orders.new.page');
     Route::get('/orders/product-search', [AdminOrderController::class, 'productSearch'])->name('orders.product.search');
@@ -162,6 +190,8 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('/orders/{id}/accept', [AdminOrderController::class, 'acceptOrder'])->name('orders.accept');
     Route::post('/orders/{id}/reject', [AdminOrderController::class, 'rejectOrder'])->name('orders.reject');
     Route::post('/orders/{id}/payment-callback', [AdminOrderController::class, 'paymentCallback'])->name('orders.payment.callback');
+
+    Route::get('/orders', [AdminOrderController::class, 'order_index'])->name('orders.index');
 
     //order view//
     Route::get(
@@ -177,7 +207,7 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 
     /*
     |--------------------------------------------------------------------------
-    | ACCOUNTS MANAGEMENT
+    | ACCOUNTS MANAGEMENT (order history only — cashier's "sales" view)
     |--------------------------------------------------------------------------
     */
 
@@ -185,18 +215,6 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         '/accounts/order-history',
         [App\Http\Controllers\admin\AccountsManagementController::class, 'orderHistory']
     )->name('accounts.order.history');
-
-    /*
-    |--------------------------------------------------------------------------
-    | ADS MANAGEMENT
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/ads', [AdsManagementController::class, 'index'])->name('ads.index');
-    Route::post('/ads', [AdsManagementController::class, 'store'])->name('ads.store');
-    Route::post('/ads/{id}/update', [AdsManagementController::class, 'update'])->name('ads.update');
-    Route::post('/ads/{id}/toggle', [AdsManagementController::class, 'toggle'])->name('ads.toggle');
-    Route::delete('/ads/{id}', [AdsManagementController::class, 'destroy'])->name('ads.destroy');
-    Route::post('/ads/{id}/text', [AdsManagementController::class, 'updateText'])->name('ads.update-text');
 });
 
 
@@ -206,11 +224,6 @@ Route::middleware(['role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-
-        Route::get(
-            '/orders',
-            [AdminOrderController::class, 'order_index']
-        )->name('orders.index');
 
         /*
     |--------------------------------------------------------------------------
@@ -312,6 +325,7 @@ Route::get('/product/order/success/{id}', [OrderController::class, 'Order_Succes
 
 // product/weekly-featured Url
 Route::get('/search', [StoreController::class, 'search'])->name('search');
+Route::get('/search/suggest', [StoreController::class, 'searchSuggestions'])->name('search.suggest');
 
 Route::get('/shop', [StoreController::class, 'shop'])->name('shop');
 
