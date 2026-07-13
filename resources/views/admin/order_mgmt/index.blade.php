@@ -94,7 +94,13 @@
                                         </tr>
                                     </thead>
                                     <tbody id="orderTableBody">
-                                    @forelse ($orders as $order)
+                                    {{-- No manual "no results" <tr> here — DataTables counts
+                                         actual <td> cells against the 8-column <thead> and a
+                                         single colspan="8" placeholder row (1 real <td>) makes
+                                         it throw "Requested unknown parameter '1' for row 0,
+                                         column 1". Let DataTables render its own empty message
+                                         instead (configured via language.emptyTable below). --}}
+                                    @foreach ($orders as $order)
                                         @php $isLocked = $order['order_status'] === 'DELIVERED' && $order['payment_status'] === 'PAID'; @endphp
                                         <tr id="order-row-{{ $order['id'] }}"
                                             data-os="{{ $order['order_status'] }}"
@@ -210,15 +216,7 @@
                                             </td>
 
                                         </tr>
-                                    @empty
-                                        <tr id="empty-orders-row">
-                                            <td colspan="8" class="text-center py-5 text-muted">
-                                                <i class="fas fa-inbox fa-3x mb-3 d-block" style="color:#dee2e6;"></i>
-                                                No accepted orders yet. Go to
-                                                <a href="{{ route('admin.orders.new.page') }}">New Orders</a> to accept pending orders.
-                                            </td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -239,7 +237,7 @@
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div class="modal-body p-0">
-                    <div id="invoiceContent" style="padding:30px;"></div>
+                    <div id="invoiceContent" style="padding:16px;"></div>
                     <div id="posInvoiceContent" style="display:none; background:#e8e8e8; padding:24px; text-align:center; min-height:200px;"></div>
                 </div>
                 <div class="modal-footer d-none no-print" id="invoiceActionBar" style="justify-content:space-between; flex-wrap:wrap; gap:10px;">
@@ -592,7 +590,13 @@
             columnDefs: [{ orderable: false, targets: [5, 6, 7] }],
             order: [[4, 'desc']],
             pageLength: 10,
-            language: { emptyTable: 'No accepted orders yet.' }
+            language: {
+                emptyTable: '<div class="text-center py-5 text-muted">' +
+                    '<i class="fas fa-inbox fa-3x mb-3 d-block" style="color:#dee2e6;"></i>' +
+                    'No accepted orders yet. Go to ' +
+                    '<a href="{{ route('admin.orders.new.page') }}">New Orders</a> to accept pending orders.' +
+                    '</div>'
+            }
         });
 
         /* ── Filter pill buttons ── */
@@ -762,6 +766,9 @@
                 if (!res.success) { $('#invoiceContent').html('<div class="alert alert-danger m-3">Order not found.</div>'); return; }
 
                 var o = res.order, rows = '', sub = 0, totalDiscount = 0, totalVat = 0;
+                // Tighter row padding for orders with many line items, so the
+                // invoice still has a fighting chance of fitting one A4 page.
+                var cellPad = o.order_items.length > 10 ? '4px' : (o.order_items.length > 6 ? '6px' : '8px');
                 o.order_items.forEach(function (item, i) {
                     var pp = parseFloat(item.package_price || 0);
                     var qs = parseInt(item.qty_sets || 1);
@@ -773,14 +780,14 @@
                     totalDiscount += da * qs;
                     totalVat      += va;
                     rows += '<tr style="background:' + (i%2===0?'#fff':'#f7f9fc') + ';">' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + (i+1) + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;">' + (item.product ? item.product.name : '-') + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + mo + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + ppp.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">' + (da > 0 ? '− ৳ ' + da.toLocaleString('en-BD',{minimumFractionDigits:2}) : '৳ 0.00') + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + pp.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:center;">' + qs + '</td>' +
-                        '<td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + lt.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:' + cellPad + ';text-align:center;">' + (i+1) + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:' + cellPad + ';">' + (item.product ? item.product.name : '-') + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:' + cellPad + ';text-align:center;">' + mo + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:' + cellPad + ';text-align:right;">৳ ' + ppp.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:' + cellPad + ';text-align:right;">' + (da > 0 ? '− ৳ ' + da.toLocaleString('en-BD',{minimumFractionDigits:2}) : '৳ 0.00') + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:' + cellPad + ';text-align:right;">৳ ' + pp.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:' + cellPad + ';text-align:center;">' + qs + '</td>' +
+                        '<td style="border:1px solid #dee2e6;padding:' + cellPad + ';text-align:right;">৳ ' + lt.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td>' +
                         '</tr>';
                 });
 
@@ -792,72 +799,75 @@
                 var pbg  = o.payment_status === 'PAID' ? '#28a745' : '#ffc107';
                 var ptx  = o.payment_status === 'PAID' ? '#fff'    : '#000';
 
+                // Compact spacing throughout — the invoice must fit on a single
+                // A4 page for both Print and Download, so vertical padding/
+                // margins here are kept deliberately tight rather than airy.
                 $('#invoiceContent').html(
-                    '<div style="background:#fff;color:#222;font-family:\'Segoe UI\',sans-serif;font-size:14px;">' +
-                    '<div style="text-align:center;border-bottom:3px solid #a9d0e1;padding-bottom:20px;margin-bottom:30px;">' +
-                      '<div style="font-size:15px;font-weight:600;color:#444;line-height:26px;">Government of the People\'s Republic of Bangladesh<br>National Board of Revenue</div>' +
-                      '<div style="font-size:32px;font-weight:800;color:#a9d0e1;letter-spacing:1px;margin-top:10px;">APON PLASTIC INDUSTRIES</div>' +
-                      '<div style="margin-top:6px;font-size:13px;line-height:24px;color:#555;">Office &amp; Factory: Rupshi, Rupganj, Narayanganj.<br>Hotline: <a href="tel:+8801330473873" style="color:#a9d0e1;text-decoration:none;">(+880)1330-473873</a></div>' +
-                      '<div style="margin-top:14px;font-size:20px;font-weight:700;letter-spacing:3px;color:#444;">RETAIL INVOICE</div>' +
+                    '<div style="background:#fff;color:#222;font-family:\'Segoe UI\',sans-serif;font-size:13px;">' +
+                    '<div style="text-align:center;border-bottom:3px solid #a9d0e1;padding-bottom:10px;margin-bottom:14px;">' +
+                      '<div style="font-size:13px;font-weight:600;color:#444;line-height:18px;">Government of the People\'s Republic of Bangladesh<br>National Board of Revenue</div>' +
+                      '<div style="font-size:26px;font-weight:800;color:#a9d0e1;letter-spacing:1px;margin-top:6px;">APON PLASTIC INDUSTRIES</div>' +
+                      '<div style="margin-top:4px;font-size:12px;line-height:18px;color:#555;">Office &amp; Factory: Rupshi, Rupganj, Narayanganj.<br>Hotline: <a href="tel:+8801330473873" style="color:#000;text-decoration:none;">(+880)1330-473873</a></div>' +
+                      '<div style="margin-top:8px;font-size:17px;font-weight:700;letter-spacing:3px;color:#444;">RETAIL INVOICE</div>' +
                     '</div>' +
-                    '<div style="display:flex;gap:20px;margin-bottom:30px;align-items:stretch;">' +
-                      '<div style="flex:1;min-width:0;"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:18px;height:100%;">' +
-                        '<div style="background:#a9d0e1;color:#0d3b66;padding:8px 14px;border-radius:4px;font-weight:700;margin-bottom:12px;font-size:13px;">CUSTOMER INFORMATION</div>' +
-                        '<p style="margin:0 0 7px;"><strong>Name:</strong> ' + cn + '</p>' +
-                        '<p style="margin:0 0 7px;"><strong>Phone:</strong> ' + (addr.phone||'N/A') + '</p>' +
-                        '<p style="margin:0 0 7px;"><strong>Email:</strong> ' + (addr.email||'N/A') + '</p>' +
+                    '<div style="display:flex;gap:16px;margin-bottom:14px;align-items:stretch;">' +
+                      '<div style="flex:1;min-width:0;"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:12px;height:100%;">' +
+                        '<div style="background:#a9d0e1;color:#0d3b66;padding:6px 12px;border-radius:4px;font-weight:700;margin-bottom:8px;font-size:12px;">CUSTOMER INFORMATION</div>' +
+                        '<p style="margin:0 0 5px;"><strong>Name:</strong> ' + cn + '</p>' +
+                        '<p style="margin:0 0 5px;"><strong>Phone:</strong> ' + (addr.phone||'N/A') + '</p>' +
+                        '<p style="margin:0 0 5px;"><strong>Email:</strong> ' + (addr.email||'N/A') + '</p>' +
                         '<p style="margin:0;"><strong>Address:</strong> ' + (addr.address_line1||'N/A') + '</p>' +
                       '</div></div>' +
-                      '<div style="flex:1;min-width:0;"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:18px;height:100%;">' +
-                        '<div style="background:#a9d0e1;color:#0d3b66;padding:8px 14px;border-radius:4px;font-weight:700;margin-bottom:12px;font-size:13px;">INVOICE INFORMATION</div>' +
-                        '<p style="margin:0 0 7px;"><strong>Order ID:</strong> ' + o.order_number + '</p>' +
-                        '<p style="margin:0 0 7px;"><strong>Date:</strong> ' + new Date(o.created_at).toLocaleString('en-BD') + '</p>' +
-                        '<p style="margin:0 0 7px;"><strong>Transaction ID:</strong> ' + (o.transaction_id||'N/A') + '</p>' +
-                        '<p style="margin:0 0 7px;"><strong>Accepted By:</strong> ' + (o.accepted_by_name || 'N/A') + '</p>' +
-                        '<p style="margin:0 0 7px;"><strong>Payment Method:</strong> ' + o.payment_method + '</p>' +
+                      '<div style="flex:1;min-width:0;"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:12px;height:100%;">' +
+                        '<div style="background:#a9d0e1;color:#0d3b66;padding:6px 12px;border-radius:4px;font-weight:700;margin-bottom:8px;font-size:12px;">INVOICE INFORMATION</div>' +
+                        '<p style="margin:0 0 5px;"><strong>Order ID:</strong> ' + o.order_number + '</p>' +
+                        '<p style="margin:0 0 5px;"><strong>Date:</strong> ' + new Date(o.created_at).toLocaleString('en-BD') + '</p>' +
+                        '<p style="margin:0 0 5px;"><strong>Transaction ID:</strong> ' + (o.transaction_id||'N/A') + '</p>' +
+                        '<p style="margin:0 0 5px;"><strong>Accepted By:</strong> ' + (o.accepted_by_name || 'N/A') + '</p>' +
+                        '<p style="margin:0 0 5px;"><strong>Payment Method:</strong> ' + o.payment_method + '</p>' +
                         (o.payment_method !== 'CASH'
-                            ? '<p style="margin:0 0 7px;"><strong>Payer No:</strong> ' + (o.payer_number || 'N/A') + '</p>'
+                            ? '<p style="margin:0 0 5px;"><strong>Payer No:</strong> ' + (o.payer_number || 'N/A') + '</p>'
                             : '') +
-                        '<p style="margin:0;"><strong>Payment Status:</strong> <span style="background:' + pbg + ';color:' + ptx + ';padding:3px 12px;border-radius:4px;font-size:12px;font-weight:600;">' + o.payment_status + '</span></p>' +
+                        '<p style="margin:0;"><strong>Payment Status:</strong> <span style="background:' + pbg + ';color:' + ptx + ';padding:3px 12px;border-radius:4px;font-size:11px;font-weight:600;">' + o.payment_status + '</span></p>' +
                       '</div></div>' +
                     '</div>' +
-                    '<table style="width:100%;border-collapse:collapse;margin-top:10px;">' +
+                    '<table style="width:100%;border-collapse:collapse;margin-top:6px;">' +
                     '<thead><tr style="background:#a9d0e1;">' +
-                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:10px;text-align:center;width:4%;">SL</th>' +
-                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:10px;text-align:left;">Product</th>' +
-                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:10px;text-align:center;width:10%;">Min Qty/Per</th>' +
-                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:10px;text-align:right;width:12%;">Single Piece Price</th>' +
-                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:10px;text-align:right;width:11%;">Discount (−)</th>' +
-                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:10px;text-align:right;width:12%;">Package Price</th>' +
-                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:10px;text-align:center;width:7%;">Qty</th>' +
-                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:10px;text-align:right;width:12%;">Total</th>' +
+                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:' + cellPad + ';text-align:center;width:4%;">SL</th>' +
+                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:' + cellPad + ';text-align:left;">Product</th>' +
+                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:' + cellPad + ';text-align:center;width:10%;">Min Qty/Per</th>' +
+                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:' + cellPad + ';text-align:right;width:12%;">Single Piece Price</th>' +
+                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:' + cellPad + ';text-align:right;width:11%;">Discount (−)</th>' +
+                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:' + cellPad + ';text-align:right;width:12%;">Package Price</th>' +
+                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:' + cellPad + ';text-align:center;width:7%;">Qty</th>' +
+                      '<th style="color:#0d3b66;border:1px solid #a9d0e1;padding:' + cellPad + ';text-align:right;width:12%;">Total</th>' +
                     '</tr></thead><tbody>' + rows + '</tbody></table>' +
-                    '<table style="width:50%;border-collapse:collapse;margin-top:20px;margin-left:auto;">' +
-                      '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Sub Total</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + sub.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
-                      '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Discount (−)</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;' + (totalDiscount > 0 ? 'color:#dc3545;font-weight:600;' : '') + '">' + (totalDiscount > 0 ? '− ৳ ' + totalDiscount.toLocaleString('en-BD',{minimumFractionDigits:2}) : '৳ 0.00') + '</td></tr>' +
-                      '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">Shipping</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + ship.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
-                      '<tr><td style="border:1px solid #dee2e6;padding:10px;background:#f8f9fa;">VAT</td><td style="border:1px solid #dee2e6;padding:10px;text-align:right;">৳ ' + tax.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
-                      '<tr><td style="background:#a9d0e1;color:#0d3b66;font-weight:700;padding:12px;font-size:15px;border:1px solid #a9d0e1;">NET PAYABLE</td><td style="background:#a9d0e1;color:#0d3b66;font-weight:700;padding:12px;text-align:right;font-size:15px;border:1px solid #a9d0e1;">৳ ' + net.toLocaleString('en-BD',{minimumFractionDigits:2}) + '<span style="display:block;font-size:11px;font-weight:600;color:#0d3b66;margin-top:2px;">(' + numberToWords(net) + ' BDT Only)</span></td></tr>' +
+                    '<table style="width:50%;border-collapse:collapse;margin-top:10px;margin-left:auto;">' +
+                      '<tr><td style="border:1px solid #dee2e6;padding:6px 8px;background:#f8f9fa;">Sub Total</td><td style="border:1px solid #dee2e6;padding:6px 8px;text-align:right;">৳ ' + sub.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
+                      '<tr><td style="border:1px solid #dee2e6;padding:6px 8px;background:#f8f9fa;">Discount (−)</td><td style="border:1px solid #dee2e6;padding:6px 8px;text-align:right;' + (totalDiscount > 0 ? 'color:#dc3545;font-weight:600;' : '') + '">' + (totalDiscount > 0 ? '− ৳ ' + totalDiscount.toLocaleString('en-BD',{minimumFractionDigits:2}) : '৳ 0.00') + '</td></tr>' +
+                      '<tr><td style="border:1px solid #dee2e6;padding:6px 8px;background:#f8f9fa;">Shipping</td><td style="border:1px solid #dee2e6;padding:6px 8px;text-align:right;">৳ ' + ship.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
+                      '<tr><td style="border:1px solid #dee2e6;padding:6px 8px;background:#f8f9fa;">VAT</td><td style="border:1px solid #dee2e6;padding:6px 8px;text-align:right;">৳ ' + tax.toLocaleString('en-BD',{minimumFractionDigits:2}) + '</td></tr>' +
+                      '<tr><td style="background:#a9d0e1;color:#0d3b66;font-weight:700;padding:8px;font-size:14px;border:1px solid #a9d0e1;">NET PAYABLE</td><td style="background:#a9d0e1;color:#0d3b66;font-weight:700;padding:8px;text-align:right;font-size:14px;border:1px solid #a9d0e1;">৳ ' + net.toLocaleString('en-BD',{minimumFractionDigits:2}) + '<span style="display:block;font-size:10px;font-weight:600;color:#0d3b66;margin-top:2px;">(' + numberToWords(net) + ' BDT Only)</span></td></tr>' +
                     '</table>' +
-                    '<div style="display:flex;margin-top:50px;">' +
+                    '<div style="display:flex;margin-top:18px;">' +
                       '<div style="flex:1;text-align:center;">' +
-                        '<div style="width:200px;margin:40px auto 8px;border-top:2px solid #000;"></div>' +
+                        '<div style="width:180px;margin:16px auto 6px;border-top:2px solid #000;"></div>' +
                         '<small style="color:#555;">Customer Signature</small>' +
                       '</div>' +
                       '<div style="flex:1;text-align:center;">' +
-                        '<div style="width:200px;margin:40px auto 8px;border-top:2px solid #000;"></div>' +
+                        '<div style="width:180px;margin:16px auto 6px;border-top:2px solid #000;"></div>' +
                         '<small style="color:#555;">Authorized Signature</small>' +
                       '</div>' +
                     '</div>' +
-                    '<div style="text-align:center;margin-top:18px;font-size:12px;color:#777;font-style:italic;">' +
+                    '<div style="text-align:center;margin-top:8px;font-size:11px;color:#777;font-style:italic;">' +
                       'This is a software generated invoice. Therefore, no signature is required.' +
                     '</div>' +
-                    '<div style="text-align:center;margin-top:26px;padding-top:12px;border-top:1px solid #e5e7eb;font-size:12px;color:#777;">' +
+                    '<div style="text-align:center;margin-top:12px;padding-top:8px;border-top:1px solid #e5e7eb;font-size:11px;color:#777;">' +
                       'Design, Developed &amp; Managed by ' +
                       '<a href="https://versedsoft.com/" target="_blank" rel="noopener" style="color:#0d6efd;font-weight:600;text-decoration:none;">' +
                         'Versedsoft &mdash; Your Complication, Our Solutions' +
                       '</a>' +
-                      '<div style="margin-top:4px;">+8801723821264 (WhatsApp)</div>' +
+                      '<div style="margin-top:2px;">+8801723821264 (WhatsApp)</div>' +
                     '</div>' +
                     '</div>'
                 );
@@ -908,15 +918,12 @@
             '<style>' +
                 '@page { size: A4; margin: 10mm; }' +
                 '* { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }' +
-                'body { margin: 0; padding: 20px; background: #fff; }' +
+                'body { margin: 0; padding: 0; background: #fff; }' +
                 '.no-print { display: none !important; }' +
                 '@media print {' +
                     'html, body { height: auto; }' +
-                    '#invoiceContent { page-break-inside: avoid; }' +
-                    '#invoiceContent * { page-break-inside: avoid; }' +
+                    '#invoiceContent tr { page-break-inside: avoid; }' +
                     '#invoiceContent [style*="display:flex"] { display:flex !important; flex-wrap:nowrap !important; }' +
-                    '#invoiceContent [style*="margin-top:50px"] { margin-top: 24px !important; }' +
-                    '#invoiceContent [style*="margin-bottom:30px"] { margin-bottom: 16px !important; }' +
                 '}' +
             '</style>';
 
@@ -929,9 +936,12 @@
         );
         w.document.close();
 
+        // Force the whole invoice onto exactly one A4 page: shrink it (as a
+        // block, preserving proportions) to fit the printable area, which is
+        // A4 height (297mm) minus the @page top+bottom margins (10mm each).
         var doc = w.document;
         var el = doc.getElementById('invoiceContent') || doc.body.firstElementChild;
-        var pageH = 1122;
+        var pageH = Math.round((297 - 20) * 3.7795); // ≈ 1047px printable height
         if (el && el.scrollHeight > pageH) {
             var scale = pageH / el.scrollHeight;
             el.style.transformOrigin = 'top left';
@@ -1082,14 +1092,56 @@
         if (!el) return;
         var clone = el.cloneNode(true);
         clone.querySelectorAll('.no-print').forEach(function (n) { n.remove(); });
+        clone.style.padding = '10px';
+
+        // html2pdf scales the captured canvas to fit the PDF page WIDTH, so a
+        // uniform CSS transform can't force a single page — the content's
+        // actual height (relative to its width) has to genuinely shrink.
+        // The clone must stay attached to the document (even if off-screen)
+        // for html2canvas to lay it out and measure it correctly.
+        // NOTE: html2canvas can capture blank/empty output for elements
+        // positioned far off-screen (e.g. left:-9999px) — keep it inside the
+        // actual viewport (covered by an opaque backdrop) instead.
+        // Also: if the page is scrolled when this runs, html2canvas captures
+        // a canvas as tall as (scrollY + element height) and leaves the top
+        // portion blank — the invoice only appears near the bottom of the
+        // PDF. Anchoring the backdrop at the true document top (0,0) AND
+        // explicitly telling html2canvas scrollX/scrollY are 0 makes it
+        // capture just the element itself, regardless of where the admin
+        // had scrolled to before opening the invoice.
+        var CAPTURE_WIDTH = 760;
+        var A4_SAFE_RATIO = 277 / 190; // usable-height / usable-width at 8mm margins
+        var backdrop = document.createElement('div');
+        backdrop.style.cssText = 'position:absolute;top:0;left:0;width:100%;min-height:100vh;background:#fff;z-index:99998;';
+        clone.style.position = 'relative';
+        clone.style.width = CAPTURE_WIDTH + 'px';
+        clone.style.zIndex = '99999';
+        backdrop.appendChild(clone);
+        document.body.appendChild(backdrop);
+
+        // 8% safety margin below the true limit — pagebreak:'avoid-all' can
+        // round a barely-fitting page up to a 2nd one rather than clip a row.
+        var targetH = CAPTURE_WIDTH * A4_SAFE_RATIO * 0.92;
+        var fontPx = 13;
+        while (clone.scrollHeight > targetH && fontPx > 7) {
+            fontPx -= 1;
+            var padPx = Math.max(1, Math.round(fontPx / 3));
+            clone.style.fontSize = fontPx + 'px';
+            clone.querySelectorAll('td, th').forEach(function (cell) {
+                cell.style.padding = padPx + 'px';
+            });
+        }
+
         html2pdf().set({
-            margin: 10,
+            margin: 8,
             filename: 'invoice.pdf',
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
+            html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
             pagebreak: { mode: ['avoid-all'] }
-        }).from(clone).save();
+        }).from(clone).save().then(function () {
+            if (backdrop.parentNode) backdrop.parentNode.removeChild(backdrop);
+        });
     }
 
     function downloadPosInvoice() {

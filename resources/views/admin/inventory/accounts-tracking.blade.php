@@ -52,30 +52,48 @@
                             @forelse($products as $product)
                             @php
                             $purchasePrice = (float) ($product->purchase_price ?? 0);
-                            $salePrice = (float) (
-                            $product->regular_price ?? 0
-                            );
-                            $discountPrice = (float) ($product->discount_value ?? 0);
+                            // "Sell Price" is what the admin actually enters as the
+                            // per-piece selling price on the Inventory form — that's
+                            // sale_price, not regular_price (a separate field that
+                            // often just mirrors package_price).
+                            $salePrice = (float) ($product->sale_price ?? 0);
+                            $regularPrice = (float) ($product->regular_price ?? 0);
+                            $packagePrice = (float) ($product->package_price ?? 0);
+                            $discountType = $product->discount_type ?? 'NONE';
+                            $discountValue = (float) ($product->discount_value ?? 0);
                             $stockQty = (int) ($product->stock_quantity ?? 0);
-                            $profit = $salePrice - $purchasePrice;
-                            $loss = $purchasePrice > $salePrice
-                            ? $purchasePrice - $salePrice
-                            : 0;
 
+                            // Discount as a currency amount (percentage discounts are
+                            // a % of the regular price, flat discounts are already ৳).
+                            $discountAmount = 0;
+                            if ($discountValue > 0) {
+                                $discountAmount = $discountType === 'PERCENTAGE'
+                                    ? $regularPrice * ($discountValue / 100)
+                                    : ($discountType === 'FLAT' ? $discountValue : 0);
+                            }
+
+                            // Profit/Loss = Regular Price − Package Price − Discount.
+                            // Positive → profit; negative (package + discount cost
+                            // more than the regular price) → loss.
+                            $net = $regularPrice - $packagePrice - $discountAmount;
+                            $profit = $net > 0 ? $net : 0;
+                            $loss = $net < 0 ? abs($net) : 0;
                             @endphp
                             <tr>
                                 <td>{{ $loop->iteration }}.</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $stockQty }}</td>
                                 <td>
-                                    ${{ number_format($purchasePrice, 2) }}
+                                    ৳{{ number_format($purchasePrice, 2) }}
                                 </td>
                                 <td>
-                                    ${{ number_format($salePrice, 2) }}
+                                    ৳{{ number_format($salePrice, 2) }}
                                 </td>
                                 <td>
-                                    @if($discountPrice > 0)
-                                    ${{ number_format($discountPrice, 2) }}
+                                    @if($discountValue > 0 && $discountType === 'PERCENTAGE')
+                                    {{ number_format($discountValue, 2) }}%
+                                    @elseif($discountValue > 0 && $discountType === 'FLAT')
+                                    ৳{{ number_format($discountValue, 2) }}
                                     @else
                                     N/A
                                     @endif
@@ -83,23 +101,23 @@
                                 <td>
                                     @if($profit > 0)
                                     <span class="badge bg-success">
-                                        +${{ number_format($profit, 2) }}
+                                        +৳{{ number_format($profit, 2) }}
                                     </span>
                                     @else
                                     <span class="badge bg-secondary">
-                                        $0
+                                        ৳0
                                     </span>
                                     @endif
                                 </td>
                                 <td>
                                     @if($loss > 0)
                                     <span class="badge bg-danger">
-                                        -${{ number_format($loss, 2) }}
+                                        -৳{{ number_format($loss, 2) }}
                                     </span>
 
                                     @else
                                     <span class="badge bg-success">
-                                        $0
+                                        ৳0
                                     </span>
                                     @endif
                                 </td>

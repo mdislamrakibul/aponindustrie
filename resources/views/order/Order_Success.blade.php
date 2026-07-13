@@ -269,10 +269,9 @@
                 <tr>
                     <th class="inv-th" style="width:5%;text-align:center;">#</th>
                     <th class="inv-th">Product</th>
-                    <th class="inv-th" style="width:10%;text-align:center;">SKU</th>
-                    <th class="inv-th" style="width:12%;text-align:center;">Unit Price</th>
-                    <th class="inv-th" style="width:8%;text-align:center;">Qty</th>
-                    <th class="inv-th" style="width:13%;text-align:right;">Total</th>
+                    <th class="inv-th" style="width:15%;text-align:center;">Unit Price</th>
+                    <th class="inv-th" style="width:10%;text-align:center;">Qty</th>
+                    <th class="inv-th" style="width:15%;text-align:right;">Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -284,7 +283,6 @@
                 <tr class="{{ $loop->even ? 'inv-row-alt' : '' }}">
                     <td class="inv-td" style="text-align:center;color:#888;">{{ $i + 1 }}</td>
                     <td class="inv-td"><strong>{{ $item->product?->name ?? 'Product' }}</strong></td>
-                    <td class="inv-td" style="text-align:center;font-size:11px;color:#666;">{{ $item->product?->sku ?? '-' }}</td>
                     <td class="inv-td" style="text-align:center;">৳{{ number_format($unitPrice, 2) }}</td>
                     <td class="inv-td" style="text-align:center;">{{ $item->quantity }}</td>
                     <td class="inv-td" style="text-align:right;font-weight:600;">৳{{ number_format($item->total, 2) }}</td>
@@ -336,15 +334,22 @@
 
         /* ── Print: hide page, show only invoice ── */
         @media print {
+            /* Missing before — without an explicit @page rule the browser's
+               own default print margins apply (larger/inconsistent across
+               browsers), which combined with the invoice's own spacing below
+               pushed the footer onto a 2nd A4 page. */
+            @page { size: A4; margin: 10mm; }
+
             body > *:not(#invoice-print) { display: none !important; }
             #invoice-print               { display: block !important; }
 
-            /* Invoice layout */
+            /* Invoice layout — spacing kept deliberately tight below so the
+               whole receipt fits on one A4 page. */
             #invoice-print {
                 font-family: 'Arial', sans-serif;
-                font-size: 13px;
+                font-size: 12px;
                 color: #1a1a1a;
-                padding: 24px 32px;
+                padding: 0;
                 width: 100%;
                 box-sizing: border-box;
             }
@@ -354,24 +359,24 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: flex-start;
-                margin-bottom: 18px;
+                margin-bottom: 10px;
             }
-            .inv-logo { height: 60px; object-fit: contain; }
-            .inv-company-name { font-size: 16px; font-weight: 700; color: #0d3b66; }
-            .inv-company-sub  { font-size: 11px; color: #555; margin-top: 2px; }
+            .inv-logo { height: 46px; object-fit: contain; }
+            .inv-company-name { font-size: 15px; font-weight: 700; color: #0d3b66; }
+            .inv-company-sub  { font-size: 10px; color: #555; margin-top: 1px; }
             .inv-meta-block   { text-align: right; }
             .inv-badge {
                 display: inline-block;
                 background: #0d3b66;
                 color: #fff;
-                font-size: 18px;
+                font-size: 15px;
                 font-weight: 700;
                 letter-spacing: 3px;
-                padding: 4px 16px;
+                padding: 3px 12px;
                 border-radius: 4px;
-                margin-bottom: 8px;
+                margin-bottom: 5px;
             }
-            .inv-meta-table td { padding: 2px 6px; font-size: 12px; }
+            .inv-meta-table td { padding: 1px 6px; font-size: 11px; }
             .inv-meta-table td:first-child { color: #666; }
             .inv-meta-table td:last-child  { text-align: right; }
 
@@ -379,25 +384,25 @@
             .inv-divider {
                 border: none;
                 border-top: 2px solid #0d3b66;
-                margin: 12px 0;
+                margin: 8px 0;
             }
 
             /* Bill To */
             .inv-bill-section {
                 display: flex;
                 justify-content: space-between;
-                margin-bottom: 16px;
+                margin-bottom: 10px;
             }
-            .inv-section-title { font-size: 11px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 5px; }
-            .inv-bill-name     { font-size: 14px; font-weight: 700; color: #0d3b66; }
-            .inv-bill-line     { font-size: 12px; color: #444; margin-top: 2px; }
+            .inv-section-title { font-size: 10px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 3px; }
+            .inv-bill-name     { font-size: 13px; font-weight: 700; color: #0d3b66; }
+            .inv-bill-line     { font-size: 11px; color: #444; margin-top: 1px; }
             .inv-status-pill {
                 display: inline-block;
                 background: #e8f4fd;
                 color: #0d3b66;
-                padding: 3px 12px;
+                padding: 2px 10px;
                 border-radius: 12px;
-                font-size: 12px;
+                font-size: 11px;
                 font-weight: 700;
             }
 
@@ -406,41 +411,41 @@
             .inv-th {
                 background: #0d3b66;
                 color: #fff;
-                padding: 8px 10px;
-                font-size: 12px;
+                padding: 5px 8px;
+                font-size: 11px;
                 font-weight: 600;
                 text-align: left;
             }
-            .inv-td        { padding: 8px 10px; font-size: 12px; border-bottom: 1px solid #eee; }
+            .inv-td        { padding: 5px 8px; font-size: 11px; border-bottom: 1px solid #eee; }
             .inv-row-alt td { background: #f8fafc; }
 
             /* Totals */
-            .inv-totals-wrap  { display: flex; justify-content: flex-end; margin-top: 8px; }
+            .inv-totals-wrap  { display: flex; justify-content: flex-end; margin-top: 6px; }
             .inv-totals-table { border-collapse: collapse; min-width: 220px; }
-            .inv-total-label  { padding: 5px 12px; font-size: 13px; color: #555; }
-            .inv-total-value  { padding: 5px 12px; font-size: 13px; text-align: right; font-weight: 600; }
+            .inv-total-label  { padding: 3px 10px; font-size: 12px; color: #555; }
+            .inv-total-value  { padding: 3px 10px; font-size: 12px; text-align: right; font-weight: 600; }
             .inv-grand-row td {
                 border-top: 2px solid #0d3b66;
-                padding-top: 8px;
-                font-size: 15px;
+                padding-top: 5px;
+                font-size: 14px;
                 font-weight: 700;
                 color: #0d3b66;
             }
 
             /* Footer */
             .inv-footer {
-                margin-top: 24px;
+                margin-top: 12px;
                 text-align: center;
                 border-top: 1px solid #ddd;
-                padding-top: 12px;
-                font-size: 12px;
+                padding-top: 8px;
+                font-size: 11px;
                 color: #444;
             }
             .inv-credit {
-                margin-top: 14px;
-                padding-top: 10px;
+                margin-top: 8px;
+                padding-top: 6px;
                 border-top: 1px solid #e5e7eb;
-                font-size: 11px;
+                font-size: 10px;
                 color: #777;
             }
             .inv-credit a {

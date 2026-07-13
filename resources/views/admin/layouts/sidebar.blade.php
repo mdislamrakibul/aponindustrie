@@ -287,5 +287,14 @@
         font-size: 12px !important;
         width: 18px !important;
     }
+    /* Defensive: without this, a submenu mid-toggle (opening/closing on
+       hover/click) can visually spill over the next sidebar item instead
+       of being clipped to its own collapsed/expanded height. */
+    .nav-sidebar > .nav-item {
+        position: relative;
+    }
+    .nav-treeview {
+        overflow: hidden;
+    }
 </style>
 

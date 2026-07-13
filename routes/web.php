@@ -215,6 +215,11 @@ Route::middleware(['role:admin,cashier'])->prefix('admin')->name('admin.')->grou
         '/accounts/order-history',
         [App\Http\Controllers\admin\AccountsManagementController::class, 'orderHistory']
     )->name('accounts.order.history');
+
+    Route::get(
+        '/accounts/sales-report',
+        [App\Http\Controllers\admin\AccountsManagementController::class, 'salesReport']
+    )->name('accounts.sales.report');
 });
 
 

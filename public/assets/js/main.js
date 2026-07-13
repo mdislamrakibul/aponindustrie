@@ -86,7 +86,6 @@
             slidesToShow: 6,
             slidesToScroll: 1,
             loop: true,
-            adaptiveHeight: true,
             responsive: [
                 {
                     breakpoint: 1025,
@@ -133,7 +132,6 @@
             slidesToShow: 6,
             slidesToScroll: 1,
             loop: true,
-            adaptiveHeight: true,
             responsive: [
                 {
                     breakpoint: 1025,
@@ -179,7 +177,6 @@
             slidesToShow: 6,
             slidesToScroll: 1,
             loop: true,
-            adaptiveHeight: true,
             responsive: [
                 {
                     breakpoint: 1025,
@@ -226,7 +223,6 @@
             slidesToShow: 4,
             slidesToScroll: 1,
             loop: true,
-            adaptiveHeight: true,
             responsive: [
                 {
                     breakpoint: 1025,
