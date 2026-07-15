@@ -46,7 +46,7 @@
         });
     }
 
-    function updateHeaderCart(cartCount, subtotal) {
+    function updateHeaderCart(cartCount, subtotal, desktopHtml, mobileHtml, cartPageHtml) {
         if (typeof cartCount !== 'undefined') {
             $('#cart-count-desktop, #cart-count-mobile').text(cartCount);
         }
@@ -56,6 +56,22 @@
                 maximumFractionDigits: 2
             });
             $('#cart-subtotal-desktop, #cart-subtotal-mobile').text(formatted);
+        }
+        // Full dropdown re-render (image/name/price/stepper per item) so
+        // the "Cart" dropdown reflects the change immediately — previously
+        // only the count/subtotal above updated live, leaving the dropdown
+        // itself showing stale "No Items" until a full page reload.
+        if (typeof desktopHtml === 'string') {
+            $('#cartDropdownDesktop').html(desktopHtml);
+        }
+        if (typeof mobileHtml === 'string') {
+            $('#cartDropdownMobile').html(mobileHtml);
+        }
+        // On the /product-cart page itself, also refresh its own items
+        // table + Cart Totals box (e.g. after adding a "New Arrivals"
+        // product from the bottom of that same page).
+        if (typeof cartPageHtml === 'string' && $('#cartPageSummary').length) {
+            $('#cartPageSummary').html(cartPageHtml);
         }
     }
 
@@ -142,7 +158,7 @@
         }).done(function (res) {
             if (res.status === 'success') {
                 syncProductAcrossPage(productId, res.quantity);
-                updateHeaderCart(res.cartCount, res.subtotal);
+                updateHeaderCart(res.cartCount, res.subtotal, res.desktopHtml, res.mobileHtml, res.cartPageHtml);
                 toast('success', 'Added to cart!');
             } else {
                 toast('error', res.message || 'Could not add to cart.');
@@ -182,7 +198,7 @@
             }).done(function (res) {
                 if (res.status === 'success') {
                     removeProductAcrossPage(productId);
-                    updateHeaderCart(res.cartCount, res.subtotal);
+                    updateHeaderCart(res.cartCount, res.subtotal, res.desktopHtml, res.mobileHtml, res.cartPageHtml);
                 } else {
                     toast('error', res.message || 'Could not remove item.');
                     setLoading($stepper, false);
@@ -207,7 +223,7 @@
         }).done(function (res) {
             if (res.status === 'success') {
                 syncProductAcrossPage(productId, res.quantity);
-                updateHeaderCart(res.cartCount, res.subtotal);
+                updateHeaderCart(res.cartCount, res.subtotal, res.desktopHtml, res.mobileHtml, res.cartPageHtml);
             } else {
                 toast('error', res.message || 'Could not update cart.');
                 if (isPlus) {
@@ -228,5 +244,99 @@
 
     $(function () {
         bootstrapSteppers();
+    });
+
+    // "New products" sidebar widget — icon-only Add To Cart button
+    // (used on Product Details, Shop, Category, and other listing pages)
+    $(document).on('click', '.sidebar-add-cart', function (e) {
+        e.preventDefault();
+        var $btn = $(this);
+        if ($btn.hasClass('is-loading')) return;
+
+        $btn.addClass('is-loading');
+
+        $.ajax({
+            url: $btn.attr('href'),
+            type: 'GET',
+            dataType: 'json',
+            headers: ajaxHeaders()
+        }).done(function (res) {
+            if (res.status === 'success') {
+                updateHeaderCart(res.cartCount, res.subtotal, res.desktopHtml, res.mobileHtml, res.cartPageHtml);
+                toast('success', 'Added to cart!');
+            } else {
+                toast('error', res.message || 'Could not add to cart.');
+            }
+        }).fail(function (xhr) {
+            var msg = (xhr.responseJSON && xhr.responseJSON.message) || 'Something went wrong.';
+            toast('error', msg);
+        }).always(function () {
+            $btn.removeClass('is-loading');
+        });
+    });
+
+    // Header mini-cart dropdown — quantity stepper next to each item name
+    // (desktop + mobile dropdowns both use the same markup/class)
+    $(document).on('click', '.header-cart-stepper__btn', function (e) {
+        e.preventDefault();
+
+        var $btn = $(this);
+        var $stepper = $btn.closest('.header-cart-stepper');
+        if ($stepper.hasClass('is-loading')) return;
+
+        var productId = $stepper.data('product-id');
+        if (!productId || pending[productId]) return;
+
+        var currentQty = parseInt($stepper.find('.header-cart-stepper__qty').text(), 10) || 1;
+        var isPlus = $btn.hasClass('header-cart-stepper__btn--plus');
+
+        pending[productId] = true;
+        var $allMatching = $('.header-cart-stepper[data-product-id="' + productId + '"]');
+        $allMatching.addClass('is-loading');
+
+        if (!isPlus && currentQty <= 1) {
+            $.ajax({
+                url: buildRemoveUrl(productId),
+                type: 'GET',
+                dataType: 'json',
+                headers: ajaxHeaders()
+            }).done(function (res) {
+                if (res.status === 'success') {
+                    updateHeaderCart(res.cartCount, res.subtotal, res.desktopHtml, res.mobileHtml, res.cartPageHtml);
+                    removeProductAcrossPage(productId);
+                } else {
+                    toast('error', res.message || 'Could not remove item.');
+                }
+            }).fail(function (xhr) {
+                var msg = (xhr.responseJSON && xhr.responseJSON.message) || 'Something went wrong.';
+                toast('error', msg);
+            }).always(function () {
+                delete pending[productId];
+                $allMatching.removeClass('is-loading');
+            });
+            return;
+        }
+
+        var newQty = isPlus ? currentQty + 1 : currentQty - 1;
+
+        $.ajax({
+            url: buildUpdateUrl(productId, newQty),
+            type: 'GET',
+            dataType: 'json',
+            headers: ajaxHeaders()
+        }).done(function (res) {
+            if (res.status === 'success') {
+                updateHeaderCart(res.cartCount, res.subtotal, res.desktopHtml, res.mobileHtml, res.cartPageHtml);
+                syncProductAcrossPage(productId, res.quantity);
+            } else {
+                toast('error', res.message || 'Could not update cart.');
+            }
+        }).fail(function (xhr) {
+            var msg = (xhr.responseJSON && xhr.responseJSON.message) || 'Something went wrong.';
+            toast('error', msg);
+        }).always(function () {
+            delete pending[productId];
+            $allMatching.removeClass('is-loading');
+        });
     });
 })(jQuery);

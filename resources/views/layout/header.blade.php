@@ -441,60 +441,8 @@
 
                                 </a>
 
-                                <div class="cart-dropdown-wrap cart-dropdown-hm2">
-
-
-                                    @if (session('cart') && count(session('cart')) > 0)
-                                    <ul>
-                                        @foreach ( session('cart') as $cart)
-                                        @php $prod = $cart['product'] ?? null; $cat = $prod['category'] ?? null; @endphp
-                                        @if ($prod)
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                    @foreach (($prod['media'] ?? []) as $media)
-                                                    @if (($media['position'] ?? null) == 1)
-                                                    <img src="{{ asset(($media['file_path'] ?? '') . ($media['image_name'] ?? ''))}}"
-                                                        alt="{{ $media['image_name'] ?? '' }}">
-                                                    @endif
-                                                    @endforeach
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4>
-                                                    @if ($cat)
-                                                    <a href="{{ route('Product_Details', ['product_name' => $prod['name'] ?? '','category_name' => $cat['name'] ?? '','auth_expired_key'=>'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg','category_id' => $cat['id'] ?? 0,'product_id' => $prod['id'] ?? 0]) }}">{{ $prod['name'] ?? '' }}</a>
-                                                    @else
-                                                    {{ $prod['name'] ?? '' }}
-                                                    @endif
-                                                </h4>
-                                                <h4>৳{{ number_format($cart['price'] ?? 0, 2) }}</h4>
-                                            </div>
-                                        </li>
-                                        @endif
-                                        @endforeach
-
-
-                                    </ul>
-                                    <div class="shopping-cart-footer">
-                                        <div class="shopping-cart-total">
-                                            <h4>Total <span>৳<span id="cart-subtotal-desktop">
-                                                    @php
-                                                    $subtotal = collect(session('cart'))->sum(function ($item) {
-                                                    return $item['price'] * $item['quantity'];
-                                                    });
-
-                                                    @endphp
-                                                    {{ number_format($subtotal,2) }}
-                                                </span></span></h4>
-                                        </div>
-                                        <div class="shopping-cart-button">
-                                            <a href="{{ route('Product_Cart') }}" class="outline">View cart</a>
-                                            <a href="{{ route('Product_Checkout') }}">Checkout</a>
-                                        </div>
-                                    </div>
-                                    @else
-                                    No Items
-                                    @endif
-
+                                <div class="cart-dropdown-wrap cart-dropdown-hm2" id="cartDropdownDesktop">
+                                    @include('partials.cart-dropdown-items', ['subtotalId' => 'cart-subtotal-desktop', 'withLinks' => true])
                                 </div>
                             </div>
 
@@ -743,50 +691,8 @@
                                     @endif
                                 </span>
                             </a>
-                            <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                @if (session('cart') && count(session('cart')) > 0)
-                                <ul>
-                                    @foreach ( session('cart') as $cart)
-                                    @php $prod = $cart['product'] ?? null; @endphp
-                                    @if ($prod)
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            @foreach (($prod['media'] ?? []) as $media)
-                                            @if (($media['position'] ?? null) == 1)
-                                            <img src="{{ asset(($media['file_path'] ?? '') . ($media['image_name'] ?? ''))}}" alt="{{ $media['image_name'] ?? '' }}">
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4>{{ $prod['name'] ?? '' }}</h4>
-                                            <h4>৳{{ number_format($cart['price'] ?? 0, 2) }}</h4>
-                                        </div>
-                                    </li>
-                                    @endif
-                                    @endforeach
-
-
-                                </ul>
-                                <div class="shopping-cart-footer">
-                                    <div class="shopping-cart-total">
-                                        <h4>Total <span>৳<span id="cart-subtotal-mobile">
-                                                @php
-                                                $subtotal = collect(session('cart'))->sum(function ($item) {
-                                                return $item['price'] * $item['quantity'];
-                                                });
-
-                                                @endphp
-                                                {{ number_format($subtotal,2) }}
-                                            </span></span></h4>
-                                    </div>
-                                    <div class="shopping-cart-button">
-                                        <a href="{{ route('Product_Cart') }}" class="outline">View cart</a>
-                                        <a href="{{ route('Product_Checkout') }}">Checkout</a>
-                                    </div>
-                                </div>
-                                @else
-                                No Items
-                                @endif
+                            <div class="cart-dropdown-wrap cart-dropdown-hm2" id="cartDropdownMobile">
+                                @include('partials.cart-dropdown-items', ['subtotalId' => 'cart-subtotal-mobile', 'withLinks' => false])
                             </div>
                         </div>
                         <div class="header-action-icon-2 d-block d-lg-none">

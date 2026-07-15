@@ -87,10 +87,8 @@
                                         ]) }}">{{ $prod->name }}</a>
                                     </h2>
                                     <div class="product-price">
-                                        <span>৳{{ $prod->sale_price }}</span>
-                                        @if($prod->regular_price && $prod->regular_price != $prod->sale_price)
-                                            <span class="old-price">৳{{ $prod->regular_price }}</span>
-                                        @endif
+                                        <span>৳{{ $prod->sale_price }}/per</span>
+                                        <span class="old-price{{ (float) $prod->regular_price == (float) $prod->package_price ? ' no-discount' : '' }}">৳{{ $prod->regular_price }}</span>
                                     </div>
                                     <a aria-label="Add To Cart" class="btn-add-to-cart-full"
                                        href="{{ route('Product_Cart_Add', [
@@ -157,6 +155,11 @@
                                             ({{ number_format($item['reviews_avg_rating'], 1) }})
                                         </div>
                                     </div>
+                                    <a aria-label="Add To Cart" class="sidebar-add-cart" href="{{ route('Product_Cart_Add', [
+                                        'product_name' => $item['name'],
+                                        'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                        'product_id' => $item['id']
+                                    ]) }}"><i class="fi-rs-shopping-bag-add"></i></a>
                                 </div>
                             </div>
                         @endforeach

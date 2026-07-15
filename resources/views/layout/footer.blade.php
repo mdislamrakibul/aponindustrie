@@ -134,7 +134,8 @@
                                             <li class="menu-item"><a href="#" class="link-term">Return Policy</a></li>
                                             <li class="menu-item"><a href="{{ route('FAQ.index') }}"
                                                     class="link-term">FAQ</a></li>
-                                            <li class="menu-item"><a href="#" class="link-term">Contact Us</a></li>
+                                            <li class="menu-item"><a href="https://wa.me/8801992977251?text={{ rawurlencode('Hello! How may I help you with your question.') }}"
+                                                    class="link-term" target="_blank" rel="noopener">Contact Us</a></li>
 
                                         </ul>
                                     </div>

@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <div class="mt-3 pb-3 mb-3 d-flex align-items-center">
 
-        <a href="{{ session('user_role') === 'cashier' ? route('admin.orders.new.page') : route('admin.dashboard.index') }}" class="brand-link">
+        <a href="{{ session('user_role') === 'cashier' ? route('admin.orders.new.page') : (session('user_role') === 'vendor' ? route('inventory.list') : route('admin.dashboard.index')) }}" class="brand-link">
             <i class="fas fa-user-secret" style="margin-left: .8rem;   margin-right: .5rem;"></i>
             <span class="brand-text font-weight-light">Admin Panel</span>
         </a>
@@ -18,7 +18,7 @@
 
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
 
-                @unless(session('user_role') === 'cashier')
+                @unless(in_array(session('user_role'), ['cashier', 'vendor']))
 
                 <li class="nav-item">
                     <a href="{{ route('admin.dashboard.index') }}"
@@ -97,6 +97,11 @@
 
                 </li>
 
+                @endunless
+
+                {{-- Inventory Management — visible to admin and vendor (not cashier) --}}
+                @unless(session('user_role') === 'cashier')
+
                 <li class="nav-item has-treeview
                 {{ request()->is('admin/inventory*') ? 'menu-open' : '' }}">
 
@@ -146,6 +151,11 @@
                     </ul>
 
                 </li>
+
+                @endunless
+
+                @unless(in_array(session('user_role'), ['cashier', 'vendor']))
+
                 {{-- ===================================== --}}
                 {{-- CUSTOMER MANAGEMENT --}}
                 {{-- ===================================== --}}
@@ -199,6 +209,8 @@
 
                 @endunless
 
+                @unless(session('user_role') === 'vendor')
+
                 <li class="nav-item has-treeview {{ request()->is('admin/orders*') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ request()->is('admin/orders*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shopping-cart"></i>
@@ -247,7 +259,9 @@
                     </ul>
                 </li>
 
-                @unless(session('user_role') === 'cashier')
+                @endunless
+
+                @unless(in_array(session('user_role'), ['cashier', 'vendor']))
 
                 <li class="nav-item">
                     <a href="{{ route('admin.ads.index') }}"

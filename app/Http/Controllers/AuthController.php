@@ -167,6 +167,13 @@ class AuthController extends Controller
                 ->with('success', 'Admin login successful');
         }
 
+        // Vendor has no dashboard access either — send them straight to
+        // Inventory Management, their one working section.
+        if (strtolower($user->role) === 'vendor') {
+            return redirect()->route('inventory.list')
+                ->with('success', 'Admin login successful');
+        }
+
         return redirect('/admin/dashboard')
             ->with('success', 'Admin login successful');
     }

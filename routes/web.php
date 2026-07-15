@@ -166,7 +166,8 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
 // Shared between admin and cashier: own profile, Order Management ("sales"),
 // and the Accounts Management order-history view. Everything else in the
 // admin panel stays admin-only (see the role:admin group above/below).
-Route::middleware(['role:admin,cashier'])->prefix('admin')->name('admin.')->group(function () {
+// Profile — shared by every staff role (admin, cashier, vendor)
+Route::middleware(['role:admin,cashier,vendor'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get(
         '/profile',
@@ -182,6 +183,9 @@ Route::middleware(['role:admin,cashier'])->prefix('admin')->name('admin.')->grou
         '/profile/password',
         [App\Http\Controllers\admin\AdminProfileController::class, 'updatePassword']
     )->name('profile.password.update');
+});
+
+Route::middleware(['role:admin,cashier'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/orders/new-orders', [AdminOrderController::class, 'newOrders'])->name('orders.new');
     Route::get('/orders/new', [AdminOrderController::class, 'newOrdersPage'])->name('orders.new.page');
@@ -279,7 +283,7 @@ Route::middleware(['role:admin'])
     });
 
 // inventory-management
-Route::middleware(['role:admin'])->prefix('admin/inventory')->group(function () {
+Route::middleware(['role:admin,vendor'])->prefix('admin/inventory')->group(function () {
 
     Route::get(
         '/list',

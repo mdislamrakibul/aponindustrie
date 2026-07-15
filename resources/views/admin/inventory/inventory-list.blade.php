@@ -351,7 +351,7 @@
                                     <option value="">— Select Product —</option>
                                     @foreach($products as $prod)
                                         <option value="{{ $prod->id }}" data-stock="{{ $prod->stock_quantity }}"
-                                            data-purchase="{{ $prod->purchase_price }}"
+                                            data-purchaseperpiece="{{ $prod->minimum_order > 0 ? round($prod->purchase_price / $prod->minimum_order, 2) : 0 }}"
                                             data-regularprice="{{ $prod->regular_price }}"
                                             data-perprice="{{ $prod->sale_price }}" data-minimum="{{ $prod->minimum_order }}"
                                             data-package="{{ $prod->package_price }}"
@@ -387,31 +387,35 @@
                             <div class="col-md-2 mb-3">
                                 <label class="font-weight-semibold">Min. Order (pcs)</label>
                                 <input type="number" id="minimum_order" name="minimum_order" class="form-control" min="1"
-                                    placeholder="1" oninput="calcPackagePrice()" required>
+                                    placeholder="1" oninput="calcPackagePrice(); calcPurchasePackagePrice()" required>
                             </div>
 
-                            {{-- Purchase Price --}}
+                            {{-- Purchase Per Piece Price --}}
                             <div class="col-md-2 mb-3">
-                                <label class="font-weight-semibold">Purchase Price (৳)</label>
+                                <label class="font-weight-semibold">Purchase Per Piece Price (৳)</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">৳</span>
                                     </div>
-                                    <input type="number" step="0.01" id="purchase_price" name="purchase_price"
-                                        class="form-control" placeholder="0.00">
+                                    <input type="number" step="0.01" id="purchase_per_piece_price" name="purchase_per_piece_price"
+                                        class="form-control" placeholder="0.00" oninput="calcPurchasePackagePrice()">
                                 </div>
                             </div>
 
-                            {{-- Regular Price --}}
+                            {{-- Purchase Package Price (auto calculated, readonly) --}}
                             <div class="col-md-2 mb-3">
-                                <label class="font-weight-semibold">Regular Price (৳)</label>
+                                <label class="font-weight-semibold">
+                                    Purchase Package Price (৳)
+                                    <small class="text-muted">(auto)</small>
+                                </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">৳</span>
                                     </div>
-                                    <input type="number" step="0.01" id="regular_price" name="regular_price"
-                                        class="form-control" placeholder="0.00" oninput="updateSummary()">
+                                    <input type="number" step="0.01" id="purchase_price_preview"
+                                        class="form-control bg-light" readonly placeholder="Purchase Per Piece × Min Order">
                                 </div>
+                                <small class="text-muted">Purchase Per Piece × Min Order</small>
                             </div>
 
                             {{-- Per Piece Price --}}
@@ -426,10 +430,26 @@
                                 </div>
                             </div>
 
-                            {{-- Package Price (auto calculated, readonly) --}}
+                            {{-- Package Price (Regular Price) — auto calculated, readonly, undiscounted base --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="font-weight-semibold">
+                                    Package Price (Regular Price)
+                                    <small class="text-muted">(auto)</small>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">৳</span>
+                                    </div>
+                                    <input type="number" step="0.01" id="regular_price_preview"
+                                        class="form-control bg-light" readonly placeholder="Per Piece × Min Order">
+                                </div>
+                                <small class="text-muted">Per Piece × Min Order</small>
+                            </div>
+
+                            {{-- Package Price (Final Sale Price) — auto calculated, readonly, after discount --}}
                             <div class="col-md-3 mb-3">
                                 <label class="font-weight-semibold">
-                                    Package Price (৳)
+                                    Package Price (Final Sale Price)
                                     <small class="text-muted">(auto)</small>
                                 </label>
                                 <div class="input-group">
@@ -437,9 +457,9 @@
                                         <span class="input-group-text">৳</span>
                                     </div>
                                     <input type="number" step="0.01" id="package_price_preview"
-                                        class="form-control bg-light" readonly placeholder="Per Piece × Min Order">
+                                        class="form-control bg-light" readonly placeholder="Regular Price − Discount">
                                 </div>
-                                <small class="text-muted">Per Piece × Min Order</small>
+                                <small class="text-muted">Regular Price − Discount (final price customers pay)</small>
                             </div>
 
                             {{-- Tax / VAT --}}
@@ -487,7 +507,7 @@
                                                                                             line-height:24px;
                                                                                         ">
                                     <div class="d-flex justify-content-between">
-                                        <span class="text-muted">Package Price</span>
+                                        <span class="text-muted">Package Price (Regular Price)</span>
                                         <strong id="s_package">—</strong>
                                     </div>
                                     <div class="d-flex justify-content-between">
@@ -500,24 +520,24 @@
                                     </div>
                                     <hr class="my-1">
                                     <div class="d-flex justify-content-between">
-                                        <span class="text-muted">Already Discount (Regular vs Package Price)</span>
-                                        <strong id="s_base_pct" class="text-danger">—</strong>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span class="text-muted">Extra Discount</span>
-                                        <strong id="s_extra_pct" class="text-danger">—</strong>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
                                         <span style="font-weight:700;">Total Offer Badge</span>
                                         <strong id="s_total_pct" class="text-success">—</strong>
                                     </div>
                                     <hr class="my-1">
                                     <div class="d-flex justify-content-between">
-                                        <span style="color:#1a365d; font-weight:700;">Final Price</span>
+                                        <span style="color:#1a365d; font-weight:700;">Package Price (Final Sale Price)</span>
                                         <strong id="s_final" style="color:#1a365d;">—</strong>
                                     </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Purchase Package Price</span>
+                                        <strong id="s_purchase_package">—</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span style="font-weight:700;">Est. Profit / Package</span>
+                                        <strong id="s_profit" style="color:#059669;">—</strong>
+                                    </div>
                                 </div>
-                                <small class="text-muted">"Total Offer Badge" is what customers will see on the product card.</small>
+                                <small class="text-muted">"Total Offer Badge" is what customers will see on the product card. "Package Price" is the actual final price customers pay.</small>
                             </div>
 
                         </div>
@@ -640,7 +660,6 @@
             const curStock = document.getElementById('current_stock');
             const perPriceIn = document.getElementById('per_piece_price');
             const minOrderIn = document.getElementById('minimum_order');
-            const pkgPreview = document.getElementById('package_price_preview');
             const taxIn = document.getElementById('tax_percentage');
             const discValIn = document.getElementById('discount_value');
             const discTypeIn = document.getElementById('discount_type');
@@ -652,11 +671,8 @@
 
                 curStock.value = o.dataset.stock || '0';
 
-                document.getElementById('purchase_price').value =
-                    o.dataset.purchase || '';
-
-                document.getElementById('regular_price').value =
-                    o.dataset.regularprice || '';
+                document.getElementById('purchase_per_piece_price').value =
+                    o.dataset.purchaseperpiece || '';
 
                 perPriceIn.value = o.dataset.perprice || '';
                 minOrderIn.value = o.dataset.minimum || '';
@@ -665,20 +681,26 @@
                 discTypeIn.value = o.dataset.discounttype || 'NONE';
 
                 calcPackagePrice();
+                calcPurchasePackagePrice();
                 updateDiscountLabel();
             });
 
         });
 
-        // ── Package Price auto calculate ──
-        // per_piece_price × minimum_order = package_price
+        // ── Regular Price = per_piece_price × minimum_order (base, undiscounted) ──
         function calcPackagePrice() {
-            const perPrice = parseFloat(document.getElementById('per_piece_price').value) || 0;
-            const minOrder = parseInt(document.getElementById('minimum_order').value) || 1;
-            const pkg = perPrice * minOrder;
+            document.getElementById('regular_price_preview').value = '';
+            updateSummary();
+        }
 
-            document.getElementById('package_price_preview').value =
-                pkg > 0 ? pkg.toFixed(2) : '';
+        // ── Purchase Package Price = purchase_per_piece_price × minimum_order ──
+        function calcPurchasePackagePrice() {
+            const purchasePerPiece = parseFloat(document.getElementById('purchase_per_piece_price').value) || 0;
+            const minOrder = parseInt(document.getElementById('minimum_order').value) || 1;
+            const purchasePkg = purchasePerPiece * minOrder;
+
+            document.getElementById('purchase_price_preview').value =
+                purchasePkg > 0 ? purchasePkg.toFixed(2) : '';
 
             updateSummary();
         }
@@ -692,49 +714,47 @@
         }
 
         // ── Live Summary ──
+        // Mirrors InventoryController::inventoryUpdate() and
+        // Product::getBaseDiscountPercentAttribute/getTotalDiscountPercentAttribute
+        // so what admin previews here matches what actually gets saved and what
+        // the storefront offer badge will show.
         function updateSummary() {
             const perPrice = parseFloat(document.getElementById('per_piece_price').value) || 0;
             const minOrder = parseInt(document.getElementById('minimum_order').value) || 1;
             const taxPct = parseFloat(document.getElementById('tax_percentage').value) || 0;
             const discVal = parseFloat(document.getElementById('discount_value').value) || 0;
             const discType = document.getElementById('discount_type').value;
-            const regularPrice = parseFloat(document.getElementById('regular_price').value) || 0;
+            const purchasePerPiece = parseFloat(document.getElementById('purchase_per_piece_price').value) || 0;
 
-            const pkg = perPrice * minOrder;
-            const taxAmt = (pkg * taxPct) / 100;
+            const regularPrice = perPrice * minOrder;
+            const taxAmt = (regularPrice * taxPct) / 100;
 
             let discAmt = 0;
             if (discType === 'FLAT') discAmt = discVal;
-            if (discType === 'PERCENTAGE') discAmt = (pkg * discVal) / 100;
+            if (discType === 'PERCENTAGE') discAmt = (regularPrice * discVal) / 100;
 
-            const final = pkg + taxAmt - discAmt;
+            const finalPackagePrice = Math.max(regularPrice - discAmt, 0);
+            const purchasePackagePrice = purchasePerPiece * minOrder;
+            const profit = finalPackagePrice - purchasePackagePrice;
 
-            document.getElementById('s_package').textContent = '৳ ' + pkg.toFixed(2);
+            document.getElementById('regular_price_preview').value =
+                regularPrice > 0 ? regularPrice.toFixed(2) : '';
+            document.getElementById('package_price_preview').value =
+                finalPackagePrice > 0 ? finalPackagePrice.toFixed(2) : '';
+
+            document.getElementById('s_package').textContent = '৳ ' + regularPrice.toFixed(2);
             document.getElementById('s_tax').textContent = taxPct > 0 ? '+৳ ' + taxAmt.toFixed(2) : '—';
             document.getElementById('s_discount').textContent = discAmt > 0 ? '-৳ ' + discAmt.toFixed(2) : '—';
-            document.getElementById('s_final').textContent = '৳ ' + final.toFixed(2);
+            document.getElementById('s_final').textContent = '৳ ' + finalPackagePrice.toFixed(2);
+            document.getElementById('s_purchase_package').textContent = '৳ ' + purchasePackagePrice.toFixed(2);
+            document.getElementById('s_profit').textContent = '৳ ' + profit.toFixed(2);
 
-            // ── Discount % preview — mirrors Product::getBaseDiscountPercentAttribute /
-            // getExtraDiscountPercentAttribute / getTotalDiscountPercentAttribute in
-            // app/Models/Product.php, so what admin previews here matches what the
-            // storefront offer badge will actually show after saving.
-            let basePct = 0;
-            if (regularPrice > 0 && pkg > 0 && pkg < regularPrice) {
-                basePct = ((regularPrice - pkg) / regularPrice) * 100;
+            let totalPct = 0;
+            if (regularPrice > 0 && finalPackagePrice > 0 && finalPackagePrice < regularPrice) {
+                totalPct = ((regularPrice - finalPackagePrice) / regularPrice) * 100;
             }
-
-            let extraPct = 0;
-            if (discVal > 0 && (discType === 'PERCENTAGE' || discType === 'FLAT')) {
-                extraPct = discType === 'PERCENTAGE'
-                    ? discVal
-                    : (regularPrice > 0 ? (discVal / regularPrice) * 100 : 0);
-            }
-
-            let totalPct = basePct + extraPct;
             if (totalPct > 95) totalPct = 95;
 
-            document.getElementById('s_base_pct').textContent = basePct > 0 ? basePct.toFixed(2) + '%' : '—';
-            document.getElementById('s_extra_pct').textContent = extraPct > 0 ? extraPct.toFixed(2) + '%' : '—';
             document.getElementById('s_total_pct').textContent = totalPct > 0 ? totalPct.toFixed(2) + '% Off' : 'No Offer';
         }
     </script>

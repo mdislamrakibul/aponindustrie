@@ -5,31 +5,32 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Login;
 use App\Models\ActivityLog;
+use App\Services\UserSyncService;
 
 class UserController extends Controller
 {
 
     public function index()
     {
-        $users = User::all();
+        // User Management shows staff accounts only (vendor/cashier/admin).
+        // Customer accounts are managed exclusively under Customer Management.
+        $users = User::where('role', '!=', 'customer')->get();
 
-        $totalUsers = User::count();
+        $totalUsers = User::where('role', '!=', 'customer')->count();
 
-        $activeUsers = User::where('status', 'active')->count();
+        $activeUsers = User::where('role', '!=', 'customer')->where('status', 'active')->count();
 
-
-        $inactiveUsers = User::where('status', 'inactive')->count();
-
-        $customerUsers = User::where('role', 'customer')->count();
+        $inactiveUsers = User::where('role', '!=', 'customer')->where('status', 'inactive')->count();
 
         return view('admin.users.index', compact(
             'users',
             'totalUsers',
             'activeUsers',
-            'inactiveUsers',
-            'customerUsers'
+            'inactiveUsers'
         ));
     }
 
@@ -46,29 +47,35 @@ class UserController extends Controller
                 'mobile_no' => [
                     'required',
                     'regex:/^(01)[3-9]\d{8}$/',
-                    'unique:tbl_info_user,mobile_no'
+                    'unique:tbl_info_user,mobile_no',
+                    'unique:tbl_info_login,phone',
                 ],
 
-                'role' => 'required|in:admin,vendor,customer,cashier',
+                'email' => 'nullable|email|max:255|unique:tbl_info_login,email',
+
+                'role' => 'required|in:admin,vendor,cashier',
+
+                'password' => 'required|min:6',
 
             ]);
 
-            $userId = DB::table('tbl_info_user')->insertGetId([
-
+            // Create in tbl_info_login first (the table the shared /login page
+            // authenticates against), then sync into tbl_info_user (used by
+            // the /admin/management-login route and admin session data) —
+            // the same pattern used by customer self-registration, so a user
+            // created here can log in from either entry point.
+            $loginUser = Login::create([
                 'first_name' => $validated['first_name'],
-
-                'last_name' => $validated['last_name'],
-
-                'mobile_no' => $validated['mobile_no'],
-
-                'role' => $validated['role'],
-
-                'status' => 'active',
-
-                'created_at' => now(),
-
-                'updated_at' => now(),
+                'last_name'  => $validated['last_name'],
+                'name'       => trim($validated['first_name'] . ' ' . $validated['last_name']),
+                'phone'      => $validated['mobile_no'],
+                'email'      => $validated['email'] ?? null,
+                'password'   => Hash::make($validated['password']),
+                'role'       => $validated['role'],
+                'status'     => 'active',
             ]);
+
+            UserSyncService::syncToUserTable($loginUser);
 
             ActivityLog::create([
                 'user_id'      => session('user_id'),

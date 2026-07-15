@@ -615,8 +615,8 @@
 
                                                                 <div class="price-row">
                                                                     <div class="prices">
-                                                                        <span class="price-now">৳{{ $prods['sale_price'] }}</span>
-                                                                        <span class="price-old">৳{{ $prods['regular_price'] }}</span>
+                                                                        <span class="price-now">৳{{ $prods['sale_price'] }}/per</span>
+                                                                        <span class="price-old{{ (float) ($prods['regular_price'] ?? 0) == (float) ($prods['package_price'] ?? 0) ? ' no-discount' : '' }}">৳{{ $prods['regular_price'] }}</span>
                                                                     </div>
 
                                                                 </div>
@@ -734,8 +734,8 @@
 
                                                                 <div class="price-row">
                                                                     <div class="prices">
-                                                                        <span class="price-now">৳{{ $prods['sale_price'] }}</span>
-                                                                        <span class="price-old">৳{{ $prods['regular_price'] }}</span>
+                                                                        <span class="price-now">৳{{ $prods['sale_price'] }}/per</span>
+                                                                        <span class="price-old{{ (float) ($prods['regular_price'] ?? 0) == (float) ($prods['package_price'] ?? 0) ? ' no-discount' : '' }}">৳{{ $prods['regular_price'] }}</span>
                                                                     </div>
 
                                                                 </div>
@@ -851,8 +851,8 @@
 
                                                                 <div class="price-row">
                                                                     <div class="prices">
-                                                                        <span class="price-now">৳{{ $prods['sale_price'] }}</span>
-                                                                        <span class="price-old">৳{{ $prods['regular_price'] }}</span>
+                                                                        <span class="price-now">৳{{ $prods['sale_price'] }}/per</span>
+                                                                        <span class="price-old{{ (float) ($prods['regular_price'] ?? 0) == (float) ($prods['package_price'] ?? 0) ? ' no-discount' : '' }}">৳{{ $prods['regular_price'] }}</span>
                                                                     </div>
 
                                                                 </div>
@@ -1025,8 +1025,8 @@
                                         $prod['name'] }}</a></h2>
 
                                                                     <div class="product-price">
-                                                                        <span>৳ {{ $prod['sale_price'] }} </span>
-                                                                        <span class="old-price">৳ {{ $prod['regular_price'] }}</span>
+                                                                        <span>৳ {{ $prod['sale_price'] }}/per</span>
+                                                                        <span class="old-price{{ (float) ($prod['regular_price'] ?? 0) == (float) ($prod['package_price'] ?? 0) ? ' no-discount' : '' }}">৳ {{ $prod['regular_price'] }}</span>
                                                                     </div>
                                                                     <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                                 </div>
@@ -1092,8 +1092,8 @@
                                         $prod['name'] }}</a></h2>
 
                                                                     <div class="product-price">
-                                                                        <span>৳ {{ $prod['sale_price'] }} </span>
-                                                                        <span class="old-price">৳ {{ $prod['regular_price'] }}</span>
+                                                                        <span>৳ {{ $prod['sale_price'] }}/per</span>
+                                                                        <span class="old-price{{ (float) ($prod['regular_price'] ?? 0) == (float) ($prod['package_price'] ?? 0) ? ' no-discount' : '' }}">৳ {{ $prod['regular_price'] }}</span>
                                                                     </div>
                                                                     <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                                 </div>
@@ -1122,38 +1122,67 @@
                     <div class="carausel-6-columns" id="carausel-6-columns">
 
                         @foreach ($mostSellingProducts as $prod)
-                                            <div class="card-1">
-                                                <figure class=" img-hover-scale overflow-hidden">
-                                                    <a href="{{ route('Product_Details', [
+                                            <div class="product-cart-wrap small hover-up">
+                                                <div class="product-img-action-wrap">
+                                                    <div class="product-img product-img-zoom">
+                                                        <a href="{{ route('Product_Details', [
                                 'product_name' => $prod['name'],
                                 'category_name' => $prod['category']['name'],
                                 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                 'category_id' => $prod['category']['id'],
                                 'product_id' => $prod['id']
                             ]) }}">
-                                                        @foreach ($prod['media'] as $media)
-                                                            @if ($media['position'] == 1)
-                                                                <img class="default-img" src="{{ asset($media['file_path'] . $media['image_name'])}}"
-                                                                    alt={{ $media['image_name'] }}>
-
+                                                            @php
+                                                                $mediaCol = collect($prod['media'] ?? []);
+                                                                $img1 = $mediaCol->firstWhere('position', 1);
+                                                                $img2 = $mediaCol->firstWhere('position', 2);
+                                                            @endphp
+                                                            @if ($img2)
+                                                                <img class="default-img" src="{{ asset($img2['file_path'] . $img2['image_name']) }}" alt="{{ $img2['image_name'] }}">
+                                                                @if ($img1)
+                                                                    <img class="hover-img" src="{{ asset($img1['file_path'] . $img1['image_name']) }}" alt="{{ $img1['image_name'] }}">
+                                                                @endif
+                                                            @elseif ($img1)
+                                                                <img class="default-img" src="{{ asset($img1['file_path'] . $img1['image_name']) }}" alt="{{ $img1['image_name'] }}">
                                                             @endif
-
-                                                        @endforeach
-                                                    </a>
-                                                </figure>
-                                                <h5><a href="{{ route('Product_Details', [
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                                        <span class="hot">Best Seller</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content-wrap">
+                                                    <h2><a href="{{ route('Product_Details', [
                                 'product_name' => $prod['name'],
                                 'category_name' => $prod['category']['name'],
                                 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
                                 'category_id' => $prod['category']['id'],
                                 'product_id' => $prod['id']
                             ]) }}">{{
-                                $prod['name'] }}</a></h5>
-                                                <div class="product-price mt-1">
-                                                    <span>৳ {{ $prod['sale_price'] }}</span>
-                                                    <span class="old-price">৳ {{ $prod['regular_price'] }}</span>
+                                $prod['name'] }}</a></h2>
+                                                    @php $rating = $prod['reviews_avg_rating'] ?? 0; @endphp
+                                                    <div style="display: flex; gap: 8px;">
+                                                        <div>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                @if ($i <= $rating)
+                                                                    <i class="fa fa-star" style="color: #f15412;"></i>
+                                                                @elseif ($i - 0.5 <= $rating)
+                                                                    <i class="fa fa-star-half-empty" style="color: #f15412;"></i>
+                                                                @else
+                                                                    <i class="fa fa-star-o" style="color: #f15412;"></i>
+                                                                @endif
+                                                            @endfor
+                                                        </div>
+                                                        <div style="color:#f15412; font-weight: bold; font-size: 15px;">
+                                                            ({{number_format($rating, 1)}})
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-price">
+                                                        <span>৳ {{ $prod['sale_price'] }}/per</span>
+                                                        <span class="old-price{{ (float) ($prod['regular_price'] ?? 0) == (float) ($prod['package_price'] ?? 0) ? ' no-discount' : '' }}">৳ {{ $prod['regular_price'] }}</span>
+                                                    </div>
+                                                    <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                 </div>
-                                                <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                             </div>
                         @endforeach
 
@@ -1302,8 +1331,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="product-price">
-                                                        <span>৳ {{ $prod['sale_price'] }} </span>
-                                                        <span class="old-price">৳ {{ $prod['regular_price'] }}</span>
+                                                        <span>৳ {{ $prod['sale_price'] }}/per</span>
+                                                        <span class="old-price{{ (float) ($prod['regular_price'] ?? 0) == (float) ($prod['package_price'] ?? 0) ? ' no-discount' : '' }}">৳ {{ $prod['regular_price'] }}</span>
                                                     </div>
                                                     <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                 </div>

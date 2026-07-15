@@ -188,8 +188,8 @@
 
                                                                 <div class="price-row">
                                                                     <div class="product-price">
-                                                                        <span>৳{{$prod['sale_price']}} </span>
-                                                                        <span class="old-price">৳{{$prod['regular_price']}}</span>
+                                                                        <span>৳{{$prod['sale_price']}}/per</span>
+                                                                        <span class="old-price{{ (float) ($prod['regular_price'] ?? 0) == (float) ($prod['package_price'] ?? 0) ? ' no-discount' : '' }}">৳{{$prod['regular_price']}}</span>
                                                                     </div>
 
                                                                 </div>
@@ -277,6 +277,11 @@
                                                                     ({{number_format($item['reviews_avg_rating'], 1)}})
                                                                 </div>
                                                             </div>
+                                                            <a aria-label="Add To Cart" class="sidebar-add-cart" href="{{ route('Product_Cart_Add', [
+                                    'product_name' => $item['name'],
+                                    'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                    'product_id' => $item['id']
+                                ]) }}"><i class="fi-rs-shopping-bag-add"></i></a>
                                                         </div>
                                                     </div>
                             @endforeach

@@ -7,6 +7,36 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    /**
+     * Renders the header mini-cart dropdown's current contents (desktop +
+     * mobile variants) so JS can swap them into the page after any
+     * add/update/remove action, without needing a full page reload.
+     */
+    private function miniCartHtml(): array
+    {
+        return [
+            'desktopHtml' => view('partials.cart-dropdown-items', ['subtotalId' => 'cart-subtotal-desktop', 'withLinks' => true])->render(),
+            'mobileHtml'  => view('partials.cart-dropdown-items', ['subtotalId' => 'cart-subtotal-mobile', 'withLinks' => false])->render(),
+        ];
+    }
+
+    /**
+     * Renders the /product-cart page's own items table + Cart Totals box,
+     * so that page can refresh itself via AJAX too (e.g. adding a "New
+     * Arrivals" product from the bottom of that same page) without a full
+     * page reload.
+     */
+    private function cartPageSummaryHtml(array $cart): array
+    {
+        $subtotal = collect($cart)->sum(fn ($item) => $item['price'] * $item['quantity']);
+
+        return [
+            'cartPageHtml' => view('partials.cart-page-summary', [
+                'cart_info' => $cart,
+                'subTotal'  => $subtotal,
+            ])->render(),
+        ];
+    }
 
     /**
      * Product_Cart
@@ -99,14 +129,14 @@ class CartController extends Controller
         session()->put('cart', $cart);
 
         if ($request->ajax() || $request->wantsJson()) {
-            return response()->json([
+            return response()->json(array_merge([
                 'status'     => 'success',
                 'message'    => 'Product added to cart!',
                 'product_id' => (int) $request->product_id,
                 'quantity'   => $cart[$request->product_id]['quantity'],
                 'cartCount'  => count($cart),
                 'subtotal'   => (float) collect($cart)->sum(fn ($item) => $item['price'] * $item['quantity']),
-            ]);
+            ], $this->miniCartHtml(), $this->cartPageSummaryHtml($cart)));
         }
 
         return back()->with('success', 'Product added to cart!');
@@ -120,12 +150,12 @@ class CartController extends Controller
      */
     public function Product_Cart_Remove(Request $request)
     {
-        session()->forget('cart'); 
-        return response()->json([
+        session()->forget('cart');
+        return response()->json(array_merge([
             'status'    => 'success',
             'message'   => 'Cart cleared successfully',
             'cartCount' => 0
-        ]);
+        ], $this->miniCartHtml(), $this->cartPageSummaryHtml([])));
     }
 
 
@@ -149,13 +179,13 @@ class CartController extends Controller
         }
 
 
-        return response()->json([
+        return response()->json(array_merge([
             'status'     => 'success',
             'message'    => 'Item Removed successfully',
             'product_id' => (int) $id,
             'cartCount'  => count($cart),
             'subtotal'   => (float) collect($cart)->sum(fn ($item) => $item['price'] * $item['quantity']),
-        ]);
+        ], $this->miniCartHtml(), $this->cartPageSummaryHtml($cart)));
     }
 
 
@@ -188,14 +218,14 @@ class CartController extends Controller
             unset($cart[$id]);
             session()->put('cart', $cart);
 
-            return response()->json([
+            return response()->json(array_merge([
                 'status'     => 'success',
                 'message'    => 'Item removed successfully',
                 'removed'    => true,
                 'product_id' => (int) $id,
                 'cartCount'  => count($cart),
                 'subtotal'   => (float) collect($cart)->sum(fn ($item) => $item['price'] * $item['quantity']),
-            ]);
+            ], $this->miniCartHtml(), $this->cartPageSummaryHtml($cart)));
         }
 
         // 2. Check if requested quantity exceeds database stock
@@ -210,13 +240,13 @@ class CartController extends Controller
         $cart[$id]['quantity'] = $quantity;
         session()->put('cart', $cart);
 
-        return response()->json([
+        return response()->json(array_merge([
             'status'     => 'success',
             'message'    => 'Cart updated successfully!',
             'product_id' => (int) $id,
             'quantity'   => $quantity,
             'cartCount'  => count($cart),
             'subtotal'   => (float) collect($cart)->sum(fn ($item) => $item['price'] * $item['quantity']),
-        ]);
+        ], $this->miniCartHtml(), $this->cartPageSummaryHtml($cart)));
     }
 }

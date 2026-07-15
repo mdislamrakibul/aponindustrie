@@ -1,6 +1,21 @@
 @extends('layout.master')
 
-@section('title', 'E-Commerce')
+@php
+    $ogMedia = collect($product->media ?? [])->firstWhere('position', 1) ?? collect($product->media ?? [])->first();
+    $ogImage = $ogMedia ? asset($ogMedia['file_path'] . $ogMedia['image_name']) : asset('assets/imgs/logo/logo.png');
+
+    $ogDescriptionRaw = $product->meta_description ?: $product->short_description ?: $product->description;
+    $ogDescription = $ogDescriptionRaw
+        ? Illuminate\Support\Str::limit(trim(strip_tags($ogDescriptionRaw)), 160)
+        : 'Buy ' . $product->name . ' at the best price from Apon Plastic Industries.';
+@endphp
+
+@section('title', $product->name . ' - Apon Plastic Industries')
+@section('og_title', $product->name)
+@section('og_type', 'product')
+@section('og_url', request()->fullUrl())
+@section('og_image', $ogImage)
+@section('og_description', $ogDescription)
 
 
 @section('content')
@@ -524,7 +539,7 @@
                                     <h3 class="section-title style-1 mb-30">Related products</h3>
                                 </div>
                                 <div class="col-12">
-                                    <div class="row">
+                                    <div class="row product-grid-3">
                                         @foreach ($relatedProducts as $prod)
                                         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
                                             <div class="product-cart-wrap small hover-up h-100">
@@ -592,10 +607,17 @@
                                                             ({{ number_format($rating, 1) }})
                                                         </div>
                                                     </div>
-                                                    <div class="product-price" style="text-align:left;">
-                                                        <span>৳{{ $prod['sale_price'] }}</span>
-                                                        <span class="old-price">৳{{ $prod['regular_price'] }}</span>
+                                                    <div class="price-row">
+                                                        <div class="product-price" style="text-align:left;">
+                                                            <span>৳{{ $prod['sale_price'] }}/per</span>
+                                                            <span class="old-price{{ (float) ($prod['regular_price'] ?? 0) == (float) ($prod['package_price'] ?? 0) ? ' no-discount' : '' }}">৳{{ $prod['regular_price'] }}</span>
+                                                        </div>
                                                     </div>
+                                                    <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', [
+                                                        'product_name'    => $prod['name'],
+                                                        'auth_expired_key'=> 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                                        'product_id'      => $prod['id'],
+                                                    ]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -660,6 +682,11 @@
                                                                     ({{number_format($item['reviews_avg_rating'], 1)}})
                                                                 </div>
                                                             </div>
+                                                            <a aria-label="Add To Cart" class="sidebar-add-cart" href="{{ route('Product_Cart_Add', [
+                                    'product_name' => $item['name'],
+                                    'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg',
+                                    'product_id' => $item['id']
+                                ]) }}"><i class="fi-rs-shopping-bag-add"></i></a>
                                                         </div>
                                                     </div>
                             @endforeach

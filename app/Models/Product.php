@@ -165,12 +165,15 @@ class Product extends Model
         return $regular > 0 ? round(($value / $regular) * 100, 2) : 0.0;
     }
 
-    // Combined discount % — base (price difference) + extra (manual
-    // discount_type/discount_value) — this is what the storefront offer
-    // badge shows
+    // Total discount % shown as the storefront offer badge.
+    // As of the Inventory Update rework, package_price is saved as the
+    // ACTUAL final selling price (regular_price minus the discount_type/
+    // discount_value amount already applied) — so the regular-vs-package
+    // gap (base_discount_percent) already IS the full discount. Adding
+    // extra_discount_percent on top would double-count the same discount.
     public function getTotalDiscountPercentAttribute()
     {
-        $total = $this->base_discount_percent + $this->extra_discount_percent;
+        $total = $this->base_discount_percent;
 
         // Sanity cap so stacked discounts can never show a silly >95% badge
         return $total > 95 ? 95.0 : round($total, 2);

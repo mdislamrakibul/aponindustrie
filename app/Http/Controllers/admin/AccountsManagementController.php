@@ -100,12 +100,15 @@ class AccountsManagementController extends Controller
         // ── Cancelled orders ──
         $cancelledOrders = (clone $baseQuery())
             ->where('order_status', 'CANCELLED')
-            ->get(['id', 'shipping_amount']);
+            ->get(['id', 'shipping_amount', 'accepted_by']);
 
         $cancelledCount  = $cancelledOrders->count();
 
-        // ── Loss = sum of shipping_amount of cancelled orders ──
-        $loss = $cancelledOrders->sum('shipping_amount');
+        // ── Loss = sum of shipping_amount of cancelled orders — but only for
+        // orders that were accepted first (accepted_by set). An order rejected
+        // straight from "New Orders" (never accepted) never had a courier
+        // engaged, so its delivery charge was never actually incurred.
+        $loss = $cancelledOrders->whereNotNull('accepted_by')->sum('shipping_amount');
 
         // ── Profit per order — delivered only ──
         $deliveredOrderIds = (clone $baseQuery())
@@ -190,7 +193,7 @@ class AccountsManagementController extends Controller
 
         $cancelled = Order::whereBetween('created_at', [$start, $end])
             ->where('order_status', 'CANCELLED')
-            ->get(['id', 'shipping_amount']);
+            ->get(['id', 'shipping_amount', 'accepted_by']);
 
         $profitByOrder = $this->profitByOrder($delivered->pluck('id'));
 
@@ -240,7 +243,10 @@ class AccountsManagementController extends Controller
                 'sales'     => (float) $delivered->sum('total_amount'),
                 'profit'    => (float) $profitByOrder->sum(),
                 'cancelled' => $cancelled->count(),
-                'loss'      => (float) $cancelled->sum('shipping_amount'),
+                // Same rule as the Order History page: only orders that were
+                // accepted before being cancelled ever had a delivery charge
+                // actually incurred.
+                'loss'      => (float) $cancelled->whereNotNull('accepted_by')->sum('shipping_amount'),
             ],
         ]);
     }

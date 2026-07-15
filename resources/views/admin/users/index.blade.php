@@ -62,7 +62,7 @@
                         </div>
                         {{-- USER DASHBOARD CARDS --}}
                         <div class="row mb-4 mt-3 px-2">
-                            <div class="col-lg-3 col-6 mb-3">
+                            <div class="col-lg-4 col-6 mb-3">
                                 <div class="dash-card">
                                     <div class="dash-icon navy"><i class="fas fa-users"></i></div>
                                     <div>
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-6 mb-3">
+                            <div class="col-lg-4 col-6 mb-3">
                                 <div class="dash-card">
                                     <div class="dash-icon blue"><i class="fas fa-user-check"></i></div>
                                     <div>
@@ -80,21 +80,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-6 mb-3">
+                            <div class="col-lg-4 col-6 mb-3">
                                 <div class="dash-card">
                                     <div class="dash-icon red"><i class="fas fa-user-times"></i></div>
                                     <div>
                                         <div class="dash-num">{{ $inactiveUsers }}</div>
                                         <div class="dash-lbl">Inactive Users</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-6 mb-3">
-                                <div class="dash-card">
-                                    <div class="dash-icon amber"><i class="fas fa-user-tag"></i></div>
-                                    <div>
-                                        <div class="dash-num">{{ $customerUsers }}</div>
-                                        <div class="dash-lbl">Customers</div>
                                     </div>
                                 </div>
                             </div>
@@ -151,10 +142,20 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-lg-4 col-md-6 mb-3">
+                                    <div class="col-lg-3 col-md-6 mb-3">
                                         <label class="font-weight-semibold">Mobile Number</label>
                                         <input type="text" name="mobile_no" class="form-control" placeholder="01XXXXXXXXX"
                                             required>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-6 mb-3">
+                                        <label class="font-weight-semibold">Email</label>
+                                        <input type="email" name="email" class="form-control"
+                                            placeholder="Email (Optional)" value="{{ old('email') }}">
+
+                                        @error('email')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="col-lg-2 col-md-6 mb-3">
@@ -162,11 +163,16 @@
 
                                         <select name="role" class="form-control" required>
                                             <option value="">Select</option>
-                                            <option value="customer">Customer</option>
                                             <option value="vendor">Vendor</option>
                                             <option value="admin">Admin</option>
                                             <option value="cashier">Cashier</option>
                                         </select>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-6 mb-3">
+                                        <label class="font-weight-semibold">Password</label>
+                                        <input type="password" name="password" class="form-control" placeholder="Min 6 characters"
+                                            minlength="6" required>
                                     </div>
 
                                     <div class="col-lg-2 col-md-6 mb-3">
@@ -195,7 +201,6 @@
                                         <option value="vendor">Vendor</option>
                                         <option value="admin">Admin</option>
                                         <option value="cashier">Cashier</option>
-                                        <option value="customer">Customer</option>
                                     </select>
                                 </div>
                             </div>
@@ -269,11 +274,6 @@
 
                                                     <select class="form-control form-control-sm edit-mode d-none"
                                                         id="role-{{ $user->id }}">
-                                                        <option value="customer" {{ $user->role == 'customer' ? 'selected' : ''
-                                                            }}>
-                                                            Customer
-                                                        </option>
-
                                                         <option value="vendor" {{ $user->role == 'vendor' ? 'selected' : '' }}>
                                                             Vendor
                                                         </option>

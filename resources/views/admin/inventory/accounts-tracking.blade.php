@@ -42,6 +42,8 @@
                                 <th>Product Name</th>
                                 <th>Stock Quantity</th>
                                 <th>Purchase Price</th>
+                                <th>Package Price (Regular Price)</th>
+                                <th>Package Price (Final Sale Price)</th>
                                 <th>Sell Price</th>
                                 <th>Discount Price</th>
                                 <th>Profit</th>
@@ -51,31 +53,26 @@
                         <tbody>
                             @forelse($products as $product)
                             @php
+                            // Purchase Price = "Purchase Package Price" (Purchase Per Piece ×
+                            // Minimum Order), auto-calculated on the Inventory Update form.
                             $purchasePrice = (float) ($product->purchase_price ?? 0);
                             // "Sell Price" is what the admin actually enters as the
                             // per-piece selling price on the Inventory form — that's
-                            // sale_price, not regular_price (a separate field that
-                            // often just mirrors package_price).
+                            // sale_price, not regular_price.
                             $salePrice = (float) ($product->sale_price ?? 0);
                             $regularPrice = (float) ($product->regular_price ?? 0);
+                            // Package Price is now saved as the ACTUAL final selling price
+                            // (Regular Price minus the configured discount already applied),
+                            // so it directly reflects what a customer actually pays.
                             $packagePrice = (float) ($product->package_price ?? 0);
                             $discountType = $product->discount_type ?? 'NONE';
                             $discountValue = (float) ($product->discount_value ?? 0);
                             $stockQty = (int) ($product->stock_quantity ?? 0);
 
-                            // Discount as a currency amount (percentage discounts are
-                            // a % of the regular price, flat discounts are already ৳).
-                            $discountAmount = 0;
-                            if ($discountValue > 0) {
-                                $discountAmount = $discountType === 'PERCENTAGE'
-                                    ? $regularPrice * ($discountValue / 100)
-                                    : ($discountType === 'FLAT' ? $discountValue : 0);
-                            }
-
-                            // Profit/Loss = Regular Price − Package Price − Discount.
-                            // Positive → profit; negative (package + discount cost
-                            // more than the regular price) → loss.
-                            $net = $regularPrice - $packagePrice - $discountAmount;
+                            // Profit/Loss = Package Price (final selling price) − Purchase
+                            // Package Price (final purchase cost). Positive → profit;
+                            // negative (cost more than the selling price) → loss.
+                            $net = $packagePrice - $purchasePrice;
                             $profit = $net > 0 ? $net : 0;
                             $loss = $net < 0 ? abs($net) : 0;
                             @endphp
@@ -85,6 +82,12 @@
                                 <td>{{ $stockQty }}</td>
                                 <td>
                                     ৳{{ number_format($purchasePrice, 2) }}
+                                </td>
+                                <td>
+                                    ৳{{ number_format($regularPrice, 2) }}
+                                </td>
+                                <td>
+                                    ৳{{ number_format($packagePrice, 2) }}
                                 </td>
                                 <td>
                                     ৳{{ number_format($salePrice, 2) }}
@@ -124,7 +127,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="8" class="text-center">
+                                <td colspan="10" class="text-center">
                                     No accounts tracking data found
                                 </td>
                             </tr>

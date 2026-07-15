@@ -36,7 +36,22 @@ class StoreController extends Controller
     {
         $products = Product::where('status', 'PUBLISHED')
             ->with(['category:id,name,slug', 'media' => $this->mediaQuery()])
-            ->when($request->discount, fn($q) => $q->where('is_discounted', 1))
+            ->when($request->discount, function ($q) {
+                // is_discounted is a computed accessor (Product::getIsDiscountedAttribute),
+                // not a real column — the DB column is never written, so filtering on it
+                // directly always returns zero rows. Mirror the same logic here instead:
+                // discounted = regular_price > package_price, OR a manual discount_value is set.
+                $q->where(function ($sub) {
+                    $sub->where(function ($base) {
+                        $base->where('regular_price', '>', 0)
+                            ->where('package_price', '>', 0)
+                            ->whereColumn('package_price', '<', 'regular_price');
+                    })->orWhere(function ($extra) {
+                        $extra->where('discount_value', '>', 0)
+                            ->whereIn('discount_type', ['PERCENTAGE', 'FLAT']);
+                    });
+                });
+            })
             ->orderBy('name', 'asc')
             ->paginate(20)
             ->withQueryString();

@@ -82,8 +82,7 @@ class InventoryController extends Controller
         $request->validate([
             'product_id'     => 'required|exists:tbl_products,id',
             'stock_quantity' => 'nullable|numeric|min:0', // required → nullable
-            'purchase_price' => 'nullable|numeric|min:0',
-            'regular_price'  => 'nullable|numeric|min:0',
+            'purchase_per_piece_price' => 'nullable|numeric|min:0',
             'per_piece_price'=> 'required|numeric|min:0',
             'minimum_order'  => 'required|integer|min:1',
             'tax_percentage' => 'nullable|numeric|min:0|max:100',
@@ -94,15 +93,9 @@ class InventoryController extends Controller
         $product = Product::findOrFail($request->product_id);
 
         // ── Stock ──
-      
+
         $addStock = (int) ($request->stock_quantity ?? 0);
         $product->stock_quantity = (int) $product->stock_quantity + $addStock;
-
-        // ── Purchase Price ──
-
-        if ($request->filled('purchase_price')) {
-            $product->purchase_price = $request->purchase_price;
-        }
 
         // ── Per Piece Price → sale_price ──
         $product->sale_price = $request->per_piece_price;
@@ -110,25 +103,39 @@ class InventoryController extends Controller
         // ── Minimum Order ──
         $product->minimum_order = $request->minimum_order;
 
-        // ── Package Price = per_piece × minimum_order ──
-        $product->package_price = round(
-            $request->per_piece_price * $request->minimum_order
+        // ── Regular Price = per_piece × minimum_order (base, undiscounted package total) ──
+        $product->regular_price = round(
+            $request->per_piece_price * $request->minimum_order,
+            2
         );
 
-        // ── Regular Price ──
-       
-        if ($request->filled('regular_price')) {
-            $product->regular_price = $request->regular_price;
-        } else {
-            $product->regular_price = $product->package_price;
+        // ── Discount amount off Regular Price ──
+        $discountType  = $request->discount_type ?? 'NONE';
+        $discountValue = (float) ($request->discount_value ?? 0);
+
+        $discountAmount = 0;
+        if ($discountType === 'FLAT') {
+            $discountAmount = $discountValue;
+        } elseif ($discountType === 'PERCENTAGE') {
+            $discountAmount = $product->regular_price * ($discountValue / 100);
         }
+
+        // ── Package Price = actual final selling price after discount ──
+        $product->package_price = round(
+            max($product->regular_price - $discountAmount, 0),
+            2
+        );
+
+        // ── Purchase Per Piece Price × minimum_order = Purchase Package Price ──
+        $purchasePerPiece = (float) ($request->purchase_per_piece_price ?? 0);
+        $product->purchase_price = round($purchasePerPiece * $request->minimum_order, 2);
 
         // ── Tax / VAT ──
         $product->tax_percentage = $request->tax_percentage ?? 0;
 
         // ── Discount ──
-        $product->discount_value = $request->discount_value ?? 0;
-        $product->discount_type  = $request->discount_type  ?? 'NONE';
+        $product->discount_value = $discountValue;
+        $product->discount_type  = $discountType;
 
         $product->save();
 
@@ -141,8 +148,9 @@ class InventoryController extends Controller
             'details'      => 'Stock: '          . $product->stock_quantity .
                              ' | Per Piece: ৳'  . $product->sale_price .
                              ' | Min Order: '   . $product->minimum_order .
-                             ' | Package: ৳'    . $product->package_price .
                              ' | Regular: ৳'    . $product->regular_price .
+                             ' | Package: ৳'    . $product->package_price .
+                             ' | Purchase Package: ৳' . $product->purchase_price .
                              ' | Tax: '         . $product->tax_percentage . '%',
         ]);
 

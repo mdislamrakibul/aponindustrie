@@ -21,211 +21,9 @@
         <div class="container">
 
             <div class="row">
-                <div class="row mb-50">
-                    @if (isset($cart_info) && count($cart_info)> 0)
-                    <div class="col-lg-8 col-md-12">
-                        <div class="table-responsive">
-
-
-                            <table class="table shopping-summery text-center clean">
-                                <thead>
-                                    <tr class="main-heading">
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Minimum Order Item</th>
-                                        <th scope="col">Subtotal</th>
-                                        <th scope="col">Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-
-                                    @foreach ($cart_info as $cart)
-                                    <tr>
-                                        <td class="image product-thumbnail">
-
-                                            @foreach ($cart['product']['media'] as $media)
-                                            @if ($media['position'] == 1)
-                                            <img src="{{ asset( $media['file_path']. $media['image_name'])}}" alt={{
-                                                $media['image_name'] }}>
-
-                                            @endif
-
-                                            @endforeach
-
-                                        </td>
-                                        <td class="product-des product-name" style="text-align: left;">
-                                            <h5 class="product-name"><a href="product-details.html">
-                                                    {{$cart['product']['name']}}</a></h5>
-                                            {{-- <p class="font-xs">
-                                                {{ $cart['product']['short_description'] }}
-                                            </p> --}}
-                                        </td>
-                                        <td class="price" data-title="Price" style="font-weight:bold"><span>৳{{
-                                                $cart['product']['package_price'] }}
-                                            </span>
-                                        </td>
-                                        {{-- <td class="text-center" data-title="Stock">
-                                            <div class="detail-qty border radius  m-auto cart-item-controls"
-                                                data-id="{{ $cart['product']['id']  }}">
-                                                </a>
-                                                <input type="number" class="qty-val" value={{ $cart['quantity'] }} />
-
-                                                <a href="#" class="qty-up btn-update">
-                                                    <i class="fi-rs-check" style="color: green;"></i>
-                                                </a>
-                                            </div>
-
-                                        </td> --}}
-                                        <td class="action" data-title="update">
-                                            {{-- <input type="hidden" value={{ $cart['product']['id'] }}
-                                                class="update_item_id" /> --}}
-                                            {{-- <input type="number" class="detail-qty qty-val update_item_number"
-                                                value="{{ $cart['quantity'] }}" /> --}}
-                                            <span style="font-weight:bold">{{ $cart['minimum_order'] }}
-                                            </span>
-                                            {{-- <a href="#" class="text-muted update_single_item_btn"
-                                                data-id="{{ $cart['product']['id'] }}">
-                                                <i class="fi-rs-shopping-cart-check" style="color: green;"></i>
-                                            </a> --}}
-                                        </td>
-                                        <td class="text-right" data-title="Cart" style="font-weight:bold">
-                                            <span>৳{{ number_format($cart['product']['package_price'] *
-                                                $cart['quantity'],
-                                                2)}} </span>
-                                        </td>
-                                        <td class="action" data-title="Remove">
-                                            <input type="hidden" value={{ $cart['product']['id'] }}
-                                                class="remove_item_id" />
-                                            <a href="#" class="text-muted" id="remove_single_item"
-                                                data-id="{{ $cart['product']['id']  }}">
-                                                <i class="fi-rs-trash" style="color: red;"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="cart-action text-end">
-                            <a class="btn mr-10 mb-sm-15" data-bs-toggle="modal" id="delete_pop_modal"
-                                data-bs-target="#delete_modal"><i class="fi-rs-trash mr-10"></i>
-                                Clear Cart
-                            </a>
-                            <a class="btn " href="{{ route('home.index') }}"><i
-                                    class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
-                        </div>
-
-
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                        @php
-                            $deliveryInside   = config('delivery.inside_dhaka');
-                            $deliveryOutside  = config('delivery.outside_dhaka');
-                            $freeThreshold    = config('delivery.free_threshold');
-                            $isFreeDelivery   = $subTotal >= $freeThreshold;
-                        @endphp
-
-                        {{-- Free delivery offer notification --}}
-                        @if($isFreeDelivery)
-                        <div style="background:#e6f7ec;color:#1a7f4b;border:1px solid #b7e4cb;border-radius:10px;padding:12px 16px;font-size:14px;margin-bottom:16px;">
-                            🎉 You have unlocked <strong>FREE delivery</strong> on this order!
-                        </div>
-                        @else
-                        @php $remaining = $freeThreshold - $subTotal; @endphp
-                        <div style="background:#fff8e6;color:#a86b00;border:1px solid #ffe08a;border-radius:10px;padding:12px 16px;font-size:14px;margin-bottom:16px;">
-                            Add <strong>৳{{ number_format($remaining, 2) }}</strong> more to get <strong>FREE delivery!</strong>
-                            <span style="display:block;margin-top:4px;font-size:12px;color:#c47f00;">Free delivery on orders above ৳{{ number_format($freeThreshold, 0) }}</span>
-                        </div>
-                        @endif
-
-                        <div class="border p-md-4 p-10 border-radius cart-totals">
-                            <div class="heading_s1 mb-3">
-                                <h4>Cart Totals</h4>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td class="cart_total_label">Cart Subtotal</td>
-                                            <td class="cart_total_amount">
-                                                <span class="font-lg fw-900 text-brand">৳{{ number_format($subTotal, 2) }}</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="cart_total_label">Shipping</td>
-                                            <td class="cart_total_amount">
-                                                @if($isFreeDelivery)
-                                                    <i class="ti-gift mr-5" style="color:#0d3b66;"></i>
-                                                    <span style="color:#0d3b66;font-weight:600;">Free Shipping 🎉</span>
-                                                @else
-                                                    <span style="font-weight:600;">৳{{ $deliveryInside }} – ৳{{ $deliveryOutside }}</span>
-                                                    <br><small class="text-muted" style="font-size:11px;">Exact charge set at checkout</small>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="cart_total_label">Total</td>
-                                            <td class="cart_total_amount">
-                                                <strong>
-                                                @if($isFreeDelivery)
-                                                    <span class="font-xl fw-900 text-brand">৳{{ number_format($subTotal, 2) }}</span>
-                                                @else
-                                                    <span class="font-xl fw-900 text-brand">
-                                                        ৳{{ number_format($subTotal + $deliveryInside, 2) }}
-                                                        – ৳{{ number_format($subTotal + $deliveryOutside, 2) }}
-                                                    </span>
-                                                @endif
-                                                </strong>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            {{-- <div class="mb-30 mt-50">
-                                <div class="heading_s1 mb-3">
-                                    <h4>Apply Coupon</h4>
-                                </div>
-                                <div class="total-amount">
-                                    <div class="left">
-                                        <div class="coupon">
-                                            <form action="#" target="_blank">
-                                                <div class="form-row row justify-content-center">
-                                                    <div class="form-group col-lg-6">
-                                                        <input class="font-medium" name="Coupon"
-                                                            placeholder="Enter Your Coupon">
-                                                    </div>
-                                                    <div class="form-group col-lg-6">
-                                                        <button class="btn  btn-sm"><i
-                                                                class="fi-rs-label mr-10"></i>Apply</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
-                            @if (isset($cart_info) && count($cart_info)> 0)
-                            <a href="{{ route('Product_Checkout') }}" class="btn "> <i class="fi-rs-box-alt mr-10"></i>
-                                Proceed To
-                                CheckOut</a>
-                            @endif
-                        </div>
-                    </div>
-                    @else
-                    <div class="mt-100" style="font-size: 30px;
-                                        text-align: center;
-                                        color: #f15412;
-                                        font-weight: bold;">
-                        Your cart is empty!
-                    </div>
-                    @endif
+                <div id="cartPageSummary">
+                    @include('partials.cart-page-summary')
                 </div>
-
             </div>
         </div>
     </section>
@@ -273,9 +71,10 @@
                                 </span>
                             </div>
                             <div class="product-price">
-                                <span>৳{{ $prod['sale_price'] }} </span>
-                                <span class="old-price">৳{{ $prod['regular_price'] }}</span>
+                                <span>৳{{ $prod['sale_price'] }}/per</span>
+                                <span class="old-price{{ (float) ($prod['regular_price'] ?? 0) == (float) ($prod['package_price'] ?? 0) ? ' no-discount' : '' }}">৳{{ $prod['regular_price'] }}</span>
                             </div>
+                            <a aria-label="Add To Cart" class="btn-add-to-cart-full" href="{{ route('Product_Cart_Add', ['product_name' => $prod['name'], 'auth_expired_key' => 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg', 'product_id' => $prod['id']]) }}"><i class="fi-rs-shopping-bag-add"></i> Add To Cart</a>
                         </div>
                     </div>
                     <!--End product-cart-wrap-2-->
@@ -434,29 +233,45 @@
         });
 
 
-        // $('.btn-update').on('click', function() {
-        //     let button = $(this);
-        //     let id = button.closest('.cart-item-controls').data('id');
-        //     let changeValue = button.data('change');
+        $(document).on('click', '.cart-qty-stepper__btn', function (e) {
+            e.preventDefault();
 
-        //     $.ajax({
-        //         url: `/cart/update-quantity/${id}`,
-        //         method: "PATCH",
-        //         data: {
-        //             _token: '{{ csrf_token() }}',
-        //             change: changeValue
-        //         },
-        //         success: function(response) {
-        //             if(response.status === 'success') {
-        //                 // Option 1: Refresh to update all totals
-        //                 location.reload();
+            var $btn = $(this);
+            var $stepper = $btn.closest('.cart-qty-stepper');
+            if ($stepper.hasClass('is-loading')) return;
 
-        //                 // Option 2: Manually update the DOM for a smoother feel
-        //                 // button.siblings('.qty-display').text(response.newQty);
-        //             }
-        //         }
-        //     });
-        // });
+            var productId = $stepper.data('product-id');
+            var currentQty = parseInt($stepper.find('.cart-qty-stepper__qty').text(), 10) || 1;
+            var newQty = $btn.hasClass('cart-qty-stepper__btn--plus') ? currentQty + 1 : currentQty - 1;
+
+            $stepper.addClass('is-loading');
+
+            $.ajax({
+                url: "/product-cart/update/single/" + productId + "/quantity/" + newQty,
+                type: "get",
+                success: function (res) {
+                    if (res.status == 'success') {
+                        location.reload();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: res.message,
+                            showConfirmButton: true,
+                        });
+                        $stepper.removeClass('is-loading');
+                    }
+                },
+                error: function (xhr) {
+                    var msg = (xhr.responseJSON && xhr.responseJSON.message) || 'Something went wrong.';
+                    Swal.fire({
+                        icon: 'error',
+                        title: msg,
+                        showConfirmButton: true,
+                    });
+                    $stepper.removeClass('is-loading');
+                }
+            });
+        });
     })
 </script>
 @endsection

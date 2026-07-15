@@ -244,7 +244,10 @@
                                 @forelse($orders as $order)
                                     @php
                                         $rowProfit = $profitByOrder->get($order->id, 0);
-                                        $rowLoss   = $order->order_status === 'CANCELLED'
+                                        // Only counts as a loss if the order was accepted before being
+                                        // cancelled — an order rejected straight from "New Orders" never
+                                        // had a courier engaged, so no delivery charge was ever incurred.
+                                        $rowLoss   = ($order->order_status === 'CANCELLED' && $order->accepted_by)
                                             ? $order->shipping_amount
                                             : 0;
                                     @endphp
