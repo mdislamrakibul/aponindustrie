@@ -816,7 +816,8 @@
                         '<p style="margin:0 0 5px;"><strong>Name:</strong> ' + cn + '</p>' +
                         '<p style="margin:0 0 5px;"><strong>Phone:</strong> ' + (addr.phone||'N/A') + '</p>' +
                         '<p style="margin:0 0 5px;"><strong>Email:</strong> ' + (addr.email||'N/A') + '</p>' +
-                        '<p style="margin:0;"><strong>Address:</strong> ' + (addr.address_line1||'N/A') + '</p>' +
+                        '<p style="margin:0 0 5px;"><strong>Address:</strong> ' + (addr.address_line1||'N/A') + '</p>' +
+                        '<p style="margin:0;"><strong>District:</strong> ' + (addr.district||'N/A') + '</p>' +
                       '</div></div>' +
                       '<div style="flex:1;min-width:0;"><div style="background:#f8f9fa;border:1px solid #dce0e4;border-radius:10px;padding:12px;height:100%;">' +
                         '<div style="background:#a9d0e1;color:#0d3b66;padding:6px 12px;border-radius:4px;font-weight:700;margin-bottom:8px;font-size:12px;">INVOICE INFORMATION</div>' +
@@ -939,25 +940,37 @@
         // Force the whole invoice onto exactly one A4 page: shrink it (as a
         // block, preserving proportions) to fit the printable area, which is
         // A4 height (297mm) minus the @page top+bottom margins (10mm each).
-        var doc = w.document;
-        var el = doc.getElementById('invoiceContent') || doc.body.firstElementChild;
-        var pageH = Math.round((297 - 20) * 3.7795); // ≈ 1047px printable height
-        if (el && el.scrollHeight > pageH) {
-            var scale = pageH / el.scrollHeight;
-            el.style.transformOrigin = 'top left';
-            el.style.transform = 'scale(' + scale + ')';
-            el.style.width = (100 / scale) + '%';
+        // This MUST run after the copied <link rel="stylesheet"> tags have
+        // actually loaded (i.e. inside onload) — measuring scrollHeight right
+        // after document.write() sees the pre-stylesheet layout, computes an
+        // undersized scale, and the content reflows taller once fonts/CSS
+        // finish loading, pushing the tail of the invoice onto a 2nd page.
+        // Uses CSS `zoom` (not `transform: scale`) because print pagination
+        // decides page breaks off the pre-transform layout box — `transform`
+        // only shrinks the paint, not that box, so the reserved (untouched)
+        // layout height still overflows onto a 2nd page. `zoom` actually
+        // shrinks the layout box itself, which the print engine respects.
+        function fitToOnePage() {
+            var doc = w.document;
+            var el = doc.getElementById('invoiceContent') || doc.body.firstElementChild;
+            var pageH = Math.round((297 - 20) * 3.7795); // ≈ 1047px printable height
+            if (el && el.scrollHeight > pageH) {
+                var scale = pageH / el.scrollHeight;
+                el.style.zoom = scale;
+            }
         }
 
         var printFired = false;
         w.onload = function () {
             if (printFired) return;
             printFired = true;
+            fitToOnePage();
             setTimeout(function () { w.focus(); w.print(); w.close(); }, 300);
         };
         setTimeout(function () {
             if (printFired) return;
             printFired = true;
+            fitToOnePage();
             try { w.focus(); w.print(); } catch (e) {}
         }, 700);
     }
